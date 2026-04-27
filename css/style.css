@@ -1,0 +1,224 @@
+/* ===== V단원. 에너지와 수송 기술의 세계 - 공용 스타일 ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #27ae60;
+  --primary-dark: #1e8449;
+  --primary-light: #a9dfbf;
+  --accent: #f39c12;
+  --accent-dark: #d68910;
+  --blue: #2980b9;
+  --blue-dark: #1a5276;
+  --red: #e74c3c;
+  --purple: #8e44ad;
+  --teal: #16a085;
+  --bg: #f0fff4;
+  --surface: #ffffff;
+  --text: #1a2e1a;
+  --text-light: #5d6d5d;
+  --border: #b2dfdb;
+  --shadow: 0 8px 32px rgba(39, 174, 96, 0.12);
+  --shadow-lg: 0 16px 48px rgba(39, 174, 96, 0.22);
+}
+
+html, body {
+  font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  font-size: 16px;
+}
+
+h1, h2, h3 { font-weight: 800; letter-spacing: -0.02em; }
+
+/* ── 헤더 ── */
+.app-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  padding: 20px 32px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.app-header h1 {
+  font-size: clamp(17px, 3vw, 26px);
+  display: flex; align-items: center; gap: 10px;
+}
+.app-header .subtitle { font-size: 13px; opacity: 0.88; font-weight: 500; }
+.app-header nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.2);
+  transition: background 0.2s;
+  font-size: 14px;
+}
+.app-header nav a:hover { background: rgba(255,255,255,0.35); }
+
+/* ── 컨테이너 ── */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+/* ── 카드 ── */
+.card {
+  background: var(--surface);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+  border: 2px solid var(--border);
+}
+
+/* ── 버튼 ── */
+.btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  box-shadow: 0 4px 16px rgba(39,174,96,0.3);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(39,174,96,0.4); }
+.btn:active { transform: translateY(0); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn.btn-secondary { background: white; color: var(--primary-dark); border: 2px solid var(--primary); box-shadow: none; }
+.btn.btn-accent  { background: var(--accent); box-shadow: 0 4px 16px rgba(243,156,18,0.3); }
+.btn.btn-blue    { background: var(--blue);   box-shadow: 0 4px 16px rgba(41,128,185,0.3); }
+.btn.btn-red     { background: var(--red);    box-shadow: 0 4px 16px rgba(231,76,60,0.3); }
+
+/* ── 배지 ── */
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--primary);
+  color: white;
+}
+.badge.amber  { background: var(--accent); }
+.badge.blue   { background: var(--blue); }
+.badge.purple { background: var(--purple); }
+.badge.red    { background: var(--red); }
+.badge.teal   { background: var(--teal); }
+
+/* ── 학습 목표 박스 ── */
+.objective-box {
+  background: linear-gradient(135deg, #d5f5e3 0%, #a9dfbf 100%);
+  border-radius: 20px;
+  padding: 24px 28px;
+  margin-bottom: 32px;
+  border-left: 8px solid var(--primary);
+}
+.objective-box h2 { color: var(--primary-dark); font-size: 22px; margin-bottom: 12px; }
+.objective-box ul { list-style: none; padding: 0; }
+.objective-box li {
+  padding: 6px 0 6px 30px;
+  position: relative;
+  font-weight: 600;
+  font-size: 16px;
+}
+.objective-box li::before { content: "🎯"; position: absolute; left: 0; }
+
+/* ── 활동 그리드 ── */
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.activity-card {
+  background: white;
+  border-radius: 24px;
+  padding: 28px;
+  border: 3px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.activity-card::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(39,174,96,0.06));
+  opacity: 0; transition: opacity 0.25s;
+}
+.activity-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+.activity-card:hover::before { opacity: 1; }
+.activity-card .icon { font-size: 52px; margin-bottom: 14px; display: block; }
+.activity-card h3 { font-size: 22px; margin-bottom: 10px; }
+.activity-card p { color: var(--text-light); font-size: 15px; line-height: 1.55; }
+.activity-card .go { margin-top: 14px; color: var(--primary-dark); font-weight: 700; font-size: 14px; }
+
+/* ── 토스트 ── */
+.toast {
+  position: fixed; top: 20px; left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: white; padding: 14px 24px;
+  border-radius: 999px; box-shadow: var(--shadow-lg);
+  font-weight: 700; z-index: 1000; transition: transform 0.3s;
+}
+.toast.show  { transform: translateX(-50%) translateY(0); }
+.toast.success { background: var(--primary-dark); color: white; }
+.toast.error   { background: var(--red); color: white; }
+
+/* ── 섹션 헤더 ── */
+.section-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px;
+}
+.section-header h2 { font-size: 26px; color: var(--primary-dark); }
+.section-num {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--primary); color: white;
+  font-size: 18px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── 애니메이션 ── */
+@keyframes pop {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes flash {
+  0%, 100% { background-color: transparent; }
+  50%       { background-color: rgba(39,174,96,0.25); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-8px); }
+  75%       { transform: translateX(8px); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+@keyframes flow {
+  0%   { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}

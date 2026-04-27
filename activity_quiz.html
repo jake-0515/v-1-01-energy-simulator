@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📝 에너지 확인 퀴즈</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ─── 기본 리셋 & 공통 ─── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #27ae60;
+      --primary-dark: #1e8449;
+      --primary-light: #d5f5e3;
+      --correct: #27ae60;
+      --correct-bg: #eafaf1;
+      --wrong: #e74c3c;
+      --wrong-bg: #fdf2f2;
+      --accent: #f39c12;
+      --accent-bg: #fef9e7;
+      --text: #2c3e50;
+      --text-muted: #7f8c8d;
+      --bg: #f4f6f9;
+      --card-bg: #ffffff;
+      --border: #dce3ec;
+      --radius: 14px;
+      --shadow: 0 4px 18px rgba(0,0,0,0.09);
+    }
+
+    body {
+      font-family: 'Segoe UI', 'Malgun Gothic', '맑은 고딕', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ─── 헤더 ─── */
+    .app-header {
+      background: var(--primary);
+      color: #fff;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      box-shadow: 0 3px 12px rgba(39,174,96,0.3);
+    }
+    .app-header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .app-header .subtitle {
+      font-size: 0.9rem;
+      opacity: 0.88;
+      margin-top: 3px;
+    }
+    .app-header nav a {
+      color: #fff;
+      text-decoration: none;
+      background: rgba(255,255,255,0.2);
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .app-header nav a:hover { background: rgba(255,255,255,0.35); }
+
+    /* ─── 안내 배너 ─── */
+    .info-banner {
+      background: var(--accent-bg);
+      border-left: 5px solid var(--accent);
+      margin: 20px auto;
+      max-width: 780px;
+      padding: 14px 20px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* ─── 메인 래퍼 ─── */
+    .quiz-wrapper {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 16px 60px;
+    }
+
+    /* ─── 진행 바 영역 ─── */
+    .progress-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .progress-bar-track {
+      flex: 1;
+      height: 10px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #2ecc71);
+      border-radius: 99px;
+      transition: width 0.4s ease;
+    }
+    .progress-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      white-space: nowrap;
+      min-width: 54px;
+      text-align: right;
+    }
+
+    /* ─── 퀴즈 카드 (슬라이드 컨테이너) ─── */
+    .quiz-stage {
+      overflow: hidden;
+      position: relative;
+    }
+    .quiz-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 32px 28px 28px;
+      animation: slideIn 0.35s ease;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideOut {
+      from { opacity: 1; transform: translateX(0); }
+      to   { opacity: 0; transform: translateX(-40px); }
+    }
+    .quiz-card.leaving {
+      animation: slideOut 0.3s ease forwards;
+    }
+
+    /* ─── 문제 헤더 ─── */
+    .question-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .q-emoji {
+      font-size: 40px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .q-meta { flex: 1; }
+    .q-badge {
+      display: inline-block;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 99px;
+      margin-bottom: 8px;
+    }
+    .q-text {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.45;
+      color: var(--text);
+    }
+
+    /* ─── 보기 목록 ─── */
+    .options-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+    .option-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text);
+      background: #fff;
+      transition: border-color 0.18s, background 0.18s, transform 0.12s;
+      user-select: none;
+    }
+    .option-item:hover:not(.disabled) {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      transform: translateX(3px);
+    }
+    .option-item.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    .option-item.correct {
+      border-color: var(--correct);
+      background: var(--correct-bg);
+    }
+    .option-item.wrong {
+      border-color: var(--wrong);
+      background: var(--wrong-bg);
+    }
+    .option-item.reveal-correct {
+      border-color: var(--correct);
+      background: var(--correct-bg);
+    }
+    .option-item.disabled { cursor: default; }
+
+    .option-marker {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+      background: #fff;
+      transition: border-color 0.18s, background 0.18s;
+      color: var(--text-muted);
+    }
+    .option-item.selected  .option-marker { border-color: var(--primary); background: var(--primary); color: #fff; }
+    .option-item.correct   .option-marker { border-color: var(--correct); background: var(--correct); color: #fff; }
+    .option-item.wrong     .option-marker { border-color: var(--wrong);   background: var(--wrong);   color: #fff; }
+    .option-item.reveal-correct .option-marker { border-color: var(--correct); background: var(--correct); color: #fff; }
+
+    /* ─── 정답 확인 버튼 ─── */
+    .btn-check {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-bottom: 14px;
+    }
+    .btn-check:hover:not(:disabled) { background: var(--primary-dark); transform: translateY(-1px); }
+    .btn-check:disabled { background: #b2bec3; cursor: default; transform: none; }
+    .btn-check.next-mode { background: var(--primary-dark); }
+
+    /* ─── 해설 박스 ─── */
+    .explanation-box {
+      display: none;
+      background: var(--accent-bg);
+      border-left: 5px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 14px 18px;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--text);
+      margin-top: 4px;
+      animation: fadeDown 0.3s ease;
+    }
+    .explanation-box.visible { display: block; }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .explanation-box .result-icon {
+      font-size: 1.3rem;
+      margin-right: 6px;
+    }
+    .explanation-label {
+      font-weight: 700;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .explanation-label.correct-label { color: var(--correct); }
+    .explanation-label.wrong-label   { color: var(--wrong); }
+
+    /* ─── 결과 화면 ─── */
+    .result-screen {
+      display: none;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 40px 28px 36px;
+      text-align: center;
+      animation: slideIn 0.4s ease;
+    }
+    .result-screen.visible { display: block; }
+
+    .result-congrats {
+      font-size: 2rem;
+      margin-bottom: 6px;
+    }
+    .result-title {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+    .result-score-big {
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .result-score-sub {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .result-grade {
+      display: inline-block;
+      padding: 10px 32px;
+      border-radius: 99px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 30px;
+    }
+    .grade-s  { background: #fef9e7; color: #f39c12; border: 2px solid #f39c12; }
+    .grade-ap { background: #eafaf1; color: #27ae60; border: 2px solid #27ae60; }
+    .grade-a  { background: #eafaf1; color: #27ae60; border: 2px solid #27ae60; }
+    .grade-b  { background: #ebf5fb; color: #2980b9; border: 2px solid #2980b9; }
+    .grade-c  { background: #fdf2f2; color: #e67e22; border: 2px solid #e67e22; }
+    .grade-retry { background: #fdf2f2; color: var(--wrong); border: 2px solid var(--wrong); }
+
+    /* ─── 틀린 문제 목록 ─── */
+    .wrong-list-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--wrong);
+      margin-bottom: 12px;
+      text-align: left;
+    }
+    .wrong-list {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .wrong-item {
+      background: var(--wrong-bg);
+      border: 1px solid #f5c6cb;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .wrong-item .wi-num {
+      font-weight: 700;
+      color: var(--wrong);
+      margin-right: 6px;
+    }
+    .wrong-item .wi-answer {
+      color: var(--correct);
+      font-weight: 600;
+    }
+
+    /* ─── 다시 시작 버튼 ─── */
+    .btn-restart {
+      display: inline-block;
+      padding: 15px 40px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-restart:hover { background: var(--primary-dark); transform: translateY(-2px); }
+
+    /* ─── 반응형 ─── */
+    @media (max-width: 560px) {
+      .quiz-card { padding: 22px 16px 20px; }
+      .q-text { font-size: 18px; }
+      .option-item { font-size: 15px; padding: 12px 14px; }
+      .result-score-big { font-size: 3rem; }
+      .app-header h1 { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── 헤더 ─── -->
+<header class="app-header">
+  <div>
+    <h1>📝 에너지 확인 퀴즈</h1>
+    <div class="subtitle">10문제로 배운 내용을 확인해 보세요!</div>
+  </div>
+  <nav><a href="/v-1-01-energy-simulator/index.html">🏠 홈</a></nav>
+</header>
+
+<!-- ─── 메인 래퍼 ─── -->
+<div class="quiz-wrapper">
+
+  <!-- 학습 안내 배너 -->
+  <div class="info-banner">
+    💡 <strong>풀이 방법</strong>: 문제를 읽고 답을 선택하면 바로 해설이 나와요! 10문제 모두 풀고 점수를 확인하세요.
+  </div>
+
+  <!-- 진행 바 -->
+  <div class="progress-area" id="progressArea">
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">Q1 / 10</div>
+  </div>
+
+  <!-- 퀴즈 스테이지 -->
+  <div class="quiz-stage" id="quizStage">
+    <!-- 퀴즈 카드는 JS로 렌더링 -->
+  </div>
+
+  <!-- 결과 화면 -->
+  <div class="result-screen" id="resultScreen">
+    <div class="result-congrats">🎉</div>
+    <div class="result-title">퀴즈 완료! 최종 결과예요</div>
+    <div class="result-score-big" id="scoreDisplay"></div>
+    <div class="result-score-sub">정답 / 전체 문제</div>
+    <div class="result-grade" id="gradeDisplay"></div>
+    <div id="wrongSection"></div>
+    <button class="btn-restart" onclick="restartQuiz()">🔄 처음부터 다시</button>
+  </div>
+
+</div>
+
+<script>
+// ─── 문제 데이터 ───────────────────────────────────────────────────────────
+const QUESTIONS = [
+  {
+    q: "에너지란 무엇인가요?",
+    options: ["물질의 질량", "일을 할 수 있는 능력", "물체의 속도", "빛의 밝기"],
+    answer: 1,
+    explanation: "에너지는 '일을 할 수 있는 능력'으로 정의해요. 물체를 움직이거나 새 물질을 만들고, 물체의 모양이나 상태를 바꿀 수 있는 능력이에요. 예를 들어 달리는 자동차, 타오르는 불꽃 모두 에너지가 있어요!",
+    emoji: "⚡"
+  },
+  {
+    q: "높은 댐에 가득 찬 물이 가진 에너지 형태는?",
+    options: ["운동 에너지", "전기 에너지", "위치 에너지", "열 에너지"],
+    answer: 2,
+    explanation: "높은 곳에 있는 물체는 '위치 에너지'를 가져요. 댐의 물은 아직 움직이지 않지만 높이 때문에 에너지를 갖고 있고, 아래로 떨어지면 운동 에너지로 바뀌어요. 이것이 수력 발전의 원리예요!",
+    emoji: "💧"
+  },
+  {
+    q: "다음 중 에너지 변환이 잘못 연결된 것은?",
+    options: [
+      "태양광 발전: 빛 에너지 → 전기 에너지",
+      "풍력 발전: 운동 에너지 → 전기 에너지",
+      "화력 발전: 화학 에너지 → 전기 에너지",
+      "수력 발전: 전기 에너지 → 위치 에너지"
+    ],
+    answer: 3,
+    explanation: "수력 발전은 '위치 에너지 → 운동 에너지 → 전기 에너지'의 순서로 변환돼요. 전기 에너지가 위치 에너지로 변환되는 것은 반대예요. 나머지 세 개는 모두 올바른 에너지 변환이에요!",
+    emoji: "🔄"
+  },
+  {
+    q: "신재생 에너지 중 '신 에너지'에 해당하는 것은?",
+    options: ["태양광 에너지", "풍력 에너지", "수소 에너지", "수력 에너지"],
+    answer: 2,
+    explanation: "'신 에너지'는 복잡한 기술적 응용이 더해진 것으로 수소 에너지, 석탄 액화 및 가스화가 해당해요. 태양광·풍력·수력은 자연 에너지를 그대로 활용하는 '재생 에너지'예요!",
+    emoji: "⚗️"
+  },
+  {
+    q: "태양광 발전의 핵심 부품으로, 빛을 전기로 바꾸는 것은?",
+    options: ["터빈", "태양 전지판(반도체)", "반사경(집열판)", "연료 전지"],
+    answer: 1,
+    explanation: "태양광 발전은 반도체로 만든 '태양 전지판'에 빛이 투입되면 광전 효과에 의해 전기가 발생해요. 반사경은 태양열 발전에 사용되고, 터빈은 회전력으로 전기를 만들어요!",
+    emoji: "☀️"
+  },
+  {
+    q: "풍력 발전에서 에너지 변환 순서로 옳은 것은?",
+    options: [
+      "전기 → 기계적 → 운동",
+      "운동 → 기계적 → 전기",
+      "열 → 운동 → 전기",
+      "화학 → 열 → 전기"
+    ],
+    answer: 1,
+    explanation: "풍력 발전: 바람의 '운동 에너지' → 터빈의 '기계적 에너지' → 발전기의 '전기 에너지'로 변환돼요. 바람이 터빈을 돌리면 발전기가 회전하며 전기를 만들어요!",
+    emoji: "💨"
+  },
+  {
+    q: "시화호 조력 발전소가 이용하는 에너지는?",
+    options: [
+      "파도의 상하 운동",
+      "밀물과 썰물의 조수 간만차",
+      "바닷물의 온도 차",
+      "빠른 해류(조류)"
+    ],
+    answer: 1,
+    explanation: "시화호는 '조력 발전소'예요. 조력 발전은 밀물·썰물로 생기는 수위 차(조수 간만차)를 이용해 터빈을 돌려요. 세계 최대 규모(254MW)로 인천 시화호에 있어요!",
+    emoji: "🌊"
+  },
+  {
+    q: "수소 연료 전지에서 수소와 산소가 반응한 후 나오는 부산물은?",
+    options: ["이산화탄소(CO₂)", "일산화탄소(CO)", "물(H₂O)", "질소(N₂)"],
+    answer: 2,
+    explanation: "수소 연료 전지는 수소(H₂)와 산소(O₂)를 반응시켜 전기를 얻고, 부산물로 오직 '물(H₂O)'만 나와요. CO₂가 전혀 발생하지 않는 완전 청정 에너지로 현대 넥쏘 같은 수소차에 사용돼요!",
+    emoji: "🔬"
+  },
+  {
+    q: "다음 중 신재생 에너지를 사용해야 하는 이유로 가장 적절한 것은?",
+    options: [
+      "화석 연료가 신재생 에너지보다 비싸서",
+      "화석 연료는 고갈 위험이 있고 환경 오염을 일으키기 때문에",
+      "신재생 에너지가 더 많은 전기를 만들기 때문에",
+      "정부가 의무적으로 사용하도록 강제하기 때문에"
+    ],
+    answer: 1,
+    explanation: "화석 연료(석탄·석유·천연가스)는 사용량이 계속 늘어 고갈 위험이 있고, 태울 때 CO₂가 발생해 지구온난화·대기오염 등 환경 문제를 일으켜요. 신재생 에너지는 고갈 없이 환경을 지킬 수 있는 대안이에요!",
+    emoji: "🌍"
+  },
+  {
+    q: "지열 에너지에 대한 설명으로 옳은 것은?",
+    options: [
+      "태양의 열을 반사경으로 모아 사용한다",
+      "지하의 열로 터빈을 돌려 전기를 생산한다",
+      "날씨에 따라 발전량이 크게 변한다",
+      "주로 해안가에서만 사용 가능하다"
+    ],
+    answer: 1,
+    explanation: "지열 에너지는 지하 고온층의 증기나 온수를 끌어올려 터빈을 돌려 전기를 생산해요. 날씨에 관계없이 24시간 안정적으로 발전할 수 있고, 폭발·화재 위험이 없어 안전해요. 아이슬란드에서는 전력의 30%를 지열로 얻어요!",
+    emoji: "🌋"
+  }
+];
+
+// ─── 상태 변수 ───────────────────────────────────────────────────────────────
+let currentIdx   = 0;
+let selectedOpt  = null;   // 선택한 보기 인덱스 (null = 미선택)
+let answered     = false;  // 이미 답변했는지
+let score        = 0;
+let wrongAnswers = [];     // { idx, q, correctText }
+
+// ─── 초기 렌더 ───────────────────────────────────────────────────────────────
+renderQuestion(currentIdx);
+
+function renderQuestion(idx) {
+  const q = QUESTIONS[idx];
+  selectedOpt = null;
+  answered    = false;
+
+  updateProgress(idx);
+
+  const labels = ['①', '②', '③', '④'];
+  const optionsHTML = q.options.map((opt, i) => `
+    <li class="option-item" id="opt-${i}" onclick="selectOption(${i})">
+      <span class="option-marker">${labels[i]}</span>
+      <span>${opt}</span>
+    </li>
+  `).join('');
+
+  const html = `
+    <div class="quiz-card" id="quizCard">
+      <div class="question-header">
+        <div class="q-emoji">${q.emoji}</div>
+        <div class="q-meta">
+          <span class="q-badge">Q ${idx + 1} / ${QUESTIONS.length}</span>
+          <div class="q-text">${q.q}</div>
+        </div>
+      </div>
+      <ul class="options-list" id="optionsList">
+        ${optionsHTML}
+      </ul>
+      <button class="btn-check" id="btnCheck" onclick="checkAnswer()" disabled>
+        정답 확인
+      </button>
+      <div class="explanation-box" id="explanationBox"></div>
+    </div>
+  `;
+
+  const stage = document.getElementById('quizStage');
+  stage.innerHTML = html;
+}
+
+// ─── 진행 바 업데이트 ─────────────────────────────────────────────────────────
+function updateProgress(idx) {
+  const pct = (idx / QUESTIONS.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `Q${idx + 1} / ${QUESTIONS.length}`;
+}
+
+// ─── 보기 선택 ────────────────────────────────────────────────────────────────
+function selectOption(i) {
+  if (answered) return;
+  selectedOpt = i;
+
+  document.querySelectorAll('.option-item').forEach((el, idx) => {
+    el.classList.toggle('selected', idx === i);
+  });
+
+  document.getElementById('btnCheck').disabled = false;
+}
+
+// ─── 정답 확인 ────────────────────────────────────────────────────────────────
+function checkAnswer() {
+  if (selectedOpt === null || answered) return;
+  answered = true;
+
+  const q        = QUESTIONS[currentIdx];
+  const isCorrect = selectedOpt === q.answer;
+  const labels    = ['①', '②', '③', '④'];
+
+  // 모든 보기 비활성화 + 색상 처리
+  document.querySelectorAll('.option-item').forEach((el, i) => {
+    el.classList.add('disabled');
+    el.onclick = null;
+    if (i === q.answer) {
+      el.classList.remove('selected');
+      el.classList.add(isCorrect ? 'correct' : 'reveal-correct');
+    }
+    if (!isCorrect && i === selectedOpt) {
+      el.classList.remove('selected');
+      el.classList.add('wrong');
+    }
+  });
+
+  // 점수 / 오답 기록
+  if (isCorrect) {
+    score++;
+  } else {
+    wrongAnswers.push({
+      num: currentIdx + 1,
+      q: q.q,
+      correctText: q.options[q.answer]
+    });
+  }
+
+  // 해설 박스
+  const box = document.getElementById('explanationBox');
+  box.innerHTML = `
+    <div class="explanation-label ${isCorrect ? 'correct-label' : 'wrong-label'}">
+      ${isCorrect ? '✅ 정답이에요!' : '❌ 오답이에요'}
+      ${!isCorrect ? `<span style="color:var(--text-muted);font-weight:400">— 정답: <strong style="color:var(--correct)">${labels[q.answer]} ${q.options[q.answer]}</strong></span>` : ''}
+    </div>
+    <div>${q.explanation}</div>
+  `;
+  box.classList.add('visible');
+
+  // 버튼 변경
+  const btn = document.getElementById('btnCheck');
+  btn.disabled  = false;
+  btn.classList.add('next-mode');
+
+  if (currentIdx < QUESTIONS.length - 1) {
+    btn.textContent = '다음 문제 →';
+    btn.onclick = nextQuestion;
+  } else {
+    btn.textContent = '결과 보기 🎉';
+    btn.onclick = showResult;
+  }
+}
+
+// ─── 다음 문제 ────────────────────────────────────────────────────────────────
+function nextQuestion() {
+  const card = document.getElementById('quizCard');
+  card.classList.add('leaving');
+  setTimeout(() => {
+    currentIdx++;
+    renderQuestion(currentIdx);
+  }, 280);
+}
+
+// ─── 결과 화면 ────────────────────────────────────────────────────────────────
+function showResult() {
+  // 퀴즈 스테이지 & 진행 바 숨기기
+  document.getElementById('quizStage').style.display   = 'none';
+  document.getElementById('progressArea').style.display = 'none';
+
+  // 점수 표시
+  document.getElementById('scoreDisplay').textContent = `${score} / ${QUESTIONS.length}`;
+
+  // 등급 계산
+  const gradeEl = document.getElementById('gradeDisplay');
+  let gradeText, gradeCls;
+  if      (score === 10) { gradeText = '🏆 S 등급 — 완벽해요!';         gradeCls = 'grade-s'; }
+  else if (score === 9)  { gradeText = '🥇 A+ 등급 — 거의 완벽!';       gradeCls = 'grade-ap'; }
+  else if (score === 8)  { gradeText = '🥈 A 등급 — 아주 잘했어요!';    gradeCls = 'grade-a'; }
+  else if (score === 7)  { gradeText = '🥉 B 등급 — 잘했어요!';         gradeCls = 'grade-b'; }
+  else if (score === 6)  { gradeText = '📗 C 등급 — 노력이 보여요!';     gradeCls = 'grade-c'; }
+  else                   { gradeText = '💪 다시 도전해 보세요!';          gradeCls = 'grade-retry'; }
+
+  gradeEl.textContent  = gradeText;
+  gradeEl.className    = `result-grade ${gradeCls}`;
+
+  // 틀린 문제 목록
+  const wrongSection = document.getElementById('wrongSection');
+  if (wrongAnswers.length > 0) {
+    const items = wrongAnswers.map(w => `
+      <div class="wrong-item">
+        <span class="wi-num">Q${w.num}.</span>${w.q}<br>
+        <span style="font-size:0.85rem;color:var(--text-muted)">정답:&nbsp;</span>
+        <span class="wi-answer">${w.correctText}</span>
+      </div>
+    `).join('');
+    wrongSection.innerHTML = `
+      <div class="wrong-list-title">❌ 틀린 문제 (${wrongAnswers.length}개)</div>
+      <div class="wrong-list">${items}</div>
+    `;
+  } else {
+    wrongSection.innerHTML = `<p style="color:var(--primary);font-weight:700;margin-bottom:24px;">🎊 모든 문제를 맞혔어요!</p>`;
+  }
+
+  document.getElementById('resultScreen').classList.add('visible');
+}
+
+// ─── 다시 시작 ────────────────────────────────────────────────────────────────
+function restartQuiz() {
+  currentIdx   = 0;
+  selectedOpt  = null;
+  answered     = false;
+  score        = 0;
+  wrongAnswers = [];
+
+  document.getElementById('resultScreen').classList.remove('visible');
+  document.getElementById('quizStage').style.display   = '';
+  document.getElementById('progressArea').style.display = '';
+
+  renderQuestion(0);
+}
+</script>
+</body>
+</html>

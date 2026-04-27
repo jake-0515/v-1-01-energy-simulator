@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🌱 신재생 에너지 탐색기 | V단원 기술</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── 페이지 전용 스타일 ── */
+    body { font-size: 18px; }
+
+    /* 필터 버튼 영역 */
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+    .filter-btn {
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      background: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+      color: var(--text);
+    }
+    .filter-btn:hover { border-color: var(--primary); color: var(--primary-dark); }
+    .filter-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* ── 메인 레이아웃 ── */
+    .explorer-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 28px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .explorer-layout { grid-template-columns: 1fr; }
+    }
+
+    /* ── 카드 그리드 ── */
+    .energy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .energy-grid { grid-template-columns: 1fr; }
+    }
+
+    .energy-card {
+      background: white;
+      border-radius: 20px;
+      padding: 18px 20px;
+      border: 3px solid var(--border);
+      cursor: pointer;
+      transition: all 0.22s;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .energy-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: var(--card-color, var(--primary));
+    }
+    .energy-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(39,174,96,0.15);
+      border-color: var(--card-color, var(--primary));
+    }
+    .energy-card.selected {
+      border-color: var(--card-color, var(--primary));
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--card-color, var(--primary)) 30%, transparent);
+      background: #f9fffe;
+    }
+    .energy-card.hidden { display: none; }
+
+    .card-emoji { font-size: 36px; line-height: 1; }
+    .card-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.3;
+    }
+    .card-tag {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--card-color, var(--primary));
+      color: white;
+      align-self: flex-start;
+    }
+    .card-conversion {
+      font-size: 12px;
+      color: var(--text-light);
+      line-height: 1.4;
+    }
+
+    /* ── 상세 패널 ── */
+    .detail-panel {
+      background: white;
+      border-radius: 24px;
+      border: 2px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 28px;
+      position: sticky;
+      top: 20px;
+      transition: all 0.35s ease;
+    }
+
+    .detail-empty {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--text-light);
+    }
+    .detail-empty .hint-emoji { font-size: 64px; display: block; margin-bottom: 16px; }
+    .detail-empty p { font-size: 16px; }
+
+    .detail-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .detail-title-emoji { font-size: 42px; }
+    .detail-title-text h2 {
+      font-size: 22px;
+      font-weight: 800;
+    }
+    .detail-title-text .tag {
+      font-size: 13px;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 999px;
+      color: white;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    /* SVG 컨테이너 */
+    .svg-container {
+      background: #f8fbff;
+      border-radius: 16px;
+      border: 1px solid #ddeef8;
+      margin-bottom: 18px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .svg-container svg {
+      width: 100%;
+      max-width: 340px;
+      height: 180px;
+    }
+
+    /* 에너지 변환 흐름 */
+    .conversion-flow {
+      background: linear-gradient(90deg, #e8f8f0, #d5f5e3);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 18px;
+      border-left: 5px solid var(--primary);
+    }
+    .conversion-label { font-size: 12px; font-weight: 600; color: var(--text-light); margin-bottom: 4px; }
+
+    /* 원리 설명 */
+    .principle-box {
+      background: #fffde7;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 18px;
+      border-left: 4px solid var(--accent);
+    }
+    .principle-box .label { font-size: 12px; font-weight: 700; color: var(--accent-dark); margin-bottom: 4px; }
+
+    /* 장단점 */
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 500px) {
+      .pros-cons { grid-template-columns: 1fr; }
+    }
+    .pros-box, .cons-box {
+      border-radius: 12px;
+      padding: 12px 14px;
+    }
+    .pros-box { background: #eafaf1; border: 1.5px solid #a9dfbf; }
+    .cons-box { background: #fdedec; border: 1.5px solid #f5b7b1; }
+    .pros-box h4 { color: #1e8449; font-size: 14px; margin-bottom: 8px; }
+    .cons-box h4 { color: #c0392b; font-size: 14px; margin-bottom: 8px; }
+    .pros-box li, .cons-box li {
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 4px;
+      padding-left: 16px;
+      position: relative;
+    }
+    .pros-box li::before { content: "✓"; position: absolute; left: 0; color: #27ae60; font-weight: 900; }
+    .cons-box li::before { content: "✗"; position: absolute; left: 0; color: #e74c3c; font-weight: 900; }
+
+    /* 국내 사례 */
+    .example-box {
+      background: linear-gradient(135deg, #eaf2ff, #dbeafe);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 14px;
+      margin-bottom: 18px;
+      border-left: 4px solid var(--blue);
+    }
+    .example-box .label { font-size: 12px; font-weight: 700; color: var(--blue-dark); margin-bottom: 4px; }
+
+    /* 환경 지수 게이지 */
+    .env-gauges { margin-bottom: 8px; }
+    .env-gauges h4 { font-size: 15px; font-weight: 800; margin-bottom: 12px; color: var(--text); }
+    .gauge-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .gauge-label { font-size: 13px; font-weight: 700; min-width: 80px; }
+    .gauge-track {
+      flex: 1;
+      height: 14px;
+      border-radius: 999px;
+      background: #e8eaed;
+      overflow: hidden;
+    }
+    .gauge-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.8s cubic-bezier(.34,1.56,.64,1);
+      width: 0%;
+    }
+    .gauge-fill.green { background: linear-gradient(90deg, #27ae60, #2ecc71); }
+    .gauge-fill.blue { background: linear-gradient(90deg, #2980b9, #3498db); }
+    .gauge-fill.purple { background: linear-gradient(90deg, #8e44ad, #9b59b6); }
+    .gauge-value { font-size: 13px; font-weight: 800; min-width: 36px; text-align: right; }
+
+    /* ── 비교 섹션 ── */
+    .compare-section {
+      margin-top: 40px;
+      background: white;
+      border-radius: 24px;
+      border: 2px solid var(--border);
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+    .compare-section h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-bottom: 6px;
+    }
+    .compare-section .desc {
+      font-size: 15px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+
+    .compare-checkboxes {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .compare-check-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 14px;
+      font-weight: 700;
+      background: white;
+    }
+    .compare-check-item:hover { border-color: var(--primary); }
+    .compare-check-item.checked {
+      border-color: var(--primary);
+      background: #eafaf1;
+    }
+    .compare-check-item.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .compare-check-item input { display: none; }
+
+    .compare-table-wrap {
+      overflow-x: auto;
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+    .compare-table th {
+      background: var(--primary);
+      color: white;
+      padding: 12px 16px;
+      text-align: center;
+      font-weight: 800;
+    }
+    .compare-table th:first-child { text-align: left; background: var(--primary-dark); border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td {
+      padding: 10px 16px;
+      border-bottom: 1px solid #e8f4ed;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .compare-table tr:nth-child(even) td { background: #f9fffe; }
+    .compare-table td:first-child {
+      font-weight: 800;
+      color: var(--primary-dark);
+      white-space: nowrap;
+    }
+    .compare-table .pros-cell { color: #1e8449; }
+    .compare-table .cons-cell { color: #c0392b; }
+    .compare-table ul { padding: 0; list-style: none; margin: 0; }
+    .compare-table ul li { padding-left: 14px; position: relative; margin-bottom: 3px; }
+    .compare-table .pros-cell li::before { content: "✓"; position: absolute; left: 0; font-weight: 900; }
+    .compare-table .cons-cell li::before { content: "✗"; position: absolute; left: 0; font-weight: 900; }
+    .compare-empty {
+      text-align: center;
+      padding: 30px;
+      color: var(--text-light);
+      font-size: 15px;
+    }
+
+    /* 슬라이드 인 애니메이션 */
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .detail-content { animation: slideInRight 0.3s ease; }
+
+    /* SVG 전용 애니메이션 */
+    @keyframes rotateBlade {
+      from { transform-origin: 50% 50%; transform: rotate(0deg); }
+      to   { transform-origin: 50% 50%; transform: rotate(360deg); }
+    }
+    @keyframes waterFall {
+      0%   { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(40px); opacity: 0; }
+    }
+    @keyframes riseUp {
+      0%   { transform: translateY(20px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    @keyframes electronMove {
+      0%   { transform: translateX(0); opacity: 1; }
+      100% { transform: translateX(60px); opacity: 0; }
+    }
+    @keyframes sunRays {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      50%       { transform: rotate(15deg) scale(1.1); }
+    }
+    @keyframes waveTide {
+      0%   { transform: translateX(0); }
+      50%  { transform: translateX(20px); }
+      100% { transform: translateX(0); }
+    }
+    @keyframes bubbleUp {
+      0%   { transform: translateY(0); opacity: 0.8; }
+      100% { transform: translateY(-30px); opacity: 0; }
+    }
+    @keyframes fireFlicker {
+      0%, 100% { transform: scaleY(1); opacity: 1; }
+      50%       { transform: scaleY(0.8); opacity: 0.7; }
+    }
+    @keyframes steamRise {
+      0%   { transform: translateY(0) scaleX(1); opacity: 0.7; }
+      100% { transform: translateY(-25px) scaleX(1.5); opacity: 0; }
+    }
+    @keyframes dashFlow {
+      to { stroke-dashoffset: -20; }
+    }
+
+    /* 반응형 폰트 */
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .detail-panel { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="app-header">
+  <div>
+    <h1>🌱 신재생 에너지 탐색기</h1>
+    <div class="subtitle">10가지 신재생 에너지의 원리와 특징을 알아보세요!</div>
+  </div>
+  <nav><a href="/v-1-01-energy-simulator/index.html">🏠 홈</a></nav>
+</header>
+
+<div class="container">
+
+  <!-- 필터 버튼 -->
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="all">전체 보기</button>
+    <button class="filter-btn" data-filter="renewable">🌿 재생 에너지 (8종)</button>
+    <button class="filter-btn" data-filter="new">⚗️ 신 에너지 (2종)</button>
+  </div>
+
+  <!-- 메인 레이아웃 -->
+  <div class="explorer-layout">
+
+    <!-- 왼쪽: 카드 그리드 -->
+    <div class="energy-grid" id="energyGrid"></div>
+
+    <!-- 오른쪽: 상세 패널 -->
+    <aside class="detail-panel" id="detailPanel">
+      <div class="detail-empty" id="detailEmpty">
+        <span class="hint-emoji">👆</span>
+        <p>왼쪽 카드를 클릭하면<br>상세 정보가 표시됩니다.</p>
+      </div>
+      <div id="detailContent" style="display:none"></div>
+    </aside>
+
+  </div><!-- end explorer-layout -->
+
+  <!-- 비교 섹션 -->
+  <div class="compare-section" id="compareSection">
+    <h2>⚖️ 에너지 비교하기</h2>
+    <p class="desc">최대 3개의 에너지를 선택하여 장단점을 나란히 비교해보세요.</p>
+    <div class="compare-checkboxes" id="compareCheckboxes"></div>
+    <div class="compare-table-wrap" id="compareTableWrap">
+      <div class="compare-empty">비교할 에너지를 위에서 선택해 주세요.</div>
+    </div>
+  </div>
+
+</div><!-- end container -->
+
+<script>
+/* ══════════════════════════════════════
+   데이터
+══════════════════════════════════════ */
+const ENERGIES = [
+  {
+    id: 'solar_pv', type: 'renewable',
+    name: '태양광 에너지', emoji: '☀️', color: '#f39c12',
+    tag: '재생에너지',
+    principle: '반도체 태양전지에 빛이 닿으면 전자가 이동하며 전기 발생 (광전 효과)',
+    conversion: '빛 에너지 → 전기 에너지',
+    pros: ['무한한 에너지', '운영비 저렴', 'CO₂ 무배출', '소규모 설치 가능'],
+    cons: ['날씨에 따라 발전량 변동', '초기 설치 비용 높음', '넓은 부지 필요'],
+    example: '신안 해상 태양광 발전소 (2.4GW, 세계 최대)',
+    svgType: 'solar'
+  },
+  {
+    id: 'solar_th', type: 'renewable',
+    name: '태양열 에너지', emoji: '🔆', color: '#e67e22',
+    tag: '재생에너지',
+    principle: '반사경(집열판)으로 태양열을 모아 물을 가열, 증기로 터빈 구동',
+    conversion: '빛 에너지 → 열 에너지 → 운동 에너지 → 전기 에너지',
+    pros: ['난방·온수에 직접 활용 가능', '대규모 발전 가능'],
+    cons: ['일조량 의존', '야간 발전 불가'],
+    example: '미국 네바다 이밴파 태양열 발전소',
+    svgType: 'solarthermal'
+  },
+  {
+    id: 'wind', type: 'renewable',
+    name: '풍력 에너지', emoji: '💨', color: '#2980b9',
+    tag: '재생에너지',
+    principle: '바람이 블레이드를 돌리면 터빈→발전기가 회전하여 전기 생산',
+    conversion: '운동 에너지 → 기계적 에너지 → 전기 에너지',
+    pros: ['환경 영향 거의 없음', '해상/산악 설치 가능', '운영비 낮음'],
+    cons: ['소음·진동', '풍속 의존', '조류 충돌 문제'],
+    example: '제주 탐라 해상풍력 발전단지, 태백 풍력단지',
+    svgType: 'wind'
+  },
+  {
+    id: 'hydro', type: 'renewable',
+    name: '수력 에너지', emoji: '💧', color: '#27ae60',
+    tag: '재생에너지',
+    principle: '댐 위 물의 위치 에너지 → 낙하 시 운동 에너지 → 터빈 → 전기',
+    conversion: '위치 에너지 → 운동 에너지 → 기계적 에너지 → 전기 에너지',
+    pros: ['연료 공급 불필요', '오래 사용 가능', '효율 높음(90%)'],
+    cons: ['댐 건설로 생태계 변화', '가뭄 시 발전량 감소'],
+    example: '소양강댐, 충주댐',
+    svgType: 'hydro'
+  },
+  {
+    id: 'geo', type: 'renewable',
+    name: '지열 에너지', emoji: '🌋', color: '#e74c3c',
+    tag: '재생에너지',
+    principle: '지하 고온층 증기/열수를 끌어올려 난방·발전에 활용',
+    conversion: '열 에너지 → 운동 에너지 → 전기 에너지',
+    pros: ['24시간 안정 발전', '폭발·화재 위험 없음', '날씨 무관'],
+    cons: ['특정 지역에만 가능', '초기 굴착 비용 높음'],
+    example: '뉴질랜드 와이라케이, 아이슬란드 전력의 30%',
+    svgType: 'geo'
+  },
+  {
+    id: 'tidal', type: 'renewable',
+    name: '해양(조력) 에너지', emoji: '🌊', color: '#16a085',
+    tag: '재생에너지',
+    principle: '밀물·썰물의 조수 간만차를 이용해 수차를 돌려 전기 생산',
+    conversion: '위치 에너지 → 운동 에너지 → 전기 에너지',
+    pros: ['예측 가능한 발전', '청정 에너지'],
+    cons: ['해양 생태계 영향', '설치 장소 제한'],
+    example: '시화호 조력 발전소 (세계 최대, 254MW)',
+    svgType: 'tidal'
+  },
+  {
+    id: 'bio', type: 'renewable',
+    name: '바이오 에너지', emoji: '🌿', color: '#2ecc71',
+    tag: '재생에너지',
+    principle: '식물·미생물·동물 등 생물체를 발효·분해해 얻은 가스·액체 에너지',
+    conversion: '화학 에너지 → 열 에너지 또는 전기 에너지',
+    pros: ['폐기물 자원화', '다양한 형태로 활용'],
+    cons: ['대규모 재배 시 식량 경쟁', '토지·물 많이 필요'],
+    example: '음식물 쓰레기 바이오가스 발전',
+    svgType: 'bio'
+  },
+  {
+    id: 'waste', type: 'renewable',
+    name: '폐기물 에너지', emoji: '♻️', color: '#7f8c8d',
+    tag: '재생에너지',
+    principle: '가연성 폐기물을 가공·처리해 고체연료·연유·가스 등으로 재활용',
+    conversion: '화학 에너지 → 열 에너지 → 전기 에너지',
+    pros: ['폐기물 감량', '에너지 자원화'],
+    cons: ['소각 시 대기오염 주의 필요'],
+    example: '수도권 자원회수시설(소각 발전)',
+    svgType: 'waste'
+  },
+  {
+    id: 'hydrogen', type: 'new',
+    name: '수소 에너지', emoji: '🔬', color: '#8e44ad',
+    tag: '신에너지',
+    principle: '수소를 연료전지에서 산소와 반응→전기+물(부산물). 완전 청정!',
+    conversion: '화학 에너지 → 전기 에너지 + 열 에너지',
+    pros: ['부산물이 물뿐', '높은 에너지 밀도', '다양한 분야 활용'],
+    cons: ['수소 생산 비용 높음', '저장·운반 기술 필요'],
+    example: '현대 넥쏘(수소 연료전지 자동차)',
+    svgType: 'hydrogen'
+  },
+  {
+    id: 'coal_gas', type: 'new',
+    name: '석탄 가스화', emoji: '⛏️', color: '#95a5a6',
+    tag: '신에너지',
+    principle: '석탄에 수소를 넣어 합성가스(H₂+CO)로 변환, 연소 후 발전',
+    conversion: '화학 에너지(석탄) → 화학 에너지(합성가스) → 전기 에너지',
+    pros: ['화력발전보다 오염 적음', '석탄 자원 활용'],
+    cons: ['여전히 화석연료 사용', 'CO₂ 발생'],
+    example: '태안 IGCC 석탄가스화 복합발전소',
+    svgType: 'coalgas'
+  },
+];
+
+const ENV_DATA = {
+  solar_pv:  { co2: 5,  efficiency: 22, safety: 98 },
+  solar_th:  { co2: 8,  efficiency: 40, safety: 95 },
+  wind:      { co2: 8,  efficiency: 45, safety: 92 },
+  hydro:     { co2: 10, efficiency: 90, safety: 85 },
+  geo:       { co2: 12, efficiency: 70, safety: 90 },
+  tidal:     { co2: 8,  efficiency: 80, safety: 88 },
+  bio:       { co2: 40, efficiency: 35, safety: 80 },
+  waste:     { co2: 50, efficiency: 30, safety: 75 },
+  hydrogen:  { co2: 2,  efficiency: 60, safety: 85 },
+  coal_gas:  { co2: 60, efficiency: 45, safety: 78 },
+};
+
+/* ══════════════════════════════════════
+   SVG 생성 함수
+══════════════════════════════════════ */
+const SVGs = {
+
+  solar: () => `<svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="sun_g" cx="50%" cy="50%">
+        <stop offset="0%" stop-color="#ffe066"/>
+        <stop offset="100%" stop-color="#f39c12"/>
+      </radialGradient>
+    </defs>
+    <!-- 하늘 배경 -->
+    <rect width="280" height="180" fill="#e8f4fc" rx="12"/>
+    <!-- 태양 광선 -->
+    <g style="transform-origin:54px 36px;animation:sunRays 3s ease-in-out infinite">
+      <line x1="54" y1="10" x2="54" y2="4" stroke="#f7ca18" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="54" y1="62" x2="54" y2="68" stroke="#f7ca18" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="28" y1="36" x2="22" y2="36" stroke="#f7ca18" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="80" y1="36" x2="86" y2="36" stroke="#f7ca18" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="35" y1="17" x2="31" y2="13" stroke="#f7ca18" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="73" y1="55" x2="77" y2="59" stroke="#f7ca18" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="35" y1="55" x2="31" y2="59" stroke="#f7ca18" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="73" y1="17" x2="77" y2="13" stroke="#f7ca18" stroke-width="2.5" stroke-linecap="round"/>
+    </g>
+    <!-- 태양 -->
+    <circle cx="54" cy="36" r="18" fill="url(#sun_g)"/>
+    <!-- 빛살 화살표 (태양 → 패널) -->
+    <g opacity="0.75">
+      <line x1="80" y1="55" x2="118" y2="90" stroke="#f39c12" stroke-width="1.8" stroke-dasharray="5,3"
+            style="animation:dashFlow 1s linear infinite"/>
+      <polygon points="118,90 111,84 115,95" fill="#f39c12"/>
+      <line x1="90" y1="42" x2="135" y2="80" stroke="#f39c12" stroke-width="1.8" stroke-dasharray="5,3"
+            style="animation:dashFlow 1s linear infinite 0.3s"/>
+      <polygon points="135,80 128,74 132,85" fill="#f39c12"/>
+    </g>
+    <!-- 태양전지 패널 (기울어진 형태) -->
+    <g transform="translate(105,75) rotate(-15)">
+      <rect x="0" y="0" width="100" height="60" fill="#2471a3" rx="4" stroke="#1a5276" stroke-width="1.5"/>
+      <!-- 셀 그리드 -->
+      <line x1="25" y1="0" x2="25" y2="60" stroke="#1a5276" stroke-width="1"/>
+      <line x1="50" y1="0" x2="50" y2="60" stroke="#1a5276" stroke-width="1"/>
+      <line x1="75" y1="0" x2="75" y2="60" stroke="#1a5276" stroke-width="1"/>
+      <line x1="0" y1="20" x2="100" y2="20" stroke="#1a5276" stroke-width="1"/>
+      <line x1="0" y1="40" x2="100" y2="40" stroke="#1a5276" stroke-width="1"/>
+      <!-- 반짝임 -->
+      <rect x="5" y="5" width="15" height="10" fill="#3498db" opacity="0.4" rx="2"/>
+      <rect x="30" y="25" width="15" height="10" fill="#3498db" opacity="0.4" rx="2"/>
+    </g>
+    <!-- 전자 이동 화살표 -->
+    <g>
+      <path d="M205,110 Q230,105 240,90 Q248,78 240,68" fill="none" stroke="#e74c3c" stroke-width="2" stroke-dasharray="6,3"
+            style="animation:dashFlow 1.2s linear infinite"/>
+      <polygon points="240,68 234,76 245,77" fill="#e74c3c"/>
+      <text x="220" y="130" font-size="11" fill="#e74c3c" font-weight="bold" font-family="sans-serif">전자 이동</text>
+    </g>
+    <!-- 집 아이콘 -->
+    <g transform="translate(220,40)">
+      <polygon points="20,0 40,20 0,20" fill="#e67e22"/>
+      <rect x="5" y="20" width="30" height="22" fill="#f0a070"/>
+      <rect x="12" y="28" width="8" height="14" fill="#aaa" rx="1"/>
+      <rect x="22" y="27" width="8" height="8" fill="#aee8f8" rx="1"/>
+      <line x1="0" y1="42" x2="40" y2="42" stroke="#c0392b" stroke-width="1.5"/>
+    </g>
+    <!-- 레이블 -->
+    <text x="140" y="170" font-size="12" fill="#1a5276" text-anchor="middle" font-weight="bold" font-family="sans-serif">광전 효과: 빛 → 전기</text>
+  </svg>`,
+
+  solarthermal: () => `<svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+    <rect width="280" height="180" fill="#fff8e1" rx="12"/>
+    <!-- 태양 -->
+    <circle cx="40" cy="35" r="20" fill="#f39c12" opacity="0.9"/>
+    <g style="transform-origin:40px 35px;animation:sunRays 2.5s ease-in-out infinite">
+      <line x1="40" y1="8" x2="40" y2="2" stroke="#f7ca18" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="60" y1="15" x2="65" y2="10" stroke="#f7ca18" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="65" y1="35" x2="71" y2="35" stroke="#f7ca18" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="20" y1="15" x2="15" y2="10" stroke="#f7ca18" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="15" y1="35" x2="9" y2="35" stroke="#f7ca18" stroke-width="2.5" stroke-linecap="round"/>
+    </g>
+    <!-- 포물선 반사경들 -->
+    <path d="M60,140 Q80,90 100,140" fill="none" stroke="#c0392b" stroke-width="4" stroke-linecap="round"/>
+    <path d="M105,140 Q125,90 145,140" fill="none" stroke="#c0392b" stroke-width="4" stroke-linecap="round"/>
+    <path d="M150,140 Q170,90 190,140" fill="none" stroke="#c0392b" stroke-width="4" stroke-linecap="round"/>
+    <!-- 반사 선 (빛 → 집열탑) -->
+    <line x1="80" y1="105" x2="200" y2="65" stroke="#f7ca18" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.8"
+          style="animation:dashFlow 1.2s linear infinite"/>
+    <line x1="125" y1="100" x2="200" y2="65" stroke="#f7ca18" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.8"
+          style="animation:dashFlow 1.2s linear infinite 0.3s"/>
+    <line x1="170" y1="105" x2="200" y2="65" stroke="#f7ca18" stroke-width="1.5" stroke-dasharray="5,3" opacity="0.8"
+          style="animation:dashFlow 1.2s linear infinite 0.6s"/>
+    <!-- 집열탑 -->
+    <rect x="193" y="50" width="16" height="100" fill="#95a5a6" rx="2"/>
+    <rect x="188" y="140" width="26" height="12" fill="#7f8c8d" rx="2"/>
+    <!-- 수열기 (노란 구) -->
+    <circle cx="201" cy="58" r="10" fill="#e74c3c" opacity="0.9"/>
+    <!-- 증기 -->
+    <g>
+      <path d="M201,48 Q197,38 201,28" fill="none" stroke="#aaa" stroke-width="2.5" stroke-linecap="round"
+            style="animation:steamRise 1.5s ease-out infinite"/>
+      <path d="M204,48 Q208,38 204,28" fill="none" stroke="#aaa" stroke-width="2.5" stroke-linecap="round"
+            style="animation:steamRise 1.5s ease-out infinite 0.5s"/>
+    </g>
+    <!-- 터빈 기호 -->
+    <circle cx="245" cy="75" r="16" fill="none" stroke="#2980b9" stroke-width="2.5"/>
+    <text x="245" y="79" text-anchor="middle" font-size="12" fill="#2980b9" font-weight="bold" font-family="sans-serif">터빈</text>
+    <!-- 파이프 -->
+    <path d="M201,48 Q201,30 245,60" fill="none" stroke="#c0392b" stroke-width="3" stroke-dasharray="6,3"
+          style="animation:dashFlow 1s linear infinite"/>
+    <!-- 전기 기호 -->
+    <text x="245" y="110" text-anchor="middle" font-size="22" font-family="sans-serif">⚡</text>
+    <text x="140" y="172" font-size="11" fill="#7d6608" text-anchor="middle" font-weight="bold" font-family="sans-serif">집열탑 → 증기 → 터빈 → 전기</text>
+  </svg>`,
+
+  wind: () => `<svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+    <rect width="280" height="180" fill="#e8f4fc" rx="12"/>
+    <!-- 구름 -->
+    <g opacity="0.75" style="animation:waveTide 4s ease-in-out infinite">
+      <ellipse cx="60" cy="25" rx="28" ry="14" fill="white"/>
+      <ellipse cx="85" cy="20" rx="20" ry="12" fill="white"/>
+      <ellipse cx="40" cy="22" rx="18" ry="11" fill="white"/>
+    </g>
+    <!-- 바람 곡선 -->
+    <path d="M0,55 Q40,45 80,55 Q120,65 160,50" fill="none" stroke="#2980b9" stroke-width="2.5" stroke-dasharray="8,4"
+          opacity="0.5" style="animation:dashFlow 1.5s linear infinite"/>
+    <path d="M0,80 Q50,70 100,80 Q150,90 200,75" fill="none" stroke="#2980b9" stroke-width="2" stroke-dasharray="8,4"
+          opacity="0.4" style="animation:dashFlow 1.5s linear infinite 0.5s"/>
+    <!-- 풍차 1 -->
+    <g>
+      <rect x="58" y="95" width="8" height="70" fill="#95a5a6" rx="3"/>
+      <g style="transform-origin:62px 95px;animation:rotateBlade 2s linear infinite">
+        <ellipse cx="62" cy="75" rx="5" ry="18" fill="#bdc3c7" transform="rotate(0,62,95)"/>
+        <ellipse cx="62" cy="75" rx="5" ry="18" fill="#ecf0f1" transform="rotate(120,62,95)"/>
+        <ellipse cx="62" cy="75" rx="5" ry="18" fill="#bdc3c7" transform="rotate(240,62,95)"/>
+        <circle cx="62" cy="95" r="5" fill="#7f8c8d"/>
+      </g>
+    </g>
+    <!-- 풍차 2 -->
+    <g>
+      <rect x="128" y="80" width="10" height="90" fill="#95a5a6" rx="3"/>
+      <g style="transform-origin:133px 80px;animation:rotateBlade 1.6s linear infinite">
+        <ellipse cx="133" cy="58" rx="6" ry="20" fill="#2980b9" transform="rotate(0,133,80)"/>
+        <ellipse cx="133" cy="58" rx="6" ry="20" fill="#3498db" transform="rotate(120,133,80)"/>
+        <ellipse cx="133" cy="58" rx="6" ry="20" fill="#2980b9" transform="rotate(240,133,80)"/>
+        <circle cx="133" cy="80" r="6" fill="#1a5276"/>
+      </g>
+    </g>
+    <!-- 풍차 3 -->
+    <g>
+      <rect x="208" y="95" width="8" height="70" fill="#95a5a6" rx="3"/>
+      <g style="transform-origin:212px 95px;animation:rotateBlade 1.9s linear infinite 0.3s">
+        <ellipse cx="212" cy="75" rx="5" ry="18" fill="#bdc3c7" transform="rotate(0,212,95)"/>
+        <ellipse cx="212" cy="75" rx="5" ry="18" fill="#ecf0f1" transform="rotate(120,212,95)"/>
+        <ellipse cx="212" cy="75" rx="5" ry="18" fill="#bdc3c7" transform="rotate(240,212,95)"/>
+        <circle cx="212" cy="95" r="5" fill="#7f8c8d"/>
+      </g>
+    </g>
+    <!-- 전선 -->
+    <path d="M62,155 Q100,148 133,155 Q175,162 212,155" fill="none" stroke="#2c3e50" stroke-width="2.5"/>
+    <!-- 지면 -->
+    <rect x="0" y="162" width="280" height="18" fill="#a9cba4" rx="0"/>
+    <text x="140" y="178" font-size="10" fill="#1a5276" text-anchor="middle" font-weight="bold" font-family="sans-serif">바람 → 블레이드 회전 → 발전기 → 전기</text>
+  </svg>`,
+
+  hydro: () => `<svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+    <rect width="280" height="180" fill="#e8f6fd" rx="12"/>
+    <!-- 상류 저수지 -->
+    <rect x="0" y="0" width="110" height="90" fill="#85c1e9" opacity="0.8" rx="0"/>
+    <text x="55" y="50" font-size="13" fill="#1a5276" text-anchor="middle" font-weight="bold" font-family="sans-serif">저수지</text>
+    <text x="55" y="68" font-size="10" fill="#1a5276" text-anchor="middle" font-family="sans-serif">위치 에너지</text>
+    <!-- 댐 구조물 -->
+    <polygon points="108,0 120,0 140,180 108,180" fill="#95a5a6"/>
+    <polygon points="120,0 130,0 140,180 140,180" fill="#7f8c8d"/>
+    <!-- 수문 파이프 -->
+    <rect x="115" y="60" width="14" height="30" fill="#2c3e50" rx="3"/>
+    <!-- 물 낙하 (애니메이션) -->
+    <g>
+      <rect x="117" y="80" width="6" height="20" fill="#3498db" rx="2" opacity="0.9"
+            style="animation:waterFall 0.8s linear infinite"/>
+      <rect x="117" y="80" width="6" height="20" fill="#5dade2" rx="2" opacity="0.7"
+            style="animation:waterFall 0.8s linear infinite 0.4s"/>
+    </g>
+    <!-- 터빈 -->
+    <circle cx="155" cy="130" r="22" fill="none" stroke="#2980b9" stroke-width="3"/>
+    <g style="transform-origin:155px 130px;animation:rotateBlade 1.2s linear infinite">
+      <rect x="150" y="108" width="10" height="22" fill="#2980b9" rx="3"/>
+      <rect x="133" y="125" width="22" height="10" fill="#3498db" rx="3"/>
+      <rect x="150" y="130" width="10" height="22" fill="#2980b9" rx="3"/>
+      <rect x="155" y="125" width="22" height="10" fill="#3498db" rx="3"/>
+    </g>
+    <circle cx="155" cy="130" r="6" fill="#1a5276"/>
+    <!-- 발전기 -->
+    <rect x="185" y="115" width="45" height="30" fill="#d5dbdb" rx="8" stroke="#aaa" stroke-width="1.5"/>
+    <text x="207" y="135" font-size="11" fill="#2c3e50" text-anchor="middle" font-weight="bold" font-family="sans-serif">발전기</text>
+    <!-- 연결 선 -->
+    <line x1="177" y1="130" x2="185" y2="130" stroke="#2c3e50" stroke-width="3"/>
+    <!-- 전기 출력 -->
+    <text x="245" y="128" font-size="26" font-family="sans-serif">⚡</text>
+    <!-- 하류 강 -->
+    <rect x="140" y="158" width="140" height="22" fill="#85c1e9" opacity="0.6" rx="0"/>
+    <text x="200" y="173" font-size="10" fill="#1a5276" text-anchor="middle" font-family="sans-serif">하류</text>
+    <text x="140" y="175" font-size="0" fill="none">placeholder</text>
+    <!-- 지면 -->
+    <rect x="0" y="160" width="280" height="20" fill="#a9cba4" opacity="0.5"/>
+    <text x="80" y="172" font-size="10" fill="#1a5276" text-anchor="middle" font-weight="bold" font-family="sans-serif">위치 에너지 → 운동 에너지 → 전기</text>
+  </svg>`,
+
+  geo: () => `<svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+    <rect width="280" height="180" fill="#fdf2f8" rx="12"/>
+    <!-- 지층 단면 -->
+    <rect x="0" y="80" width="280" height="30" fill="#d5d8dc"/>
+    <rect x="0" y="110" width="280" height="30" fill="#abb2b9"/>
+    <rect x="0" y="140" width="280" height="40" fill="#922b21" opacity="0.7"/>
+    <!-- 지층 레이블 -->
+    <text x="10" y="100" font-size="10" fill="#555" font-family="sans-serif">토양층</text>
+    <text x="10" y="128" font-size="10" fill="#333" font-family="sans-serif">암반층</text>
+    <text x="10" y="168" font-size="10" fill="#f5cba7" font-family="sans-serif" font-weight="bold">고온 마그마</text>
+    <!-- 지하수 (빨간 점) -->
+    <circle cx="90" cy="145" r="5" fill="#e74c3c" opacity="0.8"/>
+    <circle cx="120" cy="155" r="4" fill="#e74c3c" opacity="0.7"/>
+    <circle cx="150" cy="148" r="5" fill="#c0392b" opacity="0.8"/>
+    <!-- 파이프 (내려가는/올라오는) -->
+    <rect x="60" y="20" width="10" height="130" fill="#e74c3c" rx="4" opacity="0.85"/>
+    <rect x="90" y="20" width="10" height="130" fill="#3498db" rx="4" opacity="0.85"/>
+    <!-- 화살표 방향 -->
+    <polygon points="65,150 60,138 70,138" fill="#c0392b"/>
+    <polygon points="95,22 90,34 100,34" fill="#2471a3"/>
+    <!-- 열수 상승 표현 -->
+    <g>
+      <path d="M95,140 Q93,110 95,90" fill="none" stroke="#e74c3c" stroke-width="2.5" stroke-dasharray="5,3"
+            style="animation:dashFlow 0.8s linear infinite"/>
+    </g>
+    <!-- 발전소 건물 -->
+    <rect x="120" y="35" width="60" height="42" fill="#d5d8dc" rx="6" stroke="#aaa" stroke-width="1.5"/>
+    <polygon points="120,35 150,15 180,35" fill="#aaa"/>
+    <rect x="138" y="50" width="14" height="27" fill="#7fb3d3" rx="2"/>
+    <text x="150" y="66" text-anchor="middle" font-size="10" fill="#1a5276" font-weight="bold" font-family="sans-serif">발전소</text>
+    <!-- 파이프 연결 -->
+    <path d="M100,30 Q110,30 120,55" fill="none" stroke="#e74c3c" stroke-width="2.5"/>
+    <path d="M120,50 Q110,42 100,42" fill="none" stroke="#3498db" stroke-width="2.5"/>
+    <!-- 증기 -->
+    <path d="M150,15 Q147,5 150,-5" fill="none" stroke="#aaa" stroke-width="2.5" stroke-linecap="round"
+          style="animation:steamRise 1.5s ease-out infinite"/>
+    <path d="M153,15 Q156,5 153,-5" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round"
+          style="animation:steamRise 1.5s ease-out infinite 0.6s"/>
+    <!-- 전기 출력 -->
+    <text x="230" y="70" font-size="26" font-family="sans-serif">⚡</text>
+    <line x1="180" y1="56" x2="225" y2="56" stroke="#f39c12" stroke-width="2.5" stroke-dasharray="5,3"/>
+    <text x="140" y="175" font-size="11" fill="#7d6608" text-anchor="middle" font-weight="bold" font-family="sans-serif">지하 열수 → 증기 → 터빈 → 전기</text>
+  </svg>`,
+
+  tidal: () => `<svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+    <rect width="280" height="180" fill="#e8f8f5" rx="12"/>
+    <!-- 바다 배경 -->
+    <rect x="0" y="80" width="280" height="100" fill="#85c1e9" opacity="0.55" rx="0"/>
+    <!-- 파도 -->
+    <path d="M0,85 Q35,72 70,85 Q105,98 140,85 Q175,72 210,85 Q245,98 280,85" fill="none" stroke="#2980b9" stroke-width="2.5"
+          style="animation:waveTide 2.5s ease-in-out infinite"/>
+    <path d="M0,100 Q35,90 70,100 Q105,110 140,100 Q175,90 210,100 Q245,110 280,100" fill="none" stroke="#2980b9" stroke-width="1.8" opacity="0.6"
+          style="animation:waveTide 2.5s ease-in-out infinite 0.5s"/>
+    <!-- 조력 방벽 -->
+    <rect x="115" y="60" width="18" height="110" fill="#7f8c8d" rx="3"/>
+    <!-- 수차 (방벽 중간) -->
+    <circle cx="124" cy="115" r="18" fill="none" stroke="#16a085" stroke-width="2.5"/>
+    <g style="transform-origin:124px 115px;animation:rotateBlade 2s linear infinite">
+      <rect x="119" y="97" width="10" height="18" fill="#16a085" rx="3"/>
+      <rect x="106" y="110" width="18" height="10" fill="#1abc9c" rx="3"/>
+      <rect x="119" y="115" width="10" height="18" fill="#16a085" rx="3"/>
+      <rect x="124" y="110" width="18" height="10" fill="#1abc9c" rx="3"/>
+    </g>
+    <circle cx="124" cy="115" r="4" fill="#0e6655"/>
+    <!-- 밀물 화살표 -->
+    <g style="animation:waveTide 3s ease-in-out infinite">
+      <line x1="20" y1="115" x2="108" y2="115" stroke="#2980b9" stroke-width="2.5" stroke-dasharray="6,3"/>
+      <polygon points="108,115 98,109 98,121" fill="#2980b9"/>
+      <text x="55" y="108" font-size="11" fill="#1a5276" text-anchor="middle" font-weight="bold" font-family="sans-serif">밀물 →</text>
+    </g>
+    <!-- 썰물 화살표 -->
+    <g style="animation:waveTide 3s ease-in-out infinite 1.5s">
+      <line x1="140" y1="130" x2="255" y2="130" stroke="#c0392b" stroke-width="2.5" stroke-dasharray="6,3"/>
+      <polygon points="255,130 245,124 245,136" fill="#c0392b"/>
+      <text x="195" y="123" font-size="11" fill="#922b21" text-anchor="middle" font-weight="bold" font-family="sans-serif">← 썰물</text>
+    </g>
+    <!-- 발전기 -->
+    <rect x="130" y="100" width="44" height="28" fill="#d5d8dc" rx="6" stroke="#aaa" stroke-width="1.5"/>
+    <text x="152" y="118" font-size="10" fill="#2c3e50" text-anchor="middle" font-weight="bold" font-family="sans-serif">발전기</text>
+    <!-- 전선 -->
+    <line x1="174" y1="114" x2="220" y2="114" stroke="#2c3e50" stroke-width="2.5" stroke-dasharray="5,3"
+          style="animation:dashFlow 1s linear infinite"/>
+    <text x="235" y="110" font-size="22" font-family="sans-serif">⚡</text>
+    <!-- 시화호 레이블 -->
+    <text x="140" y="173" font-size="11" fill="#0e6655" text-anchor="middle" font-weight="bold" font-family="sans-serif">조수 간만차 → 수차 → 발전기 → 전기</text>
+  </svg>`,
+
+  hydrogen: () => `<svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+    <rect width="280" height="180" fill="#f5eef8" rx="12"/>
+    <!-- 수소 탱크 -->
+    <rect x="15" y="55" width="45" height="70" fill="#9b59b6" rx="10" stroke="#7d3c98" stroke-width="2"/>
+    <rect x="20" y="48" width="35" height="14" fill="#8e44ad" rx="5"/>
+    <text x="37" y="87" text-anchor="middle" font-size="14" fill="white" font-weight="bold" font-family="sans-serif">H₂</text>
+    <text x="37" y="102" text-anchor="middle" font-size="10" fill="#f5eef8" font-family="sans-serif">수소</text>
+    <!-- 산소 탱크 -->
+    <rect x="215" y="55" width="45" height="70" fill="#2980b9" rx="10" stroke="#1a5276" stroke-width="2"/>
+    <rect x="220" y="48" width="35" height="14" fill="#2471a3" rx="5"/>
+    <text x="237" y="87" text-anchor="middle" font-size="14" fill="white" font-weight="bold" font-family="sans-serif">O₂</text>
+    <text x="237" y="102" text-anchor="middle" font-size="10" fill="#ebf5fb" font-family="sans-serif">산소</text>
+    <!-- 연료전지 박스 -->
+    <rect x="95" y="45" width="90" height="90" fill="#e8f8f5" rx="12" stroke="#27ae60" stroke-width="2.5"/>
+    <text x="140" y="80" text-anchor="middle" font-size="11" fill="#1e8449" font-weight="bold" font-family="sans-serif">연료전지</text>
+    <!-- 반응 화살표 H₂→ fuel cell -->
+    <line x1="60" y1="90" x2="93" y2="90" stroke="#9b59b6" stroke-width="2.5" stroke-dasharray="5,3"
+          style="animation:dashFlow 1s linear infinite"/>
+    <polygon points="93,90 83,85 83,95" fill="#9b59b6"/>
+    <!-- 반응 화살표 O₂→ fuel cell -->
+    <line x1="215" y1="90" x2="187" y2="90" stroke="#2980b9" stroke-width="2.5" stroke-dasharray="5,3"
+          style="animation:dashFlow 1s linear infinite"/>
+    <polygon points="187,90 197,85 197,95" fill="#2980b9"/>
+    <!-- 반응식 -->
+    <text x="140" y="100" text-anchor="middle" font-size="13" fill="#1e8449" font-family="sans-serif">H₂ + O₂</text>
+    <text x="140" y="118" text-anchor="middle" font-size="11" fill="#555" font-family="sans-serif">→ 전기 + H₂O</text>
+    <!-- 전기 출력 위쪽 -->
+    <line x1="140" y1="45" x2="140" y2="20" stroke="#f39c12" stroke-width="2.5" stroke-dasharray="5,3"
+          style="animation:dashFlow 1s linear infinite"/>
+    <text x="155" y="18" font-size="18" font-family="sans-serif">⚡</text>
+    <!-- 물 부산물 아래 -->
+    <line x1="140" y1="135" x2="140" y2="158" stroke="#3498db" stroke-width="2.5"/>
+    <ellipse cx="140" cy="162" rx="18" ry="9" fill="#3498db" opacity="0.7"/>
+    <text x="140" y="165" text-anchor="middle" font-size="11" fill="white" font-weight="bold" font-family="sans-serif">H₂O</text>
+    <text x="140" y="176" text-anchor="middle" font-size="10" fill="#2980b9" font-family="sans-serif" font-weight="bold">부산물: 물뿐!</text>
+  </svg>`,
+
+  bio: () => `<svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+    <rect width="280" height="180" fill="#eafaf1" rx="12"/>
+    <!-- 음식물/식물 원료 -->
+    <text x="28" y="42" font-size="26" font-family="sans-serif" text-anchor="middle">🌿</text>
+    <text x="28" y="70" font-size="26" font-family="sans-serif" text-anchor="middle">🍚</text>
+    <text x="28" y="55" font-size="10" fill="#1e8449" text-anchor="middle" font-weight="bold" font-family="sans-serif">원료</text>
+    <!-- 화살표 1 -->
+    <line x1="45" y1="58" x2="75" y2="58" stroke="#27ae60" stroke-width="2.5" stroke-dasharray="5,3"
+          style="animation:dashFlow 1s linear infinite"/>
+    <polygon points="75,58 65,52 65,64" fill="#27ae60"/>
+    <!-- 발효 탱크 -->
+    <ellipse cx="110" cy="55" rx="28" ry="12" fill="#2ecc71" opacity="0.8"/>
+    <rect x="82" y="55" width="56" height="65" fill="#27ae60" rx="4"/>
+    <ellipse cx="110" cy="120" rx="28" ry="10" fill="#1e8449" opacity="0.8"/>
+    <text x="110" y="88" text-anchor="middle" font-size="11" fill="white" font-weight="bold" font-family="sans-serif">발효</text>
+    <text x="110" y="103" text-anchor="middle" font-size="10" fill="#d5f5e3" font-family="sans-serif">탱크</text>
+    <!-- 버블 (발효) -->
+    <circle cx="102" cy="75" r="4" fill="#a9dfbf" opacity="0.9" style="animation:bubbleUp 1.5s ease-out infinite"/>
+    <circle cx="115" cy="65" r="3" fill="#a9dfbf" opacity="0.9" style="animation:bubbleUp 1.5s ease-out infinite 0.5s"/>
+    <circle cx="120" cy="80" r="3" fill="#a9dfbf" opacity="0.9" style="animation:bubbleUp 1.5s ease-out infinite 1s"/>
+    <!-- 가스 파이프 -->
+    <line x1="110" y1="43" x2="110" y2="20" stroke="#888" stroke-width="3"/>
+    <path d="M110,20 Q165,8 175,30" fill="none" stroke="#888" stroke-width="3"/>
+    <!-- 가스 기호 -->
+    <circle cx="185" cy="30" r="18" fill="#f39c12" opacity="0.8"/>
+    <text x="185" y="35" text-anchor="middle" font-size="11" fill="white" font-weight="bold" font-family="sans-serif">바이오</text>
+    <text x="185" y="23" text-anchor="middle" font-size="9" fill="white" font-family="sans-serif">가스</text>
+    <!-- 화살표 2 (가스→발전기) -->
+    <line x1="203" y1="30" x2="228" y2="55" stroke="#f39c12" stroke-width="2.5" stroke-dasharray="5,3"
+          style="animation:dashFlow 0.8s linear infinite"/>
+    <polygon points="228,55 218,48 225,62" fill="#f39c12"/>
+    <!-- 발전기 -->
+    <rect x="220" y="55" width="46" height="32" fill="#d5dbdb" rx="8" stroke="#aaa" stroke-width="1.5"/>
+    <text x="243" y="76" text-anchor="middle" font-size="11" fill="#2c3e50" font-weight="bold" font-family="sans-serif">발전기</text>
+    <!-- 전기 출력 -->
+    <text x="243" y="112" text-anchor="middle" font-size="26" font-family="sans-serif">⚡</text>
+    <!-- 화살표 (발전기→전기) -->
+    <line x1="243" y1="87" x2="243" y2="97" stroke="#2c3e50" stroke-width="2"/>
+    <text x="140" y="172" font-size="11" fill="#1e8449" text-anchor="middle" font-weight="bold" font-family="sans-serif">유기물 → 발효 → 바이오가스 → 전기</text>
+  </svg>`,
+
+  waste: () => `<svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+    <rect width="280" height="180" fill="#f2f3f4" rx="12"/>
+    <!-- 쓰레기통 -->
+    <rect x="10" y="60" width="45" height="58" fill="#95a5a6" rx="4"/>
+    <rect x="7" y="55" width="51" height="12" fill="#7f8c8d" rx="3"/>
+    <rect x="25" y="45" width="15" height="14" fill="#95a5a6" rx="2"/>
+    <!-- 쓰레기 내용물 -->
+    <text x="32" y="96" text-anchor="middle" font-size="22" font-family="sans-serif">♻️</text>
+    <!-- 화살표 1 -->
+    <line x1="57" y1="90" x2="82" y2="90" stroke="#7f8c8d" stroke-width="2.5" stroke-dasharray="5,3"
+          style="animation:dashFlow 1s linear infinite"/>
+    <polygon points="82,90 72,84 72,96" fill="#7f8c8d"/>
+    <!-- 소각로 -->
+    <rect x="82" y="55" width="55" height="80" fill="#c0392b" rx="6"/>
+    <rect x="88" y="49" width="43" height="14" fill="#a93226" rx="4"/>
+    <text x="109" y="87" text-anchor="middle" font-size="11" fill="white" font-weight="bold" font-family="sans-serif">소각로</text>
+    <!-- 불꽃 -->
+    <g style="animation:fireFlicker 0.6s ease-in-out infinite">
+      <path d="M99,80 Q105,62 109,75 Q115,58 120,80" fill="#f39c12" opacity="0.9"/>
+      <path d="M103,80 Q108,68 112,78" fill="#e74c3c" opacity="0.8"/>
+    </g>
+    <!-- 굴뚝 연기 -->
+    <rect x="100" y="30" width="18" height="22" fill="#aaa" rx="3"/>
+    <path d="M109,30 Q106,18 109,6" fill="none" stroke="#bbb" stroke-width="3" stroke-linecap="round"
+          style="animation:steamRise 1.8s ease-out infinite"/>
+    <path d="M113,30 Q116,18 113,6" fill="none" stroke="#ccc" stroke-width="2.5" stroke-linecap="round"
+          style="animation:steamRise 1.8s ease-out infinite 0.7s"/>
+    <!-- 화살표 2 (소각로→터빈) -->
+    <line x1="138" y1="90" x2="163" y2="90" stroke="#c0392b" stroke-width="2.5" stroke-dasharray="5,3"
+          style="animation:dashFlow 0.8s linear infinite"/>
+    <polygon points="163,90 153,84 153,96" fill="#c0392b"/>
+    <!-- 터빈 -->
+    <circle cx="185" cy="90" r="22" fill="none" stroke="#2980b9" stroke-width="2.5"/>
+    <g style="transform-origin:185px 90px;animation:rotateBlade 1.5s linear infinite">
+      <rect x="180" y="68" width="10" height="22" fill="#2980b9" rx="3"/>
+      <rect x="163" y="85" width="22" height="10" fill="#3498db" rx="3"/>
+      <rect x="180" y="90" width="10" height="22" fill="#2980b9" rx="3"/>
+      <rect x="185" y="85" width="22" height="10" fill="#3498db" rx="3"/>
+    </g>
+    <circle cx="185" cy="90" r="5" fill="#1a5276"/>
+    <!-- 화살표 3 (터빈→전기) -->
+    <line x1="207" y1="90" x2="228" y2="90" stroke="#2c3e50" stroke-width="2.5"/>
+    <polygon points="228,90 218,84 218,96" fill="#2c3e50"/>
+    <!-- 전기 -->
+    <text x="245" y="86" font-size="26" font-family="sans-serif">⚡</text>
+    <!-- 레이블 -->
+    <text x="140" y="172" font-size="11" fill="#5d6d5d" text-anchor="middle" font-weight="bold" font-family="sans-serif">폐기물 → 소각 → 터빈 → 전기</text>
+  </svg>`,
+
+  coalgas: () => `<svg viewBox="0 0 280 180" xmlns="http://www.w3.org/2000/svg">
+    <rect width="280" height="180" fill="#f4f6f7" rx="12"/>
+    <!-- 석탄 덩어리 -->
+    <g>
+      <polygon points="20,100 45,75 70,80 72,110 15,112" fill="#2c3e50"/>
+      <polygon points="30,80 50,68 68,78" fill="#34495e"/>
+      <text x="40" y="100" text-anchor="middle" font-size="10" fill="#aaa" font-weight="bold" font-family="sans-serif">석탄</text>
+    </g>
+    <!-- 화살표 1 -->
+    <line x1="72" y1="90" x2="95" y2="90" stroke="#555" stroke-width="2.5" stroke-dasharray="5,3"
+          style="animation:dashFlow 1s linear infinite"/>
+    <polygon points="95,90 85,84 85,96" fill="#555"/>
+    <!-- 가스화로 -->
+    <rect x="95" y="58" width="58" height="68" fill="#7f8c8d" rx="8"/>
+    <rect x="101" y="50" width="46" height="14" fill="#6c7a7d" rx="4"/>
+    <text x="124" y="87" text-anchor="middle" font-size="10" fill="white" font-weight="bold" font-family="sans-serif">가스화로</text>
+    <!-- 반응 열 표시 -->
+    <g style="animation:fireFlicker 0.7s ease-in-out infinite">
+      <path d="M112,95 Q118,80 124,92 Q130,76 136,95" fill="#e74c3c" opacity="0.7"/>
+      <path d="M116,95 Q122,84 128,94" fill="#f39c12" opacity="0.8"/>
+    </g>
+    <!-- 수소 주입 (아래에서) -->
+    <line x1="124" y1="126" x2="124" y2="155" stroke="#8e44ad" stroke-width="2.5" stroke-dasharray="4,3"
+          style="animation:dashFlow 0.8s linear infinite"/>
+    <circle cx="124" cy="162" r="12" fill="#9b59b6" opacity="0.8"/>
+    <text x="124" y="166" text-anchor="middle" font-size="10" fill="white" font-weight="bold" font-family="sans-serif">H₂</text>
+    <!-- 합성가스 출구 (위) -->
+    <rect x="110" y="30" width="28" height="24" fill="#d5d8dc" rx="4"/>
+    <text x="124" y="44" text-anchor="middle" font-size="9" fill="#333" font-weight="bold" font-family="sans-serif">합성가스</text>
+    <text x="124" y="55" text-anchor="middle" font-size="8" fill="#555" font-family="sans-serif">H₂+CO</text>
+    <line x1="124" y1="50" x2="124" y2="58" stroke="#888" stroke-width="2.5"/>
+    <!-- 화살표 2 (합성가스→터빈) -->
+    <line x1="124" y1="30" x2="175" y2="30" stroke="#888" stroke-width="2.5" stroke-dasharray="5,3"
+          style="animation:dashFlow 0.9s linear infinite"/>
+    <line x1="175" y1="30" x2="175" y2="75" stroke="#888" stroke-width="2.5" stroke-dasharray="5,3"
+          style="animation:dashFlow 0.9s linear infinite"/>
+    <polygon points="175,75 169,65 181,65" fill="#888"/>
+    <!-- 터빈 -->
+    <circle cx="195" cy="92" r="22" fill="none" stroke="#2980b9" stroke-width="2.5"/>
+    <g style="transform-origin:195px 92px;animation:rotateBlade 1.5s linear infinite">
+      <rect x="190" y="70" width="10" height="22" fill="#2980b9" rx="3"/>
+      <rect x="173" y="87" width="22" height="10" fill="#3498db" rx="3"/>
+      <rect x="190" y="92" width="10" height="22" fill="#2980b9" rx="3"/>
+      <rect x="195" y="87" width="22" height="10" fill="#3498db" rx="3"/>
+    </g>
+    <circle cx="195" cy="92" r="5" fill="#1a5276"/>
+    <!-- 전기 -->
+    <line x1="217" y1="92" x2="238" y2="92" stroke="#2c3e50" stroke-width="2.5"/>
+    <text x="253" y="88" font-size="26" font-family="sans-serif">⚡</text>
+    <!-- CO₂ 배출 레이블 -->
+    <text x="140" y="172" font-size="11" fill="#5d6d5d" text-anchor="middle" font-weight="bold" font-family="sans-serif">석탄 → 합성가스(H₂+CO) → 터빈 → 전기</text>
+  </svg>`,
+};
+
+/* ══════════════════════════════════════
+   상태
+══════════════════════════════════════ */
+let selectedId = 'solar_pv';
+let currentFilter = 'all';
+let compareSelected = new Set();
+
+/* ══════════════════════════════════════
+   카드 렌더
+══════════════════════════════════════ */
+function renderCards(filter) {
+  const grid = document.getElementById('energyGrid');
+  grid.innerHTML = '';
+  ENERGIES.forEach(e => {
+    const hidden = filter !== 'all' && e.type !== filter;
+    const card = document.createElement('div');
+    card.className = 'energy-card' + (e.id === selectedId ? ' selected' : '') + (hidden ? ' hidden' : '');
+    card.style.setProperty('--card-color', e.color);
+    card.dataset.id = e.id;
+    card.innerHTML = `
+      <span class="card-emoji">${e.emoji}</span>
+      <div class="card-name">${e.name}</div>
+      <span class="card-tag">${e.tag}</span>
+      <div class="card-conversion">${e.conversion}</div>
+    `;
+    card.addEventListener('click', () => selectEnergy(e.id));
+    grid.appendChild(card);
+  });
+}
+
+/* ══════════════════════════════════════
+   상세 패널 렌더
+══════════════════════════════════════ */
+function renderDetail(id) {
+  const e = ENERGIES.find(x => x.id === id);
+  if (!e) return;
+  const env = ENV_DATA[id];
+  const co2Score = 100 - env.co2;
+
+  const prosHTML = e.pros.map(p => `<li>${p}</li>`).join('');
+  const consHTML = e.cons.map(c => `<li>${c}</li>`).join('');
+
+  const content = document.getElementById('detailContent');
+  const empty = document.getElementById('detailEmpty');
+  empty.style.display = 'none';
+  content.style.display = 'block';
+  content.innerHTML = `
+    <div class="detail-content">
+      <div class="detail-title">
+        <span class="detail-title-emoji">${e.emoji}</span>
+        <div class="detail-title-text">
+          <h2>${e.name}</h2>
+          <span class="tag" style="background:${e.color}">${e.tag}</span>
+        </div>
+      </div>
+
+      <div class="svg-container">
+        ${SVGs[e.svgType] ? SVGs[e.svgType]() : '<div style="padding:20px;color:#aaa;text-align:center">SVG 없음</div>'}
+      </div>
+
+      <div class="conversion-flow">
+        <div class="conversion-label">⚡ 에너지 변환 흐름</div>
+        ${e.conversion}
+      </div>
+
+      <div class="principle-box">
+        <div class="label">🔎 작동 원리</div>
+        ${e.principle}
+      </div>
+
+      <div class="pros-cons">
+        <div class="pros-box">
+          <h4>✅ 장점</h4>
+          <ul>${prosHTML}</ul>
+        </div>
+        <div class="cons-box">
+          <h4>❌ 단점</h4>
+          <ul>${consHTML}</ul>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <div class="label">📍 국내/세계 활용 사례</div>
+        ${e.example}
+      </div>
+
+      <div class="env-gauges">
+        <h4>🌿 환경 지수</h4>
+        <div class="gauge-row">
+          <span class="gauge-label">CO₂ 절감</span>
+          <div class="gauge-track">
+            <div class="gauge-fill green" id="gauge-co2-${id}" style="width:0%"></div>
+          </div>
+          <span class="gauge-value" style="color:#27ae60">${co2Score}점</span>
+        </div>
+        <div class="gauge-row">
+          <span class="gauge-label">발전 효율</span>
+          <div class="gauge-track">
+            <div class="gauge-fill blue" id="gauge-eff-${id}" style="width:0%"></div>
+          </div>
+          <span class="gauge-value" style="color:#2980b9">${env.efficiency}%</span>
+        </div>
+        <div class="gauge-row">
+          <span class="gauge-label">안전성</span>
+          <div class="gauge-track">
+            <div class="gauge-fill purple" id="gauge-saf-${id}" style="width:0%"></div>
+          </div>
+          <span class="gauge-value" style="color:#8e44ad">${env.safety}점</span>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // 게이지 애니메이션 (약간의 딜레이 후 실행)
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      const co2El = document.getElementById(`gauge-co2-${id}`);
+      const effEl = document.getElementById(`gauge-eff-${id}`);
+      const safEl = document.getElementById(`gauge-saf-${id}`);
+      if (co2El) co2El.style.width = co2Score + '%';
+      if (effEl) effEl.style.width = env.efficiency + '%';
+      if (safEl) safEl.style.width = env.safety + '%';
+    }, 80);
+  });
+}
+
+/* ══════════════════════════════════════
+   카드 선택
+══════════════════════════════════════ */
+function selectEnergy(id) {
+  selectedId = id;
+  // 선택 상태 업데이트
+  document.querySelectorAll('.energy-card').forEach(c => {
+    c.classList.toggle('selected', c.dataset.id === id);
+  });
+  renderDetail(id);
+}
+
+/* ══════════════════════════════════════
+   필터
+══════════════════════════════════════ */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    currentFilter = btn.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderCards(currentFilter);
+  });
+});
+
+/* ══════════════════════════════════════
+   비교 체크박스 렌더
+══════════════════════════════════════ */
+function renderCompareCheckboxes() {
+  const container = document.getElementById('compareCheckboxes');
+  container.innerHTML = '';
+  ENERGIES.forEach(e => {
+    const item = document.createElement('label');
+    const isChecked = compareSelected.has(e.id);
+    const isDisabled = !isChecked && compareSelected.size >= 3;
+    item.className = 'compare-check-item' + (isChecked ? ' checked' : '') + (isDisabled ? ' disabled' : '');
+    item.innerHTML = `
+      <input type="checkbox" ${isChecked ? 'checked' : ''} ${isDisabled ? 'disabled' : ''} data-id="${e.id}">
+      <span>${e.emoji} ${e.name}</span>
+    `;
+    item.querySelector('input').addEventListener('change', (ev) => {
+      if (ev.target.checked) {
+        if (compareSelected.size < 3) compareSelected.add(e.id);
+      } else {
+        compareSelected.delete(e.id);
+      }
+      renderCompareCheckboxes();
+      renderCompareTable();
+    });
+    container.appendChild(item);
+  });
+}
+
+/* ══════════════════════════════════════
+   비교 테이블 렌더
+══════════════════════════════════════ */
+function renderCompareTable() {
+  const wrap = document.getElementById('compareTableWrap');
+  if (compareSelected.size === 0) {
+    wrap.innerHTML = '<div class="compare-empty">비교할 에너지를 위에서 선택해 주세요.</div>';
+    return;
+  }
+  const selected = ENERGIES.filter(e => compareSelected.has(e.id));
+
+  const headerCols = selected.map(e => `<th>${e.emoji} ${e.name}</th>`).join('');
+
+  const rows = [
+    {
+      label: '유형',
+      gen: (e) => `<td>${e.tag}</td>`
+    },
+    {
+      label: '에너지 변환',
+      gen: (e) => `<td style="font-size:13px">${e.conversion}</td>`
+    },
+    {
+      label: '장점',
+      gen: (e) => `<td class="pros-cell"><ul>${e.pros.map(p=>`<li>${p}</li>`).join('')}</ul></td>`
+    },
+    {
+      label: '단점',
+      gen: (e) => `<td class="cons-cell"><ul>${e.cons.map(c=>`<li>${c}</li>`).join('')}</ul></td>`
+    },
+    {
+      label: 'CO₂ 절감',
+      gen: (e) => `<td style="text-align:center;font-weight:800;color:#27ae60">${100 - ENV_DATA[e.id].co2}점</td>`
+    },
+    {
+      label: '발전 효율',
+      gen: (e) => `<td style="text-align:center;font-weight:800;color:#2980b9">${ENV_DATA[e.id].efficiency}%</td>`
+    },
+    {
+      label: '안전성',
+      gen: (e) => `<td style="text-align:center;font-weight:800;color:#8e44ad">${ENV_DATA[e.id].safety}점</td>`
+    },
+    {
+      label: '국내 사례',
+      gen: (e) => `<td style="font-size:13px">${e.example}</td>`
+    },
+  ];
+
+  const bodyRows = rows.map(row =>
+    `<tr><td>${row.label}</td>${selected.map(row.gen).join('')}</tr>`
+  ).join('');
+
+  wrap.innerHTML = `
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>항목</th>
+          ${headerCols}
+        </tr>
+      </thead>
+      <tbody>${bodyRows}</tbody>
+    </table>
+  `;
+}
+
+/* ══════════════════════════════════════
+   초기화
+══════════════════════════════════════ */
+renderCards('all');
+renderDetail('solar_pv');
+renderCompareCheckboxes();
+renderCompareTable();
+</script>
+</body>
+</html>

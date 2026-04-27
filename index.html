@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>⚡ 에너지와 수송 기술의 세계 · V단원</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── 기본 리셋 & 타이포그래피 ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #27ae60;
+      --primary-dark: #1e8449;
+      --primary-light: #d5f5e3;
+      --accent: #f39c12;
+      --blue: #2980b9;
+      --blue-light: #d6eaf8;
+      --red: #e74c3c;
+      --purple: #8e44ad;
+      --text: #2c3e50;
+      --text-light: #7f8c8d;
+      --bg: #f8fdf9;
+      --card-bg: #ffffff;
+      --shadow: 0 4px 18px rgba(0,0,0,0.08);
+      --shadow-hover: 0 10px 32px rgba(0,0,0,0.14);
+      --radius: 14px;
+      --transition: 0.28s cubic-bezier(.4,0,.2,1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', '맑은 고딕', sans-serif;
+      font-size: 18px;
+      line-height: 1.75;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    /* ── 헤더 ── */
+    .app-header {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, #2ecc71 100%);
+      color: #fff;
+      padding: 20px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 3px 16px rgba(39,174,96,0.35);
+    }
+    .app-header h1 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .app-header .subtitle {
+      font-size: 14px;
+      opacity: 0.88;
+      margin-top: 3px;
+      letter-spacing: 0.5px;
+    }
+    .app-header nav a {
+      color: #fff;
+      text-decoration: none;
+      background: rgba(255,255,255,0.18);
+      padding: 8px 18px;
+      border-radius: 24px;
+      font-size: 15px;
+      font-weight: 600;
+      transition: background var(--transition);
+      border: 1.5px solid rgba(255,255,255,0.3);
+    }
+    .app-header nav a:hover {
+      background: rgba(255,255,255,0.32);
+    }
+
+    /* ── 섹션 공통 ── */
+    .section {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 52px 24px;
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .section-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+    .section-desc {
+      font-size: 17px;
+      color: var(--text-light);
+      margin-bottom: 28px;
+    }
+    .section-divider {
+      border: none;
+      border-top: 2.5px solid var(--primary-light);
+      margin: 0;
+    }
+
+    /* ── 섹션 1: 학습 목표 ── */
+    .objective-box {
+      background: linear-gradient(135deg, #eafaf1 0%, #d5f5e3 100%);
+      border: 2px solid var(--primary);
+      border-radius: var(--radius);
+      padding: 32px 36px;
+    }
+    .objective-box h2 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-bottom: 18px;
+    }
+    .objective-box ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .objective-box li {
+      font-size: 18px;
+      font-weight: 500;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.6;
+    }
+    .objective-box li::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      min-width: 8px;
+      background: var(--primary);
+      border-radius: 50%;
+      margin-top: 10px;
+    }
+
+    /* ── 섹션 2: 에너지 형태 카드 그리드 ── */
+    .energy-forms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 8px;
+    }
+    .energy-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: default;
+      transition: transform var(--transition), box-shadow var(--transition);
+      border-top: 4px solid var(--card-color, var(--primary));
+    }
+    .energy-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+    .energy-card svg {
+      margin-bottom: 12px;
+    }
+    .energy-card .card-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--card-color, var(--primary));
+      margin-bottom: 6px;
+    }
+    .energy-card .card-concept {
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+    .energy-card .card-example {
+      font-size: 14px;
+      color: var(--text-light);
+      margin-bottom: 12px;
+    }
+    .energy-card .card-badge {
+      background: #fef9c3;
+      border: 1.5px solid #f1c40f;
+      color: #7d6608;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: auto;
+    }
+
+    /* ── 섹션 3: 에너지 변환 ── */
+    .conversion-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+      gap: 22px;
+      margin-top: 8px;
+    }
+    .conversion-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px 22px 20px;
+      cursor: pointer;
+      transition: transform var(--transition), box-shadow var(--transition);
+      border-left: 5px solid var(--primary);
+      user-select: none;
+    }
+    .conversion-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+    .conversion-card h3 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-bottom: 14px;
+    }
+    .conversion-hint {
+      font-size: 13px;
+      color: var(--text-light);
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    /* SVG 내 변환 박스 하이라이트 */
+    .conv-box {
+      transition: all 0.3s ease;
+    }
+    .conv-box.active rect, .conv-box.active ellipse {
+      fill: #fff9c4 !important;
+      stroke: #f39c12 !important;
+      stroke-width: 3 !important;
+    }
+    .conv-box.active text {
+      fill: #7d4a00 !important;
+      font-weight: bold !important;
+    }
+
+    /* ── 섹션 4: 신재생 에너지 ── */
+    .renewable-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+    .renewable-box {
+      border-radius: var(--radius);
+      padding: 22px 22px;
+    }
+    .renewable-box.green {
+      background: linear-gradient(135deg, #eafaf1, #d5f5e3);
+      border: 2px solid var(--primary);
+    }
+    .renewable-box.blue {
+      background: linear-gradient(135deg, #ebf5fb, #d6eaf8);
+      border: 2px solid var(--blue);
+    }
+    .renewable-box h3 {
+      font-size: 19px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .renewable-box.green h3 { color: var(--primary-dark); }
+    .renewable-box.blue h3 { color: #1a5276; }
+    .renewable-box p {
+      font-size: 15px;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .renewable-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 8px;
+    }
+    .renewable-tags span {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+    .green .renewable-tags span {
+      background: #a9dfbf;
+      color: #145a32;
+    }
+    .blue .renewable-tags span {
+      background: #aed6f1;
+      color: #1a5276;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 14px;
+    }
+    .mini-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: 18px 14px;
+      text-align: center;
+      transition: transform var(--transition), box-shadow var(--transition);
+      border-bottom: 3px solid var(--primary);
+    }
+    .mini-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+    .mini-card .mini-emoji {
+      font-size: 30px;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .mini-card .mini-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-bottom: 5px;
+    }
+    .mini-card .mini-desc {
+      font-size: 13px;
+      color: var(--text-light);
+      line-height: 1.45;
+    }
+
+    /* ── 섹션 5: 시뮬레이터 활동 ── */
+    .activity-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 22px;
+      margin-top: 8px;
+    }
+    .activity-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 32px 22px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      transition: transform var(--transition), box-shadow var(--transition);
+      border-top: 5px solid var(--primary);
+    }
+    .activity-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-hover);
+    }
+    .activity-card .act-icon {
+      font-size: 42px;
+      line-height: 1;
+    }
+    .activity-card .act-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .activity-card .act-btn {
+      margin-top: 6px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 24px;
+      padding: 8px 20px;
+      font-size: 15px;
+      font-weight: 700;
+      transition: background var(--transition);
+    }
+    .activity-card:hover .act-btn {
+      background: var(--primary-dark);
+    }
+
+    /* ── 푸터 ── */
+    .app-footer {
+      text-align: center;
+      padding: 28px 24px;
+      color: #888;
+      font-size: 14px;
+      border-top: 1.5px solid #e8f8ef;
+      margin-top: 12px;
+    }
+
+    /* ── 반응형 ── */
+    @media (max-width: 700px) {
+      .app-header h1 { font-size: 20px; }
+      .section { padding: 36px 14px; }
+      .conversion-grid { grid-template-columns: 1fr; }
+      .renewable-intro { grid-template-columns: 1fr; }
+      .energy-forms-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════ 헤더 ══════════════════ -->
+<header class="app-header">
+  <div>
+    <h1>⚡ 에너지와 수송 기술의 세계</h1>
+    <div class="subtitle">V단원 · 중학교 3학년 기술</div>
+  </div>
+  <nav><a href="/v-1-01-energy-simulator/index.html">🏠 홈</a></nav>
+</header>
+
+<!-- ══════════════════ 섹션 1: 학습 목표 ══════════════════ -->
+<section class="section" id="sec1">
+  <div class="objective-box">
+    <h2>📚 학습 목표</h2>
+    <ul>
+      <li>🎯 에너지의 뜻을 알고 형태에 따라 분류할 수 있다.</li>
+      <li>🎯 에너지의 변환 과정을 이해하고 설명할 수 있다.</li>
+      <li>🎯 신재생 에너지의 종류와 특징을 설명할 수 있다.</li>
+      <li>🎯 신재생 에너지 개발의 중요성을 알고 활용 방안을 제시할 수 있다.</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- ══════════════════ 섹션 2: 에너지 형태 ══════════════════ -->
+<section class="section" id="sec2">
+  <div class="section-title">⚡ 개념 1 · 에너지의 형태</div>
+  <div class="section-desc">에너지는 일을 할 수 있는 능력이에요. 모두 6가지 형태가 있습니다.</div>
+
+  <div class="energy-forms-grid">
+
+    <!-- 기계적 에너지 -->
+    <div class="energy-card" style="--card-color:#e67e22">
+      <svg width="100" height="90" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- 경사면 -->
+        <line x1="10" y1="78" x2="90" y2="78" stroke="#bdc3c7" stroke-width="2"/>
+        <line x1="10" y1="78" x2="40" y2="30" stroke="#bdc3c7" stroke-width="2"/>
+        <!-- 위쪽 공 (위치에너지) -->
+        <circle cx="40" cy="24" r="10" fill="#e67e22" opacity="0.5"/>
+        <!-- 이동 화살표 -->
+        <path d="M50 34 Q65 50 70 68" stroke="#e67e22" stroke-width="2" fill="none" stroke-dasharray="4 3"/>
+        <polygon points="68,72 72,64 76,70" fill="#e67e22"/>
+        <!-- 아래 공 (운동에너지) -->
+        <circle cx="74" cy="72" r="10" fill="#e67e22"/>
+        <!-- 라벨 -->
+        <text x="25" y="16" font-size="9" fill="#e67e22" font-weight="bold">위치</text>
+        <text x="68" y="88" font-size="9" fill="#e67e22" font-weight="bold">운동</text>
+      </svg>
+      <div class="card-name">기계적 에너지</div>
+      <div class="card-concept">위치 에너지 + 운동 에너지</div>
+      <div class="card-example">📌 날아가는 공, 흐르는 물</div>
+      <div class="card-badge">운동선수의 힘!</div>
+    </div>
+
+    <!-- 전기 에너지 -->
+    <div class="energy-card" style="--card-color:#2980b9">
+      <svg width="100" height="90" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- 번개 -->
+        <polygon points="52,8 38,46 48,46 36,82 62,38 50,38" fill="#2980b9" opacity="0.85"/>
+        <!-- 회로선 (하단) -->
+        <rect x="10" y="84" width="80" height="4" rx="2" fill="#2980b9" opacity="0.2"/>
+        <circle cx="20" cy="86" r="3" fill="#2980b9"/>
+        <circle cx="50" cy="86" r="3" fill="#2980b9"/>
+        <circle cx="80" cy="86" r="3" fill="#2980b9"/>
+      </svg>
+      <div class="card-name">전기 에너지</div>
+      <div class="card-concept">도선에 전류가 흐를 때 발생</div>
+      <div class="card-example">📌 발전기, 건전지</div>
+      <div class="card-badge">우리 생활의 핵심!</div>
+    </div>
+
+    <!-- 화학 에너지 -->
+    <div class="energy-card" style="--card-color:#27ae60">
+      <svg width="100" height="90" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- 분자 구조 -->
+        <circle cx="50" cy="44" r="10" fill="#27ae60"/>
+        <circle cx="20" cy="30" r="8"  fill="#a9dfbf"/>
+        <circle cx="80" cy="30" r="8"  fill="#a9dfbf"/>
+        <circle cx="20" cy="60" r="8"  fill="#a9dfbf"/>
+        <circle cx="80" cy="60" r="8"  fill="#a9dfbf"/>
+        <!-- 결합선 -->
+        <line x1="27" y1="34" x2="42" y2="40" stroke="#27ae60" stroke-width="2"/>
+        <line x1="73" y1="34" x2="58" y2="40" stroke="#27ae60" stroke-width="2"/>
+        <line x1="27" y1="56" x2="42" y2="48" stroke="#27ae60" stroke-width="2"/>
+        <line x1="73" y1="56" x2="58" y2="48" stroke="#27ae60" stroke-width="2"/>
+        <!-- 에너지 방출 표시 -->
+        <text x="42" y="48" font-size="10" fill="#fff" font-weight="bold">C</text>
+        <text x="14" y="33" font-size="9" fill="#145a32">H</text>
+        <text x="76" y="33" font-size="9" fill="#145a32">O</text>
+        <text x="14" y="63" font-size="9" fill="#145a32">N</text>
+        <text x="76" y="63" font-size="9" fill="#145a32">H</text>
+      </svg>
+      <div class="card-name">화학 에너지</div>
+      <div class="card-concept">원자 간 결합에 저장된 에너지</div>
+      <div class="card-example">📌 석유, 음식, 배터리</div>
+      <div class="card-badge">음식 속에도 에너지!</div>
+    </div>
+
+    <!-- 빛 에너지 -->
+    <div class="energy-card" style="--card-color:#d4a017">
+      <svg width="100" height="90" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- 태양 본체 -->
+        <circle cx="50" cy="44" r="16" fill="#f1c40f"/>
+        <!-- 빛살 -->
+        <line x1="50" y1="10" x2="50" y2="20" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
+        <line x1="50" y1="68" x2="50" y2="78" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
+        <line x1="16" y1="44" x2="26" y2="44" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
+        <line x1="74" y1="44" x2="84" y2="44" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
+        <line x1="27" y1="21" x2="34" y2="28" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
+        <line x1="73" y1="21" x2="66" y2="28" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
+        <line x1="27" y1="67" x2="34" y2="60" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
+        <line x1="73" y1="67" x2="66" y2="60" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
+        <!-- 중심 하이라이트 -->
+        <circle cx="44" cy="38" r="4" fill="#fff" opacity="0.4"/>
+      </svg>
+      <div class="card-name">빛 에너지</div>
+      <div class="card-concept">태양·고온 물질에서 방출</div>
+      <div class="card-example">📌 햇빛, LED, 레이저</div>
+      <div class="card-badge">눈에 보이는 에너지!</div>
+    </div>
+
+    <!-- 열 에너지 -->
+    <div class="energy-card" style="--card-color:#e74c3c">
+      <svg width="100" height="90" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- 불꽃 -->
+        <path d="M50 76 C36 72 28 60 30 48 C32 38 40 32 38 20 C44 30 42 40 50 44 C52 36 56 28 62 22 C62 38 56 42 60 52 C64 60 68 72 50 76Z" fill="#e74c3c"/>
+        <path d="M50 76 C40 72 36 64 38 56 C40 50 44 46 42 38 C46 44 44 52 50 54 C52 50 54 44 58 40 C58 52 54 58 56 64 C58 70 62 74 50 76Z" fill="#f39c12" opacity="0.7"/>
+        <!-- 열 파동 (물결) -->
+        <path d="M8 82 Q14 78 20 82 Q26 86 32 82" stroke="#e74c3c" stroke-width="2" fill="none" opacity="0.4"/>
+        <path d="M68 82 Q74 78 80 82 Q86 86 92 82" stroke="#e74c3c" stroke-width="2" fill="none" opacity="0.4"/>
+      </svg>
+      <div class="card-name">열 에너지</div>
+      <div class="card-concept">연소·마찰로 발생, 고온→저온</div>
+      <div class="card-example">📌 난로, 엔진, 태양열</div>
+      <div class="card-badge">따뜻함의 근원!</div>
+    </div>
+
+    <!-- 원자력 에너지 -->
+    <div class="energy-card" style="--card-color:#8e44ad">
+      <svg width="100" height="90" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- 원자핵 -->
+        <circle cx="50" cy="44" r="8" fill="#8e44ad"/>
+        <!-- 전자 궤도 1 -->
+        <ellipse cx="50" cy="44" rx="36" ry="14" stroke="#8e44ad" stroke-width="2" fill="none"/>
+        <!-- 전자 궤도 2 (회전) -->
+        <ellipse cx="50" cy="44" rx="36" ry="14" stroke="#a569bd" stroke-width="1.5" fill="none" transform="rotate(60 50 44)"/>
+        <!-- 전자 궤도 3 -->
+        <ellipse cx="50" cy="44" rx="36" ry="14" stroke="#c39bd3" stroke-width="1.5" fill="none" transform="rotate(-60 50 44)"/>
+        <!-- 전자 점 -->
+        <circle cx="86" cy="44" r="4" fill="#f39c12"/>
+        <circle cx="32" cy="31" r="4" fill="#f39c12"/>
+        <circle cx="32" cy="57" r="4" fill="#f39c12"/>
+        <!-- 에너지 방출 표시 -->
+        <line x1="50" y1="6" x2="50" y2="12" stroke="#f39c12" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="82" y1="16" x2="78" y2="20" stroke="#f39c12" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="18" y1="16" x2="22" y2="20" stroke="#f39c12" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <div class="card-name">원자력 에너지</div>
+      <div class="card-concept">핵분열/핵융합 시 방출</div>
+      <div class="card-example">📌 원자력 발전소, 핵반응</div>
+      <div class="card-badge">엄청난 에너지!</div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- ══════════════════ 섹션 3: 에너지 변환 ══════════════════ -->
+<section class="section" id="sec3">
+  <div class="section-title">🔄 개념 2 · 에너지 변환</div>
+  <div class="section-desc">한 형태의 에너지를 다른 형태로 바꾸는 것을 <strong>에너지 변환</strong>이라고 해요. 카드를 클릭하면 단계별로 변환 과정을 확인할 수 있어요!</div>
+
+  <div class="conversion-grid">
+
+    <!-- 풍력 발전 -->
+    <div class="conversion-card" id="conv1" onclick="animateConversion('conv1')">
+      <h3>💨 풍력 발전</h3>
+      <svg width="100%" height="80" viewBox="0 0 460 80" xmlns="http://www.w3.org/2000/svg">
+        <g class="conv-box" data-idx="0">
+          <rect x="4" y="20" width="90" height="40" rx="8" fill="#ebf5fb" stroke="#2980b9" stroke-width="1.5"/>
+          <text x="49" y="37" text-anchor="middle" font-size="12" fill="#1a5276" font-weight="bold">바람</text>
+          <text x="49" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(운동)</text>
+        </g>
+        <polygon points="100,40 112,34 112,46" fill="#27ae60"/>
+        <g class="conv-box" data-idx="1">
+          <rect x="114" y="20" width="90" height="40" rx="8" fill="#eafaf1" stroke="#27ae60" stroke-width="1.5"/>
+          <text x="159" y="37" text-anchor="middle" font-size="12" fill="#145a32" font-weight="bold">터빈</text>
+          <text x="159" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(기계적)</text>
+        </g>
+        <polygon points="210,40 222,34 222,46" fill="#27ae60"/>
+        <g class="conv-box" data-idx="2">
+          <rect x="224" y="20" width="90" height="40" rx="8" fill="#fef9e7" stroke="#f39c12" stroke-width="1.5"/>
+          <text x="269" y="37" text-anchor="middle" font-size="12" fill="#7d6608" font-weight="bold">발전기</text>
+          <text x="269" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(전기)</text>
+        </g>
+        <polygon points="320,40 332,34 332,46" fill="#27ae60"/>
+        <g class="conv-box" data-idx="3">
+          <rect x="334" y="20" width="118" height="40" rx="8" fill="#fdf2f8" stroke="#8e44ad" stroke-width="1.5"/>
+          <text x="393" y="37" text-anchor="middle" font-size="12" fill="#6c3483" font-weight="bold">전동기</text>
+          <text x="393" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(기계적)</text>
+        </g>
+      </svg>
+      <div class="conversion-hint">👆 클릭하여 단계 확인</div>
+    </div>
+
+    <!-- 수력 발전 -->
+    <div class="conversion-card" id="conv2" onclick="animateConversion('conv2')">
+      <h3>💧 수력 발전</h3>
+      <svg width="100%" height="80" viewBox="0 0 460 80" xmlns="http://www.w3.org/2000/svg">
+        <g class="conv-box" data-idx="0">
+          <rect x="4" y="20" width="90" height="40" rx="8" fill="#ebf5fb" stroke="#2980b9" stroke-width="1.5"/>
+          <text x="49" y="37" text-anchor="middle" font-size="12" fill="#1a5276" font-weight="bold">물</text>
+          <text x="49" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(위치)</text>
+        </g>
+        <polygon points="100,40 112,34 112,46" fill="#27ae60"/>
+        <g class="conv-box" data-idx="1">
+          <rect x="114" y="20" width="90" height="40" rx="8" fill="#eafaf1" stroke="#27ae60" stroke-width="1.5"/>
+          <text x="159" y="37" text-anchor="middle" font-size="12" fill="#145a32" font-weight="bold">낙하</text>
+          <text x="159" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(운동)</text>
+        </g>
+        <polygon points="210,40 222,34 222,46" fill="#27ae60"/>
+        <g class="conv-box" data-idx="2">
+          <rect x="224" y="20" width="90" height="40" rx="8" fill="#fef9e7" stroke="#f39c12" stroke-width="1.5"/>
+          <text x="269" y="37" text-anchor="middle" font-size="12" fill="#7d6608" font-weight="bold">터빈</text>
+          <text x="269" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(기계적)</text>
+        </g>
+        <polygon points="320,40 332,34 332,46" fill="#27ae60"/>
+        <g class="conv-box" data-idx="3">
+          <rect x="334" y="20" width="118" height="40" rx="8" fill="#fdf2f8" stroke="#8e44ad" stroke-width="1.5"/>
+          <text x="393" y="37" text-anchor="middle" font-size="12" fill="#6c3483" font-weight="bold">전기</text>
+          <text x="393" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(전기 에너지)</text>
+        </g>
+      </svg>
+      <div class="conversion-hint">👆 클릭하여 단계 확인</div>
+    </div>
+
+    <!-- 화력 발전 -->
+    <div class="conversion-card" id="conv3" onclick="animateConversion('conv3')">
+      <h3>🏭 화력 발전</h3>
+      <svg width="100%" height="80" viewBox="0 0 460 80" xmlns="http://www.w3.org/2000/svg">
+        <g class="conv-box" data-idx="0">
+          <rect x="4" y="20" width="90" height="40" rx="8" fill="#eafaf1" stroke="#27ae60" stroke-width="1.5"/>
+          <text x="49" y="37" text-anchor="middle" font-size="12" fill="#145a32" font-weight="bold">석탄</text>
+          <text x="49" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(화학)</text>
+        </g>
+        <polygon points="100,40 112,34 112,46" fill="#27ae60"/>
+        <g class="conv-box" data-idx="1">
+          <rect x="114" y="20" width="90" height="40" rx="8" fill="#fdedec" stroke="#e74c3c" stroke-width="1.5"/>
+          <text x="159" y="37" text-anchor="middle" font-size="12" fill="#922b21" font-weight="bold">연소</text>
+          <text x="159" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(열)</text>
+        </g>
+        <polygon points="210,40 222,34 222,46" fill="#27ae60"/>
+        <g class="conv-box" data-idx="2">
+          <rect x="224" y="20" width="90" height="40" rx="8" fill="#fef9e7" stroke="#f39c12" stroke-width="1.5"/>
+          <text x="269" y="37" text-anchor="middle" font-size="12" fill="#7d6608" font-weight="bold">터빈</text>
+          <text x="269" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(운동)</text>
+        </g>
+        <polygon points="320,40 332,34 332,46" fill="#27ae60"/>
+        <g class="conv-box" data-idx="3">
+          <rect x="334" y="20" width="118" height="40" rx="8" fill="#fdf2f8" stroke="#8e44ad" stroke-width="1.5"/>
+          <text x="393" y="37" text-anchor="middle" font-size="12" fill="#6c3483" font-weight="bold">전기</text>
+          <text x="393" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(전기 에너지)</text>
+        </g>
+      </svg>
+      <div class="conversion-hint">👆 클릭하여 단계 확인</div>
+    </div>
+
+    <!-- 태양광 발전 -->
+    <div class="conversion-card" id="conv4" onclick="animateConversion('conv4')">
+      <h3>☀️ 태양광 발전</h3>
+      <svg width="100%" height="80" viewBox="0 0 460 80" xmlns="http://www.w3.org/2000/svg">
+        <g class="conv-box" data-idx="0">
+          <rect x="4" y="20" width="90" height="40" rx="8" fill="#fef9c3" stroke="#d4a017" stroke-width="1.5"/>
+          <text x="49" y="37" text-anchor="middle" font-size="12" fill="#7d4a00" font-weight="bold">햇빛</text>
+          <text x="49" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(빛)</text>
+        </g>
+        <polygon points="100,40 112,34 112,46" fill="#27ae60"/>
+        <g class="conv-box" data-idx="1">
+          <rect x="114" y="20" width="90" height="40" rx="8" fill="#ebf5fb" stroke="#2980b9" stroke-width="1.5"/>
+          <text x="159" y="37" text-anchor="middle" font-size="12" fill="#1a5276" font-weight="bold">태양전지</text>
+          <text x="159" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(전기)</text>
+        </g>
+        <polygon points="210,40 222,34 222,46" fill="#27ae60"/>
+        <g class="conv-box" data-idx="2">
+          <rect x="224" y="20" width="90" height="40" rx="8" fill="#eafaf1" stroke="#27ae60" stroke-width="1.5"/>
+          <text x="269" y="37" text-anchor="middle" font-size="12" fill="#145a32" font-weight="bold">배터리</text>
+          <text x="269" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(화학)</text>
+        </g>
+        <polygon points="320,40 332,34 332,46" fill="#27ae60"/>
+        <g class="conv-box" data-idx="3">
+          <rect x="334" y="20" width="118" height="40" rx="8" fill="#ebf5fb" stroke="#2980b9" stroke-width="1.5"/>
+          <text x="393" y="37" text-anchor="middle" font-size="12" fill="#1a5276" font-weight="bold">기기 작동</text>
+          <text x="393" y="53" text-anchor="middle" font-size="10" fill="#5d6d7e">(전기)</text>
+        </g>
+      </svg>
+      <div class="conversion-hint">👆 클릭하여 단계 확인</div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- ══════════════════ 섹션 4: 신재생 에너지 ══════════════════ -->
+<section class="section" id="sec4">
+  <div class="section-title">🌱 개념 3 · 신재생 에너지의 종류</div>
+  <div class="section-desc">자연에서 얻거나 새로운 기술로 만드는 친환경 에너지예요. 총 <strong>10가지</strong> 종류가 있습니다.</div>
+
+  <div class="renewable-intro">
+    <div class="renewable-box green">
+      <h3>🌿 재생 에너지 (8종)</h3>
+      <p>자연에 있는 에너지를 그대로 활용하는 에너지예요. 고갈되지 않고 계속 사용할 수 있어요.</p>
+      <div class="renewable-tags">
+        <span>태양광</span><span>태양열</span><span>풍력</span><span>수력</span>
+        <span>지열</span><span>해양</span><span>바이오</span><span>폐기물</span>
+      </div>
+    </div>
+    <div class="renewable-box blue">
+      <h3>⚗️ 신 에너지 (2종)</h3>
+      <p>복잡한 기술적 응용이 더해진 에너지예요. 기존 에너지를 변환하거나 새로운 방식으로 활용해요.</p>
+      <div class="renewable-tags">
+        <span>수소 에너지</span><span>석탄 액화·가스화</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mini-grid">
+    <div class="mini-card">
+      <span class="mini-emoji">☀️</span>
+      <div class="mini-name">태양광</div>
+      <div class="mini-desc">태양전지로 빛→전기</div>
+    </div>
+    <div class="mini-card">
+      <span class="mini-emoji">🔆</span>
+      <div class="mini-name">태양열</div>
+      <div class="mini-desc">반사경으로 열 집중</div>
+    </div>
+    <div class="mini-card">
+      <span class="mini-emoji">💨</span>
+      <div class="mini-name">풍력</div>
+      <div class="mini-desc">바람으로 터빈 회전</div>
+    </div>
+    <div class="mini-card">
+      <span class="mini-emoji">💧</span>
+      <div class="mini-name">수력</div>
+      <div class="mini-desc">댐의 물 낙차 이용</div>
+    </div>
+    <div class="mini-card">
+      <span class="mini-emoji">🌋</span>
+      <div class="mini-name">지열</div>
+      <div class="mini-desc">지하 열로 발전</div>
+    </div>
+    <div class="mini-card">
+      <span class="mini-emoji">🌊</span>
+      <div class="mini-name">해양(조력)</div>
+      <div class="mini-desc">밀물·썰물 이용</div>
+    </div>
+    <div class="mini-card">
+      <span class="mini-emoji">🌿</span>
+      <div class="mini-name">바이오</div>
+      <div class="mini-desc">생물체 발효 가스</div>
+    </div>
+    <div class="mini-card">
+      <span class="mini-emoji">🗑️</span>
+      <div class="mini-name">폐기물</div>
+      <div class="mini-desc">쓰레기 연료화</div>
+    </div>
+    <div class="mini-card">
+      <span class="mini-emoji">🔬</span>
+      <div class="mini-name">수소 에너지</div>
+      <div class="mini-desc">수소+산소 → 전기</div>
+    </div>
+    <div class="mini-card">
+      <span class="mini-emoji">⛏️</span>
+      <div class="mini-name">석탄 가스화</div>
+      <div class="mini-desc">석탄→합성 가스</div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- ══════════════════ 섹션 5: 시뮬레이터 ══════════════════ -->
+<section class="section" id="sec5">
+  <div class="section-title">🎮 시뮬레이터 &amp; 학습 활동</div>
+  <div class="section-desc">직접 체험하며 개념을 익혀보세요! 각 시뮬레이터를 클릭하여 시작하세요.</div>
+
+  <div class="activity-grid">
+    <a class="activity-card" href="sim_energy_forms.html">
+      <span class="act-icon">⚡</span>
+      <div class="act-title">에너지 형태 분류 게임</div>
+      <div class="act-btn">시작하기 →</div>
+    </a>
+    <a class="activity-card" href="sim_energy_conversion.html">
+      <span class="act-icon">🔄</span>
+      <div class="act-title">에너지 변환 시뮬레이터</div>
+      <div class="act-btn">시작하기 →</div>
+    </a>
+    <a class="activity-card" href="sim_renewable.html">
+      <span class="act-icon">🌱</span>
+      <div class="act-title">신재생 에너지 탐색기</div>
+      <div class="act-btn">시작하기 →</div>
+    </a>
+    <a class="activity-card" href="activity_quiz.html">
+      <span class="act-icon">📝</span>
+      <div class="act-title">확인 퀴즈</div>
+      <div class="act-btn">시작하기 →</div>
+    </a>
+  </div>
+</section>
+
+<!-- ══════════════════ 푸터 ══════════════════ -->
+<footer class="app-footer">
+  V단원. 에너지와 수송 기술의 세계 · 중학교 3학년 기술 수업 자료
+</footer>
+
+<!-- ══════════════════ JavaScript ══════════════════ -->
+<script>
+  /* ── IntersectionObserver: 섹션 fade-in ── */
+  const sections = document.querySelectorAll('.section');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  sections.forEach(s => observer.observe(s));
+
+  /* ── 에너지 변환 단계별 하이라이트 ── */
+  const convTimers = {};   // 카드별 진행 중인 타이머 추적
+
+  function animateConversion(cardId) {
+    const card = document.getElementById(cardId);
+    const boxes = card.querySelectorAll('.conv-box');
+
+    // 이미 애니메이션 중이면 중지 후 초기화
+    if (convTimers[cardId]) {
+      convTimers[cardId].forEach(id => clearTimeout(id));
+      delete convTimers[cardId];
+      boxes.forEach(b => b.classList.remove('active'));
+      return;
+    }
+
+    // 기존 active 초기화
+    boxes.forEach(b => b.classList.remove('active'));
+
+    const timers = [];
+    boxes.forEach((box, i) => {
+      // 강조 시작
+      const t1 = setTimeout(() => {
+        boxes.forEach(b => b.classList.remove('active'));
+        box.classList.add('active');
+      }, i * 700);
+      timers.push(t1);
+    });
+
+    // 마지막 박스 강조 후 전체 초기화
+    const tEnd = setTimeout(() => {
+      boxes.forEach(b => b.classList.remove('active'));
+      delete convTimers[cardId];
+    }, boxes.length * 700 + 600);
+    timers.push(tEnd);
+
+    convTimers[cardId] = timers;
+  }
+
+  /* ── CSS conv-box active 스타일 (JS로 직접 적용) ── */
+  // SVG 내부 rect/ellipse/text는 CSS class로만 변경되므로
+  // 동적 스타일을 주입
+  const styleEl = document.createElement('style');
+  styleEl.textContent = `
+    .conv-box.active rect,
+    .conv-box.active ellipse {
+      fill: #fff9c4 !important;
+      stroke: #f39c12 !important;
+      stroke-width: 3 !important;
+    }
+    .conv-box.active text {
+      fill: #7d4a00 !important;
+      font-weight: bold !important;
+    }
+  `;
+  document.head.appendChild(styleEl);
+</script>
+
+</body>
+</html>
