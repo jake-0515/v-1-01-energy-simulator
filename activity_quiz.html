@@ -423,6 +423,7 @@
   <!-- 학습 안내 배너 -->
   <div class="info-banner">
     💡 <strong>풀이 방법</strong>: 문제를 읽고 답을 선택하면 바로 해설이 나와요! 10문제 모두 풀고 점수를 확인하세요.
+    <br>⌨️ <strong>키보드 단축키</strong>: 숫자키 <kbd>1</kbd>~<kbd>4</kbd> = 보기 선택, <kbd>Enter</kbd> = 정답 확인 / 다음 문제
   </div>
 
   <!-- 진행 바 -->
@@ -560,6 +561,38 @@ let wrongAnswers = [];     // { idx, q, correctText }
 
 // ─── 초기 렌더 ───────────────────────────────────────────────────────────────
 renderQuestion(currentIdx);
+
+// ─── 키보드 단축키 (Enter = 정답 확인 / 다음 문제, 1~4 = 보기 선택) ──────
+document.addEventListener('keydown', (e) => {
+  // 결과 화면이 열려 있으면 무시
+  const resultVisible = document.getElementById('resultScreen')?.classList.contains('visible');
+  if (resultVisible) return;
+
+  const btn = document.getElementById('btnCheck');
+  if (!btn) return;
+
+  // 숫자 키(1~4)로 보기 선택
+  if (!answered && ['1','2','3','4'].includes(e.key)) {
+    const idx = parseInt(e.key, 10) - 1;
+    const opt = document.getElementById('opt-' + idx);
+    if (opt) {
+      e.preventDefault();
+      selectOption(idx);
+    }
+    return;
+  }
+
+  // Enter: 비활성 상태가 아닐 때 현재 onclick 핸들러 실행
+  if (e.key === 'Enter') {
+    if (btn.disabled) return;
+    e.preventDefault();
+    if (typeof btn.onclick === 'function') {
+      btn.onclick();
+    } else {
+      checkAnswer();
+    }
+  }
+});
 
 function renderQuestion(idx) {
   const q = QUESTIONS[idx];

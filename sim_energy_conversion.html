@@ -1235,7 +1235,9 @@ function renderQuiz(id) {
       </div>
       <div class="quiz-input-area">
         <input class="quiz-input" id="quizInput-${id}" type="text"
-          placeholder="예) 열 에너지" oninput="clearQuizResult('${id}')"/>
+          placeholder="예) 열 에너지 (Enter로 정답 확인)"
+          oninput="clearQuizResult('${id}')"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();checkQuiz('${id}');}"/>
         <button class="btn btn-accent" onclick="checkQuiz('${id}')">정답 확인</button>
         <button class="btn btn-secondary" onclick="showHint('${id}')">💡 힌트</button>
       </div>

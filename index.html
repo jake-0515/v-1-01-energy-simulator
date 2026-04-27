@@ -247,7 +247,7 @@
     /* ── 섹션 2: 에너지 형태 카드 그리드 ── */
     .energy-forms-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 22px;
       margin-top: 8px;
     }
@@ -255,7 +255,7 @@
       background: var(--card-bg);
       border-radius: 20px;
       box-shadow: var(--shadow);
-      padding: 26px 20px 20px;
+      padding: 22px 20px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -279,12 +279,25 @@
       box-shadow: 0 16px 40px rgba(0,0,0,0.13);
     }
     .energy-card:hover::after { opacity: 1; }
-    .energy-card svg {
+    .card-svg-wrap {
+      width: 100%;
+      height: 120px;
+      background: linear-gradient(135deg, rgba(0,0,0,0.02), rgba(0,0,0,0.05));
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 14px;
-      transition: transform 0.3s ease;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.10));
+      overflow: hidden;
+      position: relative;
     }
-    .energy-card:hover svg { transform: scale(1.08) translateY(-2px); }
+    .card-svg-wrap svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.10));
+      transition: transform 0.3s ease;
+    }
+    .energy-card:hover .card-svg-wrap svg { transform: scale(1.05); }
     .energy-card .card-name {
       font-size: 19px;
       font-weight: 900;
@@ -295,13 +308,26 @@
     .energy-card .card-concept {
       font-size: 14.5px;
       color: var(--text);
-      margin-bottom: 6px;
+      font-weight: 700;
+      margin-bottom: 8px;
       line-height: 1.5;
     }
+    .energy-card .card-detail {
+      font-size: 13.5px;
+      color: var(--text);
+      line-height: 1.6;
+      background: rgba(0,0,0,0.035);
+      border-left: 3px solid var(--card-color, var(--primary));
+      padding: 10px 12px;
+      border-radius: 0 10px 10px 0;
+      margin-bottom: 10px;
+      text-align: left;
+      width: 100%;
+    }
     .energy-card .card-example {
-      font-size: 14px;
+      font-size: 13.5px;
       color: var(--text-light);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
     .energy-card .card-badge {
       background: rgba(0,0,0,0.06);
@@ -312,6 +338,66 @@
       font-size: 13px;
       font-weight: 800;
       margin-top: auto;
+    }
+
+    /* ── 에너지 형태 카드 SVG 애니메이션 ── */
+    @keyframes pendulumSwing {
+      0%, 100% { transform: rotate(-32deg); }
+      50%      { transform: rotate(32deg); }
+    }
+    @keyframes bulbGlow {
+      0%, 100% { opacity: 0.55; }
+      50%      { opacity: 1; }
+    }
+    @keyframes bulbGlowFill {
+      0%, 100% { fill-opacity: 0.6; }
+      50%      { fill-opacity: 1; }
+    }
+    @keyframes electronOrbit1 {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    @keyframes electronOrbit2 {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(-360deg); }
+    }
+    @keyframes sunRayRotate {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    @keyframes sunPulse {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.07); }
+    }
+    @keyframes flameFlicker {
+      0%, 100% { transform: scaleY(1) scaleX(1); }
+      25%      { transform: scaleY(1.12) scaleX(0.93); }
+      50%      { transform: scaleY(0.92) scaleX(1.08); }
+      75%      { transform: scaleY(1.08) scaleX(0.96); }
+    }
+    @keyframes heatWaveRise {
+      0%   { transform: translateY(0); opacity: 0.7; }
+      100% { transform: translateY(-22px); opacity: 0; }
+    }
+    @keyframes electronFlow {
+      from { stroke-dashoffset: 40; }
+      to   { stroke-dashoffset: 0; }
+    }
+    @keyframes electronDot {
+      0%   { offset-distance: 0%; }
+      100% { offset-distance: 100%; }
+    }
+    @keyframes nuclearBurst {
+      0%, 100% { opacity: 0.35; transform: scale(0.85); }
+      50%      { opacity: 1;    transform: scale(1.15); }
+    }
+    @keyframes chemBondPulse {
+      0%, 100% { stroke-opacity: 0.4; stroke-width: 2; }
+      50%      { stroke-opacity: 1;   stroke-width: 3; }
+    }
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0.4); }
+      50%      { opacity: 1; transform: scale(1.2); }
     }
 
     /* ── 섹션 3: 에너지 변환 (탭 + 애니메이션 패널) ── */
@@ -796,133 +882,245 @@
 
     <!-- 기계적 에너지 -->
     <div class="energy-card" style="--card-color:#e67e22">
-      <svg width="100" height="90" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- 경사면 -->
-        <line x1="10" y1="78" x2="90" y2="78" stroke="#bdc3c7" stroke-width="2"/>
-        <line x1="10" y1="78" x2="40" y2="30" stroke="#bdc3c7" stroke-width="2"/>
-        <!-- 위쪽 공 (위치에너지) -->
-        <circle cx="40" cy="24" r="10" fill="#e67e22" opacity="0.5"/>
-        <!-- 이동 화살표 -->
-        <path d="M50 34 Q65 50 70 68" stroke="#e67e22" stroke-width="2" fill="none" stroke-dasharray="4 3"/>
-        <polygon points="68,72 72,64 76,70" fill="#e67e22"/>
-        <!-- 아래 공 (운동에너지) -->
-        <circle cx="74" cy="72" r="10" fill="#e67e22"/>
-        <!-- 라벨 -->
-        <text x="25" y="16" font-size="9" fill="#e67e22" font-weight="bold">위치</text>
-        <text x="68" y="88" font-size="9" fill="#e67e22" font-weight="bold">운동</text>
-      </svg>
+      <div class="card-svg-wrap" style="background:linear-gradient(135deg,#fef5e7,#fdebd0);">
+        <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <!-- 천장 -->
+          <rect x="20" y="8" width="120" height="6" rx="2" fill="#7f8c8d"/>
+          <rect x="20" y="8" width="120" height="2" fill="#34495e" opacity="0.3"/>
+          <!-- 진자 궤적 -->
+          <path d="M40 92 Q80 118 120 92" stroke="#e67e22" stroke-dasharray="3 4" stroke-width="1.5" fill="none" opacity="0.45"/>
+          <!-- 진자 -->
+          <g style="transform-origin:80px 14px; animation:pendulumSwing 2.4s ease-in-out infinite;">
+            <line x1="80" y1="14" x2="80" y2="84" stroke="#34495e" stroke-width="2"/>
+            <circle cx="80" cy="94" r="13" fill="#e67e22"/>
+            <circle cx="80" cy="94" r="13" fill="url(#mech-shine)"/>
+          </g>
+          <defs>
+            <radialGradient id="mech-shine" cx="0.35" cy="0.35" r="0.5">
+              <stop offset="0%" stop-color="#fff" stop-opacity="0.55"/>
+              <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <!-- 양 끝 라벨 -->
+          <text x="40" y="110" text-anchor="middle" font-size="9" fill="#d35400" font-weight="bold">위치↑</text>
+          <text x="120" y="110" text-anchor="middle" font-size="9" fill="#d35400" font-weight="bold">운동↑</text>
+        </svg>
+      </div>
       <div class="card-name">기계적 에너지</div>
-      <div class="card-concept">위치 에너지 + 운동 에너지</div>
-      <div class="card-example">📌 날아가는 공, 흐르는 물</div>
+      <div class="card-concept">위치 에너지 + 운동 에너지의 합</div>
+      <div class="card-detail">물체가 <strong>높은 곳에 있거나 움직일 때</strong> 가지는 에너지예요. 진자가 위로 올라갈수록 위치 에너지가 커지고, 아래로 내려올수록 운동 에너지가 커지면서 서로 변환돼요.</div>
+      <div class="card-example">📌 그네, 흐르는 물, 굴러가는 공</div>
       <div class="card-badge">운동선수의 힘!</div>
     </div>
 
     <!-- 전기 에너지 -->
     <div class="energy-card" style="--card-color:#2980b9">
-      <svg width="100" height="90" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- 번개 -->
-        <polygon points="52,8 38,46 48,46 36,82 62,38 50,38" fill="#2980b9" opacity="0.85"/>
-        <!-- 회로선 (하단) -->
-        <rect x="10" y="84" width="80" height="4" rx="2" fill="#2980b9" opacity="0.2"/>
-        <circle cx="20" cy="86" r="3" fill="#2980b9"/>
-        <circle cx="50" cy="86" r="3" fill="#2980b9"/>
-        <circle cx="80" cy="86" r="3" fill="#2980b9"/>
-      </svg>
+      <div class="card-svg-wrap" style="background:linear-gradient(135deg,#ebf5fb,#d6eaf8);">
+        <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <!-- 건전지 -->
+          <rect x="14" y="50" width="38" height="34" rx="4" fill="#34495e"/>
+          <rect x="52" y="58" width="6" height="18" rx="1" fill="#7f8c8d"/>
+          <text x="33" y="72" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">+ −</text>
+          <!-- 회로 (전류 흐름) -->
+          <path d="M58 60 L92 60 L92 38 L116 38" stroke="#2980b9" stroke-width="3" fill="none"
+                stroke-dasharray="6 4" style="animation:electronFlow 0.6s linear infinite;"/>
+          <path d="M116 90 L92 90 L92 70" stroke="#2980b9" stroke-width="3" fill="none"
+                stroke-dasharray="6 4" style="animation:electronFlow 0.6s linear infinite;"/>
+          <!-- 전구 본체 -->
+          <circle cx="126" cy="64" r="20" fill="#fff9c4" stroke="#f1c40f" stroke-width="2.5"
+                  style="animation:bulbGlowFill 1.4s ease-in-out infinite;"/>
+          <!-- 전구 소켓 -->
+          <rect x="118" y="84" width="16" height="6" fill="#7f8c8d"/>
+          <rect x="120" y="90" width="12" height="3" fill="#95a5a6"/>
+          <!-- 빛살 -->
+          <g stroke="#f39c12" stroke-width="2.5" stroke-linecap="round" style="animation:bulbGlow 1.4s ease-in-out infinite;">
+            <line x1="126" y1="36" x2="126" y2="42"/>
+            <line x1="148" y1="44" x2="143" y2="48"/>
+            <line x1="104" y1="44" x2="109" y2="48"/>
+            <line x1="100" y1="64" x2="106" y2="64"/>
+            <line x1="146" y1="64" x2="152" y2="64"/>
+          </g>
+          <!-- 번개 표시 -->
+          <text x="126" y="70" text-anchor="middle" font-size="18" fill="#e67e22">⚡</text>
+        </svg>
+      </div>
       <div class="card-name">전기 에너지</div>
-      <div class="card-concept">도선에 전류가 흐를 때 발생</div>
-      <div class="card-example">📌 발전기, 건전지</div>
+      <div class="card-concept">전자가 도선을 따라 이동할 때 발생</div>
+      <div class="card-detail">건전지·발전기에서 만들어진 <strong>(+)와 (−) 전위차</strong>가 도선의 전자를 이동시켜요. 이렇게 흐르는 전류가 빛·열·운동 에너지로 다시 바뀝니다.</div>
+      <div class="card-example">📌 건전지, 콘센트, 발전기, 전동기</div>
       <div class="card-badge">우리 생활의 핵심!</div>
     </div>
 
     <!-- 화학 에너지 -->
     <div class="energy-card" style="--card-color:#27ae60">
-      <svg width="100" height="90" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- 분자 구조 -->
-        <circle cx="50" cy="44" r="10" fill="#27ae60"/>
-        <circle cx="20" cy="30" r="8"  fill="#a9dfbf"/>
-        <circle cx="80" cy="30" r="8"  fill="#a9dfbf"/>
-        <circle cx="20" cy="60" r="8"  fill="#a9dfbf"/>
-        <circle cx="80" cy="60" r="8"  fill="#a9dfbf"/>
-        <!-- 결합선 -->
-        <line x1="27" y1="34" x2="42" y2="40" stroke="#27ae60" stroke-width="2"/>
-        <line x1="73" y1="34" x2="58" y2="40" stroke="#27ae60" stroke-width="2"/>
-        <line x1="27" y1="56" x2="42" y2="48" stroke="#27ae60" stroke-width="2"/>
-        <line x1="73" y1="56" x2="58" y2="48" stroke="#27ae60" stroke-width="2"/>
-        <!-- 에너지 방출 표시 -->
-        <text x="42" y="48" font-size="10" fill="#fff" font-weight="bold">C</text>
-        <text x="14" y="33" font-size="9" fill="#145a32">H</text>
-        <text x="76" y="33" font-size="9" fill="#145a32">O</text>
-        <text x="14" y="63" font-size="9" fill="#145a32">N</text>
-        <text x="76" y="63" font-size="9" fill="#145a32">H</text>
-      </svg>
+      <div class="card-svg-wrap" style="background:linear-gradient(135deg,#eafaf1,#d4efdf);">
+        <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <!-- 분자 (메탄 형태) -->
+          <g transform="translate(50,60)">
+            <line x1="0" y1="0" x2="-26" y2="-22" stroke="#27ae60" stroke-width="2.5"
+                  style="animation:chemBondPulse 1.6s ease-in-out infinite;"/>
+            <line x1="0" y1="0" x2="26" y2="-22" stroke="#27ae60" stroke-width="2.5"
+                  style="animation:chemBondPulse 1.6s ease-in-out infinite 0.4s;"/>
+            <line x1="0" y1="0" x2="-26" y2="22" stroke="#27ae60" stroke-width="2.5"
+                  style="animation:chemBondPulse 1.6s ease-in-out infinite 0.8s;"/>
+            <line x1="0" y1="0" x2="26" y2="22" stroke="#27ae60" stroke-width="2.5"
+                  style="animation:chemBondPulse 1.6s ease-in-out infinite 1.2s;"/>
+            <!-- 중심 원자 C -->
+            <circle r="14" fill="#1e8449"/>
+            <text y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">C</text>
+            <!-- 외곽 원자 H -->
+            <g font-size="10" fill="#145a32" font-weight="bold" text-anchor="middle">
+              <circle cx="-26" cy="-22" r="10" fill="#a9dfbf"/>
+              <text x="-26" y="-19">H</text>
+              <circle cx="26" cy="-22" r="10" fill="#a9dfbf"/>
+              <text x="26" y="-19">H</text>
+              <circle cx="-26" cy="22" r="10" fill="#a9dfbf"/>
+              <text x="-26" y="25">H</text>
+              <circle cx="26" cy="22" r="10" fill="#a9dfbf"/>
+              <text x="26" y="25">H</text>
+            </g>
+          </g>
+          <!-- 화살표 → 에너지 방출 -->
+          <path d="M104 60 L122 60" stroke="#e67e22" stroke-width="3" fill="none" marker-end="url(#chem-arrow)"/>
+          <defs>
+            <marker id="chem-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+              <polygon points="0 0, 8 4, 0 8" fill="#e67e22"/>
+            </marker>
+          </defs>
+          <!-- 방출되는 에너지 (불꽃/열) -->
+          <g transform="translate(140,60)" style="transform-origin:140px 60px; animation:flameFlicker 0.6s ease-in-out infinite;">
+            <path d="M0 14 C-8 10 -10 0 -6 -6 C-2 -10 -2 -14 0 -18 C2 -14 4 -10 6 -6 C10 0 8 10 0 14Z" fill="#e74c3c"/>
+            <path d="M0 12 C-4 10 -6 4 -3 0 C0 -4 0 -8 2 -10 C2 -6 4 -2 4 4 C4 8 4 10 0 12Z" fill="#f39c12"/>
+          </g>
+        </svg>
+      </div>
       <div class="card-name">화학 에너지</div>
-      <div class="card-concept">원자 간 결합에 저장된 에너지</div>
-      <div class="card-example">📌 석유, 음식, 배터리</div>
+      <div class="card-concept">원자 간 결합 속에 저장된 에너지</div>
+      <div class="card-detail">석유·음식·배터리처럼 <strong>물질 속 결합에 저장된 에너지</strong>예요. 연소·소화·반응이 일어날 때 결합이 끊어지면서 열, 빛, 전기 등 다른 형태로 방출됩니다.</div>
+      <div class="card-example">📌 석유·가스, 음식, 배터리, 장작</div>
       <div class="card-badge">음식 속에도 에너지!</div>
     </div>
 
     <!-- 빛 에너지 -->
     <div class="energy-card" style="--card-color:#d4a017">
-      <svg width="100" height="90" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- 태양 본체 -->
-        <circle cx="50" cy="44" r="16" fill="#f1c40f"/>
-        <!-- 빛살 -->
-        <line x1="50" y1="10" x2="50" y2="20" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
-        <line x1="50" y1="68" x2="50" y2="78" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
-        <line x1="16" y1="44" x2="26" y2="44" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
-        <line x1="74" y1="44" x2="84" y2="44" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
-        <line x1="27" y1="21" x2="34" y2="28" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
-        <line x1="73" y1="21" x2="66" y2="28" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
-        <line x1="27" y1="67" x2="34" y2="60" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
-        <line x1="73" y1="67" x2="66" y2="60" stroke="#f1c40f" stroke-width="3" stroke-linecap="round"/>
-        <!-- 중심 하이라이트 -->
-        <circle cx="44" cy="38" r="4" fill="#fff" opacity="0.4"/>
-      </svg>
+      <div class="card-svg-wrap" style="background:linear-gradient(135deg,#fef9e7,#fcf3cf);">
+        <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <!-- 회전하는 빛살 -->
+          <g style="transform-origin:80px 60px; animation:sunRayRotate 12s linear infinite;">
+            <g stroke="#f39c12" stroke-width="3" stroke-linecap="round">
+              <line x1="80" y1="14" x2="80" y2="28"/>
+              <line x1="80" y1="92" x2="80" y2="106"/>
+              <line x1="34" y1="60" x2="48" y2="60"/>
+              <line x1="112" y1="60" x2="126" y2="60"/>
+              <line x1="47" y1="27" x2="57" y2="37"/>
+              <line x1="113" y1="27" x2="103" y2="37"/>
+              <line x1="47" y1="93" x2="57" y2="83"/>
+              <line x1="113" y1="93" x2="103" y2="83"/>
+            </g>
+          </g>
+          <!-- 태양 본체 (펄스) -->
+          <g style="transform-origin:80px 60px; animation:sunPulse 2.2s ease-in-out infinite;">
+            <circle cx="80" cy="60" r="22" fill="#f1c40f"/>
+            <circle cx="80" cy="60" r="22" fill="url(#sun-shine)"/>
+            <circle cx="73" cy="52" r="6" fill="#fff" opacity="0.4"/>
+          </g>
+          <defs>
+            <radialGradient id="sun-shine" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="60%" stop-color="#fff" stop-opacity="0"/>
+              <stop offset="100%" stop-color="#e67e22" stop-opacity="0.4"/>
+            </radialGradient>
+          </defs>
+          <!-- 반짝이 -->
+          <text x="36" y="32" font-size="12" fill="#f1c40f" style="animation:sparkle 1.6s ease-in-out infinite;">✦</text>
+          <text x="124" y="100" font-size="12" fill="#f1c40f" style="animation:sparkle 1.6s ease-in-out infinite 0.8s;">✦</text>
+          <text x="130" y="38" font-size="10" fill="#f39c12" style="animation:sparkle 1.4s ease-in-out infinite 0.4s;">✧</text>
+        </svg>
+      </div>
       <div class="card-name">빛 에너지</div>
-      <div class="card-concept">태양·고온 물질에서 방출</div>
-      <div class="card-example">📌 햇빛, LED, 레이저</div>
+      <div class="card-concept">물체가 방출하는 전자기파 형태의 에너지</div>
+      <div class="card-detail">태양·전구·LED처럼 <strong>고온이거나 들뜬 상태의 물질</strong>이 빛(전자기파)을 내보내는 에너지예요. 빛을 받은 물체는 다시 열·전기 에너지로 변환할 수 있어요.</div>
+      <div class="card-example">📌 햇빛, LED 전구, 모닥불, 레이저</div>
       <div class="card-badge">눈에 보이는 에너지!</div>
     </div>
 
     <!-- 열 에너지 -->
     <div class="energy-card" style="--card-color:#e74c3c">
-      <svg width="100" height="90" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- 불꽃 -->
-        <path d="M50 76 C36 72 28 60 30 48 C32 38 40 32 38 20 C44 30 42 40 50 44 C52 36 56 28 62 22 C62 38 56 42 60 52 C64 60 68 72 50 76Z" fill="#e74c3c"/>
-        <path d="M50 76 C40 72 36 64 38 56 C40 50 44 46 42 38 C46 44 44 52 50 54 C52 50 54 44 58 40 C58 52 54 58 56 64 C58 70 62 74 50 76Z" fill="#f39c12" opacity="0.7"/>
-        <!-- 열 파동 (물결) -->
-        <path d="M8 82 Q14 78 20 82 Q26 86 32 82" stroke="#e74c3c" stroke-width="2" fill="none" opacity="0.4"/>
-        <path d="M68 82 Q74 78 80 82 Q86 86 92 82" stroke="#e74c3c" stroke-width="2" fill="none" opacity="0.4"/>
-      </svg>
+      <div class="card-svg-wrap" style="background:linear-gradient(135deg,#fdedec,#fadbd8);">
+        <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <!-- 장작 -->
+          <rect x="46" y="96" width="68" height="8" rx="2" fill="#6e2c00"/>
+          <rect x="50" y="100" width="60" height="6" rx="2" fill="#5d4037"/>
+          <line x1="56" y1="100" x2="68" y2="100" stroke="#a04000" stroke-width="1"/>
+          <line x1="76" y1="100" x2="92" y2="100" stroke="#a04000" stroke-width="1"/>
+          <!-- 큰 불꽃 -->
+          <g style="transform-origin:80px 96px; animation:flameFlicker 0.55s ease-in-out infinite;">
+            <path d="M80 96 C58 90 48 72 52 54 C56 40 70 32 66 16 C74 28 70 42 80 46 C82 36 88 24 96 16 C96 36 88 44 92 56 C98 68 104 88 80 96Z" fill="#e74c3c"/>
+            <path d="M80 96 C66 92 60 80 62 68 C64 60 70 54 68 44 C72 50 70 60 80 62 C82 56 86 48 90 44 C90 56 86 64 88 72 C92 80 96 92 80 96Z" fill="#f39c12"/>
+            <path d="M80 96 C72 94 68 86 70 76 C72 70 76 66 74 58 C78 64 76 72 80 74 C82 70 84 64 86 60 C86 70 84 76 86 82 C88 88 90 94 80 96Z" fill="#fff9c4" opacity="0.8"/>
+          </g>
+          <!-- 상승하는 열 파동 -->
+          <g stroke="#e74c3c" stroke-width="2" fill="none" stroke-linecap="round">
+            <path d="M64 30 Q68 24 72 30 Q76 36 80 30" style="animation:heatWaveRise 1.6s linear infinite;" opacity="0.6"/>
+            <path d="M86 24 Q90 18 94 24 Q98 30 102 24" style="animation:heatWaveRise 1.6s linear infinite 0.5s;" opacity="0.6"/>
+            <path d="M70 18 Q74 12 78 18 Q82 24 86 18" style="animation:heatWaveRise 1.6s linear infinite 1.0s;" opacity="0.5"/>
+          </g>
+          <!-- 온도계 표시 -->
+          <text x="14" y="60" font-size="20">🌡️</text>
+          <text x="138" y="60" font-size="20">🌡️</text>
+        </svg>
+      </div>
       <div class="card-name">열 에너지</div>
-      <div class="card-concept">연소·마찰로 발생, 고온→저온</div>
-      <div class="card-example">📌 난로, 엔진, 태양열</div>
+      <div class="card-concept">물질을 이루는 분자의 운동 에너지</div>
+      <div class="card-detail">분자가 <strong>활발하게 움직일수록 온도가 높아지는</strong> 에너지예요. 연소·마찰·전기 저항 등으로 발생하며, 항상 <strong>고온 → 저온</strong>으로 이동해 주위를 데웁니다.</div>
+      <div class="card-example">📌 모닥불, 난로, 마찰열, 태양열</div>
       <div class="card-badge">따뜻함의 근원!</div>
     </div>
 
     <!-- 원자력 에너지 -->
     <div class="energy-card" style="--card-color:#8e44ad">
-      <svg width="100" height="90" viewBox="0 0 100 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- 원자핵 -->
-        <circle cx="50" cy="44" r="8" fill="#8e44ad"/>
-        <!-- 전자 궤도 1 -->
-        <ellipse cx="50" cy="44" rx="36" ry="14" stroke="#8e44ad" stroke-width="2" fill="none"/>
-        <!-- 전자 궤도 2 (회전) -->
-        <ellipse cx="50" cy="44" rx="36" ry="14" stroke="#a569bd" stroke-width="1.5" fill="none" transform="rotate(60 50 44)"/>
-        <!-- 전자 궤도 3 -->
-        <ellipse cx="50" cy="44" rx="36" ry="14" stroke="#c39bd3" stroke-width="1.5" fill="none" transform="rotate(-60 50 44)"/>
-        <!-- 전자 점 -->
-        <circle cx="86" cy="44" r="4" fill="#f39c12"/>
-        <circle cx="32" cy="31" r="4" fill="#f39c12"/>
-        <circle cx="32" cy="57" r="4" fill="#f39c12"/>
-        <!-- 에너지 방출 표시 -->
-        <line x1="50" y1="6" x2="50" y2="12" stroke="#f39c12" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="82" y1="16" x2="78" y2="20" stroke="#f39c12" stroke-width="2.5" stroke-linecap="round"/>
-        <line x1="18" y1="16" x2="22" y2="20" stroke="#f39c12" stroke-width="2.5" stroke-linecap="round"/>
-      </svg>
+      <div class="card-svg-wrap" style="background:linear-gradient(135deg,#f5eef8,#e8daef);">
+        <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+          <!-- 에너지 방출 (배경) -->
+          <g style="transform-origin:80px 60px; animation:nuclearBurst 1.4s ease-in-out infinite;">
+            <circle cx="80" cy="60" r="36" fill="none" stroke="#f39c12" stroke-width="1" opacity="0.5"/>
+            <circle cx="80" cy="60" r="44" fill="none" stroke="#f1c40f" stroke-width="1" opacity="0.35"/>
+          </g>
+          <!-- 전자 궤도 (3개) -->
+          <ellipse cx="80" cy="60" rx="50" ry="18" stroke="#8e44ad" stroke-width="1.5" fill="none" opacity="0.6"/>
+          <ellipse cx="80" cy="60" rx="50" ry="18" stroke="#a569bd" stroke-width="1.5" fill="none" opacity="0.6" transform="rotate(60 80 60)"/>
+          <ellipse cx="80" cy="60" rx="50" ry="18" stroke="#c39bd3" stroke-width="1.5" fill="none" opacity="0.6" transform="rotate(-60 80 60)"/>
+          <!-- 회전하는 전자 (3개) -->
+          <g style="transform-origin:80px 60px; animation:electronOrbit1 2.5s linear infinite;">
+            <circle cx="130" cy="60" r="5" fill="#f39c12"/>
+            <circle cx="130" cy="60" r="5" fill="#f39c12" opacity="0.4">
+              <animate attributeName="r" values="5;7;5" dur="1s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+          <g style="transform-origin:80px 60px; animation:electronOrbit2 3.2s linear infinite;">
+            <g transform="rotate(60 80 60)">
+              <circle cx="130" cy="60" r="5" fill="#e67e22"/>
+            </g>
+          </g>
+          <g style="transform-origin:80px 60px; animation:electronOrbit1 2s linear infinite;">
+            <g transform="rotate(-60 80 60)">
+              <circle cx="130" cy="60" r="5" fill="#d35400"/>
+            </g>
+          </g>
+          <!-- 핵 -->
+          <circle cx="80" cy="60" r="11" fill="#8e44ad"/>
+          <circle cx="80" cy="60" r="11" fill="url(#nuc-shine)"/>
+          <defs>
+            <radialGradient id="nuc-shine" cx="0.35" cy="0.35" r="0.5">
+              <stop offset="0%" stop-color="#fff" stop-opacity="0.5"/>
+              <stop offset="100%" stop-color="#fff" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
       <div class="card-name">원자력 에너지</div>
-      <div class="card-concept">핵분열/핵융합 시 방출</div>
-      <div class="card-example">📌 원자력 발전소, 핵반응</div>
+      <div class="card-concept">원자핵의 분열·융합에서 나오는 에너지</div>
+      <div class="card-detail">우라늄 같은 무거운 원자핵이 <strong>쪼개지거나(핵분열)</strong>, 가벼운 원자핵이 <strong>합쳐질 때(핵융합)</strong> 어마어마한 양의 열·빛 에너지가 방출돼요. 적은 양으로 큰 전기를 만들 수 있어요.</div>
+      <div class="card-example">📌 원자력 발전소, 태양 내부의 핵융합</div>
       <div class="card-badge">엄청난 에너지!</div>
     </div>
 
