@@ -8,6 +8,18 @@
   <style>
     /* ── 시뮬레이터 전용 스타일 ── */
     body { font-size: 18px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ── 헤더 오버라이드 (blue 테마) ── */
+    .app-header {
+      background: linear-gradient(135deg, #1a5276 0%, #2980b9 60%, #3498db 100%);
+      box-shadow: 0 3px 16px rgba(41,128,185,0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
     /* ── 탭 버튼 영역 ── */
     .tab-bar {

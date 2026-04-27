@@ -29,15 +29,18 @@
     }
 
     body {
-      font-family: 'Segoe UI', 'Malgun Gothic', '맑은 고딕', sans-serif;
+      font-family: 'Pretendard', 'Noto Sans KR', 'Segoe UI', 'Malgun Gothic', sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
     }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
 
     /* ─── 헤더 ─── */
     .app-header {
-      background: var(--primary);
+      background: linear-gradient(135deg, #d35400 0%, #e67e22 50%, #f39c12 100%);
       color: #fff;
       padding: 18px 24px;
       display: flex;
@@ -45,12 +48,16 @@
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 10px;
-      box-shadow: 0 3px 12px rgba(39,174,96,0.3);
+      box-shadow: 0 3px 16px rgba(230,126,34,0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
     .app-header h1 {
       font-size: 1.5rem;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: -0.3px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.15);
     }
     .app-header .subtitle {
       font-size: 0.9rem;
@@ -64,10 +71,11 @@
       padding: 7px 16px;
       border-radius: 20px;
       font-size: 0.9rem;
-      font-weight: 600;
-      transition: background 0.2s;
+      font-weight: 700;
+      transition: background 0.2s, transform 0.2s;
+      border: 1.5px solid rgba(255,255,255,0.3);
     }
-    .app-header nav a:hover { background: rgba(255,255,255,0.35); }
+    .app-header nav a:hover { background: rgba(255,255,255,0.35); transform: translateY(-1px); }
 
     /* ─── 안내 배너 ─── */
     .info-banner {
@@ -124,10 +132,11 @@
     }
     .quiz-card {
       background: var(--card-bg);
-      border-radius: var(--radius);
+      border-radius: 20px;
       box-shadow: var(--shadow);
       padding: 32px 28px 28px;
-      animation: slideIn 0.35s ease;
+      animation: slideIn 0.35s cubic-bezier(.34,1.56,.64,1);
+      border: 2px solid #eee;
     }
     @keyframes slideIn {
       from { opacity: 0; transform: translateX(40px); }
@@ -183,20 +192,22 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 14px 18px;
+      padding: 15px 20px;
       border: 2px solid var(--border);
-      border-radius: 12px;
+      border-radius: 14px;
       cursor: pointer;
       font-size: 18px;
       font-weight: 500;
       color: var(--text);
       background: #fff;
-      transition: border-color 0.18s, background 0.18s, transform 0.12s;
+      transition: border-color 0.18s, background 0.18s, transform 0.18s cubic-bezier(.34,1.56,.64,1), box-shadow 0.18s;
       user-select: none;
     }
     .option-item:hover:not(.disabled) {
       border-color: var(--primary);
       background: var(--primary-light);
+      transform: translateX(4px);
+      box-shadow: 0 3px 12px rgba(39,174,96,0.15);
       transform: translateX(3px);
     }
     .option-item.selected {

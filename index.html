@@ -13,26 +13,33 @@
       --primary-dark: #1e8449;
       --primary-light: #d5f5e3;
       --accent: #f39c12;
+      --accent-dark: #d68910;
       --blue: #2980b9;
+      --blue-dark: #1a5276;
       --blue-light: #d6eaf8;
       --red: #e74c3c;
       --purple: #8e44ad;
+      --teal: #16a085;
+      --teal-dark: #0e6655;
       --text: #2c3e50;
       --text-light: #7f8c8d;
-      --bg: #f8fdf9;
+      --bg: #f0fff4;
       --card-bg: #ffffff;
       --shadow: 0 4px 18px rgba(0,0,0,0.08);
-      --shadow-hover: 0 10px 32px rgba(0,0,0,0.14);
+      --shadow-hover: 0 14px 40px rgba(0,0,0,0.15);
       --radius: 14px;
       --transition: 0.28s cubic-bezier(.4,0,.2,1);
     }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', '맑은 고딕', sans-serif;
+      font-family: 'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', '맑은 고딕', sans-serif;
       font-size: 18px;
       line-height: 1.75;
       color: var(--text);
       background: var(--bg);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
     }
 
     /* ── 헤더 ── */
@@ -49,11 +56,21 @@
       top: 0;
       z-index: 100;
       box-shadow: 0 3px 16px rgba(39,174,96,0.35);
+      overflow: hidden;
+    }
+    .app-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(255,255,255,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 30%, rgba(255,255,255,0.08) 0%, transparent 50%);
+      pointer-events: none;
     }
     .app-header h1 {
       font-size: 26px;
       font-weight: 800;
       letter-spacing: -0.5px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
     .app-header .subtitle {
       font-size: 14px;
@@ -61,6 +78,7 @@
       margin-top: 3px;
       letter-spacing: 0.5px;
     }
+    .app-header nav { display: flex; gap: 8px; flex-wrap: wrap; }
     .app-header nav a {
       color: #fff;
       text-decoration: none;
@@ -68,12 +86,93 @@
       padding: 8px 18px;
       border-radius: 24px;
       font-size: 15px;
-      font-weight: 600;
-      transition: background var(--transition);
+      font-weight: 700;
+      transition: background var(--transition), transform var(--transition);
       border: 1.5px solid rgba(255,255,255,0.3);
     }
     .app-header nav a:hover {
       background: rgba(255,255,255,0.32);
+      transform: translateY(-1px);
+    }
+
+    /* ── 히어로 배너 ── */
+    .hero-banner {
+      background: linear-gradient(135deg, #0f3d23 0%, #1e8449 40%, #27ae60 70%, #2ecc71 100%);
+      color: #fff;
+      padding: 60px 32px 52px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 300'%3E%3Ccircle cx='100' cy='150' r='180' fill='rgba(255,255,255,0.04)'/%3E%3Ccircle cx='700' cy='80' r='140' fill='rgba(255,255,255,0.05)'/%3E%3Ccircle cx='400' cy='280' r='200' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E") center/cover no-repeat;
+      pointer-events: none;
+    }
+    .hero-unit-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      border: 1.5px solid rgba(255,255,255,0.4);
+      border-radius: 999px;
+      padding: 6px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 18px;
+    }
+    .hero-banner h2 {
+      font-size: clamp(28px, 5vw, 46px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 14px;
+      text-shadow: 0 3px 16px rgba(0,0,0,0.25);
+    }
+    .hero-banner p {
+      font-size: 17px;
+      opacity: 0.9;
+      max-width: 540px;
+      margin: 0 auto 28px;
+      line-height: 1.65;
+    }
+    .hero-quick-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .hero-quick-links a {
+      color: #fff;
+      text-decoration: none;
+      background: rgba(255,255,255,0.15);
+      border: 1.5px solid rgba(255,255,255,0.35);
+      padding: 9px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+    .hero-quick-links a:hover {
+      background: rgba(255,255,255,0.28);
+      transform: translateY(-2px);
+    }
+    .hero-energy-icons {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .hero-energy-icons span {
+      position: absolute;
+      font-size: 24px;
+      opacity: 0.12;
+      animation: heroFloat 6s ease-in-out infinite;
+    }
+    @keyframes heroFloat {
+      0%,100% { transform: translateY(0) rotate(0deg); opacity: 0.10; }
+      50%      { transform: translateY(-18px) rotate(8deg); opacity: 0.18; }
     }
 
     /* ── 섹션 공통 ── */
@@ -148,38 +247,53 @@
     /* ── 섹션 2: 에너지 형태 카드 그리드 ── */
     .energy-forms-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 22px;
       margin-top: 8px;
     }
     .energy-card {
       background: var(--card-bg);
-      border-radius: var(--radius);
+      border-radius: 20px;
       box-shadow: var(--shadow);
-      padding: 22px 18px 18px;
+      padding: 26px 20px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
       cursor: default;
-      transition: transform var(--transition), box-shadow var(--transition);
-      border-top: 4px solid var(--card-color, var(--primary));
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+      border-top: 5px solid var(--card-color, var(--primary));
+      position: relative;
+      overflow: hidden;
+    }
+    .energy-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 30%, rgba(var(--card-rgb,39,174,96), 0.08) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
     }
     .energy-card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow-hover);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.13);
     }
+    .energy-card:hover::after { opacity: 1; }
     .energy-card svg {
-      margin-bottom: 12px;
+      margin-bottom: 14px;
+      transition: transform 0.3s ease;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.10));
     }
+    .energy-card:hover svg { transform: scale(1.08) translateY(-2px); }
     .energy-card .card-name {
-      font-size: 18px;
-      font-weight: 800;
+      font-size: 19px;
+      font-weight: 900;
       color: var(--card-color, var(--primary));
       margin-bottom: 6px;
+      letter-spacing: -0.02em;
     }
     .energy-card .card-concept {
-      font-size: 15px;
+      font-size: 14.5px;
       color: var(--text);
       margin-bottom: 6px;
       line-height: 1.5;
@@ -187,16 +301,16 @@
     .energy-card .card-example {
       font-size: 14px;
       color: var(--text-light);
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
     .energy-card .card-badge {
-      background: #fef9c3;
-      border: 1.5px solid #f1c40f;
-      color: #7d6608;
-      border-radius: 20px;
-      padding: 4px 14px;
+      background: rgba(0,0,0,0.06);
+      border: 1.5px solid rgba(0,0,0,0.10);
+      color: var(--card-color, var(--primary));
+      border-radius: 999px;
+      padding: 5px 16px;
       font-size: 13px;
-      font-weight: 700;
+      font-weight: 800;
       margin-top: auto;
     }
 
@@ -415,96 +529,194 @@
 
     .mini-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
       gap: 14px;
     }
     .mini-card {
       background: var(--card-bg);
-      border-radius: 12px;
+      border-radius: 16px;
       box-shadow: var(--shadow);
-      padding: 18px 14px;
+      padding: 20px 14px 16px;
       text-align: center;
       transition: transform var(--transition), box-shadow var(--transition);
-      border-bottom: 3px solid var(--primary);
+      border-bottom: 4px solid var(--mini-color, var(--primary));
+      position: relative;
+      overflow: hidden;
+    }
+    .mini-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--mini-color, var(--primary));
+      opacity: 0.3;
     }
     .mini-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-5px);
       box-shadow: var(--shadow-hover);
     }
     .mini-card .mini-emoji {
-      font-size: 30px;
+      font-size: 34px;
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
+      transition: transform 0.3s ease;
     }
+    .mini-card:hover .mini-emoji { transform: scale(1.2); }
     .mini-card .mini-name {
-      font-size: 16px;
-      font-weight: 800;
-      color: var(--primary-dark);
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--mini-color, var(--primary-dark));
       margin-bottom: 5px;
     }
     .mini-card .mini-desc {
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--text-light);
       line-height: 1.45;
+    }
+    .mini-card .mini-type {
+      display: inline-block;
+      margin-top: 8px;
+      background: rgba(0,0,0,0.06);
+      color: var(--mini-color, var(--primary-dark));
+      border-radius: 999px;
+      padding: 2px 10px;
+      font-size: 11px;
+      font-weight: 800;
     }
 
     /* ── 섹션 5: 시뮬레이터 활동 ── */
     .activity-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
       gap: 22px;
       margin-top: 8px;
     }
     .activity-card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 32px 22px;
+      border-radius: 22px;
+      padding: 36px 24px 28px;
       text-align: center;
       text-decoration: none;
-      color: var(--text);
+      color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
-      transition: transform var(--transition), box-shadow var(--transition);
-      border-top: 5px solid var(--primary);
+      gap: 10px;
+      transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s;
+      position: relative;
+      overflow: hidden;
     }
-    .activity-card:hover {
-      transform: translateY(-6px);
-      box-shadow: var(--shadow-hover);
+    .activity-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.12);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .activity-card:hover { transform: translateY(-8px) scale(1.02); }
+    .activity-card:hover::before { opacity: 1; }
+    .activity-card.green  { background: linear-gradient(135deg, #1e8449 0%, #27ae60 60%, #2ecc71 100%); box-shadow: 0 6px 24px rgba(39,174,96,0.35); }
+    .activity-card.blue   { background: linear-gradient(135deg, #1a5276 0%, #2980b9 60%, #3498db 100%); box-shadow: 0 6px 24px rgba(41,128,185,0.35); }
+    .activity-card.teal   { background: linear-gradient(135deg, #0e6655 0%, #16a085 60%, #1abc9c 100%); box-shadow: 0 6px 24px rgba(22,160,133,0.35); }
+    .activity-card.amber  { background: linear-gradient(135deg, #d35400 0%, #e67e22 60%, #f39c12 100%); box-shadow: 0 6px 24px rgba(230,126,34,0.35); }
+    .activity-card:hover.green  { box-shadow: 0 14px 36px rgba(39,174,96,0.45); }
+    .activity-card:hover.blue   { box-shadow: 0 14px 36px rgba(41,128,185,0.45); }
+    .activity-card:hover.teal   { box-shadow: 0 14px 36px rgba(22,160,133,0.45); }
+    .activity-card:hover.amber  { box-shadow: 0 14px 36px rgba(230,126,34,0.45); }
+    .activity-card .act-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.25);
+      border: 1.5px solid rgba(255,255,255,0.4);
+      border-radius: 999px;
+      padding: 4px 14px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
     }
     .activity-card .act-icon {
-      font-size: 42px;
+      font-size: 52px;
       line-height: 1;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.25));
+      transition: transform 0.3s ease;
     }
+    .activity-card:hover .act-icon { transform: scale(1.15) rotate(-5deg); }
     .activity-card .act-title {
-      font-size: 18px;
-      font-weight: 800;
-      color: var(--primary-dark);
+      font-size: 20px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.02em;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .activity-card .act-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.5;
     }
     .activity-card .act-btn {
-      margin-top: 6px;
-      background: var(--primary);
+      margin-top: 8px;
+      background: rgba(255,255,255,0.22);
+      border: 2px solid rgba(255,255,255,0.5);
       color: #fff;
-      border-radius: 24px;
-      padding: 8px 20px;
+      border-radius: 999px;
+      padding: 10px 24px;
       font-size: 15px;
-      font-weight: 700;
-      transition: background var(--transition);
+      font-weight: 800;
+      transition: background 0.2s, border-color 0.2s;
     }
     .activity-card:hover .act-btn {
-      background: var(--primary-dark);
+      background: rgba(255,255,255,0.35);
+      border-color: rgba(255,255,255,0.75);
+    }
+
+    /* ── 섹션 헤더 장식 ── */
+    .section-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+    .section-num-badge {
+      width: 48px; height: 48px; min-width: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 900;
+      box-shadow: 0 4px 14px rgba(39,174,96,0.35);
+      flex-shrink: 0;
     }
 
     /* ── 푸터 ── */
     .app-footer {
       text-align: center;
-      padding: 28px 24px;
-      color: #888;
+      padding: 36px 24px;
+      background: linear-gradient(135deg, #0f3d23, #1e8449);
+      color: rgba(255,255,255,0.75);
       font-size: 14px;
-      border-top: 1.5px solid #e8f8ef;
       margin-top: 12px;
+    }
+    .app-footer strong { color: #fff; }
+    .app-footer .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .app-footer .footer-links a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 5px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .app-footer .footer-links a:hover {
+      background: rgba(255,255,255,0.22);
+      color: #fff;
     }
 
     /* ── 반응형 ── */
@@ -525,8 +737,37 @@
     <h1>⚡ 에너지와 수송 기술의 세계</h1>
     <div class="subtitle">V단원 · 중학교 3학년 기술</div>
   </div>
-  <nav><a href="/v-1-01-energy-simulator/index.html">🏠 홈</a></nav>
+  <nav>
+    <a href="#sec2">⚡ 에너지 형태</a>
+    <a href="#sec3">🔄 에너지 변환</a>
+    <a href="#sec5">🎮 시뮬레이터</a>
+  </nav>
 </header>
+
+<!-- ══════════════════ 히어로 배너 ══════════════════ -->
+<div class="hero-banner">
+  <div class="hero-energy-icons">
+    <span style="left:5%; top:20%; animation-delay:0s;">⚡</span>
+    <span style="left:15%; top:60%; animation-delay:1s;">🔥</span>
+    <span style="left:25%; top:30%; animation-delay:2s;">☀️</span>
+    <span style="left:70%; top:20%; animation-delay:0.5s;">💧</span>
+    <span style="left:80%; top:65%; animation-delay:1.5s;">💨</span>
+    <span style="left:90%; top:35%; animation-delay:2.5s;">⚛️</span>
+    <span style="left:50%; top:75%; animation-delay:0.8s;">🌿</span>
+    <span style="left:42%; top:15%; animation-delay:1.8s;">⚙️</span>
+  </div>
+  <div style="position:relative; z-index:1;">
+    <div class="hero-unit-badge">📚 V단원 1소단원 · 에너지의 이해</div>
+    <h2>에너지란 무엇일까요?</h2>
+    <p>에너지의 6가지 형태, 에너지 변환의 원리, 신재생 에너지까지 — 애니메이션과 시뮬레이터로 직접 탐험해봐요!</p>
+    <div class="hero-quick-links">
+      <a href="#sec2">⚡ 에너지 형태 →</a>
+      <a href="#sec3">🔄 에너지 변환 →</a>
+      <a href="#sec4">🌱 신재생 에너지 →</a>
+      <a href="#sec5">🎮 시뮬레이터 활동 →</a>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════════════ 섹션 1: 학습 목표 ══════════════════ -->
 <section class="section" id="sec1">
@@ -545,8 +786,11 @@
 
 <!-- ══════════════════ 섹션 2: 에너지 형태 ══════════════════ -->
 <section class="section" id="sec2">
-  <div class="section-title">⚡ 개념 1 · 에너지의 형태</div>
-  <div class="section-desc">에너지는 일을 할 수 있는 능력이에요. 모두 6가지 형태가 있습니다.</div>
+  <div class="section-title-wrap">
+    <div class="section-num-badge">1</div>
+    <div class="section-title">에너지의 형태</div>
+  </div>
+  <div class="section-desc">에너지는 일을 할 수 있는 능력이에요. 모두 <strong>6가지 형태</strong>가 있습니다. 각 카드를 살펴보세요!</div>
 
   <div class="energy-forms-grid">
 
@@ -689,8 +933,11 @@
 
 <!-- ══════════════════ 섹션 3: 에너지 변환 ══════════════════ -->
 <section class="section" id="sec3">
-  <div class="section-title">🔄 개념 2 · 에너지 변환</div>
-  <div class="section-desc">한 형태의 에너지를 다른 형태로 바꾸는 것을 <strong>에너지 변환</strong>이라고 해요. 발전소를 선택하면 실제 발전 과정을 애니메이션으로 확인할 수 있어요!</div>
+  <div class="section-title-wrap">
+    <div class="section-num-badge">2</div>
+    <div class="section-title">에너지 변환</div>
+  </div>
+  <div class="section-desc">한 형태의 에너지를 다른 형태로 바꾸는 것을 <strong>에너지 변환</strong>이라고 해요. 발전소 탭을 눌러 실제 애니메이션으로 확인해봐요!</div>
 
   <!-- 탭 버튼 4개 -->
   <div class="conv-tabs">
@@ -1161,8 +1408,11 @@
 
 <!-- ══════════════════ 섹션 4: 신재생 에너지 ══════════════════ -->
 <section class="section" id="sec4">
-  <div class="section-title">🌱 개념 3 · 신재생 에너지의 종류</div>
-  <div class="section-desc">자연에서 얻거나 새로운 기술로 만드는 친환경 에너지예요. 총 <strong>10가지</strong> 종류가 있습니다.</div>
+  <div class="section-title-wrap">
+    <div class="section-num-badge">3</div>
+    <div class="section-title">신재생 에너지의 종류</div>
+  </div>
+  <div class="section-desc">자연에서 얻거나 새로운 기술로 만드는 친환경 에너지예요. 총 <strong>재생 8종 + 신에너지 2종</strong> = 10가지!</div>
 
   <div class="renewable-intro">
     <div class="renewable-box green">
@@ -1183,55 +1433,67 @@
   </div>
 
   <div class="mini-grid">
-    <div class="mini-card">
+    <!-- 재생 에너지 8종 -->
+    <div class="mini-card" style="--mini-color:#d4a017">
       <span class="mini-emoji">☀️</span>
       <div class="mini-name">태양광</div>
       <div class="mini-desc">태양전지로 빛→전기</div>
+      <span class="mini-type">재생</span>
     </div>
-    <div class="mini-card">
+    <div class="mini-card" style="--mini-color:#e67e22">
       <span class="mini-emoji">🔆</span>
       <div class="mini-name">태양열</div>
       <div class="mini-desc">반사경으로 열 집중</div>
+      <span class="mini-type">재생</span>
     </div>
-    <div class="mini-card">
+    <div class="mini-card" style="--mini-color:#2980b9">
       <span class="mini-emoji">💨</span>
       <div class="mini-name">풍력</div>
       <div class="mini-desc">바람으로 터빈 회전</div>
+      <span class="mini-type">재생</span>
     </div>
-    <div class="mini-card">
+    <div class="mini-card" style="--mini-color:#1a5276">
       <span class="mini-emoji">💧</span>
       <div class="mini-name">수력</div>
       <div class="mini-desc">댐의 물 낙차 이용</div>
+      <span class="mini-type">재생</span>
     </div>
-    <div class="mini-card">
+    <div class="mini-card" style="--mini-color:#c0392b">
       <span class="mini-emoji">🌋</span>
       <div class="mini-name">지열</div>
       <div class="mini-desc">지하 열로 발전</div>
+      <span class="mini-type">재생</span>
     </div>
-    <div class="mini-card">
+    <div class="mini-card" style="--mini-color:#16a085">
       <span class="mini-emoji">🌊</span>
       <div class="mini-name">해양(조력)</div>
       <div class="mini-desc">밀물·썰물 이용</div>
+      <span class="mini-type">재생</span>
     </div>
-    <div class="mini-card">
+    <div class="mini-card" style="--mini-color:#27ae60">
       <span class="mini-emoji">🌿</span>
       <div class="mini-name">바이오</div>
       <div class="mini-desc">생물체 발효 가스</div>
+      <span class="mini-type">재생</span>
     </div>
-    <div class="mini-card">
-      <span class="mini-emoji">🗑️</span>
+    <div class="mini-card" style="--mini-color:#7f8c8d">
+      <span class="mini-emoji">♻️</span>
       <div class="mini-name">폐기물</div>
       <div class="mini-desc">쓰레기 연료화</div>
+      <span class="mini-type">재생</span>
     </div>
-    <div class="mini-card">
-      <span class="mini-emoji">🔬</span>
+    <!-- 신 에너지 2종 -->
+    <div class="mini-card" style="--mini-color:#8e44ad">
+      <span class="mini-emoji">⚗️</span>
       <div class="mini-name">수소 에너지</div>
       <div class="mini-desc">수소+산소 → 전기</div>
+      <span class="mini-type">신에너지</span>
     </div>
-    <div class="mini-card">
+    <div class="mini-card" style="--mini-color:#2c3e50">
       <span class="mini-emoji">⛏️</span>
       <div class="mini-name">석탄 가스화</div>
       <div class="mini-desc">석탄→합성 가스</div>
+      <span class="mini-type">신에너지</span>
     </div>
   </div>
 </section>
@@ -1240,36 +1502,53 @@
 
 <!-- ══════════════════ 섹션 5: 시뮬레이터 ══════════════════ -->
 <section class="section" id="sec5">
-  <div class="section-title">🎮 시뮬레이터 &amp; 학습 활동</div>
-  <div class="section-desc">직접 체험하며 개념을 익혀보세요! 각 시뮬레이터를 클릭하여 시작하세요.</div>
+  <div class="section-title-wrap">
+    <div class="section-num-badge">🎮</div>
+    <div class="section-title">시뮬레이터 &amp; 학습 활동</div>
+  </div>
+  <div class="section-desc">직접 체험하며 개념을 완성해봐요! 4가지 활동을 모두 마치면 이 단원 완전 정복!</div>
 
   <div class="activity-grid">
-    <a class="activity-card" href="sim_energy_forms.html">
+    <a class="activity-card green" href="sim_energy_forms.html">
+      <div class="act-badge">🎮 분류 게임</div>
       <span class="act-icon">⚡</span>
-      <div class="act-title">에너지 형태 분류 게임</div>
-      <div class="act-btn">시작하기 →</div>
+      <div class="act-title">에너지 형태 분류</div>
+      <div class="act-sub">6가지 에너지 형태를 맞혀보세요. 드래그&amp;클릭으로!</div>
+      <div class="act-btn">게임 시작 →</div>
     </a>
-    <a class="activity-card" href="sim_energy_conversion.html">
-      <span class="act-icon">🔄</span>
-      <div class="act-title">에너지 변환 시뮬레이터</div>
-      <div class="act-btn">시작하기 →</div>
+    <a class="activity-card blue" href="sim_energy_conversion.html">
+      <div class="act-badge">🔄 인터랙티브</div>
+      <span class="act-icon">🏭</span>
+      <div class="act-title">에너지 변환 채우기</div>
+      <div class="act-sub">발전소별 에너지 변환 과정을 빈칸으로 채워봐요.</div>
+      <div class="act-btn">체험하기 →</div>
     </a>
-    <a class="activity-card" href="sim_renewable.html">
-      <span class="act-icon">🌱</span>
-      <div class="act-title">신재생 에너지 탐색기</div>
-      <div class="act-btn">시작하기 →</div>
+    <a class="activity-card teal" href="sim_renewable.html">
+      <div class="act-badge">🌱 탐색기</div>
+      <span class="act-icon">🌍</span>
+      <div class="act-title">신재생 에너지 탐색</div>
+      <div class="act-sub">10가지 신재생 에너지를 애니메이션으로 알아봐요.</div>
+      <div class="act-btn">탐색하기 →</div>
     </a>
-    <a class="activity-card" href="activity_quiz.html">
-      <span class="act-icon">📝</span>
-      <div class="act-title">확인 퀴즈</div>
-      <div class="act-btn">시작하기 →</div>
+    <a class="activity-card amber" href="activity_quiz.html">
+      <div class="act-badge">📝 확인 퀴즈</div>
+      <span class="act-icon">🏆</span>
+      <div class="act-title">단원 마무리 퀴즈</div>
+      <div class="act-sub">배운 내용을 퀴즈로 최종 정리해요. 몇 점 받을까요?</div>
+      <div class="act-btn">도전하기 →</div>
     </a>
   </div>
 </section>
 
 <!-- ══════════════════ 푸터 ══════════════════ -->
 <footer class="app-footer">
-  V단원. 에너지와 수송 기술의 세계 · 중학교 3학년 기술 수업 자료
+  <strong>⚡ 에너지와 수송 기술의 세계</strong> &nbsp;|&nbsp; V단원 1소단원 · 중학교 3학년 기술
+  <div class="footer-links">
+    <a href="sim_energy_forms.html">⚡ 에너지 형태 게임</a>
+    <a href="sim_energy_conversion.html">🔄 에너지 변환</a>
+    <a href="sim_renewable.html">🌱 신재생 에너지</a>
+    <a href="activity_quiz.html">📝 확인 퀴즈</a>
+  </div>
 </footer>
 
 <!-- ══════════════════ JavaScript ══════════════════ -->

@@ -8,6 +8,18 @@
   <style>
     /* ── 페이지 전용 스타일 ── */
     body { font-size: 18px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ── 헤더 오버라이드 (teal 테마) ── */
+    .app-header {
+      background: linear-gradient(135deg, #0e6655 0%, #16a085 60%, #1abc9c 100%);
+      box-shadow: 0 3px 16px rgba(22,160,133,0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
     /* 필터 버튼 영역 */
     .filter-bar {
@@ -62,7 +74,7 @@
       padding: 18px 20px;
       border: 3px solid var(--border);
       cursor: pointer;
-      transition: all 0.22s;
+      transition: transform 0.22s cubic-bezier(.34,1.56,.64,1), box-shadow 0.22s, border-color 0.22s;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -77,15 +89,22 @@
       background: var(--card-color, var(--primary));
     }
     .energy-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(39,174,96,0.15);
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 14px 36px rgba(0,0,0,0.12);
       border-color: var(--card-color, var(--primary));
     }
     .energy-card.selected {
       border-color: var(--card-color, var(--primary));
-      box-shadow: 0 0 0 3px color-mix(in srgb, var(--card-color, var(--primary)) 30%, transparent);
-      background: #f9fffe;
+      box-shadow: 0 0 0 4px rgba(22,160,133,0.2), 0 8px 24px rgba(0,0,0,0.10);
+      background: #f0fff9;
+      transform: translateY(-3px);
     }
+    .card-emoji {
+      font-size: 36px;
+      line-height: 1;
+      transition: transform 0.3s ease;
+    }
+    .energy-card:hover .card-emoji { transform: scale(1.2); }
     .energy-card.hidden { display: none; }
 
     .card-emoji { font-size: 36px; line-height: 1; }
