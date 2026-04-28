@@ -905,7 +905,7 @@
           <!-- 진자 궤적 -->
           <path d="M40 92 Q80 118 120 92" stroke="#e67e22" stroke-dasharray="3 4" stroke-width="1.5" fill="none" opacity="0.45"/>
           <!-- 진자 -->
-          <g style="transform-origin:80px 14px; animation:pendulumSwing 3.8s ease-in-out infinite;">
+          <g style="transform-origin:80px 14px; animation:pendulumSwing 38s ease-in-out infinite;">
             <line x1="80" y1="14" x2="80" y2="84" stroke="#34495e" stroke-width="2"/>
             <circle cx="80" cy="94" r="13" fill="#e67e22"/>
             <circle cx="80" cy="94" r="13" fill="url(#mech-shine)"/>
@@ -938,17 +938,17 @@
           <text x="33" y="72" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">+ −</text>
           <!-- 회로 (전류 흐름) -->
           <path d="M58 60 L92 60 L92 38 L116 38" stroke="#2980b9" stroke-width="3" fill="none"
-                stroke-dasharray="6 4" style="animation:electronFlow 1.8s linear infinite;"/>
+                stroke-dasharray="6 4" style="animation:electronFlow 18s linear infinite;"/>
           <path d="M116 90 L92 90 L92 70" stroke="#2980b9" stroke-width="3" fill="none"
-                stroke-dasharray="6 4" style="animation:electronFlow 1.8s linear infinite;"/>
+                stroke-dasharray="6 4" style="animation:electronFlow 18s linear infinite;"/>
           <!-- 전구 본체 -->
           <circle cx="126" cy="64" r="20" fill="#fff9c4" stroke="#f1c40f" stroke-width="2.5"
-                  style="animation:bulbGlowFill 3s ease-in-out infinite;"/>
+                  style="animation:bulbGlowFill 30s ease-in-out infinite;"/>
           <!-- 전구 소켓 -->
           <rect x="118" y="84" width="16" height="6" fill="#7f8c8d"/>
           <rect x="120" y="90" width="12" height="3" fill="#95a5a6"/>
           <!-- 빛살 -->
-          <g stroke="#f39c12" stroke-width="2.5" stroke-linecap="round" style="animation:bulbGlow 3s ease-in-out infinite;">
+          <g stroke="#f39c12" stroke-width="2.5" stroke-linecap="round" style="animation:bulbGlow 30s ease-in-out infinite;">
             <line x1="126" y1="36" x2="126" y2="42"/>
             <line x1="148" y1="44" x2="143" y2="48"/>
             <line x1="104" y1="44" x2="109" y2="48"/>
@@ -973,13 +973,13 @@
           <!-- 분자 (메탄 형태) -->
           <g transform="translate(50,60)">
             <line x1="0" y1="0" x2="-26" y2="-22" stroke="#27ae60" stroke-width="2.5"
-                  style="animation:chemBondPulse 4s ease-in-out infinite;"/>
+                  style="animation:chemBondPulse 40s ease-in-out infinite;"/>
             <line x1="0" y1="0" x2="26" y2="-22" stroke="#27ae60" stroke-width="2.5"
-                  style="animation:chemBondPulse 4s ease-in-out infinite 1s;"/>
+                  style="animation:chemBondPulse 40s ease-in-out infinite 10s;"/>
             <line x1="0" y1="0" x2="-26" y2="22" stroke="#27ae60" stroke-width="2.5"
-                  style="animation:chemBondPulse 4s ease-in-out infinite 2s;"/>
+                  style="animation:chemBondPulse 40s ease-in-out infinite 20s;"/>
             <line x1="0" y1="0" x2="26" y2="22" stroke="#27ae60" stroke-width="2.5"
-                  style="animation:chemBondPulse 4s ease-in-out infinite 3s;"/>
+                  style="animation:chemBondPulse 40s ease-in-out infinite 30s;"/>
             <!-- 중심 원자 C -->
             <circle r="14" fill="#1e8449"/>
             <text y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">C</text>
@@ -1003,7 +1003,7 @@
             </marker>
           </defs>
           <!-- 방출되는 에너지 (불꽃/열) -->
-          <g transform="translate(140,60)" style="transform-origin:140px 60px; animation:flameFlicker 2.5s ease-in-out infinite;">
+          <g transform="translate(140,60)" style="transform-origin:140px 60px; animation:flameFlicker 25s ease-in-out infinite;">
             <path d="M0 14 C-8 10 -10 0 -6 -6 C-2 -10 -2 -14 0 -18 C2 -14 4 -10 6 -6 C10 0 8 10 0 14Z" fill="#e74c3c"/>
             <path d="M0 12 C-4 10 -6 4 -3 0 C0 -4 0 -8 2 -10 C2 -6 4 -2 4 4 C4 8 4 10 0 12Z" fill="#f39c12"/>
           </g>
@@ -1021,7 +1021,7 @@
       <div class="card-svg-wrap" style="background:linear-gradient(135deg,#fef9e7,#fcf3cf);">
         <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
           <!-- 회전하는 빛살 -->
-          <g style="transform-origin:80px 60px; animation:sunRayRotate 22s linear infinite;">
+          <g style="transform-origin:80px 60px; animation:sunRayRotate 60s linear infinite;">
             <g stroke="#f39c12" stroke-width="3" stroke-linecap="round">
               <line x1="80" y1="14" x2="80" y2="28"/>
               <line x1="80" y1="92" x2="80" y2="106"/>
@@ -1034,7 +1034,7 @@
             </g>
           </g>
           <!-- 태양 본체 (펄스) -->
-          <g style="transform-origin:80px 60px; animation:sunPulse 4s ease-in-out infinite;">
+          <g style="transform-origin:80px 60px; animation:sunPulse 40s ease-in-out infinite;">
             <circle cx="80" cy="60" r="22" fill="#f1c40f"/>
             <circle cx="80" cy="60" r="22" fill="url(#sun-shine)"/>
             <circle cx="73" cy="52" r="6" fill="#fff" opacity="0.4"/>
@@ -1046,9 +1046,9 @@
             </radialGradient>
           </defs>
           <!-- 반짝이 -->
-          <text x="36" y="32" font-size="12" fill="#f1c40f" style="animation:sparkle 4s ease-in-out infinite;">✦</text>
-          <text x="124" y="100" font-size="12" fill="#f1c40f" style="animation:sparkle 4s ease-in-out infinite 1.3s;">✦</text>
-          <text x="130" y="38" font-size="10" fill="#f39c12" style="animation:sparkle 4s ease-in-out infinite 2.6s;">✧</text>
+          <text x="36" y="32" font-size="12" fill="#f1c40f" style="animation:sparkle 40s ease-in-out infinite;">✦</text>
+          <text x="124" y="100" font-size="12" fill="#f1c40f" style="animation:sparkle 40s ease-in-out infinite 13s;">✦</text>
+          <text x="130" y="38" font-size="10" fill="#f39c12" style="animation:sparkle 40s ease-in-out infinite 26s;">✧</text>
         </svg>
       </div>
       <div class="card-name">빛 에너지</div>
@@ -1068,16 +1068,16 @@
           <line x1="56" y1="100" x2="68" y2="100" stroke="#a04000" stroke-width="1"/>
           <line x1="76" y1="100" x2="92" y2="100" stroke="#a04000" stroke-width="1"/>
           <!-- 큰 불꽃 -->
-          <g style="transform-origin:80px 96px; animation:flameFlicker 2.2s ease-in-out infinite;">
+          <g style="transform-origin:80px 96px; animation:flameFlicker 22s ease-in-out infinite;">
             <path d="M80 96 C58 90 48 72 52 54 C56 40 70 32 66 16 C74 28 70 42 80 46 C82 36 88 24 96 16 C96 36 88 44 92 56 C98 68 104 88 80 96Z" fill="#e74c3c"/>
             <path d="M80 96 C66 92 60 80 62 68 C64 60 70 54 68 44 C72 50 70 60 80 62 C82 56 86 48 90 44 C90 56 86 64 88 72 C92 80 96 92 80 96Z" fill="#f39c12"/>
             <path d="M80 96 C72 94 68 86 70 76 C72 70 76 66 74 58 C78 64 76 72 80 74 C82 70 84 64 86 60 C86 70 84 76 86 82 C88 88 90 94 80 96Z" fill="#fff9c4" opacity="0.8"/>
           </g>
           <!-- 상승하는 열 파동 -->
           <g stroke="#e74c3c" stroke-width="2" fill="none" stroke-linecap="round">
-            <path d="M64 30 Q68 24 72 30 Q76 36 80 30" style="animation:heatWaveRise 3.5s linear infinite;" opacity="0.6"/>
-            <path d="M86 24 Q90 18 94 24 Q98 30 102 24" style="animation:heatWaveRise 3.5s linear infinite 1.2s;" opacity="0.6"/>
-            <path d="M70 18 Q74 12 78 18 Q82 24 86 18" style="animation:heatWaveRise 3.5s linear infinite 2.4s;" opacity="0.5"/>
+            <path d="M64 30 Q68 24 72 30 Q76 36 80 30" style="animation:heatWaveRise 35s linear infinite;" opacity="0.6"/>
+            <path d="M86 24 Q90 18 94 24 Q98 30 102 24" style="animation:heatWaveRise 35s linear infinite 12s;" opacity="0.6"/>
+            <path d="M70 18 Q74 12 78 18 Q82 24 86 18" style="animation:heatWaveRise 35s linear infinite 24s;" opacity="0.5"/>
           </g>
           <!-- 온도계 표시 -->
           <text x="14" y="60" font-size="20">🌡️</text>
@@ -1096,7 +1096,7 @@
       <div class="card-svg-wrap" style="background:linear-gradient(135deg,#f5eef8,#e8daef);">
         <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
           <!-- 에너지 방출 (배경) -->
-          <g style="transform-origin:80px 60px; animation:nuclearBurst 3.5s ease-in-out infinite;">
+          <g style="transform-origin:80px 60px; animation:nuclearBurst 35s ease-in-out infinite;">
             <circle cx="80" cy="60" r="36" fill="none" stroke="#f39c12" stroke-width="1" opacity="0.5"/>
             <circle cx="80" cy="60" r="44" fill="none" stroke="#f1c40f" stroke-width="1" opacity="0.35"/>
           </g>
@@ -1105,18 +1105,18 @@
           <ellipse cx="80" cy="60" rx="50" ry="18" stroke="#a569bd" stroke-width="1.5" fill="none" opacity="0.6" transform="rotate(60 80 60)"/>
           <ellipse cx="80" cy="60" rx="50" ry="18" stroke="#c39bd3" stroke-width="1.5" fill="none" opacity="0.6" transform="rotate(-60 80 60)"/>
           <!-- 회전하는 전자 (3개) -->
-          <g style="transform-origin:80px 60px; animation:electronOrbit1 7s linear infinite;">
+          <g style="transform-origin:80px 60px; animation:electronOrbit1 70s linear infinite;">
             <circle cx="130" cy="60" r="5" fill="#f39c12"/>
             <circle cx="130" cy="60" r="5" fill="#f39c12" opacity="0.4">
               <animate attributeName="r" values="5;7;5" dur="3s" repeatCount="indefinite"/>
             </circle>
           </g>
-          <g style="transform-origin:80px 60px; animation:electronOrbit2 9s linear infinite;">
+          <g style="transform-origin:80px 60px; animation:electronOrbit2 90s linear infinite;">
             <g transform="rotate(60 80 60)">
               <circle cx="130" cy="60" r="5" fill="#e67e22"/>
             </g>
           </g>
-          <g style="transform-origin:80px 60px; animation:electronOrbit1 6s linear infinite;">
+          <g style="transform-origin:80px 60px; animation:electronOrbit1 60s linear infinite;">
             <g transform="rotate(-60 80 60)">
               <circle cx="130" cy="60" r="5" fill="#d35400"/>
             </g>
