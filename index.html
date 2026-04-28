@@ -615,56 +615,71 @@
 
     .mini-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 18px;
     }
     .mini-card {
       background: var(--card-bg);
-      border-radius: 16px;
+      border-radius: 18px;
       box-shadow: var(--shadow);
-      padding: 20px 14px 16px;
+      padding: 22px 18px 18px;
       text-align: center;
       transition: transform var(--transition), box-shadow var(--transition);
-      border-bottom: 4px solid var(--mini-color, var(--primary));
+      border-top: 4px solid var(--mini-color, var(--primary));
       position: relative;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
     .mini-card::before {
       content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
       background: var(--mini-color, var(--primary));
-      opacity: 0.3;
+      opacity: 0.15;
     }
     .mini-card:hover {
       transform: translateY(-5px);
       box-shadow: var(--shadow-hover);
     }
     .mini-card .mini-emoji {
-      font-size: 34px;
+      font-size: 36px;
       display: block;
       margin-bottom: 10px;
       transition: transform 0.3s ease;
     }
-    .mini-card:hover .mini-emoji { transform: scale(1.2); }
+    .mini-card:hover .mini-emoji { transform: scale(1.15); }
     .mini-card .mini-name {
-      font-size: 15px;
+      font-size: 17px;
       font-weight: 900;
       color: var(--mini-color, var(--primary-dark));
-      margin-bottom: 5px;
+      margin-bottom: 6px;
     }
     .mini-card .mini-desc {
-      font-size: 12.5px;
+      font-size: 13px;
       color: var(--text-light);
-      line-height: 1.45;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .mini-card .mini-concept {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.65;
+      text-align: left;
+      background: rgba(0,0,0,0.035);
+      border-left: 3px solid var(--mini-color, var(--primary));
+      border-radius: 0 8px 8px 0;
+      padding: 9px 11px;
+      margin-bottom: 12px;
+      flex: 1;
     }
     .mini-card .mini-type {
       display: inline-block;
-      margin-top: 8px;
+      margin-top: auto;
       background: rgba(0,0,0,0.06);
       color: var(--mini-color, var(--primary-dark));
       border-radius: 999px;
-      padding: 2px 10px;
-      font-size: 11px;
+      padding: 3px 12px;
+      font-size: 12px;
       font-weight: 800;
     }
 
@@ -1635,62 +1650,81 @@
     <div class="mini-card" style="--mini-color:#d4a017">
       <span class="mini-emoji">☀️</span>
       <div class="mini-name">태양광</div>
-      <div class="mini-desc">태양전지로 빛→전기</div>
+      <div class="mini-desc">빛 에너지 → 전기 에너지</div>
+      <div class="mini-concept">태양전지(실리콘 반도체)에 햇빛이 닿으면 전자가 이동하며 <strong>직접 전기</strong>를 만들어요. 오염물질 배출이 없고 유지비가 적어 현재 가장 빠르게 보급되는 에너지예요.</div>
       <span class="mini-type">재생</span>
     </div>
+
     <div class="mini-card" style="--mini-color:#e67e22">
       <span class="mini-emoji">🔆</span>
       <div class="mini-name">태양열</div>
-      <div class="mini-desc">반사경으로 열 집중</div>
+      <div class="mini-desc">빛 에너지 → 열 에너지</div>
+      <div class="mini-concept">집열판이나 반사경으로 태양열을 한 곳에 모아 <strong>물을 가열</strong>해요. 만들어진 증기로 터빈을 돌리거나 건물 냉난방에 직접 활용해요.</div>
       <span class="mini-type">재생</span>
     </div>
+
     <div class="mini-card" style="--mini-color:#2980b9">
       <span class="mini-emoji">💨</span>
       <div class="mini-name">풍력</div>
-      <div class="mini-desc">바람으로 터빈 회전</div>
+      <div class="mini-desc">운동 에너지 → 전기 에너지</div>
+      <div class="mini-concept">바람이 블레이드(날개)를 돌려 <strong>발전기를 구동</strong>해요. 육상·해상 모두 설치 가능하고 발전 중 탄소 배출이 전혀 없어요.</div>
       <span class="mini-type">재생</span>
     </div>
+
     <div class="mini-card" style="--mini-color:#1a5276">
       <span class="mini-emoji">💧</span>
       <div class="mini-name">수력</div>
-      <div class="mini-desc">댐의 물 낙차 이용</div>
+      <div class="mini-desc">위치 에너지 → 전기 에너지</div>
+      <div class="mini-concept">높은 곳에 저장된 물이 낙하할 때 <strong>위치 에너지 → 운동 에너지 → 전기 에너지</strong> 순으로 변환돼요. 댐으로 안정적인 발전이 가능해요.</div>
       <span class="mini-type">재생</span>
     </div>
+
     <div class="mini-card" style="--mini-color:#c0392b">
       <span class="mini-emoji">🌋</span>
       <div class="mini-name">지열</div>
-      <div class="mini-desc">지하 열로 발전</div>
+      <div class="mini-desc">지구 내부 열 → 전기·열</div>
+      <div class="mini-concept">지하 수 km 깊이의 <strong>뜨거운 암석·열수</strong>를 이용해 증기를 만들어요. 날씨와 상관없이 24시간 안정적으로 발전할 수 있어요.</div>
       <span class="mini-type">재생</span>
     </div>
+
     <div class="mini-card" style="--mini-color:#16a085">
       <span class="mini-emoji">🌊</span>
       <div class="mini-name">해양(조력)</div>
-      <div class="mini-desc">밀물·썰물 이용</div>
+      <div class="mini-desc">조수 위치 에너지 → 전기</div>
+      <div class="mini-concept">달의 인력으로 생기는 <strong>밀물·썰물의 수위 차</strong>를 이용해 터빈을 돌려요. 조수 예측이 정확해 안정적인 전력 생산이 가능해요.</div>
       <span class="mini-type">재생</span>
     </div>
+
     <div class="mini-card" style="--mini-color:#27ae60">
       <span class="mini-emoji">🌿</span>
       <div class="mini-name">바이오</div>
-      <div class="mini-desc">생물체 발효 가스</div>
+      <div class="mini-desc">화학 에너지 → 열·전기</div>
+      <div class="mini-concept">나무·음식물·농업 부산물을 <strong>발효·연소</strong>시켜 메탄가스나 에탄올을 생산해요. 식물이 성장 중 흡수한 CO₂만큼 배출돼 탄소 중립이에요.</div>
       <span class="mini-type">재생</span>
     </div>
+
     <div class="mini-card" style="--mini-color:#7f8c8d">
       <span class="mini-emoji">♻️</span>
       <div class="mini-name">폐기물</div>
-      <div class="mini-desc">쓰레기 연료화</div>
+      <div class="mini-desc">화학 에너지 → 열·전기</div>
+      <div class="mini-concept">음식물·가연성 쓰레기를 <strong>소각하거나 가스화</strong>해 전기와 열을 생산해요. 매립 쓰레기를 줄이면서 동시에 에너지를 얻는 일석이조 방법이에요.</div>
       <span class="mini-type">재생</span>
     </div>
+
     <!-- 신 에너지 2종 -->
     <div class="mini-card" style="--mini-color:#8e44ad">
       <span class="mini-emoji">⚗️</span>
       <div class="mini-name">수소 에너지</div>
-      <div class="mini-desc">수소+산소 → 전기</div>
+      <div class="mini-desc">화학 에너지 → 전기 에너지</div>
+      <div class="mini-concept">수소(H₂)와 산소(O₂)를 연료전지에서 반응시켜 <strong>전기와 물만 생성</strong>해요. 저장·운반이 가능하고 발전 중 유해 물질이 전혀 나오지 않아요.</div>
       <span class="mini-type">신에너지</span>
     </div>
+
     <div class="mini-card" style="--mini-color:#2c3e50">
       <span class="mini-emoji">⛏️</span>
       <div class="mini-name">석탄 가스화</div>
-      <div class="mini-desc">석탄→합성 가스</div>
+      <div class="mini-desc">고체 연료 → 합성 가스</div>
+      <div class="mini-concept">석탄을 <strong>고온·고압에서 처리</strong>해 수소·일산화탄소 합성가스로 변환해요. 기존 화력보다 효율이 높고 CO₂ 포집이 쉬워 청정 석탄 기술이라 불려요.</div>
       <span class="mini-type">신에너지</span>
     </div>
   </div>
