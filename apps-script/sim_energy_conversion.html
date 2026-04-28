@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>에너지 변환 시뮬레이터 | 기술 V단원</title>
+  <style>
+/* ===== V단원. 에너지와 수송 기술의 세계 - 공용 스타일 ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #27ae60;
+  --primary-dark: #1e8449;
+  --primary-light: #a9dfbf;
+  --accent: #f39c12;
+  --accent-dark: #d68910;
+  --blue: #2980b9;
+  --blue-dark: #1a5276;
+  --red: #e74c3c;
+  --purple: #8e44ad;
+  --teal: #16a085;
+  --bg: #f0fff4;
+  --surface: #ffffff;
+  --text: #1a2e1a;
+  --text-light: #5d6d5d;
+  --border: #b2dfdb;
+  --shadow: 0 8px 32px rgba(39, 174, 96, 0.12);
+  --shadow-lg: 0 16px 48px rgba(39, 174, 96, 0.22);
+}
+
+html, body {
+  font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  font-size: 16px;
+}
+
+h1, h2, h3 { font-weight: 800; letter-spacing: -0.02em; }
+
+/* ── 헤더 ── */
+.app-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  padding: 20px 32px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.app-header h1 {
+  font-size: clamp(17px, 3vw, 26px);
+  display: flex; align-items: center; gap: 10px;
+}
+.app-header .subtitle { font-size: 13px; opacity: 0.88; font-weight: 500; }
+.app-header nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.2);
+  transition: background 0.2s;
+  font-size: 14px;
+}
+.app-header nav a:hover { background: rgba(255,255,255,0.35); }
+
+/* ── 컨테이너 ── */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+/* ── 카드 ── */
+.card {
+  background: var(--surface);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+  border: 2px solid var(--border);
+}
+
+/* ── 버튼 ── */
+.btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  box-shadow: 0 4px 16px rgba(39,174,96,0.3);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(39,174,96,0.4); }
+.btn:active { transform: translateY(0); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn.btn-secondary { background: white; color: var(--primary-dark); border: 2px solid var(--primary); box-shadow: none; }
+.btn.btn-accent  { background: var(--accent); box-shadow: 0 4px 16px rgba(243,156,18,0.3); }
+.btn.btn-blue    { background: var(--blue);   box-shadow: 0 4px 16px rgba(41,128,185,0.3); }
+.btn.btn-red     { background: var(--red);    box-shadow: 0 4px 16px rgba(231,76,60,0.3); }
+
+/* ── 배지 ── */
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--primary);
+  color: white;
+}
+.badge.amber  { background: var(--accent); }
+.badge.blue   { background: var(--blue); }
+.badge.purple { background: var(--purple); }
+.badge.red    { background: var(--red); }
+.badge.teal   { background: var(--teal); }
+
+/* ── 학습 목표 박스 ── */
+.objective-box {
+  background: linear-gradient(135deg, #d5f5e3 0%, #a9dfbf 100%);
+  border-radius: 20px;
+  padding: 24px 28px;
+  margin-bottom: 32px;
+  border-left: 8px solid var(--primary);
+}
+.objective-box h2 { color: var(--primary-dark); font-size: 22px; margin-bottom: 12px; }
+.objective-box ul { list-style: none; padding: 0; }
+.objective-box li {
+  padding: 6px 0 6px 30px;
+  position: relative;
+  font-weight: 600;
+  font-size: 16px;
+}
+.objective-box li::before { content: "🎯"; position: absolute; left: 0; }
+
+/* ── 활동 그리드 ── */
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.activity-card {
+  background: white;
+  border-radius: 24px;
+  padding: 28px;
+  border: 3px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.activity-card::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(39,174,96,0.06));
+  opacity: 0; transition: opacity 0.25s;
+}
+.activity-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+.activity-card:hover::before { opacity: 1; }
+.activity-card .icon { font-size: 52px; margin-bottom: 14px; display: block; }
+.activity-card h3 { font-size: 22px; margin-bottom: 10px; }
+.activity-card p { color: var(--text-light); font-size: 15px; line-height: 1.55; }
+.activity-card .go { margin-top: 14px; color: var(--primary-dark); font-weight: 700; font-size: 14px; }
+
+/* ── 토스트 ── */
+.toast {
+  position: fixed; top: 20px; left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: white; padding: 14px 24px;
+  border-radius: 999px; box-shadow: var(--shadow-lg);
+  font-weight: 700; z-index: 1000; transition: transform 0.3s;
+}
+.toast.show  { transform: translateX(-50%) translateY(0); }
+.toast.success { background: var(--primary-dark); color: white; }
+.toast.error   { background: var(--red); color: white; }
+
+/* ── 섹션 헤더 ── */
+.section-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px;
+}
+.section-header h2 { font-size: 26px; color: var(--primary-dark); }
+.section-num {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--primary); color: white;
+  font-size: 18px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── 애니메이션 ── */
+@keyframes pop {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes flash {
+  0%, 100% { background-color: transparent; }
+  50%       { background-color: rgba(39,174,96,0.25); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-8px); }
+  75%       { transform: translateX(8px); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+@keyframes flow {
+  0%   { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}
+
+</style>
+  <style>
+    /* ── 시뮬레이터 전용 스타일 ── */
+    body { font-size: 18px; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ── 헤더 오버라이드 (blue 테마) ── */
+    .app-header {
+      background: linear-gradient(135deg, #1a5276 0%, #2980b9 60%, #3498db 100%);
+      box-shadow: 0 3px 16px rgba(41,128,185,0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    /* ── 탭 버튼 영역 ── */
+    .tab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .tab-btn {
+      flex: 1 1 120px;
+      padding: 14px 10px;
+      border-radius: 16px;
+      border: 3px solid #ddd;
+      background: white;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s;
+      font-family: inherit;
+      text-align: center;
+      color: #444;
+    }
+    .tab-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.1); }
+    .tab-btn.active {
+      color: white !important;
+      border-color: transparent;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+      transform: translateY(-3px);
+    }
+
+    /* ── 시뮬레이터 패널 (fade in) ── */
+    .sim-panel {
+      display: none;
+      animation: fadeInUp 0.4s ease forwards;
+    }
+    .sim-panel.active { display: block; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SVG 일러스트 ── */
+    .plant-svg-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(180deg, #e8f8f5 0%, #d5f5e3 100%);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 28px;
+      border: 2px solid var(--border);
+      overflow: hidden;
+    }
+    .plant-svg-wrap svg {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ── 에너지 변환 체인 ── */
+    .chain-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      overflow-x: auto;
+      padding: 8px 4px 16px;
+      margin-bottom: 24px;
+    }
+    .chain-step {
+      flex: 1 1 0;
+      min-width: 120px;
+      max-width: 180px;
+      background: white;
+      border: 3px solid #ddd;
+      border-radius: 20px;
+      padding: 18px 10px 14px;
+      text-align: center;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      cursor: default;
+    }
+    .chain-step.highlight {
+      transform: scale(1.08);
+      border-width: 3px;
+      box-shadow: 0 0 0 6px rgba(0,0,0,0.08), 0 8px 32px rgba(0,0,0,0.16);
+      z-index: 2;
+    }
+    .chain-step .step-icon { font-size: 40px; display: block; margin-bottom: 6px; }
+    .chain-step .step-name { font-size: 15px; font-weight: 800; margin-bottom: 8px; line-height: 1.3; }
+    .chain-step .energy-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+      white-space: nowrap;
+    }
+    .chain-step .step-num {
+      position: absolute;
+      top: -12px; left: 50%;
+      transform: translateX(-50%);
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: #ccc;
+      color: white;
+      font-size: 13px;
+      font-weight: 900;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.35s;
+    }
+
+    /* ── 체인 화살표 ── */
+    .chain-arrow {
+      flex-shrink: 0;
+      width: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .chain-arrow svg { width: 52px; height: 28px; overflow: visible; }
+    .arrow-line {
+      stroke: #ccc;
+      stroke-width: 4;
+      fill: none;
+      stroke-dasharray: 8 4;
+      stroke-dashoffset: 0;
+      transition: stroke 0.4s;
+    }
+    .arrow-line.active {
+      animation: arrowFlow 0.6s linear infinite;
+    }
+    .arrow-head {
+      fill: #ccc;
+      transition: fill 0.4s;
+    }
+    @keyframes arrowFlow {
+      from { stroke-dashoffset: 24; }
+      to   { stroke-dashoffset: 0; }
+    }
+
+    /* ── 단계 설명 패널 ── */
+    .desc-panel {
+      background: linear-gradient(135deg, #f8f9fa, #ecf0f1);
+      border-radius: 16px;
+      padding: 20px 24px;
+      min-height: 90px;
+      border-left: 6px solid #ccc;
+      margin-bottom: 24px;
+      transition: border-color 0.35s, background 0.35s;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .desc-panel .desc-icon { font-size: 36px; flex-shrink: 0; }
+    .desc-panel .desc-text { flex: 1; }
+    .desc-panel .desc-step-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #888;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .desc-panel .desc-main { font-size: 17px; font-weight: 600; line-height: 1.55; color: var(--text); }
+
+    /* ── 컨트롤 버튼 ── */
+    .sim-controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    .plant-intro {
+      background: white;
+      border-radius: 14px;
+      padding: 14px 20px;
+      border: 2px solid var(--border);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-light);
+      flex: 1 1 200px;
+    }
+
+    /* ── 환경 지수 ── */
+    .env-section { margin-top: 8px; }
+    .env-section h3 {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      color: var(--primary-dark);
+    }
+    .env-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .env-card {
+      background: white;
+      border-radius: 16px;
+      padding: 18px 20px;
+      border: 2px solid var(--border);
+    }
+    .env-card .env-label {
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 15px; font-weight: 700; margin-bottom: 10px;
+    }
+    .env-card .env-label span { font-size: 22px; font-weight: 900; }
+    .gauge-track {
+      background: #ecf0f1;
+      border-radius: 999px;
+      height: 16px;
+      overflow: hidden;
+    }
+    .gauge-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+      width: 0%;
+    }
+    .env-note { font-size: 13px; color: #888; margin-top: 6px; font-weight: 600; }
+
+    /* ── 퀴즈 영역 ── */
+    .quiz-section {
+      margin-top: 40px;
+      background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+      border-radius: 24px;
+      padding: 28px;
+      border: 3px solid #f9ca24;
+    }
+    .quiz-section h3 {
+      font-size: 22px; font-weight: 800; margin-bottom: 6px;
+      color: #6c4f00;
+    }
+    .quiz-section .quiz-subtitle {
+      font-size: 15px; color: #8b6914; margin-bottom: 20px; font-weight: 600;
+    }
+    .quiz-question {
+      background: white;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 18px;
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.7;
+      color: var(--text);
+      border: 2px solid rgba(249,202,36,0.4);
+    }
+    .quiz-question .blank {
+      display: inline-block;
+      min-width: 100px;
+      border-bottom: 3px solid #f9ca24;
+      padding: 0 8px 2px;
+      text-align: center;
+      color: #e17055;
+      background: #fff9e6;
+      border-radius: 6px;
+      margin: 0 4px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .quiz-input-area { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .quiz-input {
+      flex: 1 1 200px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: 3px solid #f9ca24;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: inherit;
+      background: white;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .quiz-input:focus { border-color: #e17055; }
+    .quiz-result {
+      margin-top: 14px;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      display: none;
+      line-height: 1.6;
+    }
+    .quiz-result.correct {
+      background: #d5f5e3; color: #1e8449; border: 2px solid #27ae60;
+    }
+    .quiz-result.wrong {
+      background: #fde8e8; color: #c0392b; border: 2px solid #e74c3c;
+    }
+    .quiz-hint { font-size: 14px; margin-top: 8px; opacity: 0.85; }
+
+    /* ── 모바일 반응형 ── */
+    @media (max-width: 640px) {
+      .chain-wrap { gap: 0; }
+      .chain-step { min-width: 90px; padding: 14px 6px 10px; }
+      .chain-step .step-icon { font-size: 30px; }
+      .chain-step .step-name { font-size: 13px; }
+      .chain-step .energy-badge { font-size: 11px; padding: 3px 7px; }
+      .chain-arrow { width: 32px; }
+      .chain-arrow svg { width: 32px; }
+      .tab-btn { font-size: 14px; padding: 12px 8px; }
+      .desc-panel .desc-main { font-size: 16px; }
+    }
+    @media (max-width: 440px) {
+      .chain-step .energy-badge { display: none; }
+      .chain-arrow { width: 20px; }
+      .chain-arrow svg { width: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── 헤더 ── -->
+<header class="app-header">
+  <div>
+    <h1>🔄 에너지 변환 시뮬레이터</h1>
+    <div class="subtitle">발전소를 선택해서 에너지 변환 과정을 살펴보세요!</div>
+  </div>
+  <nav><a href="<?= baseUrl ?>">🏠 홈</a></nav>
+</header>
+
+<div class="container">
+
+  <!-- ── 탭 버튼 ── -->
+  <div class="tab-bar" id="tabBar">
+    <button class="tab-btn active" data-plant="wind"    style="--tc:#2980b9">💨 풍력 발전</button>
+    <button class="tab-btn"        data-plant="hydro"   style="--tc:#27ae60">💧 수력 발전</button>
+    <button class="tab-btn"        data-plant="thermal" style="--tc:#e67e22">🔥 화력 발전</button>
+    <button class="tab-btn"        data-plant="solar"   style="--tc:#f1c40f">☀️ 태양광 발전</button>
+    <button class="tab-btn"        data-plant="nuclear" style="--tc:#8e44ad">⚛️ 원자력 발전</button>
+  </div>
+
+  <!-- ============================================================
+       풍력 발전
+  ============================================================ -->
+  <div class="sim-panel active card" id="panel-wind">
+    <div class="plant-svg-wrap">
+      <svg viewBox="0 0 500 200" width="500" height="200" aria-label="풍력 발전 일러스트">
+        <!-- 하늘 배경 -->
+        <defs>
+          <linearGradient id="skyWind" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#d6eaf8"/>
+            <stop offset="100%" stop-color="#ebf5fb"/>
+          </linearGradient>
+        </defs>
+        <rect width="500" height="200" fill="url(#skyWind)" rx="14"/>
+        <!-- 지면 -->
+        <rect x="0" y="170" width="500" height="30" fill="#a9dfbf" rx="0"/>
+        <ellipse cx="250" cy="170" rx="500" ry="10" fill="#82e0aa"/>
+
+        <!-- 구름 1 -->
+        <g opacity="0.85">
+          <ellipse cx="80" cy="38" rx="32" ry="18" fill="white"/>
+          <ellipse cx="100" cy="30" rx="22" ry="16" fill="white"/>
+          <ellipse cx="60" cy="33" rx="18" ry="13" fill="white"/>
+        </g>
+        <!-- 구름 2 -->
+        <g opacity="0.75">
+          <ellipse cx="390" cy="28" rx="40" ry="20" fill="white"/>
+          <ellipse cx="415" cy="18" rx="25" ry="16" fill="white"/>
+          <ellipse cx="365" cy="24" rx="20" ry="14" fill="white"/>
+        </g>
+
+        <!-- 바람 선 -->
+        <g stroke="#74b9ff" stroke-width="2.5" stroke-linecap="round" opacity="0.7">
+          <path d="M 20 70 Q 50 65 80 72" fill="none">
+            <animate attributeName="d" values="M 20 70 Q 50 65 80 72;M 25 70 Q 55 63 85 72;M 20 70 Q 50 65 80 72" dur="1.5s" repeatCount="indefinite"/>
+          </path>
+          <path d="M 15 85 Q 55 78 90 86" fill="none">
+            <animate attributeName="d" values="M 15 85 Q 55 78 90 86;M 20 85 Q 60 76 95 86;M 15 85 Q 55 78 90 86" dur="1.8s" repeatCount="indefinite"/>
+          </path>
+          <path d="M 18 100 Q 50 95 82 101" fill="none">
+            <animate attributeName="d" values="M 18 100 Q 50 95 82 101;M 23 100 Q 55 93 87 101;M 18 100 Q 50 95 82 101" dur="1.4s" repeatCount="indefinite"/>
+          </path>
+        </g>
+
+        <!-- 풍차 1 (중앙) -->
+        <g transform="translate(250, 90)">
+          <!-- 기둥 -->
+          <rect x="-5" y="0" width="10" height="80" fill="#bdc3c7" rx="3"/>
+          <!-- 블레이드 중심 -->
+          <circle cx="0" cy="0" r="8" fill="#95a5a6"/>
+          <!-- 블레이드 3개 -->
+          <g>
+            <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="3s" repeatCount="indefinite"/>
+            <ellipse cx="0" cy="-30" rx="5" ry="28" fill="#d6eaf8" stroke="#aed6f1" stroke-width="1.5" transform="rotate(0 0 0)"/>
+            <ellipse cx="0" cy="-30" rx="5" ry="28" fill="#d6eaf8" stroke="#aed6f1" stroke-width="1.5" transform="rotate(120 0 0)"/>
+            <ellipse cx="0" cy="-30" rx="5" ry="28" fill="#d6eaf8" stroke="#aed6f1" stroke-width="1.5" transform="rotate(240 0 0)"/>
+          </g>
+        </g>
+
+        <!-- 풍차 2 (왼쪽, 작음) -->
+        <g transform="translate(140, 105)">
+          <rect x="-4" y="0" width="8" height="65" fill="#bdc3c7" rx="2"/>
+          <circle cx="0" cy="0" r="6" fill="#95a5a6"/>
+          <g>
+            <animateTransform attributeName="transform" type="rotate" from="60 0 0" to="420 0 0" dur="2.5s" repeatCount="indefinite"/>
+            <ellipse cx="0" cy="-22" rx="4" ry="20" fill="#d6eaf8" stroke="#aed6f1" stroke-width="1.2" transform="rotate(0 0 0)"/>
+            <ellipse cx="0" cy="-22" rx="4" ry="20" fill="#d6eaf8" stroke="#aed6f1" stroke-width="1.2" transform="rotate(120 0 0)"/>
+            <ellipse cx="0" cy="-22" rx="4" ry="20" fill="#d6eaf8" stroke="#aed6f1" stroke-width="1.2" transform="rotate(240 0 0)"/>
+          </g>
+        </g>
+
+        <!-- 풍차 3 (오른쪽, 작음) -->
+        <g transform="translate(370, 108)">
+          <rect x="-4" y="0" width="8" height="62" fill="#bdc3c7" rx="2"/>
+          <circle cx="0" cy="0" r="6" fill="#95a5a6"/>
+          <g>
+            <animateTransform attributeName="transform" type="rotate" from="120 0 0" to="480 0 0" dur="3.5s" repeatCount="indefinite"/>
+            <ellipse cx="0" cy="-22" rx="4" ry="20" fill="#d6eaf8" stroke="#aed6f1" stroke-width="1.2" transform="rotate(0 0 0)"/>
+            <ellipse cx="0" cy="-22" rx="4" ry="20" fill="#d6eaf8" stroke="#aed6f1" stroke-width="1.2" transform="rotate(120 0 0)"/>
+            <ellipse cx="0" cy="-22" rx="4" ry="20" fill="#d6eaf8" stroke="#aed6f1" stroke-width="1.2" transform="rotate(240 0 0)"/>
+          </g>
+        </g>
+
+        <!-- 라벨 -->
+        <text x="250" y="192" text-anchor="middle" fill="#1a6630" font-size="13" font-weight="700">풍력 발전</text>
+      </svg>
+    </div>
+    <!-- 체인, 설명, 환경지수, 퀴즈는 JS가 동적 렌더 -->
+    <div class="sim-controls" id="controls-wind"></div>
+    <div class="chain-wrap" id="chain-wind"></div>
+    <div class="desc-panel" id="desc-wind">
+      <div class="desc-icon">💡</div>
+      <div class="desc-text">
+        <div class="desc-step-label">안내</div>
+        <div class="desc-main" id="desc-wind-text">▶ 시뮬레이션 시작 버튼을 눌러 에너지 변환 과정을 확인하세요!</div>
+      </div>
+    </div>
+    <div class="env-section" id="env-wind"></div>
+    <div id="quiz-wind"></div>
+  </div>
+
+  <!-- ============================================================
+       수력 발전
+  ============================================================ -->
+  <div class="sim-panel card" id="panel-hydro">
+    <div class="plant-svg-wrap">
+      <svg viewBox="0 0 500 200" width="500" height="200" aria-label="수력 발전 일러스트">
+        <defs>
+          <linearGradient id="skyHydro" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#d5f5e3"/>
+            <stop offset="100%" stop-color="#eafaf1"/>
+          </linearGradient>
+          <linearGradient id="waterGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5dade2"/>
+            <stop offset="100%" stop-color="#2e86c1"/>
+          </linearGradient>
+        </defs>
+        <rect width="500" height="200" fill="url(#skyHydro)" rx="14"/>
+
+        <!-- 댐 몸체 -->
+        <polygon points="80,30 160,30 180,170 60,170" fill="#95a5a6"/>
+        <polygon points="82,33 158,33 176,167 64,167" fill="#aab7b8"/>
+        <!-- 댐 상단 물 -->
+        <rect x="0" y="30" width="158" height="28" fill="url(#waterGrad)" rx="6"/>
+        <text x="80" y="49" text-anchor="middle" fill="white" font-size="12" font-weight="700">댐</text>
+
+        <!-- 낙하 물 -->
+        <g>
+          <rect x="155" y="58" width="18" height="112" fill="#5dade2" opacity="0.7" rx="4">
+            <animate attributeName="y" values="58;62;58" dur="0.8s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.7;0.9;0.7" dur="0.8s" repeatCount="indefinite"/>
+          </rect>
+          <!-- 물방울 -->
+          <circle cx="164" cy="80" r="4" fill="#aed6f1" opacity="0.8">
+            <animate attributeName="cy" values="80;120;160" dur="1s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.9;0.6;0" dur="1s" repeatCount="indefinite"/>
+          </circle>
+          <circle cx="160" cy="100" r="3" fill="#aed6f1" opacity="0.7">
+            <animate attributeName="cy" values="100;140;170" dur="1s" begin="0.3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.8;0.5;0" dur="1s" begin="0.3s" repeatCount="indefinite"/>
+          </circle>
+        </g>
+
+        <!-- 터빈 하우스 -->
+        <rect x="145" y="155" width="60" height="30" fill="#7f8c8d" rx="5"/>
+        <ellipse cx="175" cy="155" rx="22" ry="12" fill="#636e72"/>
+        <!-- 터빈 날개 -->
+        <g transform="translate(175, 155)">
+          <animateTransform attributeName="transform" type="rotate" from="0 175 155" to="360 175 155" dur="1.5s" repeatCount="indefinite"/>
+          <line x1="0" y1="-10" x2="0" y2="10" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"/>
+          <line x1="-10" y1="0" x2="10" y2="0" stroke="#2c3e50" stroke-width="4" stroke-linecap="round"/>
+        </g>
+
+        <!-- 방수로 / 하류 -->
+        <path d="M 205 165 Q 300 175 500 170" fill="none" stroke="#5dade2" stroke-width="8" stroke-linecap="round" opacity="0.6"/>
+
+        <!-- 송전탑 -->
+        <g transform="translate(360, 100)">
+          <line x1="0" y1="0" x2="0" y2="70" stroke="#7f8c8d" stroke-width="3"/>
+          <line x1="-20" y1="20" x2="20" y2="20" stroke="#7f8c8d" stroke-width="2.5"/>
+          <line x1="-14" y1="36" x2="14" y2="36" stroke="#7f8c8d" stroke-width="2.5"/>
+          <path d="M-20,20 L0,0 L20,20" fill="none" stroke="#7f8c8d" stroke-width="2"/>
+          <!-- 전선 -->
+          <path d="M -20 20 Q -40 35 -70 32" fill="none" stroke="#f0b429" stroke-width="2.5" opacity="0.9"/>
+          <path d="M 20 20 Q 40 33 70 30" fill="none" stroke="#f0b429" stroke-width="2.5" opacity="0.9"/>
+        </g>
+
+        <text x="250" y="195" text-anchor="middle" fill="#1a6630" font-size="13" font-weight="700">수력 발전</text>
+      </svg>
+    </div>
+    <div class="sim-controls" id="controls-hydro"></div>
+    <div class="chain-wrap" id="chain-hydro"></div>
+    <div class="desc-panel" id="desc-hydro">
+      <div class="desc-icon">💡</div>
+      <div class="desc-text">
+        <div class="desc-step-label">안내</div>
+        <div class="desc-main" id="desc-hydro-text">▶ 시뮬레이션 시작 버튼을 눌러 에너지 변환 과정을 확인하세요!</div>
+      </div>
+    </div>
+    <div class="env-section" id="env-hydro"></div>
+    <div id="quiz-hydro"></div>
+  </div>
+
+  <!-- ============================================================
+       화력 발전
+  ============================================================ -->
+  <div class="sim-panel card" id="panel-thermal">
+    <div class="plant-svg-wrap">
+      <svg viewBox="0 0 500 200" width="500" height="200" aria-label="화력 발전 일러스트">
+        <defs>
+          <linearGradient id="skyThermal" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fdebd0"/>
+            <stop offset="100%" stop-color="#fef9f0"/>
+          </linearGradient>
+        </defs>
+        <rect width="500" height="200" fill="url(#skyThermal)" rx="14"/>
+        <!-- 지면 -->
+        <rect x="0" y="170" width="500" height="30" fill="#d5d8dc"/>
+
+        <!-- 건물 본체 -->
+        <rect x="180" y="100" width="160" height="70" fill="#7f8c8d" rx="4"/>
+        <rect x="185" y="105" width="70" height="35" fill="#95a5a6" rx="2"/>
+        <rect x="265" y="105" width="70" height="35" fill="#95a5a6" rx="2"/>
+        <!-- 창문 -->
+        <rect x="195" y="112" width="18" height="14" fill="#aed6f1" rx="2"/>
+        <rect x="222" y="112" width="18" height="14" fill="#aed6f1" rx="2"/>
+        <rect x="275" y="112" width="18" height="14" fill="#aed6f1" rx="2"/>
+        <rect x="302" y="112" width="18" height="14" fill="#aed6f1" rx="2"/>
+
+        <!-- 굴뚝 1 -->
+        <rect x="220" y="30" width="28" height="70" fill="#636e72" rx="4"/>
+        <rect x="217" y="26" width="34" height="10" fill="#7f8c8d" rx="3"/>
+        <!-- 연기 1 -->
+        <g opacity="0.75">
+          <ellipse cx="234" cy="18" rx="10" ry="8" fill="#bdc3c7">
+            <animate attributeName="cy" values="20;5;-10" dur="2.2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.8;0.5;0" dur="2.2s" repeatCount="indefinite"/>
+            <animate attributeName="rx" values="10;16;22" dur="2.2s" repeatCount="indefinite"/>
+          </ellipse>
+          <ellipse cx="228" cy="8" rx="8" ry="7" fill="#d5d8dc">
+            <animate attributeName="cy" values="10;-5;-20" dur="2.2s" begin="0.4s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.7;0.4;0" dur="2.2s" begin="0.4s" repeatCount="indefinite"/>
+          </ellipse>
+        </g>
+
+        <!-- 굴뚝 2 -->
+        <rect x="270" y="38" width="26" height="62" fill="#636e72" rx="4"/>
+        <rect x="267" y="34" width="32" height="10" fill="#7f8c8d" rx="3"/>
+        <!-- 연기 2 -->
+        <g opacity="0.65">
+          <ellipse cx="283" cy="24" rx="9" ry="8" fill="#bdc3c7">
+            <animate attributeName="cy" values="26;10;-6" dur="2.6s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.8;0.45;0" dur="2.6s" repeatCount="indefinite"/>
+            <animate attributeName="rx" values="9;15;21" dur="2.6s" repeatCount="indefinite"/>
+          </ellipse>
+        </g>
+
+        <!-- 냉각탑 -->
+        <path d="M 370 170 Q 360 120 375 80 Q 385 60 395 80 Q 410 120 400 170 Z" fill="#b2bec3"/>
+        <ellipse cx="385" cy="170" rx="16" ry="5" fill="#95a5a6"/>
+        <ellipse cx="385" cy="80" rx="10" ry="4" fill="#636e72"/>
+        <!-- 냉각탑 수증기 -->
+        <g opacity="0.6">
+          <ellipse cx="385" cy="68" rx="8" ry="6" fill="white">
+            <animate attributeName="cy" values="70;55;40" dur="1.8s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.7;0.4;0" dur="1.8s" repeatCount="indefinite"/>
+            <animate attributeName="rx" values="8;12;18" dur="1.8s" repeatCount="indefinite"/>
+          </ellipse>
+        </g>
+
+        <!-- 석탄 더미 -->
+        <ellipse cx="130" cy="170" rx="50" ry="14" fill="#5d6d7e"/>
+        <ellipse cx="130" cy="163" rx="40" ry="10" fill="#6c757d"/>
+        <text x="130" y="166" text-anchor="middle" fill="white" font-size="11" font-weight="700">석탄</text>
+
+        <text x="250" y="195" text-anchor="middle" fill="#7b5e00" font-size="13" font-weight="700">화력 발전</text>
+      </svg>
+    </div>
+    <div class="sim-controls" id="controls-thermal"></div>
+    <div class="chain-wrap" id="chain-thermal"></div>
+    <div class="desc-panel" id="desc-thermal">
+      <div class="desc-icon">💡</div>
+      <div class="desc-text">
+        <div class="desc-step-label">안내</div>
+        <div class="desc-main" id="desc-thermal-text">▶ 시뮬레이션 시작 버튼을 눌러 에너지 변환 과정을 확인하세요!</div>
+      </div>
+    </div>
+    <div class="env-section" id="env-thermal"></div>
+    <div id="quiz-thermal"></div>
+  </div>
+
+  <!-- ============================================================
+       태양광 발전
+  ============================================================ -->
+  <div class="sim-panel card" id="panel-solar">
+    <div class="plant-svg-wrap">
+      <svg viewBox="0 0 500 200" width="500" height="200" aria-label="태양광 발전 일러스트">
+        <defs>
+          <linearGradient id="skySolar" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#fef9e7"/>
+            <stop offset="100%" stop-color="#fef3cd"/>
+          </linearGradient>
+        </defs>
+        <rect width="500" height="200" fill="url(#skySolar)" rx="14"/>
+        <rect x="0" y="170" width="500" height="30" fill="#a9dfbf"/>
+
+        <!-- 태양 -->
+        <circle cx="60" cy="55" r="30" fill="#f9ca24" opacity="0.95"/>
+        <!-- 햇살 -->
+        <g stroke="#f9ca24" stroke-width="3" stroke-linecap="round" opacity="0.8">
+          <line x1="60" y1="10" x2="60" y2="18"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.5s" repeatCount="indefinite"/></line>
+          <line x1="60" y1="92" x2="60" y2="100"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.5s" begin="0.1s" repeatCount="indefinite"/></line>
+          <line x1="15" y1="55" x2="23" y2="55"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.5s" begin="0.2s" repeatCount="indefinite"/></line>
+          <line x1="97" y1="55" x2="105" y2="55"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.5s" begin="0.3s" repeatCount="indefinite"/></line>
+          <line x1="28" y1="23" x2="34" y2="29"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.5s" begin="0.4s" repeatCount="indefinite"/></line>
+          <line x1="86" y1="81" x2="92" y2="87"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.5s" begin="0.5s" repeatCount="indefinite"/></line>
+          <line x1="86" y1="23" x2="92" y2="29"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.5s" begin="0.6s" repeatCount="indefinite"/></line>
+          <line x1="28" y1="81" x2="34" y2="87"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.5s" begin="0.7s" repeatCount="indefinite"/></line>
+        </g>
+
+        <!-- 햇빛 광선 -->
+        <g stroke="#ffeaa7" stroke-width="2" opacity="0.5" stroke-dasharray="6 4">
+          <line x1="90" y1="70" x2="200" y2="110"><animate attributeName="opacity" values="0.5;0.9;0.5" dur="2s" repeatCount="indefinite"/></line>
+          <line x1="90" y1="60" x2="250" y2="100"><animate attributeName="opacity" values="0.5;0.9;0.5" dur="2s" begin="0.3s" repeatCount="indefinite"/></line>
+          <line x1="90" y1="50" x2="300" y2="95"><animate attributeName="opacity" values="0.5;0.9;0.5" dur="2s" begin="0.6s" repeatCount="indefinite"/></line>
+        </g>
+
+        <!-- 태양전지판 배열 (경사) -->
+        <g transform="translate(160, 95)">
+          <!-- 패널 지지대 -->
+          <line x1="20" y1="60" x2="20" y2="75" stroke="#7f8c8d" stroke-width="4"/>
+          <line x1="80" y1="60" x2="80" y2="75" stroke="#7f8c8d" stroke-width="4"/>
+          <line x1="140" y1="55" x2="140" y2="75" stroke="#7f8c8d" stroke-width="4"/>
+          <line x1="200" y1="55" x2="200" y2="75" stroke="#7f8c8d" stroke-width="4"/>
+          <!-- 패널 1 -->
+          <g transform="rotate(-15, 50, 40)">
+            <rect x="0" y="20" width="65" height="42" fill="#1a5276" rx="3" stroke="#2e86c1" stroke-width="1.5"/>
+            <line x1="22" y1="20" x2="22" y2="62" stroke="#2e86c1" stroke-width="1" opacity="0.6"/>
+            <line x1="44" y1="20" x2="44" y2="62" stroke="#2e86c1" stroke-width="1" opacity="0.6"/>
+            <line x1="0" y1="34" x2="65" y2="34" stroke="#2e86c1" stroke-width="1" opacity="0.6"/>
+            <line x1="0" y1="48" x2="65" y2="48" stroke="#2e86c1" stroke-width="1" opacity="0.6"/>
+            <!-- 빛 반짝 -->
+            <rect x="0" y="20" width="65" height="42" fill="white" rx="3" opacity="0">
+              <animate attributeName="opacity" values="0;0.15;0" dur="3s" begin="0s" repeatCount="indefinite"/>
+            </rect>
+          </g>
+          <!-- 패널 2 -->
+          <g transform="rotate(-15, 150, 35)">
+            <rect x="100" y="15" width="65" height="42" fill="#1a5276" rx="3" stroke="#2e86c1" stroke-width="1.5"/>
+            <line x1="122" y1="15" x2="122" y2="57" stroke="#2e86c1" stroke-width="1" opacity="0.6"/>
+            <line x1="144" y1="15" x2="144" y2="57" stroke="#2e86c1" stroke-width="1" opacity="0.6"/>
+            <line x1="100" y1="29" x2="165" y2="29" stroke="#2e86c1" stroke-width="1" opacity="0.6"/>
+            <line x1="100" y1="43" x2="165" y2="43" stroke="#2e86c1" stroke-width="1" opacity="0.6"/>
+            <rect x="100" y="15" width="65" height="42" fill="white" rx="3" opacity="0">
+              <animate attributeName="opacity" values="0;0.15;0" dur="3s" begin="0.8s" repeatCount="indefinite"/>
+            </rect>
+          </g>
+        </g>
+
+        <!-- ESS 배터리 박스 -->
+        <rect x="400" y="120" width="60" height="50" fill="#27ae60" rx="8"/>
+        <rect x="415" y="115" width="30" height="10" fill="#1e8449" rx="3"/>
+        <text x="430" y="150" text-anchor="middle" fill="white" font-size="12" font-weight="700">ESS</text>
+        <text x="430" y="163" text-anchor="middle" fill="white" font-size="10">배터리</text>
+
+        <text x="250" y="195" text-anchor="middle" fill="#6d5600" font-size="13" font-weight="700">태양광 발전</text>
+      </svg>
+    </div>
+    <div class="sim-controls" id="controls-solar"></div>
+    <div class="chain-wrap" id="chain-solar"></div>
+    <div class="desc-panel" id="desc-solar">
+      <div class="desc-icon">💡</div>
+      <div class="desc-text">
+        <div class="desc-step-label">안내</div>
+        <div class="desc-main" id="desc-solar-text">▶ 시뮬레이션 시작 버튼을 눌러 에너지 변환 과정을 확인하세요!</div>
+      </div>
+    </div>
+    <div class="env-section" id="env-solar"></div>
+    <div id="quiz-solar"></div>
+  </div>
+
+  <!-- ============================================================
+       원자력 발전
+  ============================================================ -->
+  <div class="sim-panel card" id="panel-nuclear">
+    <div class="plant-svg-wrap">
+      <svg viewBox="0 0 500 200" width="500" height="200" aria-label="원자력 발전 일러스트">
+        <defs>
+          <linearGradient id="skyNuclear" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#f8f0ff"/>
+            <stop offset="100%" stop-color="#ede7f6"/>
+          </linearGradient>
+        </defs>
+        <rect width="500" height="200" fill="url(#skyNuclear)" rx="14"/>
+        <rect x="0" y="170" width="500" height="30" fill="#d5d8dc"/>
+
+        <!-- 원자 기호 (배경) -->
+        <g transform="translate(60, 80)" opacity="0.12">
+          <circle cx="0" cy="0" r="14" fill="#8e44ad"/>
+          <ellipse cx="0" cy="0" rx="38" ry="16" fill="none" stroke="#8e44ad" stroke-width="3"/>
+          <ellipse cx="0" cy="0" rx="38" ry="16" fill="none" stroke="#8e44ad" stroke-width="3" transform="rotate(60 0 0)"/>
+          <ellipse cx="0" cy="0" rx="38" ry="16" fill="none" stroke="#8e44ad" stroke-width="3" transform="rotate(120 0 0)"/>
+        </g>
+
+        <!-- 격납 건물 (돔) -->
+        <ellipse cx="200" cy="120" rx="55" ry="60" fill="#95a5a6"/>
+        <ellipse cx="200" cy="120" rx="50" ry="55" fill="#b2bec3"/>
+        <!-- 격납 건물 문 -->
+        <rect x="182" y="148" width="36" height="32" fill="#7f8c8d" rx="3"/>
+        <rect x="185" y="151" width="14" height="25" fill="#636e72" rx="2"/>
+        <rect x="201" y="151" width="14" height="25" fill="#636e72" rx="2"/>
+
+        <!-- 냉각탑 1 (크게) -->
+        <path d="M 310 170 Q 298 115 315 65 Q 326 42 338 65 Q 355 115 342 170 Z" fill="#aab7b8"/>
+        <ellipse cx="326" cy="170" rx="17" ry="5" fill="#95a5a6"/>
+        <ellipse cx="326" cy="65" rx="11" ry="4" fill="#636e72"/>
+        <!-- 수증기 -->
+        <g opacity="0.65">
+          <ellipse cx="326" cy="50" rx="9" ry="7" fill="white">
+            <animate attributeName="cy" values="52;35;18" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.8;0.45;0" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="rx" values="9;15;22" dur="2s" repeatCount="indefinite"/>
+          </ellipse>
+          <ellipse cx="318" cy="40" rx="7" ry="6" fill="#dfe6e9">
+            <animate attributeName="cy" values="42;25;8" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.7;0.4;0" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+          </ellipse>
+        </g>
+
+        <!-- 냉각탑 2 (작게) -->
+        <path d="M 395 170 Q 385 128 396 92 Q 403 76 411 92 Q 422 128 412 170 Z" fill="#aab7b8"/>
+        <ellipse cx="403" cy="170" rx="12" ry="4" fill="#95a5a6"/>
+        <ellipse cx="403" cy="92" rx="8" ry="3" fill="#636e72"/>
+        <g opacity="0.55">
+          <ellipse cx="403" cy="78" rx="7" ry="5" fill="white">
+            <animate attributeName="cy" values="80;65;50" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.7;0.4;0" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
+            <animate attributeName="rx" values="7;12;17" dur="1.8s" begin="0.3s" repeatCount="indefinite"/>
+          </ellipse>
+        </g>
+
+        <!-- 원자 기호 아이콘 (격납건물 위) -->
+        <g transform="translate(200, 85)">
+          <circle cx="0" cy="0" r="10" fill="#8e44ad" opacity="0.85"/>
+          <ellipse cx="0" cy="0" rx="26" ry="11" fill="none" stroke="#8e44ad" stroke-width="2" opacity="0.8"/>
+          <ellipse cx="0" cy="0" rx="26" ry="11" fill="none" stroke="#8e44ad" stroke-width="2" opacity="0.8" transform="rotate(60 0 0)"/>
+          <ellipse cx="0" cy="0" rx="26" ry="11" fill="none" stroke="#8e44ad" stroke-width="2" opacity="0.8" transform="rotate(120 0 0)">
+            <animateTransform attributeName="transform" type="rotate" from="120 0 0" to="480 0 0" dur="4s" repeatCount="indefinite"/>
+          </ellipse>
+        </g>
+
+        <text x="250" y="195" text-anchor="middle" fill="#4a235a" font-size="13" font-weight="700">원자력 발전</text>
+      </svg>
+    </div>
+    <div class="sim-controls" id="controls-nuclear"></div>
+    <div class="chain-wrap" id="chain-nuclear"></div>
+    <div class="desc-panel" id="desc-nuclear">
+      <div class="desc-icon">💡</div>
+      <div class="desc-text">
+        <div class="desc-step-label">안내</div>
+        <div class="desc-main" id="desc-nuclear-text">▶ 시뮬레이션 시작 버튼을 눌러 에너지 변환 과정을 확인하세요!</div>
+      </div>
+    </div>
+    <div class="env-section" id="env-nuclear"></div>
+    <div id="quiz-nuclear"></div>
+  </div>
+
+</div><!-- .container -->
+
+<script>
+/* ─────────────────────────────────────────
+   데이터
+───────────────────────────────────────── */
+const PLANTS = {
+  wind: {
+    name: '풍력 발전', emoji: '💨', color: '#2980b9',
+    desc: '바람의 운동 에너지로 터빈을 돌려 전기를 만들어요.',
+    env: { co2: 10, eff: 45, safe: 95 },
+    quiz: {
+      q: '풍력 발전에서 에너지는 어떤 순서로 변환될까요? 빈칸을 채우세요.',
+      blanks: ['운동 에너지', '기계적 에너지', '전기 에너지'],
+      answer: '운동 에너지 → 기계적 에너지 → 전기 에너지',
+      hint: '바람이 블레이드를 돌리고, 발전기에서 전기가 만들어져요.',
+      template: '바람(운동 에너지) → 터빈([  ①  ]) → 발전기([  ②  ])'
+    },
+    steps: [
+      { icon:'💨', label:'바람', type:'운동 에너지', color:'#74b9ff',
+        desc:'자연에서 부는 바람이 운동 에너지를 갖고 있어요.' },
+      { icon:'🌀', label:'풍차(터빈)', type:'기계적 에너지', color:'#a29bfe',
+        desc:'바람이 블레이드(날개)를 돌려요. 터빈이 회전하면서 기계적 에너지가 생겨요.' },
+      { icon:'⚙️', label:'발전기', type:'전기 에너지', color:'#fdcb6e',
+        desc:'터빈의 회전이 발전기를 돌려 전기를 만들어요.' },
+      { icon:'🏠', label:'가정/공장', type:'전기 에너지', color:'#55efc4',
+        desc:'만들어진 전기가 송전선을 통해 가정·공장에 공급돼요!' },
+    ]
+  },
+  hydro: {
+    name: '수력 발전', emoji: '💧', color: '#27ae60',
+    desc: '높은 곳의 물이 낙하하면서 터빈을 돌려 전기를 만들어요.',
+    env: { co2: 10, eff: 90, safe: 85 },
+    quiz: {
+      q: '수력 발전에서 에너지는 어떤 순서로 변환될까요? 빈칸을 채우세요.',
+      blanks: ['운동 에너지', '기계적 에너지'],
+      answer: '위치 에너지 → 운동 에너지 → 기계적 에너지 → 전기 에너지',
+      hint: '댐에 저장된 물이 떨어지면서 에너지가 변환돼요.',
+      template: '댐의 물(위치 에너지) → 낙하([  ①  ]) → 터빈([  ②  ]) → 발전기(전기 에너지)'
+    },
+    steps: [
+      { icon:'🏞️', label:'댐 위의 물', type:'위치 에너지', color:'#74b9ff',
+        desc:'높은 곳에 있는 물은 위치 에너지를 갖고 있어요.' },
+      { icon:'⬇️', label:'물의 낙하', type:'운동 에너지', color:'#a29bfe',
+        desc:'물이 아래로 떨어지며 위치 에너지가 운동 에너지로 바뀌어요.' },
+      { icon:'🔩', label:'수차(터빈)', type:'기계적 에너지', color:'#fdcb6e',
+        desc:'빠른 물이 터빈을 힘차게 돌려요.' },
+      { icon:'⚡', label:'발전기', type:'전기 에너지', color:'#55efc4',
+        desc:'터빈 회전으로 전기가 생산돼요!' },
+    ]
+  },
+  thermal: {
+    name: '화력 발전', emoji: '🔥', color: '#e67e22',
+    desc: '화석 연료를 태워 수증기로 터빈을 돌려 전기를 만들어요.',
+    env: { co2: 90, eff: 38, safe: 60 },
+    quiz: {
+      q: '화력 발전에서 에너지는 어떤 순서로 변환될까요? 빈칸을 채우세요.',
+      blanks: ['열 에너지', '기계적 에너지'],
+      answer: '화학 에너지 → 열 에너지 → 기계적 에너지 → 전기 에너지',
+      hint: '연료가 타면 열이 생기고, 그 열로 수증기가 터빈을 돌려요. 터빈의 회전이 기계적 에너지예요.',
+      template: '연료(화학 에너지) → 연소([  ①  ]) → 수증기+터빈([  ②  ]) → 발전기(전기 에너지)'
+    },
+    steps: [
+      { icon:'⛽', label:'화석 연료', type:'화학 에너지', color:'#fab1a0',
+        desc:'석탄·석유 속 원자 결합에 화학 에너지가 저장되어 있어요.' },
+      { icon:'🔥', label:'연소', type:'열 에너지', color:'#ff7675',
+        desc:'연료를 태우면 화학 에너지가 열 에너지로 바뀌어요.' },
+      { icon:'♨️', label:'수증기+터빈', type:'기계적 에너지', color:'#a29bfe',
+        desc:'수증기가 터빈을 돌려요. 터빈의 회전 운동이 기계적 에너지예요.' },
+      { icon:'⚡', label:'발전기', type:'전기 에너지', color:'#55efc4',
+        desc:'전기가 생산돼요. 하지만 CO₂가 발생해 환경 문제가 생겨요!' },
+    ]
+  },
+  solar: {
+    name: '태양광 발전', emoji: '☀️', color: '#f1c40f',
+    desc: '태양의 빛 에너지를 태양전지로 직접 전기로 변환해요.',
+    env: { co2: 10, eff: 22, safe: 98 },
+    quiz: {
+      q: '태양광 발전에서 에너지는 어떤 순서로 변환될까요? 빈칸을 채우세요.',
+      blanks: ['전기 에너지', '화학 에너지'],
+      answer: '빛 에너지 → 전기 에너지 → 화학 에너지(저장) → 전기 에너지',
+      hint: '태양전지(광전 효과), 배터리(ESS)가 핵심이에요.',
+      template: '햇빛(빛 에너지) → 태양전지([  ①  ]) → 배터리ESS([  ②  ]) → 가정(전기 에너지)'
+    },
+    steps: [
+      { icon:'☀️', label:'햇빛', type:'빛 에너지', color:'#ffeaa7',
+        desc:'태양에서 오는 빛 에너지예요. 무한하고 청정해요!' },
+      { icon:'🔲', label:'태양 전지판', type:'전기 에너지', color:'#74b9ff',
+        desc:'반도체로 된 태양전지가 빛→전기로 변환해요. (광전 효과)' },
+      { icon:'🔋', label:'배터리(ESS)', type:'화학 에너지', color:'#55efc4',
+        desc:'전기를 배터리에 저장해 밤에도 사용할 수 있어요.' },
+      { icon:'🏠', label:'가정/전기차', type:'전기 에너지', color:'#a29bfe',
+        desc:'저장된 전기로 생활하고, 전기차도 충전할 수 있어요!' },
+    ]
+  },
+  nuclear: {
+    name: '원자력 발전', emoji: '⚛️', color: '#8e44ad',
+    desc: '우라늄 핵분열로 나오는 열 에너지로 터빈을 돌려 전기를 만들어요.',
+    env: { co2: 15, eff: 33, safe: 70 },
+    quiz: {
+      q: '원자력 발전에서 에너지는 어떤 순서로 변환될까요? 빈칸을 채우세요.',
+      blanks: ['열 에너지', '기계적 에너지'],
+      answer: '핵 에너지 → 열 에너지 → 기계적 에너지 → 전기 에너지',
+      hint: '핵분열로 엄청난 열이 나와요. 수증기가 터빈을 돌리고, 터빈의 회전이 기계적 에너지예요.',
+      template: '우라늄(핵 에너지) → 핵분열([  ①  ]) → 수증기+터빈([  ②  ]) → 발전기(전기 에너지)'
+    },
+    steps: [
+      { icon:'⚛️', label:'우라늄 핵연료', type:'핵 에너지', color:'#dfe6e9',
+        desc:'우라늄 원자핵에 엄청난 에너지가 저장되어 있어요.' },
+      { icon:'💥', label:'핵분열 반응', type:'열 에너지', color:'#ff7675',
+        desc:'중성자가 우라늄 핵을 쪼개면 막대한 열 에너지가 방출돼요.' },
+      { icon:'♨️', label:'수증기+터빈', type:'기계적 에너지', color:'#a29bfe',
+        desc:'수증기가 터빈을 돌려요. 터빈의 회전 운동이 기계적 에너지예요.' },
+      { icon:'⚡', label:'발전기', type:'전기 에너지', color:'#55efc4',
+        desc:'전기가 대량 생산돼요. CO₂가 없지만 방사성 폐기물이 발생해요.' },
+    ]
+  }
+};
+
+/* ─────────────────────────────────────────
+   상태
+───────────────────────────────────────── */
+let currentPlant = 'wind';
+const simTimers = {};   // plantId -> array of timeoutIDs
+const simRunning = {};  // plantId -> boolean
+
+/* ─────────────────────────────────────────
+   초기화: 모든 패널 렌더
+───────────────────────────────────────── */
+Object.keys(PLANTS).forEach(id => {
+  renderControls(id);
+  renderChain(id);
+  renderEnv(id);
+  renderQuiz(id);
+});
+
+/* ─────────────────────────────────────────
+   탭 전환
+───────────────────────────────────────── */
+document.getElementById('tabBar').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if (!btn) return;
+  const id = btn.dataset.plant;
+  if (id === currentPlant) return;
+
+  // 이전 패널 숨기기
+  document.getElementById('panel-' + currentPlant).classList.remove('active');
+  document.querySelector('.tab-btn.active').classList.remove('active');
+
+  // 새 패널 표시
+  currentPlant = id;
+  btn.classList.add('active');
+  btn.style.background = PLANTS[id].color;
+  document.getElementById('panel-' + id).classList.add('active');
+
+  // 환경지수 게이지 리셋 후 재실행 (fade-in 후)
+  setTimeout(() => animateGauges(id), 150);
+});
+
+// 초기 탭 색상 + 게이지
+(function initTabs() {
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    if (btn.classList.contains('active')) {
+      btn.style.background = PLANTS[btn.dataset.plant].color;
+    }
+    btn.addEventListener('mouseenter', () => {
+      if (!btn.classList.contains('active'))
+        btn.style.borderColor = PLANTS[btn.dataset.plant].color;
+    });
+    btn.addEventListener('mouseleave', () => {
+      if (!btn.classList.contains('active'))
+        btn.style.borderColor = '#ddd';
+    });
+  });
+  setTimeout(() => animateGauges('wind'), 300);
+})();
+
+/* ─────────────────────────────────────────
+   렌더: 컨트롤 버튼
+───────────────────────────────────────── */
+function renderControls(id) {
+  const p = PLANTS[id];
+  const wrap = document.getElementById('controls-' + id);
+  wrap.innerHTML = `
+    <div class="plant-intro">${p.emoji} <strong>${p.name}</strong> &nbsp;—&nbsp; ${p.desc}</div>
+    <button class="btn" id="startBtn-${id}" onclick="startSim('${id}')"
+      style="background:${p.color}; box-shadow:0 4px 16px ${p.color}44;">
+      ▶ 시뮬레이션 시작
+    </button>
+    <button class="btn btn-secondary" id="resetBtn-${id}" onclick="resetSim('${id}')">↺ 초기화</button>
+  `;
+}
+
+/* ─────────────────────────────────────────
+   렌더: 에너지 체인
+───────────────────────────────────────── */
+function renderChain(id) {
+  const p = PLANTS[id];
+  const wrap = document.getElementById('chain-' + id);
+  let html = '';
+  p.steps.forEach((s, i) => {
+    html += `
+      <div class="chain-step" id="step-${id}-${i}" data-idx="${i}">
+        <div class="step-num" id="stepnum-${id}-${i}">${i + 1}</div>
+        <span class="step-icon">${s.icon}</span>
+        <div class="step-name">${s.label}</div>
+        <span class="energy-badge" style="background:${s.color}; color:${getBadgeTextColor(s.color)};">${s.type}</span>
+      </div>`;
+    if (i < p.steps.length - 1) {
+      html += `
+        <div class="chain-arrow">
+          <svg viewBox="0 0 52 28" xmlns="http://www.w3.org/2000/svg">
+            <line id="arrowLine-${id}-${i}" class="arrow-line" x1="2" y1="14" x2="42" y2="14"/>
+            <polygon id="arrowHead-${id}-${i}" class="arrow-head" points="42,8 52,14 42,20"/>
+          </svg>
+        </div>`;
+    }
+  });
+  wrap.innerHTML = html;
+}
+
+function getBadgeTextColor(hex) {
+  // 밝은 색이면 어두운 텍스트
+  const bright = ['#ffeaa7', '#fdcb6e', '#dfe6e9'];
+  return bright.includes(hex) ? '#333' : 'white';
+}
+
+/* ─────────────────────────────────────────
+   시뮬레이션 시작
+───────────────────────────────────────── */
+function startSim(id) {
+  if (simRunning[id]) return;
+  resetSimState(id);
+  simRunning[id] = true;
+
+  const p = PLANTS[id];
+  const startBtn = document.getElementById('startBtn-' + id);
+  startBtn.disabled = true;
+  startBtn.textContent = '▶ 진행 중...';
+
+  p.steps.forEach((s, i) => {
+    const t = setTimeout(() => {
+      highlightStep(id, i, s);
+      if (i === p.steps.length - 1) {
+        simRunning[id] = false;
+        startBtn.disabled = false;
+        startBtn.textContent = '▶ 다시 시작';
+      }
+    }, i * 1200);
+    if (!simTimers[id]) simTimers[id] = [];
+    simTimers[id].push(t);
+  });
+}
+
+function highlightStep(id, idx, step) {
+  const p = PLANTS[id];
+
+  // 이전 단계들 비활성화
+  p.steps.forEach((_, i) => {
+    const el = document.getElementById(`step-${id}-${i}`);
+    const num = document.getElementById(`stepnum-${id}-${i}`);
+    if (i < idx) {
+      el.style.borderColor = p.steps[i].color;
+      el.style.background = p.steps[i].color + '22';
+      num.style.background = p.steps[i].color;
+    } else if (i > idx) {
+      el.style.borderColor = '#ddd';
+      el.style.background = 'white';
+      num.style.background = '#ccc';
+    }
+  });
+
+  // 현재 단계 강조
+  const cur = document.getElementById(`step-${id}-${idx}`);
+  cur.style.borderColor = step.color;
+  cur.style.background = step.color + '22';
+  cur.style.boxShadow = `0 0 0 6px ${step.color}44, 0 8px 32px ${step.color}66`;
+  cur.style.transform = 'scale(1.08)';
+  const num = document.getElementById(`stepnum-${id}-${idx}`);
+  num.style.background = step.color === '#dfe6e9' ? '#888' : step.color;
+
+  // 이전 단계들은 scale 복원
+  p.steps.forEach((s, i) => {
+    if (i !== idx) {
+      const el = document.getElementById(`step-${id}-${i}`);
+      el.style.transform = 'scale(1)';
+      el.style.boxShadow = '';
+    }
+  });
+
+  // 화살표 활성화 (현재 인덱스 이전까지)
+  for (let i = 0; i < p.steps.length - 1; i++) {
+    const line = document.getElementById(`arrowLine-${id}-${i}`);
+    const head = document.getElementById(`arrowHead-${id}-${i}`);
+    if (line && head) {
+      if (i < idx) {
+        line.style.stroke = step.color;
+        head.style.fill = step.color;
+        line.classList.add('active');
+      } else {
+        line.style.stroke = '#ccc';
+        head.style.fill = '#ccc';
+        line.classList.remove('active');
+      }
+    }
+  }
+
+  // 설명 패널 업데이트
+  const panel = document.getElementById('desc-' + id);
+  const text = document.getElementById('desc-' + id + '-text');
+  panel.style.borderLeftColor = step.color;
+  panel.style.background = `linear-gradient(135deg, ${step.color}18, ${step.color}08)`;
+  panel.querySelector('.desc-icon').textContent = step.icon;
+  panel.querySelector('.desc-step-label').textContent = `단계 ${idx + 1} / ${p.steps.length} — ${step.type}`;
+  text.textContent = step.desc;
+}
+
+/* ─────────────────────────────────────────
+   초기화
+───────────────────────────────────────── */
+function resetSim(id) {
+  resetSimState(id);
+  const startBtn = document.getElementById('startBtn-' + id);
+  startBtn.disabled = false;
+  startBtn.textContent = '▶ 시뮬레이션 시작';
+}
+
+function resetSimState(id) {
+  simRunning[id] = false;
+  if (simTimers[id]) { simTimers[id].forEach(clearTimeout); simTimers[id] = []; }
+
+  const p = PLANTS[id];
+  p.steps.forEach((_, i) => {
+    const el = document.getElementById(`step-${id}-${i}`);
+    const num = document.getElementById(`stepnum-${id}-${i}`);
+    if (el) { el.style.borderColor = '#ddd'; el.style.background = 'white'; el.style.transform = 'scale(1)'; el.style.boxShadow = ''; }
+    if (num) num.style.background = '#ccc';
+    const line = document.getElementById(`arrowLine-${id}-${i}`);
+    const head = document.getElementById(`arrowHead-${id}-${i}`);
+    if (line) { line.style.stroke = '#ccc'; line.classList.remove('active'); }
+    if (head) head.style.fill = '#ccc';
+  });
+
+  const panel = document.getElementById('desc-' + id);
+  panel.style.borderLeftColor = '#ccc';
+  panel.style.background = 'linear-gradient(135deg, #f8f9fa, #ecf0f1)';
+  panel.querySelector('.desc-icon').textContent = '💡';
+  panel.querySelector('.desc-step-label').textContent = '안내';
+  document.getElementById('desc-' + id + '-text').textContent = '▶ 시뮬레이션 시작 버튼을 눌러 에너지 변환 과정을 확인하세요!';
+}
+
+/* ─────────────────────────────────────────
+   렌더: 환경 지수
+───────────────────────────────────────── */
+function renderEnv(id) {
+  const p = PLANTS[id];
+  const e = p.env;
+  const wrap = document.getElementById('env-' + id);
+  wrap.innerHTML = `
+    <div class="env-section">
+      <h3>📊 환경 지수</h3>
+      <div class="env-grid">
+        <div class="env-card">
+          <div class="env-label">🌿 CO₂ 배출 <span id="co2val-${id}">0%</span></div>
+          <div class="gauge-track">
+            <div class="gauge-fill" id="co2-${id}"
+              style="background: ${e.co2 < 30 ? '#27ae60' : e.co2 < 60 ? '#f39c12' : '#e74c3c'};"></div>
+          </div>
+          <div class="env-note">${e.co2 < 30 ? '✅ 매우 낮음 — 친환경!' : e.co2 < 60 ? '⚠️ 보통 수준' : '❌ 높음 — 환경 부담'}</div>
+        </div>
+        <div class="env-card">
+          <div class="env-label">⚡ 에너지 효율 <span id="effval-${id}">0%</span></div>
+          <div class="gauge-track">
+            <div class="gauge-fill" id="eff-${id}"
+              style="background: ${e.eff >= 70 ? '#27ae60' : e.eff >= 40 ? '#2980b9' : '#e67e22'};"></div>
+          </div>
+          <div class="env-note">${e.eff >= 70 ? '✅ 매우 높음' : e.eff >= 40 ? '🔵 보통 수준' : '🟠 개선 여지 있음'}</div>
+        </div>
+        <div class="env-card">
+          <div class="env-label">🛡️ 안전성 <span id="safeval-${id}">0%</span></div>
+          <div class="gauge-track">
+            <div class="gauge-fill" id="safe-${id}"
+              style="background: ${e.safe >= 85 ? '#27ae60' : e.safe >= 65 ? '#2980b9' : '#e67e22'};"></div>
+          </div>
+          <div class="env-note">${e.safe >= 85 ? '✅ 매우 안전' : e.safe >= 65 ? '🔵 비교적 안전' : '⚠️ 관리 필요'}</div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function animateGauges(id) {
+  const p = PLANTS[id];
+  const e = p.env;
+  const pairs = [
+    ['co2', e.co2], ['eff', e.eff], ['safe', e.safe]
+  ];
+  pairs.forEach(([key, val]) => {
+    const bar = document.getElementById(`${key}-${id}`);
+    const label = document.getElementById(`${key}val-${id}`);
+    if (!bar || !label) return;
+    bar.style.width = '0%';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        bar.style.width = val + '%';
+        // 카운트업 애니메이션
+        let start = 0;
+        const step = () => {
+          start += 2;
+          if (start >= val) { label.textContent = val + '%'; return; }
+          label.textContent = start + '%';
+          requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+    });
+  });
+}
+
+/* ─────────────────────────────────────────
+   렌더: 퀴즈
+───────────────────────────────────────── */
+function renderQuiz(id) {
+  const q = PLANTS[id].quiz;
+  const wrap = document.getElementById('quiz-' + id);
+  wrap.innerHTML = `
+    <div class="quiz-section">
+      <h3>🧪 미니 퀴즈</h3>
+      <div class="quiz-subtitle">이 발전소의 에너지 변환 순서는?</div>
+      <div class="quiz-question">${q.template}</div>
+      <div style="font-size:15px; color:#555; margin-bottom:12px; font-weight:600;">
+        ① 번 빈칸에 들어갈 에너지 유형을 입력하세요.
+      </div>
+      <div class="quiz-input-area">
+        <input class="quiz-input" id="quizInput-${id}" type="text"
+          placeholder="예) 열 에너지 (Enter로 정답 확인)"
+          oninput="clearQuizResult('${id}')"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();checkQuiz('${id}');}"/>
+        <button class="btn btn-accent" onclick="checkQuiz('${id}')">정답 확인</button>
+        <button class="btn btn-secondary" onclick="showHint('${id}')">💡 힌트</button>
+      </div>
+      <div class="quiz-result" id="quizResult-${id}"></div>
+    </div>`;
+}
+
+function checkQuiz(id) {
+  const input = document.getElementById('quizInput-' + id).value.trim();
+  const result = document.getElementById('quizResult-' + id);
+  const q = PLANTS[id].quiz;
+  const correct = q.blanks[0];
+
+  const normalize = s => s.replace(/\s/g, '').toLowerCase();
+  const isCorrect = normalize(input) === normalize(correct);
+
+  result.style.display = 'block';
+  if (isCorrect) {
+    result.className = 'quiz-result correct';
+    result.innerHTML = `🎉 정답이에요! <br>
+      <div class="quiz-hint">전체 변환 순서: <strong>${q.answer}</strong></div>`;
+  } else {
+    result.className = 'quiz-result wrong';
+    result.innerHTML = `❌ 다시 생각해보세요! 입력값: "${input}" <br>
+      <div class="quiz-hint">힌트: ${q.hint}</div>`;
+  }
+}
+
+function showHint(id) {
+  const result = document.getElementById('quizResult-' + id);
+  result.style.display = 'block';
+  result.className = 'quiz-result correct';
+  result.innerHTML = `💡 힌트: ${PLANTS[id].quiz.hint}<br>
+    <div class="quiz-hint">전체 순서: ${PLANTS[id].quiz.answer}</div>`;
+}
+
+function clearQuizResult(id) {
+  const result = document.getElementById('quizResult-' + id);
+  result.style.display = 'none';
+}
+</script>
+</body>
+</html>

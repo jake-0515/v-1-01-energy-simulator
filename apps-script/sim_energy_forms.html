@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>에너지 형태 분류 게임</title>
+  <style>
+/* ===== V단원. 에너지와 수송 기술의 세계 - 공용 스타일 ===== */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #27ae60;
+  --primary-dark: #1e8449;
+  --primary-light: #a9dfbf;
+  --accent: #f39c12;
+  --accent-dark: #d68910;
+  --blue: #2980b9;
+  --blue-dark: #1a5276;
+  --red: #e74c3c;
+  --purple: #8e44ad;
+  --teal: #16a085;
+  --bg: #f0fff4;
+  --surface: #ffffff;
+  --text: #1a2e1a;
+  --text-light: #5d6d5d;
+  --border: #b2dfdb;
+  --shadow: 0 8px 32px rgba(39, 174, 96, 0.12);
+  --shadow-lg: 0 16px 48px rgba(39, 174, 96, 0.22);
+}
+
+html, body {
+  font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  font-size: 16px;
+}
+
+h1, h2, h3 { font-weight: 800; letter-spacing: -0.02em; }
+
+/* ── 헤더 ── */
+.app-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  padding: 20px 32px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.app-header h1 {
+  font-size: clamp(17px, 3vw, 26px);
+  display: flex; align-items: center; gap: 10px;
+}
+.app-header .subtitle { font-size: 13px; opacity: 0.88; font-weight: 500; }
+.app-header nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.2);
+  transition: background 0.2s;
+  font-size: 14px;
+}
+.app-header nav a:hover { background: rgba(255,255,255,0.35); }
+
+/* ── 컨테이너 ── */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+/* ── 카드 ── */
+.card {
+  background: var(--surface);
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+  border: 2px solid var(--border);
+}
+
+/* ── 버튼 ── */
+.btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  box-shadow: 0 4px 16px rgba(39,174,96,0.3);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(39,174,96,0.4); }
+.btn:active { transform: translateY(0); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn.btn-secondary { background: white; color: var(--primary-dark); border: 2px solid var(--primary); box-shadow: none; }
+.btn.btn-accent  { background: var(--accent); box-shadow: 0 4px 16px rgba(243,156,18,0.3); }
+.btn.btn-blue    { background: var(--blue);   box-shadow: 0 4px 16px rgba(41,128,185,0.3); }
+.btn.btn-red     { background: var(--red);    box-shadow: 0 4px 16px rgba(231,76,60,0.3); }
+
+/* ── 배지 ── */
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  background: var(--primary);
+  color: white;
+}
+.badge.amber  { background: var(--accent); }
+.badge.blue   { background: var(--blue); }
+.badge.purple { background: var(--purple); }
+.badge.red    { background: var(--red); }
+.badge.teal   { background: var(--teal); }
+
+/* ── 학습 목표 박스 ── */
+.objective-box {
+  background: linear-gradient(135deg, #d5f5e3 0%, #a9dfbf 100%);
+  border-radius: 20px;
+  padding: 24px 28px;
+  margin-bottom: 32px;
+  border-left: 8px solid var(--primary);
+}
+.objective-box h2 { color: var(--primary-dark); font-size: 22px; margin-bottom: 12px; }
+.objective-box ul { list-style: none; padding: 0; }
+.objective-box li {
+  padding: 6px 0 6px 30px;
+  position: relative;
+  font-weight: 600;
+  font-size: 16px;
+}
+.objective-box li::before { content: "🎯"; position: absolute; left: 0; }
+
+/* ── 활동 그리드 ── */
+.activity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.activity-card {
+  background: white;
+  border-radius: 24px;
+  padding: 28px;
+  border: 3px solid var(--border);
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.activity-card::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(39,174,96,0.06));
+  opacity: 0; transition: opacity 0.25s;
+}
+.activity-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+.activity-card:hover::before { opacity: 1; }
+.activity-card .icon { font-size: 52px; margin-bottom: 14px; display: block; }
+.activity-card h3 { font-size: 22px; margin-bottom: 10px; }
+.activity-card p { color: var(--text-light); font-size: 15px; line-height: 1.55; }
+.activity-card .go { margin-top: 14px; color: var(--primary-dark); font-weight: 700; font-size: 14px; }
+
+/* ── 토스트 ── */
+.toast {
+  position: fixed; top: 20px; left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: white; padding: 14px 24px;
+  border-radius: 999px; box-shadow: var(--shadow-lg);
+  font-weight: 700; z-index: 1000; transition: transform 0.3s;
+}
+.toast.show  { transform: translateX(-50%) translateY(0); }
+.toast.success { background: var(--primary-dark); color: white; }
+.toast.error   { background: var(--red); color: white; }
+
+/* ── 섹션 헤더 ── */
+.section-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 24px;
+}
+.section-header h2 { font-size: 26px; color: var(--primary-dark); }
+.section-num {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--primary); color: white;
+  font-size: 18px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── 애니메이션 ── */
+@keyframes pop {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes flash {
+  0%, 100% { background-color: transparent; }
+  50%       { background-color: rgba(39,174,96,0.25); }
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-8px); }
+  75%       { transform: translateX(8px); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+@keyframes flow {
+  0%   { stroke-dashoffset: 100; }
+  100% { stroke-dashoffset: 0; }
+}
+
+</style>
+  <style>
+    /* ===== CSS 변수 ===== */
+    :root {
+      --primary: #27ae60;
+      --primary-light: #2ecc71;
+      --primary-dark: #1e8449;
+      --bg: #f0f4f8;
+      --card-bg: #ffffff;
+      --text: #2c3e50;
+      --muted: #7f8c8d;
+      --radius: 16px;
+      --shadow: 0 4px 16px rgba(0,0,0,0.10);
+      --shadow-hover: 0 8px 28px rgba(0,0,0,0.16);
+      /* 에너지 타입 색상 */
+      --mechanical: #e67e22;
+      --mechanical-light: #fdf0e0;
+      --electric: #2980b9;
+      --electric-light: #e8f4fd;
+      --chemical: #27ae60;
+      --chemical-light: #e9f7ef;
+      --light-energy: #f1c40f;
+      --light-energy-light: #fef9e7;
+      --heat: #e74c3c;
+      --heat-light: #fdedec;
+      --nuclear: #8e44ad;
+      --nuclear-light: #f5eef8;
+    }
+
+    /* ===== 리셋 ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 18px;
+      min-height: 100vh;
+    }
+
+    /* ===== 헤더 ===== */
+    .app-header {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, var(--primary-light) 100%);
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 12px rgba(39,174,96,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .app-header h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
+    .app-header .subtitle { font-size: 0.85rem; opacity: 0.88; margin-top: 2px; }
+    .app-header nav a {
+      color: #fff;
+      text-decoration: none;
+      background: rgba(255,255,255,0.18);
+      padding: 8px 16px;
+      border-radius: 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .app-header nav a:hover { background: rgba(255,255,255,0.32); }
+
+    /* ===== 진행 바 ===== */
+    .progress-wrap {
+      background: #fff;
+      padding: 10px 24px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .progress-label { font-size: 0.9rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+    .progress-bar-bg {
+      flex: 1;
+      height: 14px;
+      background: #e0e0e0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+      border-radius: 8px;
+      width: 0%;
+      transition: width 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .progress-count { font-size: 0.9rem; font-weight: 700; color: var(--primary-dark); white-space: nowrap; }
+
+    /* ===== 학습 안내 배너 ===== */
+    .guide-banner {
+      background: linear-gradient(135deg, #fff9e6, #fff3cd);
+      border: 2px solid #f9a825;
+      border-left: 6px solid #e67e22;
+      padding: 14px 22px;
+      margin: 16px 20px 0;
+      border-radius: 0 16px 16px 0;
+      font-size: 1rem;
+      color: #5d4037;
+      box-shadow: 0 3px 12px rgba(249,168,37,0.18);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .guide-banner strong { color: #c0392b; font-size: 1.05em; }
+
+    /* ===== 분류 칸 그리드 ===== */
+    .zones-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      padding: 16px 20px;
+    }
+    @media (max-width: 700px) {
+      .zones-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 12px; }
+    }
+    @media (max-width: 420px) {
+      .zones-grid { grid-template-columns: 1fr; }
+    }
+
+    .zone-card {
+      border-radius: 20px;
+      padding: 16px 14px 14px;
+      cursor: pointer;
+      transition: transform 0.18s cubic-bezier(.34,1.56,.64,1), box-shadow 0.18s;
+      box-shadow: var(--shadow);
+      position: relative;
+      min-height: 190px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .zone-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: var(--shadow-hover); }
+
+    /* 에너지 타입별 색상 */
+    .zone-card[data-type="mechanical"] { background: var(--mechanical-light); border: 2px solid var(--mechanical); }
+    .zone-card[data-type="electric"]   { background: var(--electric-light);   border: 2px solid var(--electric); }
+    .zone-card[data-type="chemical"]   { background: var(--chemical-light);   border: 2px solid var(--chemical); }
+    .zone-card[data-type="light"]      { background: var(--light-energy-light); border: 2px solid var(--light-energy); }
+    .zone-card[data-type="heat"]       { background: var(--heat-light);       border: 2px solid var(--heat); }
+    .zone-card[data-type="nuclear"]    { background: var(--nuclear-light);    border: 2px solid var(--nuclear); }
+
+    /* 드래그 오버 강조 */
+    .zone-card.drag-over { transform: scale(1.03); filter: brightness(0.95); }
+    .zone-card[data-type="mechanical"].drag-over { box-shadow: 0 0 0 4px var(--mechanical); }
+    .zone-card[data-type="electric"].drag-over   { box-shadow: 0 0 0 4px var(--electric); }
+    .zone-card[data-type="chemical"].drag-over   { box-shadow: 0 0 0 4px var(--chemical); }
+    .zone-card[data-type="light"].drag-over      { box-shadow: 0 0 0 4px var(--light-energy); }
+    .zone-card[data-type="heat"].drag-over       { box-shadow: 0 0 0 4px var(--heat); }
+    .zone-card[data-type="nuclear"].drag-over    { box-shadow: 0 0 0 4px var(--nuclear); }
+
+    .zone-title {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .zone-card[data-type="mechanical"] .zone-title { color: var(--mechanical); }
+    .zone-card[data-type="electric"]   .zone-title { color: var(--electric); }
+    .zone-card[data-type="chemical"]   .zone-title { color: var(--chemical); }
+    .zone-card[data-type="light"]      .zone-title { color: #b7950b; }
+    .zone-card[data-type="heat"]       .zone-title { color: var(--heat); }
+    .zone-card[data-type="nuclear"]    .zone-title { color: var(--nuclear); }
+
+    /* SVG 일러스트 영역 */
+    .zone-svg {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 56px;
+      margin: 2px 0;
+    }
+    .zone-svg svg { width: 56px; height: 56px; }
+
+    /* 드롭 영역 */
+    .drop-area {
+      flex: 1;
+      border: 2.5px dashed currentColor;
+      border-radius: 10px;
+      min-height: 44px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      padding: 6px;
+      align-content: flex-start;
+      opacity: 0.6;
+      transition: opacity 0.2s, background 0.2s;
+      position: relative;
+    }
+    .drop-area::before {
+      content: '여기에 놓기';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.2s;
+    }
+    .drop-area.has-items::before { opacity: 0; }
+    .drop-area:hover { opacity: 1; }
+    .zone-card[data-type="mechanical"] .drop-area { color: var(--mechanical); }
+    .zone-card[data-type="electric"]   .drop-area { color: var(--electric); }
+    .zone-card[data-type="chemical"]   .drop-area { color: var(--chemical); }
+    .zone-card[data-type="light"]      .drop-area { color: #b7950b; }
+    .zone-card[data-type="heat"]       .drop-area { color: var(--heat); }
+    .zone-card[data-type="nuclear"]    .drop-area { color: var(--nuclear); }
+
+    /* 드롭 영역 안에 배치된 미니 카드 */
+    .mini-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+      animation: dropIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes dropIn {
+      from { transform: scale(0.4) translateY(-10px); opacity: 0; }
+      to   { transform: scale(1) translateY(0);       opacity: 1; }
+    }
+
+    /* ===== 카드 트레이 ===== */
+    .tray-section {
+      padding: 0 20px 20px;
+    }
+    .tray-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card-tray {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 16px;
+      background: #fff;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      min-height: 80px;
+    }
+
+    /* ===== 예시 카드 ===== */
+    .energy-card {
+      background: var(--card-bg);
+      border: 2px solid #e0e0e0;
+      border-radius: 16px;
+      padding: 16px 16px 12px;
+      cursor: pointer;
+      user-select: none;
+      touch-action: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      min-width: 115px;
+      transition: transform 0.18s cubic-bezier(.34,1.56,.64,1), border-color 0.15s, box-shadow 0.15s;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: relative;
+    }
+    .energy-card:hover {
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.14);
+      border-color: #bbb;
+    }
+    .energy-card.selected {
+      border: 3px solid var(--primary);
+      box-shadow: 0 0 0 4px rgba(39,174,96,0.3), 0 6px 20px rgba(39,174,96,0.25);
+      transform: translateY(-5px) scale(1.06);
+    }
+    .energy-card.dragging {
+      opacity: 0.45;
+      transform: scale(0.95);
+    }
+    .energy-card.placed {
+      display: none;
+    }
+    .card-emoji { font-size: 2rem; line-height: 1; }
+    .card-name  { font-size: 0.85rem; font-weight: 700; text-align: center; color: var(--text); }
+    .card-hint  { font-size: 0.72rem; color: var(--muted); text-align: center; line-height: 1.3; }
+
+    /* shake 애니메이션 */
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      15%     { transform: translateX(-8px) rotate(-2deg); }
+      30%     { transform: translateX(8px) rotate(2deg); }
+      45%     { transform: translateX(-6px); }
+      60%     { transform: translateX(6px); }
+      75%     { transform: translateX(-3px); }
+      90%     { transform: translateX(3px); }
+    }
+    .energy-card.shake { animation: shake 0.55s ease; }
+
+    /* ===== 토스트 ===== */
+    #toast-wrap {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast {
+      padding: 12px 24px;
+      border-radius: 32px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+      animation: toastIn 0.3s ease, toastOut 0.4s ease 1.8s forwards;
+      white-space: nowrap;
+    }
+    .toast.correct { background: #27ae60; }
+    .toast.wrong   { background: #e74c3c; }
+    @keyframes toastIn  { from { opacity:0; transform:translateY(-16px) scale(0.9); } to { opacity:1; transform:none; } }
+    @keyframes toastOut { to   { opacity:0; transform:translateY(-16px) scale(0.9); } }
+
+    /* ===== 힌트 팝업 ===== */
+    .hint-popup {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2c3e50;
+      color: #fff;
+      font-size: 0.78rem;
+      padding: 7px 12px;
+      border-radius: 10px;
+      white-space: nowrap;
+      z-index: 300;
+      pointer-events: none;
+      animation: fadeIn 0.2s ease;
+    }
+    .hint-popup::after {
+      content: '';
+      position: absolute;
+      top: 100%; left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #2c3e50;
+    }
+    @keyframes fadeIn { from { opacity:0; transform: translateX(-50%) translateY(6px); } to { opacity:1; transform: translateX(-50%) translateY(0); } }
+
+    /* ===== 완료 모달 ===== */
+    #modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    #modal-overlay.show { display: flex; }
+    .modal-box {
+      background: #fff;
+      border-radius: 24px;
+      padding: 36px 32px 28px;
+      max-width: 420px;
+      width: 92%;
+      text-align: center;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.22);
+      animation: modalIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes modalIn {
+      from { transform: scale(0.7) translateY(40px); opacity: 0; }
+      to   { transform: none; opacity: 1; }
+    }
+    .modal-emoji { font-size: 3.5rem; line-height: 1; margin-bottom: 8px; }
+    .modal-title { font-size: 1.7rem; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+    .modal-score { font-size: 3rem; font-weight: 900; color: var(--primary); margin: 10px 0; }
+    .modal-score span { font-size: 1.4rem; color: var(--muted); font-weight: 600; }
+    .score-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 20px;
+      font-size: 0.88rem;
+    }
+    .score-table th {
+      background: var(--bg);
+      padding: 6px 10px;
+      font-weight: 700;
+      text-align: left;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    .score-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .score-dot {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+    .btn-restart {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+      color: #fff;
+      border: none;
+      border-radius: 32px;
+      padding: 14px 36px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(39,174,96,0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn-restart:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(39,174,96,0.4); }
+    .btn-restart:active { transform: translateY(0); }
+
+    /* ===== SVG 일러스트 헬퍼 ===== */
+    .svg-mechanical { color: var(--mechanical); }
+    .svg-electric   { color: var(--electric); }
+    .svg-chemical   { color: var(--chemical); }
+    .svg-light      { color: #b7950b; }
+    .svg-heat       { color: var(--heat); }
+    .svg-nuclear    { color: var(--nuclear); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+
+    /* ===== 반응형 트레이 ===== */
+    @media (max-width: 600px) {
+      .energy-card { min-width: 90px; padding: 10px 10px; }
+      .card-emoji  { font-size: 1.6rem; }
+      .card-name   { font-size: 0.78rem; }
+      .card-hint   { display: none; }
+      .modal-box   { padding: 24px 16px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== 헤더 ===== -->
+<header class="app-header">
+  <div>
+    <h1>⚡ 에너지 형태 분류 게임</h1>
+    <div class="subtitle">카드를 알맞은 에너지 형태에 분류해 보세요!</div>
+  </div>
+  <nav><a href="<?= baseUrl ?>">🏠 홈</a></nav>
+</header>
+
+<!-- ===== 진행 바 ===== -->
+<div class="progress-wrap">
+  <span class="progress-label">진행</span>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progressBar"></div>
+  </div>
+  <span class="progress-count" id="progressCount">0 / 15</span>
+</div>
+
+<!-- ===== 학습 안내 배너 ===== -->
+<div class="guide-banner">
+  💡 <strong>방법</strong>: 아래 예시 카드를 클릭한 후, 해당하는 에너지 형태 칸을 클릭하세요! (드래그도 가능합니다)
+</div>
+
+<!-- ===== 분류 칸 그리드 ===== -->
+<div class="zones-grid" id="zonesGrid">
+
+  <!-- 기계적 에너지 -->
+  <div class="zone-card" data-type="mechanical">
+    <div class="zone-title">⚙️ 기계적 에너지</div>
+    <div class="zone-svg">
+      <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- 포물선 궤적 -->
+        <path d="M6 46 Q14 12 28 20 Q38 26 50 10" stroke="#e67e22" stroke-width="2.5" stroke-dasharray="4 3" fill="none" stroke-linecap="round"/>
+        <!-- 야구공 -->
+        <circle cx="50" cy="10" r="6" fill="#fff" stroke="#e67e22" stroke-width="2"/>
+        <path d="M46 8 Q48 10 46 12" stroke="#e67e22" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+        <path d="M54 8 Q52 10 54 12" stroke="#e67e22" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+        <!-- 출발점 작은 원 -->
+        <circle cx="6" cy="46" r="3.5" fill="#e67e22" opacity="0.4"/>
+        <!-- 땅 -->
+        <line x1="2" y1="50" x2="54" y2="50" stroke="#e67e22" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="drop-area" data-type="mechanical" id="drop-mechanical"></div>
+  </div>
+
+  <!-- 전기 에너지 -->
+  <div class="zone-card" data-type="electric">
+    <div class="zone-title">⚡ 전기 에너지</div>
+    <div class="zone-svg">
+      <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- 번개 -->
+        <polygon points="32,4 20,28 28,28 24,52 40,24 30,24" fill="#2980b9" opacity="0.85"/>
+        <!-- 회로선 -->
+        <line x1="4" y1="44" x2="14" y2="44" stroke="#2980b9" stroke-width="2" stroke-linecap="round"/>
+        <rect x="14" y="40" width="8" height="8" rx="2" stroke="#2980b9" stroke-width="2" fill="none"/>
+        <line x1="22" y1="44" x2="32" y2="44" stroke="#2980b9" stroke-width="2" stroke-linecap="round"/>
+        <!-- 저항 기호 -->
+        <polyline points="32,44 34,40 36,48 38,40 40,48 42,40 44,44" stroke="#2980b9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <line x1="44" y1="44" x2="54" y2="44" stroke="#2980b9" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="drop-area" data-type="electric" id="drop-electric"></div>
+  </div>
+
+  <!-- 화학 에너지 -->
+  <div class="zone-card" data-type="chemical">
+    <div class="zone-title">🧪 화학 에너지</div>
+    <div class="zone-svg">
+      <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- 중심 원자 -->
+        <circle cx="28" cy="28" r="7" fill="#27ae60" opacity="0.9"/>
+        <!-- 결합선 -->
+        <line x1="28" y1="21" x2="28" y2="10" stroke="#27ae60" stroke-width="2"/>
+        <line x1="28" y1="35" x2="28" y2="46" stroke="#27ae60" stroke-width="2"/>
+        <line x1="21" y1="28" x2="10" y2="28" stroke="#27ae60" stroke-width="2"/>
+        <line x1="35" y1="28" x2="46" y2="28" stroke="#27ae60" stroke-width="2"/>
+        <line x1="23" y1="23" x2="14" y2="14" stroke="#27ae60" stroke-width="2" opacity="0.6"/>
+        <line x1="33" y1="33" x2="42" y2="42" stroke="#27ae60" stroke-width="2" opacity="0.6"/>
+        <!-- 주변 원자 -->
+        <circle cx="28" cy="7"  r="5" fill="#2ecc71"/>
+        <circle cx="28" cy="49" r="5" fill="#2ecc71"/>
+        <circle cx="7"  cy="28" r="5" fill="#2ecc71"/>
+        <circle cx="49" cy="28" r="5" fill="#2ecc71"/>
+        <circle cx="12" cy="12" r="4" fill="#a9dfbf" stroke="#27ae60" stroke-width="1.5"/>
+        <circle cx="44" cy="44" r="4" fill="#a9dfbf" stroke="#27ae60" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="drop-area" data-type="chemical" id="drop-chemical"></div>
+  </div>
+
+  <!-- 빛 에너지 -->
+  <div class="zone-card" data-type="light">
+    <div class="zone-title">💡 빛 에너지</div>
+    <div class="zone-svg">
+      <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- 태양 원 -->
+        <circle cx="28" cy="28" r="10" fill="#f1c40f"/>
+        <!-- 빛살 8개 -->
+        <g stroke="#f39c12" stroke-width="2.5" stroke-linecap="round">
+          <line x1="28" y1="5"  x2="28" y2="14"/>
+          <line x1="28" y1="42" x2="28" y2="51"/>
+          <line x1="5"  y1="28" x2="14" y2="28"/>
+          <line x1="42" y1="28" x2="51" y2="28"/>
+          <line x1="11" y1="11" x2="17" y2="17"/>
+          <line x1="39" y1="39" x2="45" y2="45"/>
+          <line x1="45" y1="11" x2="39" y2="17"/>
+          <line x1="11" y1="45" x2="17" y2="39"/>
+        </g>
+        <!-- 중심 하이라이트 -->
+        <circle cx="24" cy="24" r="3.5" fill="#fff" opacity="0.45"/>
+      </svg>
+    </div>
+    <div class="drop-area" data-type="light" id="drop-light"></div>
+  </div>
+
+  <!-- 열 에너지 -->
+  <div class="zone-card" data-type="heat">
+    <div class="zone-title">🔥 열 에너지</div>
+    <div class="zone-svg">
+      <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- 불꽃 바깥 -->
+        <path d="M28 52 C14 52 8 42 10 32 C12 24 18 20 16 12 C22 18 20 26 24 28 C22 18 30 8 28 4 C36 14 38 22 34 32 C38 28 40 22 40 18 C44 26 46 36 42 44 C40 50 34 52 28 52 Z" fill="#e74c3c"/>
+        <!-- 불꽃 안 -->
+        <path d="M28 46 C20 46 18 38 20 32 C22 28 26 26 24 20 C28 26 28 32 30 30 C32 26 30 20 30 16 C34 22 36 30 32 36 C34 32 36 28 36 24 C38 30 38 38 34 42 C32 46 30 46 28 46 Z" fill="#f39c12" opacity="0.9"/>
+        <!-- 불꽃 심 -->
+        <path d="M28 40 C24 40 24 34 26 30 C28 34 28 36 30 34 C30 38 30 40 28 40 Z" fill="#f1c40f"/>
+      </svg>
+    </div>
+    <div class="drop-area" data-type="heat" id="drop-heat"></div>
+  </div>
+
+  <!-- 원자력 에너지 -->
+  <div class="zone-card" data-type="nuclear">
+    <div class="zone-title">☢️ 원자력 에너지</div>
+    <div class="zone-svg">
+      <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- 원자 궤도 타원 1 -->
+        <ellipse cx="28" cy="28" rx="24" ry="8" stroke="#8e44ad" stroke-width="2" fill="none"/>
+        <!-- 원자 궤도 타원 2 (회전 60도) -->
+        <ellipse cx="28" cy="28" rx="24" ry="8" stroke="#8e44ad" stroke-width="2" fill="none" transform="rotate(60 28 28)"/>
+        <!-- 원자 궤도 타원 3 (회전 120도) -->
+        <ellipse cx="28" cy="28" rx="24" ry="8" stroke="#8e44ad" stroke-width="2" fill="none" transform="rotate(120 28 28)"/>
+        <!-- 중심 핵 -->
+        <circle cx="28" cy="28" r="5" fill="#8e44ad"/>
+        <circle cx="28" cy="28" r="3" fill="#c39bd3"/>
+        <!-- 전자 3개 -->
+        <circle cx="52" cy="28" r="3" fill="#a569bd"/>
+        <circle cx="16" cy="14" r="3" fill="#a569bd"/>
+        <circle cx="16" cy="42" r="3" fill="#a569bd"/>
+      </svg>
+    </div>
+    <div class="drop-area" data-type="nuclear" id="drop-nuclear"></div>
+  </div>
+
+</div>
+
+<!-- ===== 카드 트레이 ===== -->
+<div class="tray-section">
+  <div class="tray-title">🃏 분류할 에너지 카드 (클릭 또는 드래그)</div>
+  <div class="card-tray" id="cardTray"></div>
+</div>
+
+<!-- ===== 토스트 ===== -->
+<div id="toast-wrap"></div>
+
+<!-- ===== 완료 모달 ===== -->
+<div id="modal-overlay">
+  <div class="modal-box">
+    <div class="modal-emoji">🎉</div>
+    <div class="modal-title">훌륭해요!</div>
+    <div class="modal-score" id="modalScore">0 <span>/ 15</span></div>
+    <table class="score-table" id="scoreTable">
+      <thead>
+        <tr>
+          <th>에너지 형태</th>
+          <th>결과</th>
+        </tr>
+      </thead>
+      <tbody id="scoreBody"></tbody>
+    </table>
+    <button class="btn-restart" id="btnRestart">🔄 다시하기</button>
+  </div>
+</div>
+
+<script>
+/* ===================================================
+   데이터
+=================================================== */
+const CARDS = [
+  // 기계적 에너지
+  { id:'c1',  name:'흐르는 강물',      emoji:'🌊', hint:'물이 움직이는 힘',              answer:'mechanical' },
+  { id:'c2',  name:'날아가는 야구공',   emoji:'⚾', hint:'빠르게 움직이는 물체',           answer:'mechanical' },
+  { id:'c3',  name:'댐 위의 물',        emoji:'🏞️', hint:'높은 곳 → 위치 에너지 보유',   answer:'mechanical' },
+  // 전기 에너지
+  { id:'c4',  name:'발전기',            emoji:'🔌', hint:'전류를 만들어 내는 장치',        answer:'electric' },
+  { id:'c6',  name:'번개',              emoji:'⚡', hint:'강력한 방전 현상',               answer:'electric' },
+  // 화학 에너지
+  { id:'c5',  name:'건전지',            emoji:'🔋', hint:'내부에 화학 에너지가 저장된 장치 — 사용할 때 전기로 변환', answer:'chemical' },
+  { id:'c7',  name:'석유',              emoji:'🛢️', hint:'연소 시 에너지 방출',           answer:'chemical' },
+  { id:'c8',  name:'음식',              emoji:'🍚', hint:'몸속에서 분해 → 에너지 제공',    answer:'chemical' },
+  { id:'c9',  name:'나무',              emoji:'🪵', hint:'태우면 에너지 방출',             answer:'chemical' },
+  // 빛 에너지
+  { id:'c10', name:'햇빛',              emoji:'☀️', hint:'태양에서 오는 빛',              answer:'light' },
+  { id:'c11', name:'LED 전구',          emoji:'💡', hint:'전기로 빛을 내는 장치',           answer:'light' },
+  { id:'c12', name:'레이저',            emoji:'🔦', hint:'집중된 빛 에너지',               answer:'light' },
+  // 열 에너지
+  { id:'c13', name:'난로',              emoji:'🔥', hint:'연소로 열 발생',                 answer:'heat' },
+  { id:'c14', name:'마찰열',            emoji:'✋', hint:'손을 비비면 따뜻해짐',            answer:'heat' },
+  // 원자력 에너지
+  { id:'c15', name:'원자력 발전소',     emoji:'⚛️', hint:'핵분열로 엄청난 에너지',        answer:'nuclear' },
+];
+
+const ZONE_INFO = {
+  mechanical: { label:'⚙️ 기계적 에너지', color:'#e67e22' },
+  electric:   { label:'⚡ 전기 에너지',   color:'#2980b9' },
+  chemical:   { label:'🧪 화학 에너지',   color:'#27ae60' },
+  light:      { label:'💡 빛 에너지',     color:'#b7950b' },
+  heat:       { label:'🔥 열 에너지',     color:'#e74c3c' },
+  nuclear:    { label:'☢️ 원자력 에너지', color:'#8e44ad' },
+};
+
+/* ===================================================
+   상태
+=================================================== */
+let selectedCardId = null;
+let placedCount    = 0;
+let correctCount   = 0;
+let perZoneCorrect = { mechanical:0, electric:0, chemical:0, light:0, heat:0, nuclear:0 };
+let perZoneTotal   = { mechanical:0, electric:0, chemical:0, light:0, heat:0, nuclear:0 };
+let hintTimer      = null;
+
+/* ===================================================
+   초기화 & 재시작
+=================================================== */
+function init() {
+  selectedCardId = null;
+  placedCount    = 0;
+  correctCount   = 0;
+  Object.keys(perZoneCorrect).forEach(k => { perZoneCorrect[k] = 0; perZoneTotal[k] = 0; });
+
+  // 드롭 영역 초기화
+  document.querySelectorAll('.drop-area').forEach(el => {
+    el.innerHTML = '';
+    el.classList.remove('has-items');
+  });
+
+  // 카드 트레이 렌더
+  const tray = document.getElementById('cardTray');
+  tray.innerHTML = '';
+  shuffle([...CARDS]).forEach(card => tray.appendChild(buildCard(card)));
+
+  updateProgress();
+  document.getElementById('modal-overlay').classList.remove('show');
+}
+
+/* ===================================================
+   카드 빌더
+=================================================== */
+function buildCard(card) {
+  const el = document.createElement('div');
+  el.className = 'energy-card';
+  el.id = 'card-' + card.id;
+  el.setAttribute('data-id', card.id);
+  el.setAttribute('data-answer', card.answer);
+  el.setAttribute('draggable', 'true');
+  el.innerHTML = `
+    <span class="card-emoji">${card.emoji}</span>
+    <span class="card-name">${card.name}</span>
+    <span class="card-hint">${card.hint}</span>
+  `;
+
+  /* ── 클릭 ── */
+  el.addEventListener('click', onCardClick);
+
+  /* ── 드래그 시작 ── */
+  el.addEventListener('dragstart', e => {
+    e.dataTransfer.setData('text/plain', card.id);
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => el.classList.add('dragging'), 0);
+    selectedCardId = card.id;
+  });
+  el.addEventListener('dragend', () => el.classList.remove('dragging'));
+
+  /* ── 터치 이벤트 ── */
+  let touchStartX, touchStartY, touchClone;
+  el.addEventListener('touchstart', e => {
+    if (el.classList.contains('placed')) return;
+    const t = e.touches[0];
+    touchStartX = t.clientX; touchStartY = t.clientY;
+    // 클론 생성
+    touchClone = el.cloneNode(true);
+    touchClone.style.cssText = `position:fixed;pointer-events:none;z-index:999;opacity:0.85;
+      transform:scale(1.08);left:${t.clientX - el.offsetWidth/2}px;top:${t.clientY - el.offsetHeight/2}px;
+      width:${el.offsetWidth}px;`;
+    document.body.appendChild(touchClone);
+    selectedCardId = card.id;
+    clearAllSelected();
+    el.classList.add('selected');
+  }, { passive: true });
+
+  el.addEventListener('touchmove', e => {
+    if (!touchClone) return;
+    e.preventDefault();
+    const t = e.touches[0];
+    touchClone.style.left = `${t.clientX - el.offsetWidth/2}px`;
+    touchClone.style.top  = `${t.clientY - el.offsetHeight/2}px`;
+  }, { passive: false });
+
+  el.addEventListener('touchend', e => {
+    if (touchClone) { document.body.removeChild(touchClone); touchClone = null; }
+    const t = e.changedTouches[0];
+    const target = document.elementFromPoint(t.clientX, t.clientY);
+    const zone = target && (target.closest('.zone-card') || target.closest('.drop-area'));
+    if (zone) {
+      const type = zone.dataset.type || zone.closest('.zone-card').dataset.type;
+      if (type) { placeCard(card.id, type); return; }
+    }
+    // 이동 없으면 그냥 클릭처럼 처리 (이미 selected 됨)
+    const dx = Math.abs(t.clientX - touchStartX);
+    const dy = Math.abs(t.clientY - touchStartY);
+    if (dx < 10 && dy < 10) { /* 탭 처리: 이미 selected 상태 */ }
+  }, { passive: true });
+
+  return el;
+}
+
+/* ===================================================
+   카드 클릭 핸들러
+=================================================== */
+function onCardClick(e) {
+  const el = e.currentTarget;
+  if (el.classList.contains('placed')) return;
+  const id = el.getAttribute('data-id');
+  if (selectedCardId === id) {
+    // 토글 해제
+    el.classList.remove('selected');
+    selectedCardId = null;
+  } else {
+    clearAllSelected();
+    el.classList.add('selected');
+    selectedCardId = id;
+    removeHint();
+  }
+}
+
+/* ===================================================
+   분류 칸 이벤트
+=================================================== */
+document.querySelectorAll('.zone-card').forEach(zone => {
+  const type = zone.dataset.type;
+
+  /* 클릭으로 배치 */
+  zone.addEventListener('click', () => {
+    if (!selectedCardId) return;
+    placeCard(selectedCardId, type);
+  });
+
+  /* 드래그앤드롭 */
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault();
+    zone.classList.remove('drag-over');
+    const id = e.dataTransfer.getData('text/plain');
+    if (id) placeCard(id, type);
+  });
+});
+
+/* ===================================================
+   카드 배치 (판정)
+=================================================== */
+function placeCard(cardId, zoneType) {
+  const cardData = CARDS.find(c => c.id === cardId);
+  if (!cardData) return;
+  const cardEl = document.getElementById('card-' + cardId);
+  if (!cardEl || cardEl.classList.contains('placed')) return;
+
+  clearAllSelected();
+  selectedCardId = null;
+  removeHint();
+
+  const isCorrect = (cardData.answer === zoneType);
+
+  if (isCorrect) {
+    // 정답 처리
+    cardEl.classList.add('placed');
+    placedCount++;
+    correctCount++;
+    perZoneCorrect[zoneType]++;
+    perZoneTotal[zoneType]++;
+
+    const dropArea = document.getElementById('drop-' + zoneType);
+    const mini = document.createElement('div');
+    mini.className = 'mini-card';
+    mini.innerHTML = `${cardData.emoji} ${cardData.name}`;
+    dropArea.appendChild(mini);
+    dropArea.classList.add('has-items');
+
+    showToast('✅ 맞아요! 잘 했어요!', 'correct');
+    flashZone(zoneType);
+    updateProgress();
+
+    if (placedCount === CARDS.length) {
+      setTimeout(showModal, 700);
+    }
+  } else {
+    // 오답 처리
+    perZoneTotal[cardData.answer]++;  // 오답 시도도 기록
+    perZoneTotal[cardData.answer]--;  // 취소 (오답 총수는 맞게만 집계)
+    cardEl.classList.remove('shake');
+    void cardEl.offsetWidth; // reflow
+    cardEl.classList.add('shake');
+    cardEl.addEventListener('animationend', () => cardEl.classList.remove('shake'), { once: true });
+
+    showToast('❌ 다시 생각해봐요! 힌트: ' + cardData.hint, 'wrong');
+    showHint(cardEl, cardData.hint);
+  }
+}
+
+/* ===================================================
+   유틸 함수들
+=================================================== */
+function clearAllSelected() {
+  document.querySelectorAll('.energy-card.selected').forEach(el => el.classList.remove('selected'));
+}
+
+function showToast(msg, type) {
+  const wrap = document.getElementById('toast-wrap');
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  wrap.appendChild(t);
+  setTimeout(() => { if (t.parentNode) t.parentNode.removeChild(t); }, 2300);
+}
+
+function flashZone(type) {
+  const zone = document.querySelector(`.zone-card[data-type="${type}"]`);
+  if (!zone) return;
+  zone.style.transition = 'background 0.2s';
+  zone.style.background = '#d5f5e3';
+  setTimeout(() => { zone.style.background = ''; setTimeout(() => { zone.style.transition = ''; }, 300); }, 400);
+}
+
+function showHint(cardEl, hint) {
+  removeHint();
+  const popup = document.createElement('div');
+  popup.className = 'hint-popup';
+  popup.id = 'hint-popup';
+  popup.textContent = '💡 ' + hint;
+  cardEl.style.position = 'relative';
+  cardEl.appendChild(popup);
+  hintTimer = setTimeout(removeHint, 3000);
+}
+
+function removeHint() {
+  if (hintTimer) { clearTimeout(hintTimer); hintTimer = null; }
+  const p = document.getElementById('hint-popup');
+  if (p) p.parentNode.removeChild(p);
+}
+
+function updateProgress() {
+  const pct = (placedCount / CARDS.length) * 100;
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressCount').textContent = placedCount + ' / ' + CARDS.length;
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+/* ===================================================
+   완료 모달
+=================================================== */
+function showModal() {
+  document.getElementById('modalScore').innerHTML = `${correctCount} <span>/ ${CARDS.length}</span>`;
+
+  // 에너지 형태별 집계
+  const tally = {};
+  Object.keys(ZONE_INFO).forEach(k => { tally[k] = { correct:0, total:0 }; });
+  CARDS.forEach(c => {
+    const cardEl = document.getElementById('card-' + c.id);
+    tally[c.answer].total++;
+    if (cardEl && cardEl.classList.contains('placed')) tally[c.answer].correct++;
+  });
+
+  const tbody = document.getElementById('scoreBody');
+  tbody.innerHTML = '';
+  Object.entries(ZONE_INFO).forEach(([key, info]) => {
+    const { correct, total } = tally[key];
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><span class="score-dot" style="background:${info.color}"></span>${info.label}</td>
+      <td style="font-weight:700;color:${correct===total?'#27ae60':'#e74c3c'}">${correct} / ${total}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  document.getElementById('modal-overlay').classList.add('show');
+}
+
+/* ===================================================
+   다시하기 버튼
+=================================================== */
+document.getElementById('btnRestart').addEventListener('click', init);
+
+/* 모달 배경 클릭 닫기 */
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('show');
+});
+
+/* ===================================================
+   시작
+=================================================== */
+init();
+</script>
+</body>
+</html>
