@@ -905,7 +905,7 @@
           <!-- 진자 궤적 -->
           <path d="M40 92 Q80 118 120 92" stroke="#e67e22" stroke-dasharray="3 4" stroke-width="1.5" fill="none" opacity="0.45"/>
           <!-- 진자 -->
-          <g style="transform-origin:80px 14px; animation:pendulumSwing 38s ease-in-out infinite;">
+          <g style="transform-origin:80px 14px; animation:pendulumSwing 38000s ease-in-out infinite;">
             <line x1="80" y1="14" x2="80" y2="84" stroke="#34495e" stroke-width="2"/>
             <circle cx="80" cy="94" r="13" fill="#e67e22"/>
             <circle cx="80" cy="94" r="13" fill="url(#mech-shine)"/>
@@ -938,17 +938,17 @@
           <text x="33" y="72" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">+ −</text>
           <!-- 회로 (전류 흐름) -->
           <path d="M58 60 L92 60 L92 38 L116 38" stroke="#2980b9" stroke-width="3" fill="none"
-                stroke-dasharray="6 4" style="animation:electronFlow 18s linear infinite;"/>
+                stroke-dasharray="6 4" style="animation:electronFlow 18000s linear infinite;"/>
           <path d="M116 90 L92 90 L92 70" stroke="#2980b9" stroke-width="3" fill="none"
-                stroke-dasharray="6 4" style="animation:electronFlow 18s linear infinite;"/>
+                stroke-dasharray="6 4" style="animation:electronFlow 18000s linear infinite;"/>
           <!-- 전구 본체 -->
           <circle cx="126" cy="64" r="20" fill="#fff9c4" stroke="#f1c40f" stroke-width="2.5"
-                  style="animation:bulbGlowFill 30s ease-in-out infinite;"/>
+                  style="animation:bulbGlowFill 30000s ease-in-out infinite;"/>
           <!-- 전구 소켓 -->
           <rect x="118" y="84" width="16" height="6" fill="#7f8c8d"/>
           <rect x="120" y="90" width="12" height="3" fill="#95a5a6"/>
           <!-- 빛살 -->
-          <g stroke="#f39c12" stroke-width="2.5" stroke-linecap="round" style="animation:bulbGlow 30s ease-in-out infinite;">
+          <g stroke="#f39c12" stroke-width="2.5" stroke-linecap="round" style="animation:bulbGlow 30000s ease-in-out infinite;">
             <line x1="126" y1="36" x2="126" y2="42"/>
             <line x1="148" y1="44" x2="143" y2="48"/>
             <line x1="104" y1="44" x2="109" y2="48"/>
@@ -973,13 +973,13 @@
           <!-- 분자 (메탄 형태) -->
           <g transform="translate(50,60)">
             <line x1="0" y1="0" x2="-26" y2="-22" stroke="#27ae60" stroke-width="2.5"
-                  style="animation:chemBondPulse 40s ease-in-out infinite;"/>
+                  style="animation:chemBondPulse 40000s ease-in-out infinite;"/>
             <line x1="0" y1="0" x2="26" y2="-22" stroke="#27ae60" stroke-width="2.5"
-                  style="animation:chemBondPulse 40s ease-in-out infinite 10s;"/>
+                  style="animation:chemBondPulse 40000s ease-in-out infinite 10s;"/>
             <line x1="0" y1="0" x2="-26" y2="22" stroke="#27ae60" stroke-width="2.5"
-                  style="animation:chemBondPulse 40s ease-in-out infinite 20s;"/>
+                  style="animation:chemBondPulse 40000s ease-in-out infinite 20s;"/>
             <line x1="0" y1="0" x2="26" y2="22" stroke="#27ae60" stroke-width="2.5"
-                  style="animation:chemBondPulse 40s ease-in-out infinite 30s;"/>
+                  style="animation:chemBondPulse 40000s ease-in-out infinite 30s;"/>
             <!-- 중심 원자 C -->
             <circle r="14" fill="#1e8449"/>
             <text y="4" text-anchor="middle" font-size="13" fill="#fff" font-weight="bold">C</text>
@@ -1003,7 +1003,7 @@
             </marker>
           </defs>
           <!-- 방출되는 에너지 (불꽃/열) -->
-          <g transform="translate(140,60)" style="transform-origin:140px 60px; animation:flameFlicker 25s ease-in-out infinite;">
+          <g transform="translate(140,60)" style="transform-origin:140px 60px; animation:flameFlicker 25000s ease-in-out infinite;">
             <path d="M0 14 C-8 10 -10 0 -6 -6 C-2 -10 -2 -14 0 -18 C2 -14 4 -10 6 -6 C10 0 8 10 0 14Z" fill="#e74c3c"/>
             <path d="M0 12 C-4 10 -6 4 -3 0 C0 -4 0 -8 2 -10 C2 -6 4 -2 4 4 C4 8 4 10 0 12Z" fill="#f39c12"/>
           </g>
@@ -1021,7 +1021,7 @@
       <div class="card-svg-wrap" style="background:linear-gradient(135deg,#fef9e7,#fcf3cf);">
         <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
           <!-- 회전하는 빛살 -->
-          <g style="transform-origin:80px 60px; animation:sunRayRotate 60s linear infinite;">
+          <g style="transform-origin:80px 60px; animation:sunRayRotate 60000s linear infinite;">
             <g stroke="#f39c12" stroke-width="3" stroke-linecap="round">
               <line x1="80" y1="14" x2="80" y2="28"/>
               <line x1="80" y1="92" x2="80" y2="106"/>
@@ -1034,7 +1034,7 @@
             </g>
           </g>
           <!-- 태양 본체 (펄스) -->
-          <g style="transform-origin:80px 60px; animation:sunPulse 40s ease-in-out infinite;">
+          <g style="transform-origin:80px 60px; animation:sunPulse 40000s ease-in-out infinite;">
             <circle cx="80" cy="60" r="22" fill="#f1c40f"/>
             <circle cx="80" cy="60" r="22" fill="url(#sun-shine)"/>
             <circle cx="73" cy="52" r="6" fill="#fff" opacity="0.4"/>
@@ -1046,9 +1046,9 @@
             </radialGradient>
           </defs>
           <!-- 반짝이 -->
-          <text x="36" y="32" font-size="12" fill="#f1c40f" style="animation:sparkle 40s ease-in-out infinite;">✦</text>
-          <text x="124" y="100" font-size="12" fill="#f1c40f" style="animation:sparkle 40s ease-in-out infinite 13s;">✦</text>
-          <text x="130" y="38" font-size="10" fill="#f39c12" style="animation:sparkle 40s ease-in-out infinite 26s;">✧</text>
+          <text x="36" y="32" font-size="12" fill="#f1c40f" style="animation:sparkle 40000s ease-in-out infinite;">✦</text>
+          <text x="124" y="100" font-size="12" fill="#f1c40f" style="animation:sparkle 40000s ease-in-out infinite 13s;">✦</text>
+          <text x="130" y="38" font-size="10" fill="#f39c12" style="animation:sparkle 40000s ease-in-out infinite 26s;">✧</text>
         </svg>
       </div>
       <div class="card-name">빛 에너지</div>
@@ -1068,16 +1068,16 @@
           <line x1="56" y1="100" x2="68" y2="100" stroke="#a04000" stroke-width="1"/>
           <line x1="76" y1="100" x2="92" y2="100" stroke="#a04000" stroke-width="1"/>
           <!-- 큰 불꽃 -->
-          <g style="transform-origin:80px 96px; animation:flameFlicker 22s ease-in-out infinite;">
+          <g style="transform-origin:80px 96px; animation:flameFlicker 22000s ease-in-out infinite;">
             <path d="M80 96 C58 90 48 72 52 54 C56 40 70 32 66 16 C74 28 70 42 80 46 C82 36 88 24 96 16 C96 36 88 44 92 56 C98 68 104 88 80 96Z" fill="#e74c3c"/>
             <path d="M80 96 C66 92 60 80 62 68 C64 60 70 54 68 44 C72 50 70 60 80 62 C82 56 86 48 90 44 C90 56 86 64 88 72 C92 80 96 92 80 96Z" fill="#f39c12"/>
             <path d="M80 96 C72 94 68 86 70 76 C72 70 76 66 74 58 C78 64 76 72 80 74 C82 70 84 64 86 60 C86 70 84 76 86 82 C88 88 90 94 80 96Z" fill="#fff9c4" opacity="0.8"/>
           </g>
           <!-- 상승하는 열 파동 -->
           <g stroke="#e74c3c" stroke-width="2" fill="none" stroke-linecap="round">
-            <path d="M64 30 Q68 24 72 30 Q76 36 80 30" style="animation:heatWaveRise 35s linear infinite;" opacity="0.6"/>
-            <path d="M86 24 Q90 18 94 24 Q98 30 102 24" style="animation:heatWaveRise 35s linear infinite 12s;" opacity="0.6"/>
-            <path d="M70 18 Q74 12 78 18 Q82 24 86 18" style="animation:heatWaveRise 35s linear infinite 24s;" opacity="0.5"/>
+            <path d="M64 30 Q68 24 72 30 Q76 36 80 30" style="animation:heatWaveRise 35000s linear infinite;" opacity="0.6"/>
+            <path d="M86 24 Q90 18 94 24 Q98 30 102 24" style="animation:heatWaveRise 35000s linear infinite 12s;" opacity="0.6"/>
+            <path d="M70 18 Q74 12 78 18 Q82 24 86 18" style="animation:heatWaveRise 35000s linear infinite 24s;" opacity="0.5"/>
           </g>
           <!-- 온도계 표시 -->
           <text x="14" y="60" font-size="20">🌡️</text>
@@ -1096,7 +1096,7 @@
       <div class="card-svg-wrap" style="background:linear-gradient(135deg,#f5eef8,#e8daef);">
         <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
           <!-- 에너지 방출 (배경) -->
-          <g style="transform-origin:80px 60px; animation:nuclearBurst 35s ease-in-out infinite;">
+          <g style="transform-origin:80px 60px; animation:nuclearBurst 35000s ease-in-out infinite;">
             <circle cx="80" cy="60" r="36" fill="none" stroke="#f39c12" stroke-width="1" opacity="0.5"/>
             <circle cx="80" cy="60" r="44" fill="none" stroke="#f1c40f" stroke-width="1" opacity="0.35"/>
           </g>
@@ -1105,18 +1105,18 @@
           <ellipse cx="80" cy="60" rx="50" ry="18" stroke="#a569bd" stroke-width="1.5" fill="none" opacity="0.6" transform="rotate(60 80 60)"/>
           <ellipse cx="80" cy="60" rx="50" ry="18" stroke="#c39bd3" stroke-width="1.5" fill="none" opacity="0.6" transform="rotate(-60 80 60)"/>
           <!-- 회전하는 전자 (3개) -->
-          <g style="transform-origin:80px 60px; animation:electronOrbit1 70s linear infinite;">
+          <g style="transform-origin:80px 60px; animation:electronOrbit1 70000s linear infinite;">
             <circle cx="130" cy="60" r="5" fill="#f39c12"/>
             <circle cx="130" cy="60" r="5" fill="#f39c12" opacity="0.4">
               <animate attributeName="r" values="5;7;5" dur="3s" repeatCount="indefinite"/>
             </circle>
           </g>
-          <g style="transform-origin:80px 60px; animation:electronOrbit2 90s linear infinite;">
+          <g style="transform-origin:80px 60px; animation:electronOrbit2 90000s linear infinite;">
             <g transform="rotate(60 80 60)">
               <circle cx="130" cy="60" r="5" fill="#e67e22"/>
             </g>
           </g>
-          <g style="transform-origin:80px 60px; animation:electronOrbit1 60s linear infinite;">
+          <g style="transform-origin:80px 60px; animation:electronOrbit1 60000s linear infinite;">
             <g transform="rotate(-60 80 60)">
               <circle cx="130" cy="60" r="5" fill="#d35400"/>
             </g>
@@ -1190,15 +1190,15 @@
             <ellipse cx="455" cy="36" rx="24" ry="12" fill="white"/>
           </g>
           <!-- 바람선 (애니메이션) -->
-          <line x1="20"  y1="100" x2="180" y2="100" stroke="#74b9ff" stroke-width="3" stroke-linecap="round" stroke-dasharray="20 12" style="animation:windFlow 60s linear infinite;"/>
-          <line x1="10"  y1="130" x2="160" y2="130" stroke="#74b9ff" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="18 10" style="animation:windFlow 50s linear infinite 15s;"/>
-          <line x1="25"  y1="160" x2="170" y2="160" stroke="#74b9ff" stroke-width="2" stroke-linecap="round" stroke-dasharray="14 8" style="animation:windFlow 70s linear infinite 5s;"/>
-          <line x1="5"   y1="80"  x2="140" y2="80"  stroke="#a0ccff" stroke-width="2" stroke-linecap="round" stroke-dasharray="12 9" style="animation:windFlow 55s linear infinite 25s;"/>
+          <line x1="20"  y1="100" x2="180" y2="100" stroke="#74b9ff" stroke-width="3" stroke-linecap="round" stroke-dasharray="20 12" style="animation:windFlow 60000s linear infinite;"/>
+          <line x1="10"  y1="130" x2="160" y2="130" stroke="#74b9ff" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="18 10" style="animation:windFlow 50000s linear infinite 15s;"/>
+          <line x1="25"  y1="160" x2="170" y2="160" stroke="#74b9ff" stroke-width="2" stroke-linecap="round" stroke-dasharray="14 8" style="animation:windFlow 70000s linear infinite 5s;"/>
+          <line x1="5"   y1="80"  x2="140" y2="80"  stroke="#a0ccff" stroke-width="2" stroke-linecap="round" stroke-dasharray="12 9" style="animation:windFlow 55000s linear infinite 25s;"/>
           <!-- 풍력 터빈 1 (왼쪽, 작은 것) -->
           <rect x="196" y="170" width="8" height="70" rx="2" fill="#b0bec5"/>
           <rect x="192" y="235" width="16" height="8" rx="3" fill="#90a4ae"/>
           <!-- 블레이드 그룹 1 - transform-origin을 hub 중심(200,168)으로 -->
-          <g style="transform-origin:200px 168px; animation:blade1 150s linear infinite;">
+          <g style="transform-origin:200px 168px; animation:blade1 150000s linear infinite;">
             <rect x="197" y="118" width="6" height="50" rx="3" fill="#cfd8dc" stroke="#b0bec5" stroke-width="1"/>
             <rect x="197" y="118" width="6" height="50" rx="3" fill="#cfd8dc" stroke="#b0bec5" stroke-width="1" transform="rotate(120 200 168)"/>
             <rect x="197" y="118" width="6" height="50" rx="3" fill="#cfd8dc" stroke="#b0bec5" stroke-width="1" transform="rotate(240 200 168)"/>
@@ -1208,7 +1208,7 @@
           <rect x="296" y="145" width="10" height="95" rx="2" fill="#90a4ae"/>
           <rect x="290" y="235" width="22" height="9" rx="3" fill="#78909c"/>
           <!-- 블레이드 그룹 2 -->
-          <g style="transform-origin:301px 143px; animation:blade1 125s linear infinite 20s;">
+          <g style="transform-origin:301px 143px; animation:blade1 125000s linear infinite 20s;">
             <rect x="297.5" y="83" width="7" height="60" rx="3.5" fill="#cfd8dc" stroke="#b0bec5" stroke-width="1"/>
             <rect x="297.5" y="83" width="7" height="60" rx="3.5" fill="#cfd8dc" stroke="#b0bec5" stroke-width="1" transform="rotate(120 301 143)"/>
             <rect x="297.5" y="83" width="7" height="60" rx="3.5" fill="#cfd8dc" stroke="#b0bec5" stroke-width="1" transform="rotate(240 301 143)"/>
@@ -1218,14 +1218,14 @@
           <rect x="396" y="158" width="9" height="82" rx="2" fill="#b0bec5"/>
           <rect x="390" y="235" width="18" height="8" rx="3" fill="#90a4ae"/>
           <!-- 블레이드 그룹 3 -->
-          <g style="transform-origin:400px 156px; animation:blade1 140s linear infinite 40s;">
+          <g style="transform-origin:400px 156px; animation:blade1 140000s linear infinite 40s;">
             <rect x="396.5" y="101" width="7" height="55" rx="3.5" fill="#cfd8dc" stroke="#b0bec5" stroke-width="1"/>
             <rect x="396.5" y="101" width="7" height="55" rx="3.5" fill="#cfd8dc" stroke="#b0bec5" stroke-width="1" transform="rotate(120 400 156)"/>
             <rect x="396.5" y="101" width="7" height="55" rx="3.5" fill="#cfd8dc" stroke="#b0bec5" stroke-width="1" transform="rotate(240 400 156)"/>
           </g>
           <circle cx="400" cy="156" r="5" fill="#78909c"/>
           <!-- 전선 -->
-          <line x1="301" y1="240" x2="520" y2="240" stroke="#546e7a" stroke-width="2" stroke-dasharray="8 5" style="animation:powerFlow 50s linear infinite;"/>
+          <line x1="301" y1="240" x2="520" y2="240" stroke="#546e7a" stroke-width="2" stroke-dasharray="8 5" style="animation:powerFlow 50000s linear infinite;"/>
           <line x1="520" y1="240" x2="520" y2="210" stroke="#546e7a" stroke-width="2"/>
           <!-- 발전기 박스 -->
           <rect x="440" y="240" width="60" height="30" rx="6" fill="#fff9c4" stroke="#f39c12" stroke-width="2"/>
@@ -1314,18 +1314,18 @@
           <rect x="198" y="195" width="20" height="14" rx="2" fill="#1565C0"/>
           <!-- 낙하하는 물 애니메이션 (수문에서) -->
           <g>
-            <ellipse cx="205" cy="210" rx="4" ry="7" fill="#29B6F6" opacity="0.9" style="animation:waterDrop 70s ease-in infinite;"/>
-            <ellipse cx="212" cy="210" rx="3" ry="6" fill="#4FC3F7" opacity="0.8" style="animation:waterDrop 70s ease-in infinite 15s;"/>
-            <ellipse cx="208" cy="215" rx="3.5" ry="7" fill="#81D4FA" opacity="0.85" style="animation:waterDrop 70s ease-in infinite 30s;"/>
-            <ellipse cx="203" cy="220" rx="4" ry="8" fill="#29B6F6" opacity="0.75" style="animation:waterDrop2 80s ease-in infinite 10s;"/>
-            <ellipse cx="214" cy="218" rx="3" ry="7" fill="#4FC3F7" opacity="0.7" style="animation:waterDrop2 75s ease-in infinite 40s;"/>
+            <ellipse cx="205" cy="210" rx="4" ry="7" fill="#29B6F6" opacity="0.9" style="animation:waterDrop 70000s ease-in infinite;"/>
+            <ellipse cx="212" cy="210" rx="3" ry="6" fill="#4FC3F7" opacity="0.8" style="animation:waterDrop 70000s ease-in infinite 15s;"/>
+            <ellipse cx="208" cy="215" rx="3.5" ry="7" fill="#81D4FA" opacity="0.85" style="animation:waterDrop 70000s ease-in infinite 30s;"/>
+            <ellipse cx="203" cy="220" rx="4" ry="8" fill="#29B6F6" opacity="0.75" style="animation:waterDrop2 80000s ease-in infinite 10s;"/>
+            <ellipse cx="214" cy="218" rx="3" ry="7" fill="#4FC3F7" opacity="0.7" style="animation:waterDrop2 75000s ease-in infinite 40s;"/>
           </g>
           <!-- 발전소 건물 -->
           <rect x="240" y="220" width="90" height="55" rx="6" fill="#ECEFF1"/>
           <rect x="240" y="210" width="90" height="16" rx="4" fill="#B0BEC5"/>
           <!-- 터빈 (발전소 내부) -->
           <circle cx="285" cy="248" r="20" fill="#CFD8DC" stroke="#90A4AE" stroke-width="2"/>
-          <g style="transform-origin:285px 248px; animation:turbineSpin 100s linear infinite;">
+          <g style="transform-origin:285px 248px; animation:turbineSpin 100000s linear infinite;">
             <rect x="282" y="228" width="6" height="20" rx="3" fill="#607D8B"/>
             <rect x="282" y="228" width="6" height="20" rx="3" fill="#607D8B" transform="rotate(60 285 248)"/>
             <rect x="282" y="228" width="6" height="20" rx="3" fill="#607D8B" transform="rotate(120 285 248)"/>
@@ -1336,7 +1336,7 @@
           <circle cx="285" cy="248" r="6" fill="#455A64"/>
           <text x="285" y="278" text-anchor="middle" font-size="11" fill="#37474F" font-weight="bold">터빈+발전기</text>
           <!-- 전선 -->
-          <line x1="330" y1="237" x2="490" y2="237" stroke="#546E7A" stroke-width="2.5" stroke-dasharray="8 5" style="animation:powerFlow 50s linear infinite;"/>
+          <line x1="330" y1="237" x2="490" y2="237" stroke="#546E7A" stroke-width="2.5" stroke-dasharray="8 5" style="animation:powerFlow 50000s linear infinite;"/>
           <!-- 송전탑 -->
           <line x1="395" y1="237" x2="395" y2="195" stroke="#546E7A" stroke-width="3"/>
           <line x1="380" y1="205" x2="410" y2="205" stroke="#546E7A" stroke-width="2"/>
@@ -1409,7 +1409,7 @@
           <rect x="155" y="175" width="80" height="85" rx="6" fill="#B0BEC5"/>
           <rect x="163" y="183" width="64" height="8" rx="3" fill="#78909C"/>
           <!-- 불꽃 -->
-          <g style="transform-origin:195px 218px; animation:flameDance 30s ease-in-out infinite;">
+          <g style="transform-origin:195px 218px; animation:flameDance 30000s ease-in-out infinite;">
             <ellipse cx="195" cy="222" rx="14" ry="20" fill="#FF6D00" opacity="0.95"/>
             <ellipse cx="185" cy="228" rx="9" ry="13" fill="#FF9800" opacity="0.9"/>
             <ellipse cx="205" cy="226" rx="9" ry="15" fill="#FF5722" opacity="0.85"/>
@@ -1424,13 +1424,13 @@
           <rect x="265" y="185" width="80" height="16" rx="4" fill="#B0BEC5"/>
           <!-- 수증기 애니메이션 -->
           <g>
-            <ellipse cx="250" cy="194" rx="8" ry="5" fill="#CFD8DC" opacity="0.7" style="animation:steamUp 75s ease-out infinite;"/>
-            <ellipse cx="258" cy="190" rx="6" ry="4" fill="#ECEFF1" opacity="0.6" style="animation:steamUp 75s ease-out infinite 20s;"/>
-            <ellipse cx="245" cy="188" rx="7" ry="4" fill="#CFD8DC" opacity="0.5" style="animation:steamUp 75s ease-out infinite 40s;"/>
+            <ellipse cx="250" cy="194" rx="8" ry="5" fill="#CFD8DC" opacity="0.7" style="animation:steamUp 75000s ease-out infinite;"/>
+            <ellipse cx="258" cy="190" rx="6" ry="4" fill="#ECEFF1" opacity="0.6" style="animation:steamUp 75000s ease-out infinite 20s;"/>
+            <ellipse cx="245" cy="188" rx="7" ry="4" fill="#CFD8DC" opacity="0.5" style="animation:steamUp 75000s ease-out infinite 40s;"/>
           </g>
           <!-- 터빈 회전 -->
           <circle cx="305" cy="228" r="22" fill="#CFD8DC" stroke="#90A4AE" stroke-width="2"/>
-          <g style="transform-origin:305px 228px; animation:turbineSpin 90s linear infinite;">
+          <g style="transform-origin:305px 228px; animation:turbineSpin 90000s linear infinite;">
             <rect x="301" y="206" width="8" height="22" rx="4" fill="#607D8B"/>
             <rect x="301" y="206" width="8" height="22" rx="4" fill="#607D8B" transform="rotate(72 305 228)"/>
             <rect x="301" y="206" width="8" height="22" rx="4" fill="#607D8B" transform="rotate(144 305 228)"/>
@@ -1443,15 +1443,15 @@
           <rect x="355" y="120" width="22" height="120" rx="4" fill="#90A4AE"/>
           <ellipse cx="366" cy="120" rx="14" ry="8" fill="#78909C"/>
           <g>
-            <ellipse cx="366" cy="110" rx="12" ry="8" fill="#B0BEC5" opacity="0.8" style="animation:smokeRise 100s ease-out infinite;"/>
-            <ellipse cx="372" cy="100" rx="14" ry="10" fill="#90A4AE" opacity="0.6" style="animation:smokeRise 100s ease-out infinite 25s;"/>
-            <ellipse cx="360" cy="95" rx="16" ry="11" fill="#CFD8DC" opacity="0.4" style="animation:smokeRise 100s ease-out infinite 50s;"/>
-            <ellipse cx="370" cy="85" rx="18" ry="12" fill="#ECEFF1" opacity="0.3" style="animation:smokeRise 100s ease-out infinite 75s;"/>
+            <ellipse cx="366" cy="110" rx="12" ry="8" fill="#B0BEC5" opacity="0.8" style="animation:smokeRise 100000s ease-out infinite;"/>
+            <ellipse cx="372" cy="100" rx="14" ry="10" fill="#90A4AE" opacity="0.6" style="animation:smokeRise 100000s ease-out infinite 25s;"/>
+            <ellipse cx="360" cy="95" rx="16" ry="11" fill="#CFD8DC" opacity="0.4" style="animation:smokeRise 100000s ease-out infinite 50s;"/>
+            <ellipse cx="370" cy="85" rx="18" ry="12" fill="#ECEFF1" opacity="0.3" style="animation:smokeRise 100000s ease-out infinite 75s;"/>
           </g>
           <!-- 발전기 + 전선 -->
           <rect x="385" y="210" width="65" height="35" rx="6" fill="#FFF9C4" stroke="#F39C12" stroke-width="2"/>
           <text x="418" y="230" text-anchor="middle" font-size="12" fill="#E67E22" font-weight="bold">발전기</text>
-          <line x1="450" y1="227" x2="540" y2="227" stroke="#546E7A" stroke-width="2.5" stroke-dasharray="8 5" style="animation:powerFlow 45s linear infinite;"/>
+          <line x1="450" y1="227" x2="540" y2="227" stroke="#546E7A" stroke-width="2.5" stroke-dasharray="8 5" style="animation:powerFlow 45000s linear infinite;"/>
           <!-- 집 -->
           <polygon points="548,218 575,196 602,218" fill="#EF9A9A"/>
           <rect x="552" y="218" width="48" height="36" fill="#FFCCBC"/>
@@ -1515,10 +1515,10 @@
           </defs>
           <rect width="600" height="280" fill="url(#sky-solar)"/>
           <!-- 태양 -->
-          <circle cx="80" cy="70" r="38" fill="#FFD600" opacity="0.95" style="animation:rayPulse 100s ease-in-out infinite;"/>
+          <circle cx="80" cy="70" r="38" fill="#FFD600" opacity="0.95" style="animation:rayPulse 100000s ease-in-out infinite;"/>
           <circle cx="80" cy="70" r="30" fill="#FFEA00"/>
           <!-- 태양 광선들 -->
-          <g style="animation:rayPulse 100s ease-in-out infinite 15s;">
+          <g style="animation:rayPulse 100000s ease-in-out infinite 15s;">
             <line x1="80" y1="22" x2="80" y2="10" stroke="#FFD600" stroke-width="3" stroke-linecap="round"/>
             <line x1="80" y1="118" x2="80" y2="130" stroke="#FFD600" stroke-width="3" stroke-linecap="round"/>
             <line x1="32" y1="70" x2="20" y2="70" stroke="#FFD600" stroke-width="3" stroke-linecap="round"/>
@@ -1529,9 +1529,9 @@
             <line x1="46" y1="104" x2="37" y2="113" stroke="#FFD600" stroke-width="3" stroke-linecap="round"/>
           </g>
           <!-- 태양빛 화살표 (태양전지 방향) -->
-          <line x1="130" y1="90" x2="200" y2="140" stroke="#FFD600" stroke-width="2" stroke-dasharray="8 5" style="animation:rayPulse 75s ease-in-out infinite;"/>
-          <line x1="118" y1="100" x2="200" y2="155" stroke="#FFD600" stroke-width="2" stroke-dasharray="8 5" style="animation:rayPulse 75s ease-in-out infinite 15s;"/>
-          <line x1="122" y1="78" x2="200" y2="128" stroke="#FFD600" stroke-width="2" stroke-dasharray="8 5" style="animation:rayPulse 75s ease-in-out infinite 30s;"/>
+          <line x1="130" y1="90" x2="200" y2="140" stroke="#FFD600" stroke-width="2" stroke-dasharray="8 5" style="animation:rayPulse 75000s ease-in-out infinite;"/>
+          <line x1="118" y1="100" x2="200" y2="155" stroke="#FFD600" stroke-width="2" stroke-dasharray="8 5" style="animation:rayPulse 75000s ease-in-out infinite 15s;"/>
+          <line x1="122" y1="78" x2="200" y2="128" stroke="#FFD600" stroke-width="2" stroke-dasharray="8 5" style="animation:rayPulse 75000s ease-in-out infinite 30s;"/>
           <!-- 태양전지판 (경사 배열 3장) -->
           <!-- 판 1 -->
           <g transform="skewY(-12)">
@@ -1559,7 +1559,7 @@
           </g>
           <text x="298" y="215" text-anchor="middle" font-size="12" fill="#1565C0" font-weight="bold">태양 전지판</text>
           <!-- 전자 흐름 -->
-          <line x1="380" y1="175" x2="430" y2="210" stroke="#FFC107" stroke-width="2.5" stroke-dasharray="8 5" style="animation:powerFlow 40s linear infinite;"/>
+          <line x1="380" y1="175" x2="430" y2="210" stroke="#FFC107" stroke-width="2.5" stroke-dasharray="8 5" style="animation:powerFlow 40000s linear infinite;"/>
           <!-- 인버터 -->
           <rect x="428" y="202" width="55" height="30" rx="6" fill="#FFF9C4" stroke="#F9A825" stroke-width="2"/>
           <text x="455" y="220" text-anchor="middle" font-size="11" fill="#F57F17" font-weight="bold">인버터</text>
@@ -1568,7 +1568,7 @@
           <text x="455" y="259" text-anchor="middle" font-size="11" fill="#2E7D32" font-weight="bold">🔋 배터리</text>
           <line x1="455" y1="232" x2="455" y2="242" stroke="#546E7A" stroke-width="2"/>
           <!-- 집으로 전기 -->
-          <line x1="483" y1="217" x2="530" y2="217" stroke="#FFC107" stroke-width="2.5" stroke-dasharray="8 5" style="animation:powerFlow 40s linear infinite;"/>
+          <line x1="483" y1="217" x2="530" y2="217" stroke="#FFC107" stroke-width="2.5" stroke-dasharray="8 5" style="animation:powerFlow 40000s linear infinite;"/>
           <polygon points="530,208 560,188 590,208" fill="#EF9A9A"/>
           <rect x="535" y="208" width="50" height="40" fill="#FFCCBC"/>
           <rect x="549" y="222" width="12" height="26" fill="#A5D6A7"/>
