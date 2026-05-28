@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미디어파이프 AI 손가락 추적 교실 ⚡</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- MediaPipe CDN 라이브러리 로드 -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div class="container">
+        <!-- App Header -->
+        <header>
+            <div class="header-badge">MIDDLE SCHOOL TECHNOLOGY & AI CLASS</div>
+            <h1>미디어파이프 AI 손가락 추적 교실</h1>
+            <p>인공지능 손가락 추적(Hand Tracking)의 기본 작동 원리를 배우고, 직접 파이썬 실습 코드를 작성해 작동시켜 봅시다!</p>
+        </header>
+
+        <!-- Learning Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-line">
+                    <div class="progress-line-fill" id="progress-fill"></div>
+                </div>
+                <div class="step-indicator active" data-step="1">
+                    <div class="circle">1</div>
+                    <div class="step-label">개념 이해</div>
+                </div>
+                <div class="step-indicator" data-step="2">
+                    <div class="circle">2</div>
+                    <div class="step-label">도구 세팅</div>
+                </div>
+                <div class="step-indicator" data-step="3">
+                    <div class="circle">3</div>
+                    <div class="step-label">첫 파이썬</div>
+                </div>
+                <div class="step-indicator" data-step="4">
+                    <div class="circle">4</div>
+                    <div class="step-label">AI 코딩</div>
+                </div>
+                <div class="step-indicator" data-step="5">
+                    <div class="circle">5</div>
+                    <div class="step-label">아두이노 & 퀴즈</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Workspace (Two Columns) -->
+        <div class="main-grid">
+            
+            <!-- Left Column: Instructional Tutorial Content (Card 1) -->
+            <div class="card">
+                
+                <!-- STEP 1: CONCEPT UNDERSTANDING -->
+                <div class="tab-content active" data-step="1">
+                    <h2>🤖 1단계: 컴퓨터 비전과 MediaPipe</h2>
+                    <p class="desc">인공지능이 카메라 영상에서 어떻게 사람의 손을 인식하고 뼈대를 그릴 수 있는지 원리를 살펴봅시다.</p>
+                    
+                    <div class="info-box">
+                        <div class="info-box-title">👁️ 컴퓨터 비전(Computer Vision)이란?</div>
+                        <div class="info-box-desc">사람이 눈으로 보고 뇌로 인지하듯이, 컴퓨터가 카메라나 이미지를 통해 세상을 시각적으로 분석하고 이해하게 만드는 인공지능 기술 분야입니다.</div>
+                    </div>
+
+                    <div class="info-box tip">
+                        <div class="info-box-title">🖐️ 구글 미디어파이프(MediaPipe) 손가락 추적</div>
+                        <div class="info-box-desc">구글이 제공하는 인공지능 모델로, 카메라에 비친 사람의 손에서 **총 21개의 주요 마디(Landmark)** 좌표를 3차원(x, y, z)으로 실시간 추적합니다. 손등, 손목, 손가락 마디의 위치와 구부러짐 정도를 완벽하게 파악합니다.</div>
+                    </div>
+                    
+                    <p style="margin-top: 1.5rem;">👉 **우측의 실시간 카메라 영역**에서 <strong>[카메라 켜기]</strong> 버튼을 누르고 손을 비춰보세요! 파이썬 코드를 설치하기 전에 인공지능이 어떻게 손을 인식하는지 웹 브라우저에서 먼저 테스트해볼 수 있습니다.</p>
+                    <p style="margin-top: 0.8rem;">👉 **우측 하단의 손 관절 그래픽**에서 각 동그라미(점)에 마우스를 올리면, 21개 랜드마크의 번호와 학술적 설명이 나타납니다. 어떤 랜드마크 번호가 손의 어떤 부위인지 기억해 보세요!</p>
+                </div>
+
+                <!-- STEP 2: SETUP DEVELOPMENT ENVIRONMENT -->
+                <div class="tab-content" data-step="2">
+                    <h2>🛠️ 2단계: 개발 환경 세팅하기</h2>
+                    <p class="desc">컴퓨터에 파이썬 인공지능을 구동하기 위한 통합 에디터와 라이브러리 팩을 설치합니다.</p>
+                    
+                    <div class="setup-checklist">
+                        <div class="checklist-item">
+                            <input type="checkbox" id="chk-vscode">
+                            <div>
+                                <strong>VS Code (Visual Studio Code) 에디터 설치</strong>
+                                <p style="font-size: 0.85rem; color: var(--text-muted);">코드 타이핑 및 빌드를 도와주는 에디터입니다. <a href="https://code.visualstudio.com/download" target="_blank" style="color: var(--secondary);">[다운로드 페이지 이동]</a></p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="chk-anaconda">
+                            <div>
+                                <strong>Anaconda (아나콘다) 파이썬 팩 설치</strong>
+                                <p style="font-size: 0.85rem; color: var(--text-muted);">파이썬과 AI 환경 관리에 필수적인 소프트웨어입니다. <a href="https://www.anaconda.com/download/success" target="_blank" style="color: var(--secondary);">[다운로드 페이지 이동]</a></p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="chk-options">
+                            <div>
+                                <strong>설치 시 Advanced Options '모두 체크' 확인</strong>
+                                <p style="font-size: 0.85rem; color: var(--text-muted);">아나콘다 설치 마법사에서 환경변수 등록 옵션 등의 체크박스를 모두 활성화하여 설치해 주세요.</p>
+                            </div>
+                        </div>
+                        <div class="checklist-item">
+                            <input type="checkbox" id="chk-extensions">
+                            <div>
+                                <strong>VS Code 확장팩 설치 (Python & 한국어팩)</strong>
+                                <p style="font-size: 0.85rem; color: var(--text-muted);">VS Code 마켓플레이스 아이콘을 누르고 'Python'과 'Korean Language Pack'을 설치해 주세요.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box tip">
+                        <div class="info-box-title">💡 선생님의 조언</div>
+                        <div class="info-box-desc">아나콘다 설치 완료 후 컴퓨터를 꼭 <strong>재부팅</strong>하거나 에디터를 새로 열어주어야 환경 변수가 정상 적용됩니다!</div>
+                    </div>
+                </div>
+
+                <!-- STEP 3: FIRST PYTHON CODE -->
+                <div class="tab-content" data-step="3">
+                    <h2>🐍 3단계: 파이썬 기본 코드 작성하기</h2>
+                    <p class="desc">인공지능을 불러오기 전에, 개발 폴더를 열고 첫 파이썬 코드를 정상적으로 실행해봅시다.</p>
+                    
+                    <div style="font-size: 0.95rem;">
+                        <p style="margin-bottom: 0.8rem;"><strong>💻 실습 순서:</strong></p>
+                        <ol style="margin-left: 1.5rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
+                            <li>바탕화면에 새 폴더 <code>test0530</code>을 만듭니다.</li>
+                            <li>VS Code를 실행하고 <strong>파일 - 폴더 열기(File - Open Folder)</strong> 메뉴로 위에서 만든 <code>test0530</code> 폴더를 선택하여 엽니다.</li>
+                            <li>왼쪽 탐색기 창에서 새 파일 추가 아이콘을 누르고 <code>test.py</code> 파일을 생성합니다.</li>
+                            <li>에디터 편집기에 아래의 간단한 코드를 입력하고 저장(<code>Ctrl + S</code>)합니다.</li>
+                        </ol>
+                    </div>
+
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span class="code-lang">python</span>
+                            <button class="btn-copy" onclick="copyCode(this, 'test-py')">복사하기</button>
+                        </div>
+                        <pre><code id="test-py">print(<span class="string">"hello vscode python"</span>)</code></pre>
+                    </div>
+
+                    <p style="margin-top: 1rem;">👉 코드를 작성한 뒤 우측 상단의 <strong>재생(▶) 버튼</strong>을 누르세요. 하단 터미널 창에 <code>hello vscode python</code> 문구가 성공적으로 표시되면 첫 실습 완료입니다!</p>
+                </div>
+
+                <!-- STEP 4: AI CODING WITH MEDIAPIPE -->
+                <div class="tab-content" data-step="4">
+                    <h2>⚡ 4단계: ChatGPT와 AI 코딩</h2>
+                    <p class="desc">ChatGPT에게 인공지능 코드를 만들어 달라고 요청하고, 완성된 코드를 분석해 실행해봅시다.</p>
+
+                    <div class="info-box">
+                        <div class="info-box-title">💬 ChatGPT 프롬프트 추천</div>
+                        <div class="info-box-desc">"미디어파이프 hand landmark 모델을 파이썬에서 구동하고 웹캠 영상 위에 시각화하는 전체 코드를 작성해 줘"</div>
+                    </div>
+
+                    <p>아래는 ChatGPT가 추천하는 가장 정석적인 웹캠 연동 미디어파이프 기본 예제입니다. 복사해서 <code>test.py</code>에 덮어씌워 보세요.</p>
+
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span class="code-lang">python (AI Hand Tracking)</span>
+                            <button class="btn-copy" onclick="copyCode(this, 'py-code')">전체 코드 복사</button>
+                        </div>
+                        <pre><code id="code-content-main"><span class="keyword">import</span> cv2
+<span class="keyword">import</span> mediapipe <span class="keyword">as</span> mp
+
+<span class="comment"># 1. 미디어파이프 솔루션(시각화 도구 및 손 인식 모듈) 불러오기</span>
+mp_hands = mp.solutions.hands
+mp_drawing = mp.solutions.drawing_utils
+
+<span class="comment"># 2. 손 인식 모델 옵션 설정 (최대 1개의 손 인식, 최소 신뢰도 0.5)</span>
+hands = mp_hands.Hands(
+    max_num_hands=<span class="number">1</span>,
+    min_detection_confidence=<span class="number">0.5</span>,
+    min_tracking_confidence=<span class="number">0.5</span>
+)
+
+<span class="comment"># 3. 컴퓨터의 0번 웹캠 켜기</span>
+cap = cv2.VideoCapture(<span class="number">0</span>)
+
+<span class="keyword">while</span> cap.isOpened():
+    success, image = cap.read()
+    <span class="keyword">if not</span> success:
+        <span class="keyword">continue</span>
+
+    <span class="comment"># 미디어파이프는 RGB 포맷을 사용하므로 BGR 이미지를 변환합니다.</span>
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    
+    <span class="comment"># 이미지에서 손 관절 위치 탐색 프로세스 진행</span>
+    results = hands.process(image_rgb)
+
+    <span class="comment"># 손이 감지되면 21개 관절 위에 뼈대 그리기</span>
+    <span class="keyword">if</span> results.multi_hand_landmarks:
+        <span class="keyword">for</span> hand_landmarks <span class="keyword">in</span> results.multi_hand_landmarks:
+            mp_drawing.draw_landmarks(
+                image, 
+                hand_landmarks, 
+                mp_hands.HAND_CONNECTIONS
+            )
+
+    <span class="comment"># 결과 화면 창에 띄우기</span>
+    cv2.imshow(<span class="string">'AI MediaPipe Hands'</span>, image)
+
+    <span class="comment"># 'q' 키를 누르면 루프 탈출 및 프로그램 안전 종료</span>
+    <span class="keyword">if</span> cv2.waitKey(<span class="number">1</span>) & <span class="number">0xFF</span> == <span class="keyword">ord</span>(<span class="string">'q'</span>):
+        <span class="keyword">break</span>
+
+cap.release()
+cv2.destroyAllWindows()</code></pre>
+                    </div>
+
+                    <div class="info-box tip">
+                        <div class="info-box-title">🚨 잠깐! 실행 전 라이브러리 설치 필수</div>
+                        <div class="info-box-desc">코드를 그냥 실행하면 라이브러리가 없어서 에러가 발생합니다. VS Code 하단 터미널에 아래 명령어를 복사하여 입력하고 엔터를 눌러 설치해 주세요:
+                        <br><strong style="color: var(--secondary);">pip install opencv-python mediapipe</strong></div>
+                    </div>
+                </div>
+
+                <!-- STEP 5: ARDUINO INTEGRATION & FINAL QUIZ -->
+                <div class="tab-content" data-step="5">
+                    <h2>🔌 5단계: 아두이노(Arduino) 연동 & 자가 진단</h2>
+                    <p class="desc">파이썬 인공지능과 아두이노 보드를 결합하여 사물인터넷(IoT) 장치를 제어하는 방법과 퀴즈를 풀어봅니다.</p>
+
+                    <h3>💡 [심화] 인공지능 스마트 스위치 (아두이노 연동)</h3>
+                    <p>파이썬 코드로 검지 손가락 끝(8번)과 엄지 손가락 끝(4번)이 닿아 **집기 제스처**가 감지되었을 때, 시리얼 통신을 통해 아두이노 보드의 13번 핀에 연결된 LED를 켜고 끄는 응용 원리입니다.</p>
+                    
+                    <div style="display: flex; gap: 0.8rem; margin: 1rem 0;">
+                        <button class="btn btn-secondary" style="font-size: 0.85rem;" onclick="copyCode(this, 'arduino-serial-code')">💾 파이썬 통신 코드 복사</button>
+                        <button class="btn btn-secondary" style="font-size: 0.85rem;" onclick="copyCode(this, 'arduino-ino-code')">🔌 아두이노 스케치 코드 복사</button>
+                    </div>
+
+                    <!-- Interactive Quiz Section -->
+                    <div class="quiz-section">
+                        <h3>📝 개념 점검 자가 퀴즈</h3>
+                        
+                        <!-- Question 1 -->
+                        <div class="quiz-question">
+                            <div class="quiz-question-title">Q1. 미디어파이프가 감지하는 한 손의 랜드마크(마디 점)의 총 개수는 몇 개일까요?</div>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-question="1" data-value="10개">10개</div>
+                                <div class="quiz-option" data-question="1" data-value="21개">21개 (정답)</div>
+                                <div class="quiz-option" data-question="1" data-value="33개">33개</div>
+                            </div>
+                        </div>
+
+                        <!-- Question 2 -->
+                        <div class="quiz-question">
+                            <div class="quiz-question-title">Q2. 파이썬에서 컴퓨터 웹캠 카메라를 켜고 실시간 화면 프레임을 제어하기 위해 필수적으로 사용되는 OpenCV 라이브러리의 설치 명령어는 무엇일까요?</div>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-question="2" data-value="pip install mediapipe">pip install mediapipe</div>
+                                <div class="quiz-option" data-question="2" data-value="pip install numpy">pip install numpy</div>
+                                <div class="quiz-option" data-question="2" data-value="opencv-python">pip install opencv-python (정답)</div>
+                            </div>
+                        </div>
+
+                        <!-- Question 3 -->
+                        <div class="quiz-question">
+                            <div class="quiz-question-title">Q3. 엄지손가락(Thumb) 맨 끝 부위의 고유 랜드마크 ID 번호는 몇 번일까요?</div>
+                            <div class="quiz-options">
+                                <div class="quiz-option" data-question="3" data-value="0번">0번</div>
+                                <div class="quiz-option" data-question="3" data-value="4번">4번 (정답)</div>
+                                <div class="quiz-option" data-question="3" data-value="8번">8번</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Success Banner -->
+                    <div class="completion-banner" id="quiz-success-banner">
+                        <h3>🏆 축하합니다! 학습을 완료하셨습니다.</h3>
+                        <p>파이썬 인공지능과 컴퓨터 비전의 기초, 미디어파이프 랜드마크 작동 방식 및 아두이노 통신 제어 원리까지 완벽하게 수료하셨습니다. 자랑스럽게 생각해도 좋습니다!</p>
+                    </div>
+
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="navigation-buttons">
+                    <button class="btn btn-secondary" id="prev-btn" disabled>⇠ 이전 단계</button>
+                    <button class="btn" id="next-btn">다음 단계 ➔</button>
+                </div>
+
+            </div>
+
+            <!-- Right Column: Interactive Graphic Elements (Card 2) -->
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                
+                <!-- Web Camera Real-time AI View Card -->
+                <div class="card webcam-card">
+                    <div class="status-badge" id="camera-status">
+                        <div class="status-dot"></div>
+                        <span>카메라 꺼짐</span>
+                    </div>
+                    <h2>📷 실시간 브라우저 AI 체험 데모</h2>
+                    <p class="desc" style="margin-bottom: 0.5rem;">웹캠 화면에서 즉석으로 랜드마크 트래킹 성능을 경험하세요.</p>
+                    
+                    <div class="webcam-viewport">
+                        <video id="webcam-video" autoplay playsinline></video>
+                        <canvas id="webcam-canvas" width="640" height="480"></canvas>
+                    </div>
+
+                    <div class="camera-controls">
+                        <button class="btn btn-success" id="btn-start-camera">📷 카메라 켜기</button>
+                        <button class="btn btn-secondary" id="btn-stop-camera" disabled>❌ 카메라 끄기</button>
+                    </div>
+                </div>
+
+                <!-- SVG Interactive Hand Landmark Explorer -->
+                <div class="card interactive-map-card">
+                    <h2>🖐️ 21개 손 관절 지도 (Landmark Explorer)</h2>
+                    <p class="desc" style="margin-bottom: 0.5rem;">각 동그라미에 마우스를 올리면 상세 명칭과 기능을 볼 수 있습니다.</p>
+                    
+                    <div class="joint-map-wrapper">
+                        <svg class="hand-svg" viewBox="0 0 300 350">
+                            <!-- Hand Outline Guide -->
+                            <path class="hand-outline" d="M 120 330 C 80 320, 50 250, 40 200 C 30 150, 60 100, 80 60 C 95 30, 110 30, 120 50 C 130 30, 145 30, 155 40 C 160 20, 175 20, 185 45 C 190 30, 205 30, 215 50 C 220 50, 235 50, 240 70 C 265 110, 280 180, 275 220 C 260 280, 230 320, 180 330 Z" />
+                            
+                            <!-- Metacarpal bones skeleton line -->
+                            <line class="hand-skeleton-line" x1="150" y1="320" x2="100" y2="290" />
+                            <line class="hand-skeleton-line" x1="150" y1="320" x2="110" y2="190" />
+                            <line class="hand-skeleton-line" x1="150" y1="320" x2="150" y2="180" />
+                            <line class="hand-skeleton-line" x1="150" y1="320" x2="190" y2="190" />
+                            <line class="hand-skeleton-line" x1="150" y1="320" x2="230" y2="210" />
+
+                            <!-- Thumb bone skeleton line -->
+                            <line class="hand-skeleton-line" x1="100" y1="290" x2="65" y2="255" />
+                            <line class="hand-skeleton-line" x1="65" y1="255" x2="45" y2="220" />
+                            <line class="hand-skeleton-line" x1="45" y1="220" x2="35" y2="185" />
+
+                            <!-- Index finger bone skeleton line -->
+                            <line class="hand-skeleton-line" x1="110" y1="190" x2="95" y2="140" />
+                            <line class="hand-skeleton-line" x1="95" y1="140" x2="85" y2="105" />
+                            <line class="hand-skeleton-line" x1="85" y1="105" x2="75" y2="70" />
+
+                            <!-- Middle finger bone skeleton line -->
+                            <line class="hand-skeleton-line" x1="150" y1="180" x2="150" y2="125" />
+                            <line class="hand-skeleton-line" x1="150" y1="125" x2="150" y2="85" />
+                            <line class="hand-skeleton-line" x1="150" y1="85" x2="150" y2="45" />
+
+                            <!-- Ring finger bone skeleton line -->
+                            <line class="hand-skeleton-line" x1="190" y1="190" x2="205" y2="140" />
+                            <line class="hand-skeleton-line" x1="205" y1="140" x2="215" y2="105" />
+                            <line class="hand-skeleton-line" x1="215" y1="105" x2="225" y2="70" />
+
+                            <!-- Pinky bone skeleton line -->
+                            <line class="hand-skeleton-line" x1="230" y1="210" x2="250" y2="175" />
+                            <line class="hand-skeleton-line" x1="250" y1="175" x2="265" y2="150" />
+                            <line class="hand-skeleton-line" x1="265" y1="150" x2="280" y2="125" />
+
+                            <!-- 21 Landmark Nodes -->
+                            <!-- Wrist -->
+                            <circle class="landmark-node active-node" cx="150" cy="320" r="6" data-id="0" />
+                            <!-- Thumb -->
+                            <circle class="landmark-node" cx="100" cy="290" r="5.5" data-id="1" />
+                            <circle class="landmark-node" cx="65" cy="255" r="5.5" data-id="2" />
+                            <circle class="landmark-node" cx="45" cy="220" r="5.5" data-id="3" />
+                            <circle class="landmark-node" cx="35" cy="185" r="5.5" data-id="4" />
+                            <!-- Index -->
+                            <circle class="landmark-node" cx="110" cy="190" r="5.5" data-id="5" />
+                            <circle class="landmark-node" cx="95" cy="140" r="5.5" data-id="6" />
+                            <circle class="landmark-node" cx="85" cy="105" r="5.5" data-id="7" />
+                            <circle class="landmark-node" cx="75" cy="70" r="5.5" data-id="8" />
+                            <!-- Middle -->
+                            <circle class="landmark-node" cx="150" cy="180" r="5.5" data-id="9" />
+                            <circle class="landmark-node" cx="150" cy="125" r="5.5" data-id="10" />
+                            <circle class="landmark-node" cx="150" cy="85" r="5.5" data-id="11" />
+                            <circle class="landmark-node" cx="150" cy="45" r="5.5" data-id="12" />
+                            <!-- Ring -->
+                            <circle class="landmark-node" cx="190" cy="190" r="5.5" data-id="13" />
+                            <circle class="landmark-node" cx="205" cy="140" r="5.5" data-id="14" />
+                            <circle class="landmark-node" cx="215" cy="105" r="5.5" data-id="15" />
+                            <circle class="landmark-node" cx="225" cy="70" r="5.5" data-id="16" />
+                            <!-- Pinky -->
+                            <circle class="landmark-node" cx="230" cy="210" r="5.5" data-id="17" />
+                            <circle class="landmark-node" cx="250" cy="175" r="5.5" data-id="18" />
+                            <circle class="landmark-node" cx="265" cy="150" r="5.5" data-id="19" />
+                            <circle class="landmark-node" cx="280" cy="125" r="5.5" data-id="20" />
+                        </svg>
+                    </div>
+
+                    <!-- Information display under SVG -->
+                    <div class="landmark-info-display active" id="landmark-info">
+                        <div class="landmark-info-id" id="info-id">Landmark ID: 0</div>
+                        <div class="landmark-info-name" id="info-name">WRIST (손목)</div>
+                        <div class="landmark-info-desc" id="info-desc">모든 손가락 마디의 기초가 되는 중심점입니다. 손목의 중앙에 위치합니다.</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
