@@ -209,9 +209,28 @@ cv2.destroyAllWindows()</code></pre>
 
                     <div class="info-box tip">
                         <div class="info-box-title">🚨 잠깐! 실행 전 라이브러리 설치 필수</div>
-                        <div class="info-box-desc">코드를 그냥 실행하면 라이브러리가 없어서 에러가 발생합니다. VS Code 하단 터미널에 아래 명령어를 복사하여 입력하고 엔터를 눌러 설치해 주세요:
-                        <br><strong style="color: var(--secondary);">pip install opencv-python mediapipe</strong></div>
+                        <div class="info-box-desc">코드를 그냥 실행하면 라이브러리가 없어서 에러가 발생합니다. 기존 Solutions API 충돌을 방지하기 위해 <strong>버전을 0.10.14로 지정하여</strong> 설치해 주세요:
+                        <br><strong style="color: var(--secondary);">pip install opencv-python mediapipe==0.10.14</strong></div>
                     </div>
+
+                    <details style="background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); border-radius: 12px; padding: 1.2rem; margin-top: 1.5rem; cursor: pointer; transition: all 0.3s ease;">
+                        <summary style="font-weight: 700; color: #ef4444; outline: none; display: flex; align-items: center; gap: 0.5rem; font-size: 0.95rem;">
+                            ⚠️ [필독] 자주 발생하는 에러 해결 방법 (Q&A)
+                        </summary>
+                        <div style="margin-top: 1rem; font-size: 0.88rem; color: var(--text-muted); cursor: default; line-height: 1.6;" onclick="event.stopPropagation();">
+                            <h4 style="color: var(--text-main); margin-bottom: 0.3rem; font-size: 0.95rem;">Q1. module 'mediapipe' has no attribute 'solutions' 에러가 나요</h4>
+                            <p style="margin-bottom: 1.2rem;">최신 버전의 미디어파이프에서 기존 API가 누락되어 발생하는 문제입니다. 아래 명령어를 터미널에 쳐서 0.10.14 버전으로 재설정해 주세요:
+                            <br><code style="background: #000; padding: 0.2rem 0.5rem; border-radius: 4px; display: inline-block; margin-top: 0.3rem; color: #fbbf24; font-family: monospace;">pip install mediapipe==0.10.14</code></p>
+                            
+                            <h4 style="color: var(--text-main); margin-bottom: 0.3rem; font-size: 0.95rem;">Q2. DLL load failed / TensorFlow 관련 에러가 발생해요</h4>
+                            <p style="margin-bottom: 1.2rem;">아나콘다 base 환경의 기존 패키지 충돌입니다. 깨끗한 가상환경을 새로 만들어 해결할 수 있습니다:
+                            <br><code style="background: #000; padding: 0.2rem 0.5rem; border-radius: 4px; display: inline-block; margin-top: 0.3rem; color: #fbbf24; font-family: monospace;">conda create -n ai-env python=3.10 -y && conda activate ai-env</code></p>
+
+                            <h4 style="color: var(--text-main); margin-bottom: 0.3rem; font-size: 0.95rem;">Q3. 모듈이 없다고 뜨는데, pip install이 작동하지 않아요</h4>
+                            <p>윈도우 보안 문제로 가상환경 활성화가 차단된 경우입니다. 아래처럼 가상환경 파이썬 경로를 직접 지정해 강제 설치하세요:
+                            <br><code style="background: #000; padding: 0.2rem 0.5rem; border-radius: 4px; display: inline-block; margin-top: 0.3rem; color: #fbbf24; font-family: monospace;">& C:/Users/USER/anaconda3/envs/ai-env/python.exe -m pip install opencv-python mediapipe==0.10.14</code></p>
+                        </div>
+                    </details>
                 </div>
 
                 <!-- STEP 5: ARDUINO INTEGRATION & FINAL QUIZ -->
