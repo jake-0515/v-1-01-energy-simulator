@@ -644,9 +644,10 @@ h1, h2, h3 { font-weight: 800; letter-spacing: -0.02em; }
     }
     .conv-tab:hover { border-color: var(--primary); transform: translateY(-2px); }
     .conv-tab.active { background: var(--primary); color: white; border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(39,174,96,0.35); }
-    .conv-tab[data-plant="hydro"].active  { background:#1a5276; border-color:#1a5276; }
-    .conv-tab[data-plant="thermal"].active{ background:#c0392b; border-color:#c0392b; }
-    .conv-tab[data-plant="solar"].active  { background:#d4ac0d; border-color:#d4ac0d; }
+    .conv-tab[data-plant="hydro"].active   { background:#1a5276; border-color:#1a5276; }
+    .conv-tab[data-plant="thermal"].active { background:#c0392b; border-color:#c0392b; }
+    .conv-tab[data-plant="solar"].active   { background:#d4ac0d; border-color:#d4ac0d; }
+    .conv-tab[data-plant="nuclear"].active { background:#6c3483; border-color:#6c3483; }
 
     .conv-panel { display: none; }
     .conv-panel.active { display: block; animation: fadeInUp 0.4s ease; }
@@ -907,6 +908,60 @@ h1, h2, h3 { font-weight: 800; letter-spacing: -0.02em; }
       padding: 3px 12px;
       font-size: 12px;
       font-weight: 800;
+    }
+    .mini-card { cursor: pointer; }
+
+    /* ── 개념 팝업 ── */
+    #concept-popup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.52);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+    #concept-popup.open { display: flex; }
+    .concept-popup-box {
+      background: #fff;
+      border-radius: 24px;
+      padding: 36px 28px 28px;
+      max-width: 420px;
+      width: 92%;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+      animation: popupIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+      position: relative;
+      border-top: 6px solid var(--popup-color, #27ae60);
+    }
+    @keyframes popupIn {
+      from { transform: scale(0.75) translateY(20px); opacity: 0; }
+      to   { transform: none; opacity: 1; }
+    }
+    .concept-popup-close {
+      position: absolute; top: 12px; right: 16px;
+      background: none; border: none;
+      font-size: 22px; cursor: pointer;
+      color: #aaa; line-height: 1;
+      transition: color 0.15s;
+    }
+    .concept-popup-close:hover { color: #2c3e50; }
+    .concept-popup-emoji { font-size: 56px; line-height: 1; display: block; margin-bottom: 10px; }
+    .concept-popup-name  { font-size: 22px; font-weight: 900; margin-bottom: 4px; color: var(--popup-color, #1e8449); }
+    .concept-popup-desc  { font-size: 13px; color: #7f8c8d; font-weight: 700; margin-bottom: 16px; }
+    .concept-popup-text  {
+      font-size: 15px; line-height: 1.75; text-align: left; color: #2c3e50;
+      background: rgba(0,0,0,0.04);
+      border-left: 4px solid var(--popup-color, #27ae60);
+      border-radius: 0 12px 12px 0;
+      padding: 14px 16px; margin-bottom: 16px;
+    }
+    .concept-popup-badge {
+      display: inline-block;
+      background: rgba(0,0,0,0.07);
+      border-radius: 999px; padding: 4px 16px;
+      font-size: 12px; font-weight: 800;
+      color: var(--popup-color, #1e8449);
     }
 
     /* ── 섹션 5: 시뮬레이터 활동 ── */
@@ -1384,6 +1439,7 @@ h1, h2, h3 { font-weight: 800; letter-spacing: -0.02em; }
     <button class="conv-tab"        data-plant="hydro"   onclick="showPlant('hydro')">💧 수력 발전</button>
     <button class="conv-tab"        data-plant="thermal" onclick="showPlant('thermal')">🔥 화력 발전</button>
     <button class="conv-tab"        data-plant="solar"   onclick="showPlant('solar')">☀️ 태양광 발전</button>
+    <button class="conv-tab"        data-plant="nuclear" onclick="showPlant('nuclear')">☢️ 원자력 발전</button>
   </div>
 
   <!-- ── 풍력 발전 패널 ── -->
@@ -1841,6 +1897,132 @@ h1, h2, h3 { font-weight: 800; letter-spacing: -0.02em; }
     </div>
   </div>
 
+  <!-- ── 원자력 발전 패널 ── -->
+  <div class="conv-panel" id="plant-nuclear">
+    <div class="conv-layout">
+      <div class="conv-scene-wrap">
+        <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="sky-nuclear" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#ECEFF1"/>
+              <stop offset="100%" stop-color="#CFD8DC"/>
+            </linearGradient>
+            <radialGradient id="reactor-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ce93d8" stop-opacity="0.5"/>
+              <stop offset="100%" stop-color="#6c3483" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <rect width="600" height="280" fill="url(#sky-nuclear)"/>
+
+          <!-- 냉각탑 1 (왼쪽 큰 것) -->
+          <path d="M30 265 Q30 200 55 182 Q80 165 105 182 Q130 200 130 265 Z" fill="#B0BEC5" stroke="#90A4AE" stroke-width="1.5"/>
+          <path d="M50 190 Q80 172 110 190" fill="none" stroke="#90A4AE" stroke-width="1.5"/>
+          <path d="M42 265 Q42 205 62 188 Q80 174 98 188 Q118 205 118 265 Z" fill="#CFD8DC" opacity="0.4"/>
+          <!-- 냉각탑 1 상단 증기 -->
+          <ellipse cx="80" cy="174" rx="22" ry="11" fill="white" opacity="0.75" style="animation:steamUp 80000s ease-out infinite;"/>
+          <ellipse cx="75" cy="158" rx="28" ry="14" fill="#ECEFF1" opacity="0.55" style="animation:steamUp 80000s ease-out infinite 18s;"/>
+          <ellipse cx="84" cy="142" rx="32" ry="16" fill="white" opacity="0.35" style="animation:steamUp 80000s ease-out infinite 36s;"/>
+
+          <!-- 냉각탑 2 (오른쪽 작은 것) -->
+          <path d="M148 265 Q148 210 168 196 Q188 183 208 196 Q228 210 228 265 Z" fill="#B0BEC5" stroke="#90A4AE" stroke-width="1.5"/>
+          <path d="M162 202 Q188 188 214 202" fill="none" stroke="#90A4AE" stroke-width="1.2"/>
+          <ellipse cx="188" cy="186" rx="18" ry="9" fill="white" opacity="0.7" style="animation:steamUp 75000s ease-out infinite 10s;"/>
+          <ellipse cx="192" cy="172" rx="22" ry="11" fill="#ECEFF1" opacity="0.5" style="animation:steamUp 75000s ease-out infinite 28s;"/>
+
+          <!-- 원자로 돔 건물 -->
+          <rect x="250" y="205" width="88" height="60" rx="5" fill="#90A4AE"/>
+          <ellipse cx="294" cy="205" rx="44" ry="30" fill="#B0BEC5"/>
+          <rect x="258" y="210" width="72" height="50" fill="#78909C"/>
+          <!-- 돔 내부 방사선 글로우 -->
+          <ellipse cx="294" cy="218" rx="28" ry="18" fill="url(#reactor-glow)"/>
+          <!-- 원자로 기호 -->
+          <circle cx="294" cy="222" r="18" fill="#546E7A" opacity="0.85"/>
+          <text x="294" y="229" text-anchor="middle" font-size="18">☢️</text>
+          <!-- 핵연료봉 표현 -->
+          <rect x="282" y="235" width="5" height="22" rx="2" fill="#8E44AD" opacity="0.7"/>
+          <rect x="290" y="235" width="5" height="22" rx="2" fill="#9B59B6" opacity="0.7"/>
+          <rect x="298" y="235" width="5" height="22" rx="2" fill="#8E44AD" opacity="0.7"/>
+          <rect x="306" y="235" width="5" height="22" rx="2" fill="#9B59B6" opacity="0.7"/>
+          <text x="294" y="275" text-anchor="middle" font-size="11" fill="#37474F" font-weight="bold">원자로</text>
+
+          <!-- 증기 파이프 (원자로 → 터빈) -->
+          <rect x="338" y="215" width="38" height="11" rx="4" fill="#90A4AE"/>
+          <!-- 파이프 위 증기 -->
+          <ellipse cx="350" cy="210" rx="7" ry="4" fill="#CFD8DC" opacity="0.6" style="animation:steamUp 70000s ease-out infinite 5s;"/>
+          <ellipse cx="363" cy="208" rx="6" ry="4" fill="#ECEFF1" opacity="0.5" style="animation:steamUp 70000s ease-out infinite 22s;"/>
+
+          <!-- 터빈 건물 -->
+          <rect x="376" y="200" width="82" height="62" rx="6" fill="#ECEFF1"/>
+          <rect x="376" y="190" width="82" height="16" rx="4" fill="#B0BEC5"/>
+          <!-- 터빈 회전 -->
+          <circle cx="417" cy="232" r="22" fill="#CFD8DC" stroke="#90A4AE" stroke-width="2"/>
+          <g style="transform-origin:417px 232px; animation:turbineSpin 85000s linear infinite;">
+            <rect x="413" y="210" width="8" height="22" rx="4" fill="#607D8B"/>
+            <rect x="413" y="210" width="8" height="22" rx="4" fill="#607D8B" transform="rotate(72 417 232)"/>
+            <rect x="413" y="210" width="8" height="22" rx="4" fill="#607D8B" transform="rotate(144 417 232)"/>
+            <rect x="413" y="210" width="8" height="22" rx="4" fill="#607D8B" transform="rotate(216 417 232)"/>
+            <rect x="413" y="210" width="8" height="22" rx="4" fill="#607D8B" transform="rotate(288 417 232)"/>
+          </g>
+          <circle cx="417" cy="232" r="6" fill="#455A64"/>
+          <text x="417" y="270" text-anchor="middle" font-size="11" fill="#37474F" font-weight="bold">터빈</text>
+
+          <!-- 발전기 -->
+          <rect x="466" y="215" width="62" height="32" rx="6" fill="#EDE7F6" stroke="#6c3483" stroke-width="2"/>
+          <text x="497" y="235" text-anchor="middle" font-size="12" fill="#6c3483" font-weight="bold">발전기</text>
+
+          <!-- 전선 -->
+          <line x1="528" y1="231" x2="560" y2="231" stroke="#546E7A" stroke-width="2.5" stroke-dasharray="8 5" style="animation:powerFlow 45000s linear infinite;"/>
+
+          <!-- 집 -->
+          <polygon points="558,222 580,204 602,222" fill="#EF9A9A"/>
+          <rect x="562" y="222" width="40" height="36" fill="#FFCCBC"/>
+          <rect x="573" y="232" width="10" height="26" fill="#A5D6A7"/>
+          <rect x="563" y="227" width="9" height="8" fill="#B3E5FC"/>
+          <rect x="580" y="227" width="9" height="8" fill="#B3E5FC"/>
+          <text x="552" y="216" font-size="16">⚡</text>
+
+          <!-- 에너지 변환 레이블 -->
+          <rect x="5" y="5" width="238" height="28" rx="8" fill="rgba(0,0,0,0.4)"/>
+          <text x="119" y="23" text-anchor="middle" font-size="12" fill="white" font-weight="bold">☢️핵에너지→🔥열→⚙️기계적→⚡전기</text>
+
+          <!-- 땅 -->
+          <rect x="0" y="265" width="600" height="15" fill="#546E7A"/>
+        </svg>
+      </div>
+
+      <div class="conv-steps-wrap">
+        <div class="conv-step-card" id="nuclear-s0">
+          <div class="step-num">1</div>
+          <div class="step-energy">핵 에너지</div>
+          <div class="step-title">☢️ 핵연료(우라늄)</div>
+          <div class="step-desc">우라늄 원자핵이 분열할 때 엄청난 열에너지가 방출돼요</div>
+        </div>
+        <div class="step-arrow-down">↓</div>
+        <div class="conv-step-card" id="nuclear-s1">
+          <div class="step-num">2</div>
+          <div class="step-energy">열 에너지</div>
+          <div class="step-title">🌡️ 냉각재 가열</div>
+          <div class="step-desc">핵반응 열로 냉각재(물)를 가열해 고압 증기를 만들어요</div>
+        </div>
+        <div class="step-arrow-down">↓</div>
+        <div class="conv-step-card" id="nuclear-s2">
+          <div class="step-num">3</div>
+          <div class="step-energy">기계적 에너지</div>
+          <div class="step-title">⚙️ 증기 터빈 회전</div>
+          <div class="step-desc">고압 증기가 터빈을 힘차게 돌려요. 화력발전과 같은 원리!</div>
+        </div>
+        <div class="step-arrow-down">↓</div>
+        <div class="conv-step-card" id="nuclear-s3">
+          <div class="step-num">4</div>
+          <div class="step-energy">전기 에너지</div>
+          <div class="step-title">⚡ 발전기 작동</div>
+          <div class="step-desc">터빈이 발전기를 돌려 전기 생산! CO₂ 없음, 대용량 발전 가능</div>
+        </div>
+        <button class="conv-play-btn" style="background:#6c3483;" onclick="playStepped('nuclear')">▶ 단계별 보기</button>
+      </div>
+    </div>
+  </div>
+
 </section>
 
 <hr class="section-divider" />
@@ -1998,6 +2180,18 @@ h1, h2, h3 { font-weight: 800; letter-spacing: -0.02em; }
   </div>
 </section>
 
+<!-- ══════════════════ 개념 팝업 모달 ══════════════════ -->
+<div id="concept-popup" onclick="closeConceptPopup(event)">
+  <div class="concept-popup-box" id="popupBox">
+    <button class="concept-popup-close" onclick="closeConceptPopup()">✕</button>
+    <span class="concept-popup-emoji" id="popupEmoji"></span>
+    <div class="concept-popup-name"  id="popupName"></div>
+    <div class="concept-popup-desc"  id="popupDesc"></div>
+    <div class="concept-popup-text"  id="popupText"></div>
+    <span class="concept-popup-badge" id="popupBadge"></span>
+  </div>
+</div>
+
 <!-- ══════════════════ 푸터 ══════════════════ -->
 <footer class="app-footer">
   <strong>⚡ 에너지와 수송 기술의 세계</strong> &nbsp;|&nbsp; V단원 1소단원 · 중학교 3학년 기술
@@ -2068,6 +2262,36 @@ h1, h2, h3 { font-weight: 800; letter-spacing: -0.02em; }
     timers.push(tEnd);
     stepTimers[plant] = timers;
   }
+
+  /* ── 신재생에너지 개념 팝업 ── */
+  document.querySelectorAll('.mini-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const emoji   = card.querySelector('.mini-emoji').textContent;
+      const name    = card.querySelector('.mini-name').textContent;
+      const desc    = card.querySelector('.mini-desc').textContent;
+      const text    = card.querySelector('.mini-concept').innerHTML;
+      const badge   = card.querySelector('.mini-type').textContent;
+      const color   = card.style.getPropertyValue('--mini-color') || '#27ae60';
+
+      document.getElementById('popupEmoji').textContent = emoji;
+      document.getElementById('popupName').textContent  = name;
+      document.getElementById('popupDesc').textContent  = desc;
+      document.getElementById('popupText').innerHTML    = text;
+      document.getElementById('popupBadge').textContent = badge;
+      document.getElementById('popupBox').style.setProperty('--popup-color', color);
+      document.getElementById('concept-popup').classList.add('open');
+    });
+  });
+
+  function closeConceptPopup(event) {
+    if (!event || event.target === document.getElementById('concept-popup')) {
+      document.getElementById('concept-popup').classList.remove('open');
+    }
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeConceptPopup();
+  });
 </script>
 
 </body>
