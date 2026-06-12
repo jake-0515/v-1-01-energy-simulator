@@ -140,8 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
             return rawScores.map(score => (score - min) / (max - min));
         } else if (type === "standardization") {
             const mean = rawScores.reduce((a, b) => a + b, 0) / rawScores.length;
-            const variance = rawScores.reduce((a, b) => a + Math.pow(score => score - mean, 2), 0) / rawScores.length; // Simple stddev
-            // standard dev calculation
             const stdDev = Math.sqrt(rawScores.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b, 0) / rawScores.length);
             return rawScores.map(score => (score - mean) / stdDev);
         }
@@ -583,7 +581,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 // 레이벨 텍스트 수치 표기
                 document.getElementById("val-ear").textContent = `${data.features.ear}`;
                 document.getElementById("val-tail").textContent = `${data.features.tail}`;
-                document.getElementById("val-texture").textContent = `${data.features.snout}`; // snouts mapping
+                document.getElementById("val-texture").textContent = `${data.features.texture}`;
                 document.getElementById("val-snout").textContent = `${data.features.snout}`;
                 document.getElementById("val-paw").textContent = `${data.features.paw}`;
 
@@ -607,9 +605,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const quizOptions = document.querySelectorAll(".quiz-option");
     const answered = { 1: false, 2: false, 3: false };
     const correctAnswers = {
-        1: "0 ~ 1 사이",
+        1: "정규화",
         2: "지도학습",
-        3: "이미지 임베딩 (Image Embedding)"
+        3: "이미지 임베딩"
     };
 
     quizOptions.forEach(option => {
