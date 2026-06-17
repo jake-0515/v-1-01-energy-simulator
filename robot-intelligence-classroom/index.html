@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로봇 인공지능 설계 교실 🤖</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- MediaPipe CDN 라이브러리 로드 -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
+    <!-- canvas-confetti 라이브러리 로드 -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <!-- App Header -->
+        <header>
+            <div class="header-badge">MIDDLE SCHOOL TECHNOLOGY & ROBOT AI CLASS</div>
+            <h1>로봇 인공지능 설계 교실</h1>
+            <p>로봇에 지능을 부여하는 핵심 원리! 인공지능, 머신러닝, 딥러닝 개념을 이해하고 나만의 가위바위보 인식 로봇 팔을 직접 학습시켜 봅시다.</p>
+        </header>
+
+        <!-- Learning Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-line">
+                    <div class="progress-line-fill" id="progress-fill"></div>
+                </div>
+                <div class="step-indicator active" data-step="1">
+                    <div class="circle">1</div>
+                    <div class="step-label">인공지능의 진화</div>
+                </div>
+                <div class="step-indicator" data-step="2">
+                    <div class="circle">2</div>
+                    <div class="step-label">머신러닝 원리</div>
+                </div>
+                <div class="step-indicator" data-step="3">
+                    <div class="circle">3</div>
+                    <div class="step-label">알고리즘 분류</div>
+                </div>
+                <div class="step-indicator" data-step="4">
+                    <div class="circle">4</div>
+                    <div class="step-label">딥러닝과 뇌</div>
+                </div>
+                <div class="step-indicator" data-step="5">
+                    <div class="circle">5</div>
+                    <div class="step-label">실전! 로봇학습</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== STEP 1: 인공지능의 진화 ==================== -->
+        <div class="tab-content main-grid active" id="tab1">
+            <!-- Left Column: Core Concepts -->
+            <div class="card">
+                <h2><span style="color:var(--primary)">01.</span> 인공지능의 범위와 진화</h2>
+                <p class="desc">우리는 인공지능(AI) 시대에 살고 있어요. 하지만 인공지능, 머신러닝, 딥러닝은 모두 같은 단어일까요? 어떤 차이가 있는지 알아봅시다.</p>
+                
+                <h3>인공지능의 3가지 핵심 범위</h3>
+                <div class="ai-type-card" style="margin-bottom: 1rem;">
+                    <div class="ai-type-title" style="color: #3b82f6;">
+                        <span class="icon">💻</span> 인공지능 (Artificial Intelligence)
+                    </div>
+                    <p class="info-box-desc">인간의 지능(생각, 학습, 판단)을 컴퓨터 프로그램으로 흉내 내는 모든 기술을 통틀어 부르는 넓은 개념이에요.</p>
+                </div>
+                <div class="ai-type-card" style="margin-bottom: 1rem;">
+                    <div class="ai-type-title" style="color: var(--secondary);">
+                        <span class="icon">📊</span> 머신러닝 (Machine Learning)
+                    </div>
+                    <p class="info-box-desc">인공지능의 한 종류로, 사람이 일일이 규칙을 코딩하지 않고 <strong>데이터를 주면 컴퓨터가 스스로 규칙을 찾아 학습</strong>하는 기술이에요.</p>
+                </div>
+                <div class="ai-type-card">
+                    <div class="ai-type-title" style="color: var(--primary);">
+                        <span class="icon">🧠</span> 딥러닝 (Deep Learning)
+                    </div>
+                    <p class="info-box-desc">머신러닝의 하위 기술로, 인간 뇌의 <strong>신경세포(뉴런) 구조를 본뜬 인공신경망</strong>을 이용해 컴퓨터가 스스로 특징을 찾아내며 심화 학습하는 기술이에요.</p>
+                </div>
+
+                <h3>인공지능의 두 얼굴: 약인공지능 vs 강인공지능</h3>
+                <div class="ai-type-grid">
+                    <div class="ai-type-card">
+                        <div class="ai-type-title"><span style="color:var(--secondary)">●</span> 약인공지능 (Narrow AI)</div>
+                        <ul class="ai-type-list">
+                            <li>주어진 특정 작업 한 가지만 수행할 수 있어요.</li>
+                            <li>현재 우리가 마주하는 거의 모든 AI가 여기에 속해요.</li>
+                            <li>예: 알파고(바둑), 파파고(번역), 가위바위보 분류기.</li>
+                        </ul>
+                    </div>
+                    <div class="ai-type-card accent-card">
+                        <div class="ai-type-title" style="color:var(--accent)"><span style="color:var(--accent)">★</span> 강인공지능 (General AI)</div>
+                        <ul class="ai-type-list">
+                            <li>인간처럼 스스로 생각하고 계획하며 여러 일을 해내요.</li>
+                            <li>감정과 의식을 가질 수 있는 자아 성찰형 인공지능이에요.</li>
+                            <li>예: 영화 속 자비스, 도라에몽 (아직 연구 단계).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Interactive Diagram -->
+            <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <h2>포함 관계도 살펴보기</h2>
+                    <p class="desc">오른쪽 벤 다이어그램의 각 원을 클릭하면 범위의 상세 설명과 예시를 볼 수 있습니다.</p>
+                    
+                    <div class="venn-container">
+                        <div class="venn-circle venn-ai" id="venn-ai" onclick="selectVenn('ai')">
+                            <span>인공지능 (AI)</span>
+                            <p>가장 넓은 개념</p>
+                        </div>
+                        <div class="venn-circle venn-ml" id="venn-ml" onclick="selectVenn('ml')">
+                            <span>머신러닝 (ML)</span>
+                            <p>데이터 기반 학습</p>
+                        </div>
+                        <div class="venn-circle venn-dl" id="venn-dl" onclick="selectVenn('dl')">
+                            <span>딥러닝 (DL)</span>
+                            <p>뇌의 구조 모방</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box tip" id="venn-details-box" style="margin-top: 1rem;">
+                    <div class="info-box-title" id="venn-detail-title">👆 원을 클릭해 보세요!</div>
+                    <div class="info-box-desc" id="venn-detail-desc">인공지능, 머신러닝, 딥러닝 원 중 하나를 클릭하면 상세 개념 설명이 제공됩니다.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== STEP 2: 머신러닝 원리 ==================== -->
+        <div class="tab-content main-grid" id="tab2">
+            <!-- Left Column: T-E-P Basketball game -->
+            <div class="card">
+                <h2><span style="color:var(--primary)">02.</span> 머신러닝의 학습 공식: T-E-P</h2>
+                <p class="desc">인공지능 학자 톰 미첼(Tom Mitchell) 교수는 머신러닝을 세 가지 요소로 설명했어요. 농구 자유투 연습을 통해 이 공식을 알아봅시다!</p>
+
+                <div class="info-box">
+                    <div class="info-box-title">🏀 농구 훈련으로 알아보는 T-E-P 공식</div>
+                    <div class="info-box-desc">
+                        <ul>
+                            <li><strong>T (Task - 작업)</strong>: 해결하고자 하는 문제 ➔ <strong>농구공 골대에 넣기</strong></li>
+                            <li><strong>E (Experience - 경험)</strong>: 컴퓨터가 학습하는 데이터 ➔ <strong>반복해서 공을 던진 연습 횟수</strong></li>
+                            <li><strong>P (Performance - 성능)</strong>: 얼마나 잘해졌는지 측정하는 기준 ➔ <strong>슛 성공률(%)</strong></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="basket-simulation-box">
+                    <div class="basket-court">
+                        <div class="hoop-backboard"></div>
+                        <div class="hoop" id="basketball-hoop"></div>
+                        <div class="ball-launcher"></div>
+                        <div class="basketball" id="basketball-ball"></div>
+                        <svg class="shoot-path" id="basketball-path">
+                            <path d="" fill="none" stroke="rgba(0, 210, 255, 0.4)" stroke-width="2" stroke-dasharray="5,5" id="trajectory-arc" />
+                        </svg>
+                    </div>
+
+                    <div style="margin: 1rem 0;">
+                        <label for="practice-slider" style="display:block; font-weight:600; margin-bottom:0.5rem;">
+                            경험치 데이터(E) 설정 (연습 슛 횟수): <span id="practice-count-val" style="color:var(--secondary)">0</span>회
+                        </label>
+                        <input type="range" id="practice-slider" min="0" max="1500" step="50" value="0" style="width:80%; accent-color:var(--secondary)">
+                    </div>
+
+                    <button class="btn btn-success" id="btn-shoot">🏀 슛 던지고 학습하기 (Shoot!)</button>
+
+                    <div class="performance-graph-container">
+                        <div style="display:flex; justify-content:space-between; margin-bottom: 0.3rem; font-size:0.85rem;">
+                            <span>현재 성능 P (슛 성공률)</span>
+                            <span id="shoot-performance-val" style="color:var(--primary); font-weight:700;">0%</span>
+                        </div>
+                        <div class="gather-gauge-container">
+                            <div class="gather-gauge-fill" id="shoot-performance-gauge" style="width:0%; background:var(--primary);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Feature Extraction scanner -->
+            <div class="card">
+                <h2>특징 추출 (Feature Extraction)</h2>
+                <p class="desc">컴퓨터는 강아지 사진을 통째로 이해하지 못해요. 그림 속에서 분류에 중요한 <strong>'특징(Feature)'</strong>을 뽑아내 수치 벡터로 변환합니다. 강아지를 스캔해 봅시다!</p>
+
+                <div class="image-scanner-wrapper" id="scanner-wrapper">
+                    <img src="assets/dog.png" alt="강아지" class="scanner-image">
+                    <div class="scanner-laser-line"></div>
+                    <!-- Target dots on the image -->
+                    <div class="scanner-target-dot" style="top: 25%; left: 38%;" data-feature="ear" onclick="scanFeature('ear', 25, 38)"></div>
+                    <div class="scanner-target-dot" style="top: 40%; left: 55%;" data-feature="color" onclick="scanFeature('color', 40, 55)"></div>
+                    <div class="scanner-target-dot" style="top: 65%; left: 45%;" data-feature="weight" onclick="scanFeature('weight', 65, 45)"></div>
+                </div>
+
+                <div class="info-box tip" id="scan-info-box" style="margin-top: 1rem;">
+                    <div class="info-box-title" id="scan-title">🔎 스캐너 레이저 점 클릭하기</div>
+                    <div class="info-box-desc" id="scan-desc">강아지 머리, 몸체에 찍힌 노란색 조준점을 클릭하면 센서가 특징을 숫자로 스캔합니다.</div>
+                </div>
+
+                <div style="background: rgba(0, 210, 255, 0.05); border: 1px solid var(--border-color); border-radius:8px; padding:1rem; margin-top:1.5rem;">
+                    <div style="font-weight: 700; font-size:0.9rem; margin-bottom: 0.5rem; text-align:center;">
+                        🤖 추출된 특징 벡터 (Feature Vector)
+                    </div>
+                    <div id="feature-vector-display" style="font-family:'Orbitron', monospace; font-size:1.4rem; color:var(--primary); text-align:center; letter-spacing:3px;">
+                        [ ? , ? , ? ]
+                    </div>
+                    <p style="font-size:0.75rem; color:var(--text-muted); text-align:center; margin-top:0.5rem; line-height:1.4;">
+                        귀의 둥글기(0~1), 털의 밝기(0~2), 추정 무게(kg)가 숫자로 정렬되어 AI 모델의 최종 입력값이 됩니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== STEP 3: 알고리즘 분류 ==================== -->
+        <div class="tab-content main-grid" id="tab3">
+            <!-- Left Column: Supervised Learning -->
+            <div class="card">
+                <h2><span style="color:var(--primary)">03.</span> 지도학습 (Supervised Learning)</h2>
+                <p class="desc">지도학습은 <strong>문제(데이터)와 정답(레이블)</strong>을 사람이 직접 주고서 공부시키는 방식이에요.</p>
+
+                <div class="ai-type-card" style="margin-bottom:1.5rem;">
+                    <div class="ai-type-title" style="color:var(--secondary)">✔ 분류 (Classification)</div>
+                    <p class="info-box-desc" style="margin-bottom: 0.8rem;">데이터를 서로 다른 그룹(카테고리)으로 쪼개는 작업이에요.</p>
+                    
+                    <div style="margin-left: 0.5rem; font-size:0.85rem; display:flex; flex-direction:column; gap:0.6rem;">
+                        <div>
+                            <strong>1. KNN (K-최근접 이웃)</strong>
+                            <p style="color:var(--text-muted)">"가장 가까운 곳에 있는 K개의 이웃이 뭐지?" 주변 이웃과 동일한 클래스로 판정해요. (예: 주위 다수가 고양이면 나도 고양이)</p>
+                        </div>
+                        <div>
+                            <strong>2. SVM (서포트 벡터 머신)</strong>
+                            <p style="color:var(--text-muted)">두 그룹 사이에 가장 넓은 빈 도로(경계)를 건설하여 안전하게 데이터를 분류하는 알고리즘이에요.</p>
+                        </div>
+                        <div>
+                            <strong>3. 의사결정나무 (Decision Tree)</strong>
+                            <p style="color:var(--text-muted)">"귀가 뾰족한가? ➔ 예/아니오" 처럼 스무고개 질문을 던져 리프 노드까지 타고 가 데이터를 분류해요.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ai-type-card">
+                    <div class="ai-type-title" style="color:var(--primary)">✔ 회귀 (Regression)</div>
+                    <p class="info-box-desc" style="margin-bottom: 0.5rem;">끊기지 않고 이어지는 연속적인 <strong>수치(숫자)</strong>를 예측하는 작업이에요.</p>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-left:0.5rem;">
+                        <strong>실생활 예시</strong>: 공부한 시간 ➔ 시험 점수 예측, 스마트폰 충전량 ➔ 남은 사용 시간(분) 예측, 기온 ➔ 아이스크림 판매량 예측.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Column: Unsupervised Learning -->
+            <div class="card">
+                <h2>비지도학습 (Unsupervised Learning)</h2>
+                <p class="desc">비지도학습은 <strong>정답(레이블)이 없는 데이터</strong>만 던져주고 컴퓨터가 스스로 공통점과 차이점을 찾도록 하는 학습법이에요.</p>
+
+                <div class="ai-type-card" style="margin-bottom:1.5rem;">
+                    <div class="ai-type-title" style="color:var(--accent)">✔ 군집화 (Clustering)</div>
+                    <p class="info-box-desc" style="margin-bottom: 0.8rem;">데이터들의 성격이나 생김새를 보고 공통된 것끼리 모둠(그룹)으로 묶는 기술이에요.</p>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-left:0.5rem; margin-bottom: 0.8rem;">
+                        <strong>실생활 예시</strong>: 넷플릭스 영화 추천 (내가 시청한 영상들의 패턴을 분석해 비슷한 영화 마니아 그룹에 날 묶어서 추천)
+                    </p>
+
+                    <div style="background:rgba(255,234,0,0.05); border:1px solid rgba(255,234,0,0.15); border-radius:6px; padding:0.8rem; font-size:0.8rem;">
+                        <strong>📐 군집의 완성도 평가 기준</strong>
+                        <ul style="margin-left:1.2rem; margin-top:0.3rem; color:var(--text-muted);">
+                            <li><strong style="color:white">응집도 (Cohesion)</strong>: 같은 그룹에 속한 친구들끼리 얼마나 가깝게 모여 있는가? (높을수록 좋음)</li>
+                            <li><strong style="color:white">분리도 (Separation)</strong>: 서로 다른 그룹끼리 얼마나 멀리 벌어져 있는가? (높을수록 좋음)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="ai-type-card">
+                    <div class="ai-type-title" style="color:#f43f5e">✔ 연관 규칙 (Association Rule)</div>
+                    <p class="info-box-desc" style="margin-bottom: 0.5rem;">대량의 데이터 분석을 통해 항목 간의 "A를 사면 B도 같이 사더라"와 같은 흥미로운 규칙을 찾는 기술이에요.</p>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-left:0.5rem;">
+                        <strong>실생활 예시</strong>: 기저귀를 산 손님이 밤에 시원한 맥주를 장바구니에 같이 담는 행동 분석 규칙, 유튜브에서 '라면 끓이기'를 본 사람에게 '김치 리뷰' 영상을 연관 동영상으로 추천하기.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== STEP 4: 딥러닝과 뇌 ==================== -->
+        <div class="tab-content main-grid" id="tab4">
+            <!-- Left Column: Neuron Diagram & Mapping -->
+            <div class="card">
+                <h2><span style="color:var(--primary)">04.</span> 생물학적 뉴런 vs 인공 뉴런</h2>
+                <p class="desc">인공지능의 딥러닝은 우리 머릿속 뇌신경세포(뉴런)의 신호 전달 방식을 모델링하여 만들어졌어요. 둘의 짝꿍이 어떻게 매핑되는지 클릭해 봐요!</p>
+
+                <div class="neuron-mapper-grid">
+                    <div class="neuron-card" data-neuron="dendrite" onclick="selectNeuron('dendrite')">
+                        <h4>가지돌기 (Dendrite)</h4>
+                        <div class="neuron-list-items">➔ 입력값 (Inputs: x1, x2, x3)</div>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem;">외부 자극이나 다른 세포로부터 신호를 전달받는 빨대 역할을 해요.</p>
+                    </div>
+
+                    <div class="neuron-card" data-neuron="synapse" onclick="selectNeuron('synapse')">
+                        <h4>시냅스 (Synapse)</h4>
+                        <div class="neuron-list-items">➔ 가중치 (Weights: w1, w2, w3)</div>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem;">자극이 지나가는 통로로, 통로가 넓을수록 신호가 더 강하게(가중치 높게) 흐릅니다.</p>
+                    </div>
+
+                    <div class="neuron-card" data-neuron="soma" onclick="selectNeuron('soma')">
+                        <h4>세포체 (Soma / Cell Body)</h4>
+                        <div class="neuron-list-items">➔ 가중합 & 활성화 함수</div>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem;">들어온 신호를 모아 연산하고, 일정 수치 이상의 자극이 차면 신호를 전달할지 정해요.</p>
+                    </div>
+
+                    <div class="neuron-card" data-neuron="axon" onclick="selectNeuron('axon')">
+                        <h4>축삭돌기 (Axon)</h4>
+                        <div class="neuron-list-items">➔ 출력값 (Output: y)</div>
+                        <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.4rem;">결정된 최종 판단(전기 자극)을 다음 뉴런으로 내보내는 통로입니다.</p>
+                    </div>
+                </div>
+
+                <div class="info-box tip" id="neuron-info-box">
+                    <div class="info-box-title" id="neuron-title">🧠 뉴런 세포 카드 클릭</div>
+                    <div class="info-box-desc" id="neuron-desc">상단의 생물학적 뉴런 카드를 클릭하면 해당하는 인공신경망의 수학적 수학 연산 매칭 원리가 안내됩니다.</div>
+                </div>
+            </div>
+
+            <!-- Right Column: CNN Layer visualizer -->
+            <div class="card">
+                <h2>로봇이 눈으로 사물을 읽는 원리: CNN</h2>
+                <p class="desc">합성곱 신경망(CNN)은 사물의 전체 이미지를 조각조각으로 쪼개서 선부터 얼굴 형태까지 계층적으로 조립하여 이해합니다.</p>
+
+                <div class="layer-flow-container">
+                    <div class="layer-stage">
+                        <div class="layer-visual-box">🖼️</div>
+                        <div class="layer-label">입력 이미지</div>
+                        <div class="layer-desc">원본 그대로</div>
+                    </div>
+                    <div class="layer-flow-arrow">➔</div>
+                    <div class="layer-stage">
+                        <div class="layer-visual-box" style="border-color:#3b82f6;">░</div>
+                        <div class="layer-label">하위 계층</div>
+                        <div class="layer-desc">선, 모서리(Edges)</div>
+                    </div>
+                    <div class="layer-flow-arrow">➔</div>
+                    <div class="layer-stage">
+                        <div class="layer-visual-box" style="border-color:var(--secondary);">👁️</div>
+                        <div class="layer-label">중간 계층</div>
+                        <div class="layer-desc">눈,코,입(Features)</div>
+                    </div>
+                    <div class="layer-flow-arrow">➔</div>
+                    <div class="layer-stage">
+                        <div class="layer-visual-box" style="border-color:var(--primary);">👤</div>
+                        <div class="layer-label">상위 계층</div>
+                        <div class="layer-desc">얼굴 윤곽(Faces)</div>
+                    </div>
+                    <div class="layer-flow-arrow">➔</div>
+                    <div class="layer-stage">
+                        <div class="layer-visual-box" style="border-color:var(--accent);">🤖</div>
+                        <div class="layer-label">출력</div>
+                        <div class="layer-desc">누구인지 최종판단</div>
+                    </div>
+                </div>
+
+                <div style="background:rgba(0, 255, 102, 0.03); border:1px solid rgba(0, 255, 102, 0.1); border-radius:8px; padding:1.2rem;">
+                    <div style="font-weight:700; color:var(--primary); font-size:0.95rem; margin-bottom:0.4rem;">💡 로봇 지능의 특징 계층 학습</div>
+                    <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+                        로봇의 인공신경망은 복잡한 데이터일수록 여러 계층(Deep Layers)을 통과시켜요. 뒤로 갈수록 <strong>선 ➔ 부분 모습 ➔ 전체 사물</strong> 형태로 특징을 구체적으로 추상화하여 마침내 대상을 판별해 냅니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== STEP 5: 실전! 가위바위보 로봇 팔 학습관 ==================== -->
+        <div class="tab-content main-grid" id="tab5">
+            <!-- Left Column: Teachable Machine webcam & gathers -->
+            <div class="card camera-card">
+                <h2><span style="color:var(--primary)">05.</span> 가위바위보 AI 카메라 트레이너</h2>
+                <p class="desc">웹캠으로 나의 주먹(Rock), 가위(Scissors), 보자기(Paper) 손 모양을 각각 수집해서 브라우저 비전 분류 모델을 완성해 보세요!</p>
+
+                <!-- Webcam selector / Eshare notice -->
+                <div style="display:flex; justify-content:center; align-items:center; gap:0.5rem; margin-bottom: 0.8rem;">
+                    <label for="camera-select" style="font-size:0.8rem; color:var(--text-muted);">카메라 기기 선택:</label>
+                    <select id="camera-select" style="background:#090e1c; border:1px solid var(--border-color); color:var(--text-main); font-size:0.8rem; padding:0.2rem 0.5rem; border-radius:4px;"></select>
+                </div>
+
+                <div class="camera-viewport" id="viewport-container">
+                    <video id="camera-video" autoplay playsinline muted></video>
+                    <canvas id="camera-canvas"></canvas>
+                    <div id="camera-loading" style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; background:rgba(4,6,15,0.95); z-index:10;">
+                        <div style="border: 4px solid var(--border-color); border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin-bottom:1rem;"></div>
+                        <span style="font-size:0.9rem; color:var(--text-muted);" id="camera-loading-text">카메라 구동을 위해 브라우저 사용 권한을 수락해 주세요...</span>
+                    </div>
+                </div>
+
+                <div class="training-panel">
+                    <div class="training-class-box">
+                        <div class="class-title">✊ 주먹 (ROCK)</div>
+                        <button class="btn-gather" id="btn-gather-rock">주먹 수집</button>
+                        <div class="gather-gauge-container">
+                            <div class="gather-gauge-fill" id="gauge-rock"></div>
+                        </div>
+                        <span class="gather-count" id="count-rock">0 / 15 frames</span>
+                    </div>
+
+                    <div class="training-class-box">
+                        <div class="class-title">✌ 가위 (SCISSORS)</div>
+                        <button class="btn-gather" id="btn-gather-scissors">가위 수집</button>
+                        <div class="gather-gauge-container">
+                            <div class="gather-gauge-fill" id="gauge-scissors"></div>
+                        </div>
+                        <span class="gather-count" id="count-scissors">0 / 15 frames</span>
+                    </div>
+
+                    <div class="training-class-box">
+                        <div class="class-title">🖐 보 (PAPER)</div>
+                        <button class="btn-gather" id="btn-gather-paper">보자기 수집</button>
+                        <div class="gather-gauge-container">
+                            <div class="gather-gauge-fill" id="gauge-paper"></div>
+                        </div>
+                        <span class="gather-count" id="count-paper">0 / 15 frames</span>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:1rem;">
+                    <button class="btn btn-secondary" style="flex:1;" id="btn-reset-data">🔄 데이터 리셋</button>
+                    <button class="btn btn-success" style="flex:2;" id="btn-train" disabled>🤖 인공신경망 학습 (Train)</button>
+                </div>
+            </div>
+
+            <!-- Right Column: Robot Arm SVG & Arduino Led simulation -->
+            <div class="card robot-model-panel">
+                <h2>🤖 가상 아두이노 로봇 팔 제어판</h2>
+                <p class="desc">인공지능 모델의 예측 결과에 따라 로봇 팔이 상성상 승리하는 무조건 이기는 챌린지 시뮬레이터입니다.</p>
+
+                <div class="robot-arm-wrapper">
+                    <!-- Virtual robot arm SVG -->
+                    <svg class="robot-arm-svg" viewBox="0 0 200 200" id="robot-svg">
+                        <!-- Robot Base -->
+                        <rect x="70" y="160" width="60" height="20" rx="4" fill="#1e293b" stroke="var(--border-color)" stroke-width="2"/>
+                        <!-- Joint 1 Base -->
+                        <circle cx="100" cy="160" r="10" fill="#475569" stroke="var(--secondary)" stroke-width="2"/>
+                        
+                        <!-- Lower Arm segment -->
+                        <g id="lower-arm" transform="rotate(-30 100 160)">
+                            <line x1="100" y1="160" x2="100" y2="90" stroke="var(--secondary)" stroke-width="8" stroke-linecap="round"/>
+                            <circle cx="100" cy="90" r="8" fill="#475569" stroke="#fff" stroke-width="2"/>
+                            
+                            <!-- Upper Arm segment -->
+                            <g id="upper-arm" transform="rotate(60 100 90)">
+                                <line x1="100" y1="90" x2="100" y2="40" stroke="var(--primary)" stroke-width="6" stroke-linecap="round"/>
+                                
+                                <!-- Gripper/Hand -->
+                                <g id="robot-hand" transform="translate(100 40)">
+                                    <!-- Dynamic elements will be injected here: Rock (circle), Scissors (2 lines), Paper (open lines) -->
+                                    <circle cx="0" cy="-10" r="12" fill="#ef4444" id="robot-hand-rock" style="display:none;"/>
+                                    <path d="M-8,-18 L0,-5 L8,-18" stroke="#ef4444" stroke-width="4" stroke-linecap="round" fill="none" id="robot-hand-scissors" style="display:none;"/>
+                                    <path d="M-12,-18 L-6,-22 L0,-24 L6,-22 L12,-18 M0,-5 L0,-15" stroke="#ef4444" stroke-width="3" stroke-linecap="round" fill="none" id="robot-hand-paper" style="display:none;"/>
+                                    
+                                    <!-- Neutral hand default -->
+                                    <circle cx="0" cy="-5" r="7" fill="var(--text-muted)" id="robot-hand-neutral"/>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                </div>
+
+                <div class="arduino-box">
+                    <span style="font-size:0.8rem; font-weight:700; color:var(--text-main);">아두이노 PIN 13 LED:</span>
+                    <div class="arduino-led" id="arduino-led-pin13"></div>
+                    <span style="font-size:0.75rem; color:var(--text-muted); font-family:monospace;" id="led-state-text">LOW (OFF)</span>
+                </div>
+
+                <div style="background:#04060f; border:1px solid var(--border-color); border-radius:8px; width:100%; padding:0.6rem; margin-top:1rem; font-family:monospace; font-size:0.75rem;">
+                    <div style="color:var(--secondary); font-weight:700; border-bottom:1px solid var(--border-color); padding-bottom:0.2rem; margin-bottom:0.4rem;">
+                        📟 Serial Monitor (115200 bps)
+                    </div>
+                    <div id="serial-logs" style="height:70px; overflow-y:auto; color:var(--primary); line-height:1.4;">
+                        [SERIAL] System Initialized.<br>
+                        [SERIAL] Arduino robot arm ready. Waiting for AI prediction...
+                    </div>
+                </div>
+
+                <div style="background:rgba(255,234,0,0.05); border:1px dashed rgba(255,234,0,0.2); border-radius:8px; padding:0.8rem; margin-top:1rem; width:100%;">
+                    <div style="font-weight:700; color:var(--accent); font-size:0.8rem; margin-bottom:0.3rem;">📊 실시간 예측 결과</div>
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span id="predict-label" style="font-size:1.1rem; font-weight:800; color:#fff;">모델 미학습</span>
+                        <span id="predict-confidence" style="font-size:1rem; color:var(--primary); font-weight:700;">--%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+            <button class="btn btn-secondary" id="btn-prev" disabled>◀ 이전 단계</button>
+            <button class="btn" id="btn-next">다음 단계 ▶</button>
+        </div>
+
+        <!-- ==================== QUIZ SECTION ==================== -->
+        <div class="completion-banner" id="completion-banner">
+            <h3>🎉 축하합니다! 모든 이론 과정을 수료했습니다!</h3>
+            <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom: 1.5rem;">이제 배운 인공지능 규칙과 원리를 자가 진단 퀴즈로 풀고 '로봇 지능 마스터 수료증'을 받아 보세요!</p>
+            <button class="btn btn-success" id="btn-start-quiz">📝 최종 수료 퀴즈 풀기</button>
+        </div>
+
+        <!-- Quiz Modal -->
+        <div id="quiz-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(4,6,15,0.9); z-index:100; align-items:center; justify-content:center; padding:1.5rem; overflow-y:auto;">
+            <div class="card" style="width:100%; max-width:650px; border-color:var(--primary); box-shadow:0 0 30px var(--primary-glow);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1px solid var(--border-color); padding-bottom:0.8rem;">
+                    <h2 style="margin:0;"><span style="color:var(--primary)">📝</span> 로봇 지능 마스터 자가 진단</h2>
+                    <span id="quiz-progress-text" style="font-family:'Orbitron', monospace; font-size:0.9rem; color:var(--secondary);">Q1 / 4</span>
+                </div>
+
+                <div id="quiz-question-container">
+                    <!-- Questions will be dynamically loaded here by js/app.js -->
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:1rem; margin-top:1.5rem;">
+                    <button class="btn btn-secondary" id="btn-close-quiz">닫기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certificate Modal -->
+        <div id="certificate-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(4,6,15,0.95); z-index:110; align-items:center; justify-content:center; padding:1.5rem;">
+            <div class="card" style="width:100%; max-width:550px; text-align:center; padding:3rem; border:2px solid var(--accent); background:#060a1d; box-shadow:0 0 40px rgba(255, 234, 0, 0.25);">
+                <!-- Blueprint pattern background just inside the card -->
+                <div style="position:absolute; top:10px; left:10px; right:10px; bottom:10px; border:1px dashed rgba(255,234,0,0.3); pointer-events:none; z-index:0;"></div>
+                
+                <div style="z-index:1; position:relative;">
+                    <div style="font-size:3rem; margin-bottom:1rem;">🏆</div>
+                    <h1 style="font-family:'Orbitron', 'Noto Sans KR', sans-serif; font-size:2.2rem; color:var(--accent); letter-spacing:4px; margin-bottom: 0.5rem; background:none; -webkit-text-fill-color:initial;">수 료 증</h1>
+                    <p style="color:var(--text-muted); font-size:0.8rem; letter-spacing:1px; margin-bottom:2rem;">ROBOT INTELLIGENCE BLUEPRINT CLASS</p>
+                    
+                    <div style="margin: 2.5rem 0;">
+                        <span style="font-size:0.95rem; color:var(--text-muted); display:block; margin-bottom:0.5rem;">위 학생은 로봇 지능의 원리를 정식 수료하였음을 증명합니다.</span>
+                        <div style="display:flex; justify-content:center; align-items:center; gap:0.5rem; margin-top:1rem;">
+                            <label for="student-name-input" style="font-size:0.9rem; color:#fff;">이름:</label>
+                            <input type="text" id="student-name-input" placeholder="이름을 입력하세요" style="background:#090e1c; border:1px solid var(--border-color); color:var(--text-main); font-size:1.1rem; padding:0.4rem 1rem; border-radius:4px; text-align:center; font-weight:700; width:180px;">
+                        </div>
+                    </div>
+                    
+                    <div style="margin:2.5rem 0 1.5rem 0; font-size:0.85rem; color:var(--text-muted);">
+                        <span>교육 이수 내용: 인공지능의 범위, T-E-P 학습 공식, 특징 추출, 뉴런 매핑 및 비전 제어</span>
+                    </div>
+
+                    <div style="display:flex; justify-content:center; gap:1rem;">
+                        <button class="btn btn-secondary" id="btn-cert-restart">다시 풀기</button>
+                        <button class="btn btn-success" id="btn-cert-done" style="background:linear-gradient(135deg, var(--accent), #eab308);">수료증 받기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Spin animation for loading -->
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
