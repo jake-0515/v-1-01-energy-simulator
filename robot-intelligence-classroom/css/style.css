@@ -11,6 +11,8 @@
     --secondary-glow: rgba(0, 210, 255, 0.45);
     --accent: #ffea00;
     --accent-glow: rgba(255, 234, 0, 0.45);
+    --success: #22c55e;
+    --error: #ef4444;
     
     --text-main: #e2e8f0;
     --text-muted: #94a3b8;
@@ -233,7 +235,7 @@ header p {
 }
 
 .tab-content.active {
-    display: block;
+    display: grid;
 }
 
 @keyframes fadeIn {

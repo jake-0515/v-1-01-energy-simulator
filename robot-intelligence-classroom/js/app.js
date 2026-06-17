@@ -87,18 +87,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==================== STEP 1: VENN DIAGRAM INTERACTION ====================
     const vennDetails = {
         ai: {
-            title: "💻 인공지능 (AI) - 사람을 닮고 싶은 컴퓨터 뇌",
-            desc: "컴퓨터 프로그램이 사람처럼 생각하고 배우고 스스로 올바른 결정을 내리게 하려는 모든 과학 기술을 뜻해요. 스마트폰 번역 앱, 바둑 로봇, 자율주행 자동차 등 매우 다양한 곳에 쓰이고 있답니다. 셋 중 가장 큰 범위예요!",
+            title: "💻 인공지능 (AI) - 사람의 판단을 도와주는 기술",
+            desc: "AI는 컴퓨터가 사진을 알아보고, 말을 번역하고, 추천을 해 주는 넓은 기술 이름입니다. 오늘 만드는 손동작 인식 로봇도 AI의 한 예입니다.",
             color: "#3b82f6"
         },
         ml: {
-            title: "📊 머신러닝 (ML) - 데이터로 공부하는 학생",
-            desc: "인공지능의 일부분으로, 사람이 사전에 일일이 움직이는 규칙(코드)을 짜주는 것이 아니에요. 대신 컴퓨터에게 엄청나게 많은 학습 데이터(기출문제)를 전송하고, 컴퓨터가 그 데이터를 뒤져가며 스스로 규칙을 발견해서 공부하는 멋진 기술이에요.",
+            title: "📊 머신러닝 (ML) - 예시를 보고 배우는 AI",
+            desc: "머신러닝은 컴퓨터에게 여러 예시를 보여 주고 비슷한 점을 찾게 하는 방법입니다. 주먹, 가위, 보 예시를 모으면 새 손 모양도 어느 쪽에 가까운지 판단할 수 있습니다.",
             color: "var(--secondary)"
         },
         dl: {
-            title: "🧠 딥러닝 (DL) - 뇌신경망을 빼닮은 천재 AI",
-            desc: "머신러닝 중에서 가장 머리가 좋은 막둥이 기술이에요. 우리 머릿속 뇌 세포(뉴런)들이 얽힌 모양을 본뜬 '인공신경망'을 이용해요. 엄청나게 많은 데이터 속에서 핵심 특징들을 사람의 간섭 없이 백퍼센트 스스로 찾아내며 매우 높은 정확도로 분류를 해냅니다.",
+            title: "🧠 딥러닝 (DL) - 사진 속 힌트를 여러 단계로 찾는 방법",
+            desc: "딥러닝은 머신러닝의 한 종류입니다. 사진에서 선, 모서리, 부분 모양, 전체 모습처럼 힌트를 차례로 찾아 복잡한 그림이나 소리를 잘 구별합니다.",
             color: "var(--primary)"
         }
     };
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
 
-    // ==================== STEP 2: BASKETBALL T-E-P SIMULATION ====================
+    // ==================== STEP 2: PRACTICE DATA BASKETBALL SIMULATION ====================
     const practiceSlider = document.getElementById("practice-slider");
     const practiceCountVal = document.getElementById("practice-count-val");
     const shootPerformanceVal = document.getElementById("shoot-performance-val");
@@ -289,9 +289,9 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==================== STEP 2: FEATURE SCANNER ====================
     const scannedFeatures = { ear: null, color: null, weight: null };
     const scanFeaturesDetails = {
-        ear: { name: "귀 모양 감지기", val: 0.8, text: "강아지의 양 귀 모양을 스캔했습니다. 둥글기 비율 수치는 <strong>0.8</strong> (둥근 편에 속함)로 인코딩되었습니다." },
-        color: { name: "털 색상 스펙트럼 분석기", val: 1.2, text: "털 가닥들의 반사광을 스캔했습니다. 색상 명도 분석 수치는 <strong>1.2</strong> (황금빛 갈색 무늬)로 인코딩되었습니다." },
-        weight: { name: "무게 추정 초음파 센서", val: 5.5, text: "강아지 골격 및 크기 대비 초음파 무게를 측정했습니다. 수치 데이터는 <strong>5.5 kg</strong>으로 변환되었습니다." }
+        ear: { name: "귀 모양 힌트", val: 0.8, text: "귀가 얼마나 둥근지 숫자로 바꿨습니다. 이 강아지의 귀 힌트는 <strong>0.8</strong>입니다." },
+        color: { name: "털 색 힌트", val: 1.2, text: "털의 밝기와 색 느낌을 숫자로 바꿨습니다. 털 색 힌트는 <strong>1.2</strong>입니다." },
+        weight: { name: "크기와 무게 힌트", val: 5.5, text: "사진 속 크기를 바탕으로 무게를 추정했습니다. 무게 힌트는 <strong>5.5 kg</strong>입니다." }
     };
 
     window.scanFeature = function(feature, top, left) {
@@ -302,7 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Set scanning log
         scanTitleEl.innerHTML = `🛰️ ${scanFeaturesDetails[feature].name} 스캔 중...`;
-        scanDescEl.textContent = "로봇의 이미지 센서가 전처리 좌표의 신호를 읽고 수치화하는 중입니다.";
+        scanDescEl.textContent = "AI가 사진 속 힌트를 숫자로 바꾸는 중입니다.";
         
         // Disable target dot temporarily for visual effect
         const dot = document.querySelector(`.scanner-target-dot[data-feature="${feature}"]`);
@@ -328,7 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (scannedFeatures.ear !== null && scannedFeatures.color !== null && scannedFeatures.weight !== null) {
                 vectorDisplay.style.color = "var(--primary)";
                 vectorDisplay.style.textShadow = "0 0 15px var(--primary-glow)";
-                scanDescEl.innerHTML += "<br><br><strong style='color:var(--primary);'>🎉 모든 특징 추출 완료!</strong> 3차원 특징 벡터 데이터가 머신러닝 학습 모델로 즉시 입력될 준비가 끝났습니다.";
+                scanDescEl.innerHTML += "<br><br><strong style='color:var(--primary);'>모든 힌트 찾기 완료!</strong> 이제 AI가 볼 수 있는 숫자 자료가 준비되었습니다.";
             }
         }, 1000);
     };
@@ -337,20 +337,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==================== STEP 4: NEURON MAPPING ====================
     const neuronMappings = {
         dendrite: {
-            title: "🌿 가지돌기 (Dendrite) ➔ 입력값 (Inputs)",
-            desc: "생물학적 뇌 신경세포에서 외부의 감각이나 이웃 세포가 보내는 신호들을 받아들이는 촉수 같은 안테나예요. 인공신경망 모델에서는 처음 입력하는 수치 정보(x1, x2, x3 등)에 해당돼요."
+            title: "가지돌기 ➔ 처음 들어오는 숫자 힌트",
+            desc: "사진이나 센서에서 들어온 정보를 받아들이는 입구입니다. AI에서는 처음 입력되는 숫자 자료라고 생각하면 됩니다."
         },
         synapse: {
-            title: "🔌 시냅스 (Synapse) ➔ 가중치 (Weights)",
-            desc: "신호가 지나다니는 뉴런 사이의 조그만 틈새 길이에요. 학습을 많이 할수록 이 길이 넓어져서 신호가 더 세게 흐르게 돼요. 인공신경망에서는 각각의 데이터마다의 중요도를 조절해주는 가중치(Weight, w)와 정확히 일치합니다."
+            title: "시냅스 ➔ 중요한 힌트에 더 큰 점수",
+            desc: "AI는 모든 힌트를 똑같이 보지 않습니다. 어떤 힌트가 더 중요한지 점수를 다르게 주며 판단합니다."
         },
         soma: {
-            title: "🔋 세포체 (Soma / Cell Body) ➔ 가중합 & 활성화 함수",
-            desc: "가로세로에서 들어온 신호의 힘을 냄비에 물 받듯 다 합친 후(가중합), 임계치 열기가 넘치면 신호를 내보내고 아니면 끊어버려요. 인공신경망의 덧셈 연산 및 신호 전송 여부를 결정하는 활성화 함수가 이에 해당해요!"
+            title: "세포체 ➔ 힌트를 모아 판단",
+            desc: "여러 힌트를 모아서 다음 단계로 보낼 만큼 중요한 정보인지 판단합니다."
         },
         axon: {
-            title: "⚡ 축삭돌기 (Axon) ➔ 출력값 (Output)",
-            desc: "세포체에서 합격해서 나가는 강한 전기 신호를 전선 타고 흘려보내듯 다음 뉴런으로 멀리 배달하는 전선로예요. 인공신경망 연산의 최종 정답 판독값(y) 혹은 다음 레이어로 넘겨지는 아웃풋에 대응합니다."
+            title: "축삭돌기 ➔ 다음 단계로 보내는 결과",
+            desc: "모은 힌트로 판단한 결과를 다음 단계나 최종 답으로 보냅니다."
         }
     };
 
@@ -572,7 +572,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     updateGatherUI(cName);
 
                     if (gatheringState.count >= maxFrames) {
-                        logSerial(`[SERIAL] Collected 15 frames for ${cName.toUpperCase()}.`);
+                        logSerial(`[SERIAL] ${cName.toUpperCase()} example data collected: 15 frames.`);
                         stopGathering();
                     }
                 }
@@ -670,7 +670,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateGatherUI("paper");
 
         btnTrain.disabled = true;
-        btnTrain.textContent = "🤖 인공신경망 학습 (Train)";
+        btnTrain.textContent = "AI 분류 모델 만들기";
         
         predictLabel.textContent = "모델 미학습";
         predictConfidence.textContent = "--%";
@@ -680,14 +680,14 @@ document.addEventListener("DOMContentLoaded", () => {
         ledPin13.classList.remove("active");
         ledStateText.textContent = "LOW (OFF)";
         
-        logSerial("[SERIAL] Training datasets cleared.");
+        logSerial("[SERIAL] Example data cleared.");
         resetRobotHand();
     });
 
     btnTrain.addEventListener("click", () => {
         btnTrain.disabled = true;
-        btnTrain.textContent = "⚙️ 학습 연산 중...";
-        logSerial("[SERIAL] Training Feedforward KNN network...");
+        btnTrain.textContent = "비슷한 예시 찾는 중...";
+        logSerial("[SERIAL] Building a simple KNN classifier from examples...");
 
         let ep = 1;
         const maxEp = 50;
@@ -697,15 +697,15 @@ document.addEventListener("DOMContentLoaded", () => {
             const loss = (1.2 / ep).toFixed(4);
             const acc = (50 + (ep / maxEp) * 49).toFixed(1);
             
-            logSerial(`[SERIAL] Network Optimization Epoch ${ep}/${maxEp} | Loss: ${loss} | Acc: ${acc}%`);
+            logSerial(`[SERIAL] Organizing example data ${ep}/${maxEp} | Similarity score: ${acc}%`);
             ep += 5;
 
             if (ep > maxEp) {
                 clearInterval(loader);
                 isTrained = true;
-                btnTrain.textContent = "✅ 학습 완료!";
-                logSerial("[SERIAL] Training complete! Neural network weights locked.");
-                logSerial("[SERIAL] Starting real-time camera predictions...");
+                btnTrain.textContent = "학습 완료";
+                logSerial("[SERIAL] KNN classifier is ready.");
+                logSerial("[SERIAL] Show your hand to start real-time predictions.");
                 
                 if (currentStep === totalSteps) {
                     completionBanner.style.display = "block";
@@ -855,47 +855,47 @@ document.addEventListener("DOMContentLoaded", () => {
     // ==================== STEP 6: DIAGNOSTIC QUIZ SYSTEM ====================
     const quizQuestions = [
         {
-            title: "Q1. 인공지능, 머신러닝, 딥러닝 포함 관계와 핵심 원리에 대한 설명 중 잘못된 것은 무엇인가요?",
+            title: "Q1. 오늘 배운 AI, 머신러닝, 딥러닝 설명 중 잘못된 것은 무엇인가요?",
             options: [
-                "인공지능은 뇌를 모방한 딥러닝과 데이터 중심 머신러닝을 포괄하는 광범위한 기술 분야이다.",
-                "머신러닝은 개발자가 사전에 모든 작동 조건(If-Else)을 코딩하지 않고 데이터를 활용해 배운다.",
-                "딥러닝은 머신러닝과 별개의 독립된 기술이며 세포체 매핑 연산을 전혀 활용하지 않는다.",
-                "알파고처럼 바둑 한 분야만 극단적으로 전문화하여 해내는 수준은 '약인공지능'에 속한다."
+                "AI는 컴퓨터가 사진을 알아보고 추천을 하는 등 사람의 판단을 도와주는 넓은 기술 이름이다.",
+                "머신러닝은 예시 데이터를 보고 비슷한 점을 찾아 배우는 방법이다.",
+                "딥러닝은 머신러닝과 전혀 상관없는 완전히 다른 기술이다.",
+                "오늘 만드는 손동작 인식 로봇은 정해진 일을 잘하는 좁은 AI에 가깝다."
             ],
             ansIdx: 2,
-            explain: "틀렸습니다! 딥러닝은 머신러닝의 한 종류(하위 기술)이며, 뇌신경망의 구조를 고도로 수학적 결합한 모형입니다."
+            explain: "딥러닝은 머신러닝의 한 종류입니다. 사진 속 힌트를 여러 단계로 찾는 데 강합니다."
         },
         {
-            title: "Q2. 톰 미첼 교수가 정의한 머신러닝 공식 중 '농구 자유투 연습을 반복적으로 1,000회 수행하여 수집한 데이터'는 T-E-P 중 어디에 해당할까요?",
+            title: "Q2. AI에게 주먹, 가위, 보 손 모양을 여러 번 보여 주는 것은 무엇을 모으는 과정일까요?",
             options: [
-                "T (Task - 작업)",
-                "E (Experience - 경험 / 학습 데이터)",
-                "P (Performance - 성능 평가 지표)"
-            ],
-            ansIdx: 1,
-            explain: "정답입니다! 반복하여 얻는 훈련 경험 데이터는 E(Experience)에 완벽히 상응합니다."
-        },
-        {
-            title: "Q3. 생물학적 뉴런에서 주변의 미세한 전기 자극을 받아들이는 '가지돌기(Dendrite)'는 인공신경망의 어떤 요소에 매핑(Mapping)되나요?",
-            options: [
-                "입력값 (Inputs)",
-                "가중치 (Weights)",
-                "세포체 가중합 연산",
-                "출력값 (Outputs)"
+                "학습에 사용할 예시 데이터",
+                "로봇 팔의 전기 배선",
+                "퀴즈 점수"
             ],
             ansIdx: 0,
-            explain: "정답입니다! 가지돌기는 인공신경망에 처음 들어오는 입력값(x1, x2, x3 등)과 일치합니다."
+            explain: "정답입니다. AI는 예시 데이터를 보고 새 손 모양이 무엇과 비슷한지 판단합니다."
         },
         {
-            title: "Q4. 정답(레이블)이 없는 비지도학습의 '군집화(Clustering)' 성능을 평가하기 위한 올바른 척도 조건은?",
+            title: "Q3. AI가 사진이나 손동작을 구별할 때 먼저 찾는 중요한 단서는 무엇이라고 부를까요?",
             options: [
-                "동일 군집 친구들은 멀리 흩어져야(낮은 응집도) 하고, 타 그룹과는 가까워야(낮은 분리도) 한다.",
-                "동일 군집끼리는 빽빽하게 모여야(높은 응집도) 하고, 타 그룹과는 확실히 멀어져야(높은 분리도) 한다.",
-                "비지도학습은 군집화 응집도 척도가 존재하지 않는다.",
-                "이진 분류기 손실 값을 평균 제곱 오차 공식으로 유도해야만 군집 평가를 완료할 수 있다."
+                "특징 또는 힌트",
+                "배경 음악",
+                "파일 이름",
+                "버튼 색깔"
             ],
-            ansIdx: 1,
-            explain: "정답입니다! 훌륭한 군집화 모형은 높은 응집도(Cohesion)와 높은 분리도(Separation)를 동시에 가집니다."
+            ansIdx: 0,
+            explain: "정답입니다. AI는 손가락 위치, 모양, 색처럼 구별에 도움이 되는 특징을 숫자로 바꿔 봅니다."
+        },
+        {
+            title: "Q4. 이 사이트의 가위바위보 실습은 새 손 모양을 어떻게 판단하나요?",
+            options: [
+                "전에 모은 예시 중 가장 비슷한 손 모양들을 찾아 다수결로 판단한다.",
+                "학생의 이름을 보고 주먹, 가위, 보를 정한다.",
+                "로봇 팔이 먼저 움직인 뒤 AI가 답을 맞힌다.",
+                "인터넷 검색 결과로 손 모양을 판단한다."
+            ],
+            ansIdx: 0,
+            explain: "정답입니다. 손가락 위치를 숫자로 바꾼 뒤, 저장된 예시와 가까운 쪽을 찾는 KNN 방식에 가깝습니다."
         }
     ];
 
@@ -1010,7 +1010,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const nameInput = document.getElementById("student-name-input");
         const studentName = nameInput.value.trim() || "예비 AI 마스터";
         
-        alert(`🎉 축하합니다, ${studentName} 학생! 로봇 지능 마스터 수료 완료!\n앞으로 멋진 기술 공학도로 거듭나세요!`);
+        alert(`축하합니다, ${studentName} 학생! AI 로봇 만들기 수료 완료!\n데이터가 어떻게 판단과 행동으로 이어지는지 멋지게 이해했어요.`);
         certModal.style.display = "none";
     });
 
