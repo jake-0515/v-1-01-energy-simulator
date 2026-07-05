@@ -106,15 +106,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ==================== STEP 2: BALLAST TANK & BUOYANCY SIMULATOR ====================
-    let waterRatio = 50; // Initial 50% balance
+    let waterRatio = 0; // Initial 0% (surfaced)
     const subVisual = document.getElementById("sub-visual");
     const svgWaterFill = document.getElementById("svg-water-fill");
     const seesawBar = document.getElementById("seesaw-bar");
     const labelWeight = document.getElementById("label-weight");
     const labelBuoyancy = document.getElementById("label-buoyancy");
+    const subBuoyancyStatusText = document.getElementById("sub-buoyancy-status-text");
 
     const btnFillWater = document.getElementById("btn-fill-water");
     const btnBlowAir = document.getElementById("btn-blow-air");
+    const btnNeutralBuoyancy = document.getElementById("btn-neutral-buoyancy");
 
     function updateBallastSimulator() {
         // Water ratio bounded 0 to 100
@@ -136,6 +138,19 @@ document.addEventListener("DOMContentLoaded", () => {
         labelWeight.textContent = `무게(중력): ${waterRatio}%`;
         labelBuoyancy.textContent = `부력: ${100 - waterRatio}%`;
 
+        if (subBuoyancyStatusText) {
+            if (waterRatio > 50) {
+                subBuoyancyStatusText.textContent = "⚓ 심해 잠항 가라앉는 중 (무게 > 부력)";
+                subBuoyancyStatusText.style.color = "var(--secondary)";
+            } else if (waterRatio < 50) {
+                subBuoyancyStatusText.textContent = "🎈 수면 부상 떠오르는 중 (부력 > 무게)";
+                subBuoyancyStatusText.style.color = "var(--primary)";
+            } else {
+                subBuoyancyStatusText.textContent = "🎯 수중 정지 중성 부력 상태 (무게 = 부력)";
+                subBuoyancyStatusText.style.color = "var(--accent)";
+            }
+        }
+
         if (waterRatio > 50) {
             labelWeight.style.background = "var(--danger)";
             labelBuoyancy.style.background = "#334155";
@@ -149,14 +164,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     btnFillWater.addEventListener("click", () => {
-        waterRatio += 20;
+        waterRatio += 25;
         updateBallastSimulator();
     });
 
     btnBlowAir.addEventListener("click", () => {
-        waterRatio -= 20;
+        waterRatio -= 25;
         updateBallastSimulator();
     });
+
+    if (btnNeutralBuoyancy) {
+        btnNeutralBuoyancy.addEventListener("click", () => {
+            waterRatio = 50; // Exact 1:1 Neutral Buoyancy
+            updateBallastSimulator();
+        });
+    }
 
     updateBallastSimulator();
 

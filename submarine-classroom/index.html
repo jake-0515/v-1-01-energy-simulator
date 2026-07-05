@@ -119,35 +119,57 @@
 
         <!-- ==================== STEP 2: 부력과 밸러스트 탱크 ==================== -->
         <div class="tab-content main-grid" id="tab2">
-            <!-- Left Column: History & Science -->
+            <!-- Left Column: History & Detailed Buoyancy Science -->
             <div class="card">
-                <h2><span style="color:var(--primary)">02.</span> 최초의 해결책과 부력의 과학</h2>
-                <p class="desc">1578년, 영국 수학자 윌리엄 본(William Bourne)은 물을 머금고 뱉어내는 혁신적인 아이디어를 구상했습니다.</p>
+                <h2><span style="color:var(--primary)">02.</span> 부력(Buoyancy)의 비밀과 밸러스트 탱크</h2>
+                <p class="desc">무거운 쇠로 만든 잠수함이 어떻게 마음대로 물에 뜨고 가라앉을까요? 아르키메데스의 '부력' 과학에서 비밀을 풀어봅시다!</p>
                 
-                <h3>밸러스트 탱크(Ballast Tank)의 기원</h3>
+                <h3>💡 1. 부력(Buoyancy)이란 무엇일까요? (욕조의 비밀)</h3>
                 <p style="font-size:0.92rem; color:var(--text-muted); margin-bottom:1rem; line-height:1.6;">
-                    배 좌우에 가죽 주머니를 달아 <strong>바닷물을 채우면 무게가 늘어나 가라앉고(잠항)</strong>, 주머니를 쥐어짜서 <strong>물을 빼내면 배가 가벼워져 떠오르는(부상)</strong> 원리였습니다. 이것이 현대 잠수함 핵심 부품인 '밸러스트 탱크'의 기원입니다.
+                    물 가득 찬 목욕탕에 몸을 담그면 물이 밖으로 넘치죠? 물속에 어떤 물체를 넣으면, **물체가 밀어낸 물의 무게만큼 위로 밀어 올리는 힘**이 발생합니다. 이것을 <strong>부력(Buoyancy)</strong>이라고 해요!
                 </p>
 
+                <h3>⚖️ 2. 중력(무게) vs 부력의 3가지 힘겨루기</h3>
                 <div class="concept-grid">
                     <div class="concept-card">
                         <div class="concept-title" style="color: var(--secondary);">
-                            <span class="icon">⚓</span> 잠항 (가라앉기)
+                            <span class="icon">⚓</span> ① 잠항 (가라앉기)
                         </div>
                         <p class="concept-list">
-                            밸러스트 탱크에 바닷물을 가득 채워 잠수함의 전체 **무게(중력)**를 물이 밀어내는 **부력**보다 무겁게 만듭니다.<br>
-                            <span style="color:var(--secondary); font-weight:700;">➔ 무게 > 부력</span>
+                            잠수함 선체에 바닷물을 채워 전체 **무게(중력)**를 밀어낸 물의 **부력**보다 무겁게 만듭니다.<br>
+                            <span style="color:var(--secondary); font-weight:700;">➔ 무게 > 부력 (하강)</span>
                         </p>
                     </div>
 
                     <div class="concept-card">
-                        <div class="concept-title" style="color: var(--primary);">
-                            <span class="icon">🎈</span> 부상 (떠오르기)
+                        <div class="concept-title" style="color: var(--accent);">
+                            <span class="icon">🎯</span> ② 중성 부력 (수중 정지)
                         </div>
                         <p class="concept-list">
-                            압축 공기를 강하게 쏴서 탱크 속 바닷물을 밖으로 쫓아내 선체를 가볍게 만듭니다.<br>
-                            <span style="color:var(--primary); font-weight:700;">➔ 부력 > 무게</span>
+                            ★잠수함의 핵심 기술!★ 무게와 부력을 **1g도 틀리지 않고 1:1로 똑같이** 맞춰 물 중간에 정지합니다.<br>
+                            <span style="color:var(--accent); font-weight:700;">➔ 무게 = 부력 (수중 고정)</span>
                         </p>
+                    </div>
+
+                    <div class="concept-card" style="grid-column: span 2;">
+                        <div class="concept-title" style="color: var(--primary);">
+                            <span class="icon">🎈</span> ③ 부상 (떠오르기)
+                        </div>
+                        <p class="concept-list">
+                            압축 공기를 쏴서 바닷물을 쫓아내 선체를 가볍게 만들면, 위로 솟구치는 부력이 승리합니다.<br>
+                            <span style="color:var(--primary); font-weight:700;">➔ 부력 > 무게 (상승)</span>
+                        </p>
+                    </div>
+                </div>
+
+                <h3>🚪 3. 밸러스트 탱크의 3단계 작동 매커니즘</h3>
+                <div class="info-box green">
+                    <div class="info-box-title">⚙️ 밸러스트 탱크에는 2개의 문이 있어요!</div>
+                    <div class="info-box-desc">
+                        1. **상부 공기 밸브(Air Vent)**: 탱크 꼭대기에 있는 공기 구멍<br>
+                        2. **하부 해수 구멍(Flood Port)**: 탱크 바닥에 상시 열려있는 물 구멍<br><br>
+                        • <strong>가라앉을 때</strong>: 상부 공기 밸브를 열어 공기를 뿜어내고 바닥 구멍으로 바닷물을 콸콸 채웁니다.<br>
+                        • <strong>떠올라갈 때</strong>: 200기압 고압 공기 탱크에서 강한 공기를 주입하여, 공기의 힘으로 바닥 구멍의 바닷물을 밖으로 쫓아냅니다!
                     </div>
                 </div>
             </div>
@@ -155,7 +177,7 @@
             <!-- Right Column: Ballast Tank Simulator -->
             <div class="card">
                 <h2>실시간 밸러스트 탱크 부력 시뮬레이터</h2>
-                <p class="desc">해수 유입 버튼과 압축공기 버튼을 눌러 잠수함의 무게와 부력 시소 균형을 조절해 보세요.</p>
+                <p class="desc">아래 3가지 조작 버튼을 눌러 부력과 무게 균형에 따른 잠수함의 수중 위치 변화를 관찰하세요.</p>
 
                 <div class="sub-sea-viewport" id="sea-viewport">
                     <div class="water-surface"></div>
@@ -174,9 +196,18 @@
                     </div>
                 </div>
 
-                <div style="display:flex; gap:1rem; margin-bottom:1rem;">
-                    <button class="btn btn-orange" style="flex:1;" id="btn-fill-water">🌊 바닷물 채우기 (잠항)</button>
-                    <button class="btn" style="flex:1;" id="btn-blow-air">💨 압축공기 분사 (부상)</button>
+                <div style="display:flex; flex-direction:column; gap:0.6rem; margin-bottom:1rem;">
+                    <div style="display:flex; gap:0.6rem;">
+                        <button class="btn btn-orange" style="flex:1; padding:0.6rem 0.8rem; font-size:0.85rem;" id="btn-fill-water">🌊 바닷물 주입 (잠항)</button>
+                        <button class="btn btn-green" style="flex:1; padding:0.6rem 0.8rem; font-size:0.85rem;" id="btn-neutral-buoyancy">🎯 중성 부력 (수중 정지)</button>
+                    </div>
+                    <button class="btn" style="width:100%; padding:0.6rem 0.8rem; font-size:0.85rem;" id="btn-blow-air">💨 압축공기 분사 (부상)</button>
+                </div>
+
+                <!-- Status indicator -->
+                <div style="background:rgba(0,0,0,0.4); border:1px solid var(--border-color); border-radius:8px; padding:0.8rem; margin-bottom:1rem; text-align:center; font-family:'Orbitron'; font-size:0.85rem;">
+                    <span style="color:var(--text-muted);">현재 잠수함 상태:</span>
+                    <span id="sub-buoyancy-status-text" style="color:var(--primary); font-weight:800; margin-left:0.5rem;">수면 부상 상태 (부력 > 무게)</span>
                 </div>
 
                 <!-- Seesaw balance -->
