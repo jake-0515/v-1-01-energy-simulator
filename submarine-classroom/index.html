@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>심해의 설계도: 잠수함 진화와 과학 교실 ⚓</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- canvas-confetti 라이브러리 로드 -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <!-- App Header -->
+        <header>
+            <div class="header-badge">MIDDLE SCHOOL SCIENCE & ENGINEERING CLASS</div>
+            <h1>심해의 설계도: 잠수함의 과학과 진화</h1>
+            <p>가죽 주머니에서 시작해 원자력과 AIP(공기불요추진)까지! 인류가 치명적인 수압과 산소 결핍을 극복하고 바다를 정복해 온 위대한 과학적 비밀을 탐구해 봅시다.</p>
+        </header>
+
+        <!-- Learning Progress Tracker -->
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-line">
+                    <div class="progress-line-fill" id="progress-fill"></div>
+                </div>
+                <div class="step-indicator active" data-step="1">
+                    <div class="circle">1</div>
+                    <div class="step-label">심해의 한계</div>
+                </div>
+                <div class="step-indicator" data-step="2">
+                    <div class="circle">2</div>
+                    <div class="step-label">부력과 밸러스트</div>
+                </div>
+                <div class="step-indicator" data-step="3">
+                    <div class="circle">3</div>
+                    <div class="step-label">디젤과 소나</div>
+                </div>
+                <div class="step-indicator" data-step="4">
+                    <div class="circle">4</div>
+                    <div class="step-label">원자력과 AIP</div>
+                </div>
+                <div class="step-indicator" data-step="5">
+                    <div class="circle">5</div>
+                    <div class="step-label">우리 잠수함 & 퀴즈</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== STEP 1: 심해의 가혹한 환경 ==================== -->
+        <div class="tab-content main-grid active" id="tab1">
+            <!-- Left Column: Core Concepts -->
+            <div class="card">
+                <h2><span style="color:var(--primary)">01.</span> 지구 표면의 70%, 심해라는 극한 장소</h2>
+                <p class="desc">바다는 멋지고 아름답지만, 수심 깊은 곳으로 내려갈수록 인간의 맨몸으로는 단 1초도 버틸 수 없는 가혹한 환경이 펼쳐집니다.</p>
+                
+                <h3>인간을 위협하는 2가지 치명적 한계</h3>
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <div class="concept-title" style="color: var(--secondary);">
+                            <span class="icon">💥</span> 1. 치명적인 수압 (물리적 한계)
+                        </div>
+                        <p class="concept-list">
+                            수심이 <strong>10m 내려갈 때마다 수압은 1기압(atm)씩 증가</strong>해요! 수심 300m만 내려가도 사방에서 유압 프레스처럼 짓누르는 거대한 힘을 받게 됩니다.
+                        </p>
+                    </div>
+
+                    <div class="concept-card">
+                        <div class="concept-title" style="color: var(--danger);">
+                            <span class="icon">🫁</span> 2. 산소 부족 (생리적 한계)
+                        </div>
+                        <p class="concept-list">
+                            인간의 폐는 물속에서 산소를 걸러낼 수 없어요. 밀폐된 구조물 안에서 호흡할 때 발생하는 **이산화탄소($CO_2$)**를 정화하고 산소를 공급하는 생명 유지 장치가 필수적입니다.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="info-box orange">
+                    <div class="info-box-title">🛠️ 인류의 엔지니어링 미션!</div>
+                    <div class="info-box-desc">
+                        "어떻게 하면 강한 수압을 견디며 **물속에 더 오래 머물고(잠항 시간)**, **더 빠르게 목적지로 움직일 것인가(동력원)**?" 이 질문이 잠수함 진화의 시작이었습니다.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Interactive Diagram / Environmental Scan -->
+            <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <h2>수심별 환경 스캐너</h2>
+                    <p class="desc">아래 슬라이더를 움직여 수심 깊이에 따른 수압과 암흑 상태 변화를 스캔해 보세요.</p>
+
+                    <div style="background:#050c1e; border:1px solid var(--border-color); border-radius:12px; padding:1.5rem; text-align:center; margin:1rem 0;">
+                        <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.5rem;">현재 수심 설정</div>
+                        <div id="depth-display-val" style="font-size:2.2rem; font-weight:900; color:var(--primary); font-family:'Orbitron';">0 m</div>
+                        
+                        <div style="margin:1.5rem 0;">
+                            <input type="range" id="depth-slider" min="0" max="2500" step="50" value="0" style="width:90%; accent-color:var(--primary);">
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.8rem; text-align:left; background:rgba(0,0,0,0.3); padding:1rem; border-radius:8px;">
+                            <div>
+                                <span style="font-size:0.75rem; color:var(--text-muted);">계산된 수압:</span>
+                                <div id="pressure-val" style="font-size:1.1rem; font-weight:700; color:var(--secondary);">1.0 기압 (atm)</div>
+                            </div>
+                            <div>
+                                <span style="font-size:0.75rem; color:var(--text-muted);">햇빛 침투율:</span>
+                                <div id="light-val" style="font-size:1.1rem; font-weight:700; color:var(--accent);">100% (밝음)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-box tip" id="depth-info-box">
+                    <div class="info-box-title" id="depth-info-title">💡 표면층 (0m ~ 200m)</div>
+                    <div class="info-box-desc" id="depth-info-desc">햇빛이 도달하는 광합성 영역입니다. 디젤 잠수함이 스노클을 내밀 수 있는 깊이입니다.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== STEP 2: 부력과 밸러스트 탱크 ==================== -->
+        <div class="tab-content main-grid" id="tab2">
+            <!-- Left Column: History & Science -->
+            <div class="card">
+                <h2><span style="color:var(--primary)">02.</span> 최초의 해결책과 부력의 과학</h2>
+                <p class="desc">1578년, 영국 수학자 윌리엄 본(William Bourne)은 물을 머금고 뱉어내는 혁신적인 아이디어를 구상했습니다.</p>
+                
+                <h3>밸러스트 탱크(Ballast Tank)의 기원</h3>
+                <p style="font-size:0.92rem; color:var(--text-muted); margin-bottom:1rem; line-height:1.6;">
+                    배 좌우에 가죽 주머니를 달아 <strong>바닷물을 채우면 무게가 늘어나 가라앉고(잠항)</strong>, 주머니를 쥐어짜서 <strong>물을 빼내면 배가 가벼워져 떠오르는(부상)</strong> 원리였습니다. 이것이 현대 잠수함 핵심 부품인 '밸러스트 탱크'의 기원입니다.
+                </p>
+
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <div class="concept-title" style="color: var(--secondary);">
+                            <span class="icon">⚓</span> 잠항 (가라앉기)
+                        </div>
+                        <p class="concept-list">
+                            밸러스트 탱크에 바닷물을 가득 채워 잠수함의 전체 **무게(중력)**를 물이 밀어내는 **부력**보다 무겁게 만듭니다.<br>
+                            <span style="color:var(--secondary); font-weight:700;">➔ 무게 > 부력</span>
+                        </p>
+                    </div>
+
+                    <div class="concept-card">
+                        <div class="concept-title" style="color: var(--primary);">
+                            <span class="icon">🎈</span> 부상 (떠오르기)
+                        </div>
+                        <p class="concept-list">
+                            압축 공기를 강하게 쏴서 탱크 속 바닷물을 밖으로 쫓아내 선체를 가볍게 만듭니다.<br>
+                            <span style="color:var(--primary); font-weight:700;">➔ 부력 > 무게</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Ballast Tank Simulator -->
+            <div class="card">
+                <h2>실시간 밸러스트 탱크 부력 시뮬레이터</h2>
+                <p class="desc">해수 유입 버튼과 압축공기 버튼을 눌러 잠수함의 무게와 부력 시소 균형을 조절해 보세요.</p>
+
+                <div class="sub-sea-viewport" id="sea-viewport">
+                    <div class="water-surface"></div>
+                    <!-- Submarine Graphic -->
+                    <div class="sub-graphic" id="sub-visual">
+                        <svg viewBox="0 0 200 60" style="width:100%; height:100%;">
+                            <!-- Submarine Hull -->
+                            <path d="M 20 30 Q 20 10 70 10 L 150 10 Q 190 10 195 30 Q 190 50 150 50 L 70 50 Q 20 50 20 30 Z" fill="#1e293b" stroke="var(--primary)" stroke-width="2"/>
+                            <!-- Conning tower -->
+                            <rect x="90" y="0" width="30" height="15" rx="3" fill="#334155" stroke="var(--primary)" stroke-width="1.5"/>
+                            <!-- Propeller -->
+                            <path d="M 10 20 L 20 30 L 10 40 Z" fill="var(--secondary)"/>
+                            <!-- Ballast tank indicator fill inside hull -->
+                            <rect x="50" y="32" width="100" height="14" rx="2" fill="rgba(0, 240, 255, 0.2)" id="svg-water-fill"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <div style="display:flex; gap:1rem; margin-bottom:1rem;">
+                    <button class="btn btn-orange" style="flex:1;" id="btn-fill-water">🌊 바닷물 채우기 (잠항)</button>
+                    <button class="btn" style="flex:1;" id="btn-blow-air">💨 압축공기 분사 (부상)</button>
+                </div>
+
+                <!-- Seesaw balance -->
+                <div class="seesaw-box">
+                    <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:0.5rem;">무게(중력) vs 부력 힘겨루기 저울</div>
+                    <div class="seesaw-bar" id="seesaw-bar">
+                        <div class="seesaw-weight" id="label-weight">무게: 50%</div>
+                        <div class="seesaw-buoyancy" id="label-buoyancy">부력: 50%</div>
+                    </div>
+                    <div class="seesaw-fulcrum"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== STEP 3: 디젤 잠수함과 소나 ==================== -->
+        <div class="tab-content main-grid" id="tab3">
+            <!-- Left Column: History & Snorkel Weakness -->
+            <div class="card">
+                <h2><span style="color:var(--primary)">03.</span> 근대 디젤 잠수함과 '스노클'의 한계</h2>
+                <p class="desc">인간의 근력 한계를 극복하고 1898년 홀랜드 함부터 독일 U보트까지 <strong>디젤-전기 하이브리드 잠수함</strong>이 탄생했습니다.</p>
+
+                <div class="concept-card" style="margin-bottom:1rem;">
+                    <div class="concept-title" style="color:var(--primary)">⚙️ 디젤 잠수함의 이중 심장</div>
+                    <ul class="concept-list">
+                        <li><strong>수면 위 (부상 시)</strong>: 디젤 엔진을 가동해 석유를 태워 프로펠러를 돌리고 배터리를 충전합니다.</li>
+                        <li><strong>물속 (잠항 시)</strong>: 충전된 배터리(전기)만으로 소음 없이 움직입니다.</li>
+                    </ul>
+                </div>
+
+                <div class="info-box danger">
+                    <div class="info-box-title">⚠️ 치명적 약점: "숨 쉬는 물개"</div>
+                    <div class="info-box-desc">
+                        디젤 엔진이 기름을 태우려면 **반드시 산소($O_2$)가 필요**합니다! 배터리가 방전되면 수면 위로 파이프(스노클)를 내밀어야만 했기에 적의 레이더에 쉽게 포착되었습니다.
+                    </div>
+                </div>
+
+                <h3>어둠 속의 눈: 소나(SONAR) 시스템</h3>
+                <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.5;">
+                    빛과 레이더가 통과하지 못하는 깜깜한 심해에서는 오직 **'소리(음파)'**만으로 싸워야 합니다. 박쥐가 음파를 쏘고 메아리를 들어 사냥하듯, 수중 음파를 발사해 적함의 거리와 방향을 정밀 측정합니다.
+                </p>
+            </div>
+
+            <!-- Right Column: SONAR Radar Canvas -->
+            <div class="card" style="text-align:center;">
+                <h2>SONAR 음파 탐지 시뮬레이터</h2>
+                <p class="desc">아래 [음파 발사] 버튼을 눌러 소나 파동이 적함에 부딪혀 되돌아오는 메아리(Echo) 측정값을 확인하세요.</p>
+
+                <div class="radar-box">
+                    <canvas id="sonar-canvas" width="320" height="320"></canvas>
+                </div>
+
+                <button class="btn btn-green" id="btn-ping-sonar" style="margin-top:0.5rem;">🔊 액티브 소나 핑(PING) 발사!</button>
+
+                <div style="background:rgba(0,255,136,0.05); border:1px solid rgba(0,255,136,0.2); border-radius:8px; padding:0.8rem; margin-top:1rem; font-family:'Orbitron'; font-size:0.85rem; text-align:left;">
+                    <div><span style="color:var(--text-muted);">목표물 감지:</span> <span id="sonar-target-status" style="color:var(--accent); font-weight:700;">대기 중</span></div>
+                    <div><span style="color:var(--text-muted);">계산된 거리:</span> <span id="sonar-distance-val" style="color:var(--primary); font-weight:700;">--- km</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== STEP 4: 원자력 vs AIP ==================== -->
+        <div class="tab-content main-grid" id="tab4">
+            <!-- Left Column: Nuclear vs AIP -->
+            <div class="card">
+                <h2><span style="color:var(--primary)">04.</span> 산소가 필요 없는 꿈의 에너지: 원자력 & AIP</h2>
+                <p class="desc">1954년 인류 최초의 원자력 잠수함 **'노틸러스(Nautilus)'**의 등장으로 숨을 쉴 필요가 없는 무한동력 시대가 열렸습니다.</p>
+
+                <div class="concept-grid">
+                    <div class="concept-card">
+                        <div class="concept-title" style="color:var(--primary);">🦈 원자력 (무한동력 상어)</div>
+                        <p class="concept-list">
+                            우라늄 핵분열 열로 물을 끓여 증기 터빈을 돌립니다. **산소가 0% 필요**하며, 식량만 충분하면 무제한 잠항이 가능합니다. 단, 냉각 펌프 소음이 존재합니다.
+                        </p>
+                    </div>
+
+                    <div class="concept-card">
+                        <div class="concept-title" style="color:var(--accent);">🥷 AIP (소리 없는 암살자)</div>
+                        <p class="concept-list">
+                            공기불요추진(Air-Independent Propulsion). 외부 공기 없이 수소와 산소를 결합하여 전기를 만드는 **연료전지** 기술로, 극강의 무소음 은밀성을 자랑합니다.
+                        </p>
+                    </div>
+                </div>
+
+                <h3>3대 잠수함 기술 핵심 비교</h3>
+                <table class="compare-table">
+                    <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>디젤 잠수함</th>
+                            <th>원자력 잠수함</th>
+                            <th>AIP 잠수함</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>동력원</strong></td>
+                            <td>석유 (산소 필수)</td>
+                            <td>우라늄 (핵분열)</td>
+                            <td>수소 + 산소 (연료전지)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>잠항 시간</strong></td>
+                            <td>며칠 (매우 짧음)</td>
+                            <td>무제한</td>
+                            <td>2~3주 (중간)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>은밀성(소음)</strong></td>
+                            <td>높음 (엔진 소음)</td>
+                            <td>보통 (펌프 소음)</td>
+                            <td><strong style="color:var(--accent)">가장 낮음 (무소음)</strong></td>
+                        </tr>
+                        <tr>
+                            <td><strong>별칭</strong></td>
+                            <td><span class="badge-seal">숨 쉬는 물개</span></td>
+                            <td><span class="badge-shark">무한동력 상어</span></td>
+                            <td><span class="badge-assassin">소리 없는 암살자</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Right Column: Fuel Cell Reaction Simulator -->
+            <div class="card">
+                <h2>AIP 수소-산소 연료전지 반응기</h2>
+                <p class="desc">버튼을 눌러 수소($H_2$)와 산소($O_2$)를 연료전지로 주입하여 무소음 전기와 순수한 물($H_2O$)이 생성되는 과정을 관찰하세요.</p>
+
+                <div class="fuel-cell-box">
+                    <div class="fuel-flow-container">
+                        <div class="fuel-tank">
+                            <h4>수소($H_2$) 탱크</h4>
+                            <div style="font-size:1.5rem;">🧪</div>
+                        </div>
+                        <div style="color:var(--primary); font-weight:900;">+</div>
+                        <div class="fuel-tank">
+                            <h4>산소($O_2$) 탱크</h4>
+                            <div style="font-size:1.5rem;">🫧</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-green" id="btn-react-fuel" style="width:100%;">⚡ 화학 반응 개시 (전기 & 물 생성)</button>
+
+                    <div class="fuel-reactor-core" id="reactor-core" style="margin-top:1.2rem;">
+                        <div style="font-weight:700; color:var(--accent); margin-bottom:0.4rem;">[생성된 반응 결과물]</div>
+                        <div style="display:flex; justify-content:space-around; align-items:center; margin-top:0.8rem;">
+                            <div>
+                                <span style="font-size:0.75rem; color:var(--text-muted);">추진 에너치:</span>
+                                <div id="power-output-val" style="font-size:1.2rem; font-weight:800; color:var(--warning);">0 kW (무소음)</div>
+                            </div>
+                            <div>
+                                <span style="font-size:0.75rem; color:var(--text-muted);">부산물:</span>
+                                <div id="water-output-val" style="font-size:1.2rem; font-weight:800; color:var(--primary);">깨끗한 물 (H₂O)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== STEP 5: 대한민국 잠수함 & 퀴즈 ==================== -->
+        <div class="tab-content main-grid" id="tab5">
+            <!-- Left Column: Korean Submarines -->
+            <div class="card">
+                <h2><span style="color:var(--primary)">05.</span> 우리의 바다를 지키는 힘: 대한민국 잠수함</h2>
+                <p class="desc">209급, 214급을 거쳐 마침내 독자 설계한 3,000톤급 **'도산 안창호함'**이 탄생했습니다.</p>
+
+                <div class="info-box green">
+                    <div class="info-box-title">🇰🇷 세계 수준의 잠수함 독자 건조국</div>
+                    <div class="info-box-desc">
+                        대한민국은 고성능 AIP 시스템과 세계 최고 수준의 리튬이온 배터리 기술을 결합하여, 디젤-AIP 잠수함 중 세계 최고 수준의 잠항 지속 능력을 보유하고 있습니다.
+                    </div>
+                </div>
+
+                <div style="text-align:center; margin-top:2rem;">
+                    <button class="btn btn-orange" id="btn-open-quiz-modal" style="font-size:1.1rem; padding:1rem 2rem;">
+                        📝 최종 수료 자가진단 퀴즈 풀기
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Column: Summary Card -->
+            <div class="card" style="text-align:center; display:flex; flex-direction:column; justify-content:center;">
+                <div style="font-size:4rem; margin-bottom:1rem;">⚓</div>
+                <h2>잠수함 진화 과학 마스터</h2>
+                <p class="desc">치명적 수압과 산소 한계를 극복한 밸러스트 탱크, 디젤 스노클, 소나 탐지, 원자력과 AIP 연료전지 과학을 모두 탐구하셨습니다!</p>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="navigation-buttons">
+            <button class="btn btn-secondary" id="btn-prev" disabled>◀ 이전 단계</button>
+            <button class="btn" id="btn-next">다음 단계 ▶</button>
+        </div>
+
+        <!-- Completion Banner -->
+        <div class="completion-banner" id="completion-banner">
+            <h3>🎉 축하합니다! 잠수함 진화 과정 교육을 완수했습니다!</h3>
+            <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom: 1.5rem;">최종 수료 퀴즈를 풀고 '심해 해양공학 마스터 수료증'을 발급받아 보세요!</p>
+            <button class="btn btn-green" id="btn-start-quiz">📝 수료 퀴즈 시작하기</button>
+        </div>
+
+        <!-- Quiz Modal -->
+        <div id="quiz-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(3,7,18,0.92); z-index:100; align-items:center; justify-content:center; padding:1.5rem; overflow-y:auto;">
+            <div class="card" style="width:100%; max-width:650px; border-color:var(--primary); box-shadow:0 0 35px var(--primary-glow);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1px solid var(--border-color); padding-bottom:0.8rem;">
+                    <h2 style="margin:0;"><span style="color:var(--primary)">📝</span> 잠수함 진화 자가 진단 퀴즈</h2>
+                    <span id="quiz-progress-text" style="font-family:'Orbitron'; font-size:0.9rem; color:var(--secondary);">Q1 / 4</span>
+                </div>
+
+                <div id="quiz-question-container">
+                    <!-- Dynamic Questions loaded by js/app.js -->
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:1rem; margin-top:1.5rem;">
+                    <button class="btn btn-secondary" id="btn-close-quiz">닫기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certificate Modal -->
+        <div id="certificate-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(3,7,18,0.95); z-index:110; align-items:center; justify-content:center; padding:1.5rem;">
+            <div class="card" style="width:100%; max-width:550px; text-align:center; padding:3rem; border:2px solid var(--secondary); background:#061026; box-shadow:0 0 40px rgba(255, 102, 0, 0.3);">
+                <div style="position:absolute; top:10px; left:10px; right:10px; bottom:10px; border:1px dashed rgba(255,102,0,0.3); pointer-events:none;"></div>
+                
+                <div style="z-index:1; position:relative;">
+                    <div style="font-size:3.5rem; margin-bottom:0.5rem;">🎖️</div>
+                    <h1 style="font-family:'Orbitron', 'Noto Sans KR', sans-serif; font-size:2.2rem; color:var(--secondary); letter-spacing:4px; margin-bottom: 0.5rem; background:none; -webkit-text-fill-color:initial;">수 료 증</h1>
+                    <p style="color:var(--text-muted); font-size:0.8rem; letter-spacing:1px; margin-bottom:1.5rem;">SUBMARINE SCIENCE & ENGINEERING MASTER</p>
+                    
+                    <div style="margin: 2rem 0;">
+                        <span style="font-size:0.95rem; color:var(--text-muted); display:block; margin-bottom:0.5rem;">위 학생은 잠수함의 과학적 원리와 진화 과정을 정식 이수하였음을 증명합니다.</span>
+                        <div style="display:flex; justify-content:center; align-items:center; gap:0.5rem; margin-top:1rem;">
+                            <label for="student-name-input" style="font-size:0.9rem; color:#fff;">이름:</label>
+                            <input type="text" id="student-name-input" placeholder="이름을 입력하세요" style="background:#091530; border:1px solid var(--border-color); color:var(--text-main); font-size:1.1rem; padding:0.4rem 1rem; border-radius:4px; text-align:center; font-weight:700; width:180px;">
+                        </div>
+                    </div>
+
+                    <div style="display:flex; justify-content:center; gap:1rem;">
+                        <button class="btn btn-secondary" id="btn-cert-restart">다시 풀기</button>
+                        <button class="btn btn-orange" id="btn-cert-done">수료증 발급받기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
