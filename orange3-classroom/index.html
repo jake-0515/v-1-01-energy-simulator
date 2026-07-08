@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orange3 이미지 분류 및 데이터 분석 교실 🍊</title>
+    <title>Orange3 머신러닝 지도학습 교실 🍊</title>
     <link rel="stylesheet" href="css/style.css">
     <!-- Chart.js CDN 라이브러리 로드 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -13,9 +13,9 @@
     <div class="container">
         <!-- Header -->
         <header>
-            <div class="header-badge">HIGH SCHOOL INFORMATICS & AI CLASS</div>
-            <h1>Orange3 데이터 분석 및 이미지 분류 교실</h1>
-            <p>코딩 없이 배우는 머신러닝! 정형/비정형 데이터의 차이를 이해하고, 오렌지3를 활용해 이미지 분류 모델을 만드는 방법을 배웁니다.</p>
+            <div class="header-badge">MIDDLE SCHOOL INFORMATICS & AI CLASS</div>
+            <h1>Orange3 머신러닝 교실: 회귀와 분류 🍊</h1>
+            <p>마우스 조작과 시뮬레이터로 쉽고 재미있게 배우는 기계학습! 레몬에이드 판매량 예측(회귀)과 붓꽃 품종 분류(분류)를 직접 체험하며 배웁니다.</p>
         </header>
 
         <!-- Progress Tracker -->
@@ -34,11 +34,11 @@
                 </div>
                 <div class="step-indicator" data-step="3">
                     <div class="circle">3</div>
-                    <div class="step-label">Iris 분석 시뮬레이터</div>
+                    <div class="step-label">지도학습 시뮬레이터</div>
                 </div>
                 <div class="step-indicator" data-step="4">
                     <div class="circle">4</div>
-                    <div class="step-label">이미지 임베딩 체험</div>
+                    <div class="step-label">비정형 & 이미지 분류</div>
                 </div>
                 <div class="step-indicator" data-step="5">
                     <div class="circle">5</div>
@@ -51,335 +51,204 @@
         <div class="main-grid">
             
             <!-- Left Column: Instructional Tutorial Content (Card 1) -->
-            <div class="card">
+            <div class="card" id="left-tutorial-card">
                 
                 <!-- STEP 1: CONCEPTS & DATA -->
                 <div class="tab-content active" data-step="1">
                     <h2>📊 1단계: 머신러닝의 기초와 데이터 전처리</h2>
-                    <p class="desc">인공지능이 학습하는 원리를 배우고, 학습을 시작하기 전에 데이터를 정교하게 다듬는 방법을 상세히 알아봅시다.</p>
+                    <p class="desc">인공지능이 스스로 학습하는 기계학습(머신러닝)의 원리와 데이터를 가공하는 기초 상식을 알아봅시다.</p>
                     
-                    <!-- Section 1.1: What is Machine Learning? -->
-                    <div style="margin-bottom: 2rem;">
-                        <h3 style="margin-top: 0; display: flex; align-items: center; gap: 0.5rem; color: var(--primary);">🤖 1. 머신러닝(Machine Learning)이란 무엇일까요?</h3>
-                        <p style="margin-bottom: 0.8rem;">기존의 컴퓨터 프로그램은 사람이 일일이 규칙을 코딩해 주어야 작동했습니다. 하지만 **머신러닝(기계학습)**은 컴퓨터가 **대량의 데이터를 바탕으로 스스로 학습**하여 새로운 질문이나 상황에 대해 예측하고 판단하는 규칙을 찾아내는 인공지능 기술입니다.</p>
-                        
-                        <div class="info-box" style="margin: 1rem 0;">
-                            <div class="info-box-title">🌾 데이터는 4차 산업혁명 시대의 '쌀'입니다!</div>
-                            <div class="info-box-desc">
-                                머신러닝 학습에서 가장 중요한 것은 **신뢰할 수 있는 대량의 데이터를 확보**하는 것입니다. 
-                                <br>이때 컴퓨터가 읽을 수 없는 한글문서(.hwp)나 PDF(.pdf) 포맷 대신, 데이터 분석기가 바로 열어서 행과 열을 분석할 수 있는 **HTML, XML, CSV, TAB** 같은 포맷으로 수집해야 학습에 활용하기 쉽습니다.
-                                <br>또한, 이미지나 오디오, 영상 같은 모든 형태의 데이터는 컴퓨터가 수학적 계산을 처리할 수 있도록 반드시 **수치형 데이터(숫자)**로 변환하여 입력해 주어야 합니다.
-                            </div>
-                        </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h3 style="margin-top: 0; color: var(--primary);">🤖 1. 머신러닝(기계학습)이란 무엇일까요?</h3>
+                        <p style="font-size: 0.92rem; color: var(--text-muted);">
+                            사람이 컴퓨터에게 일일이 규칙을 코딩해 지시하는 대신, 컴퓨터가 **과거의 대량의 데이터**를 분석하여 스스로 규칙이나 예측 공식을 찾아내게 만드는 인공지능 기술입니다.
+                        </p>
                     </div>
 
-                    <!-- Section 1.2: Structured vs Unstructured Data -->
-                    <div style="margin-bottom: 2rem;">
-                        <h3 style="color: var(--secondary);">📂 2. 정형 데이터 vs 비정형 데이터</h3>
-                        <p style="margin-bottom: 1rem;">인공지능이 수집하는 모든 데이터는 구조가 잡혀있는지 여부에 따라 크게 두 가지로 분류할 수 있습니다.</p>
-                        
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
-                            <div style="background: rgba(0, 240, 255, 0.03); border: 1px solid rgba(0, 240, 255, 0.15); padding: 1.2rem; border-radius: 12px;">
-                                <strong style="color: var(--secondary); font-size: 1.05rem; display: block; margin-bottom: 0.5rem;">📊 정형 데이터 (Structured Data)</strong>
-                                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5;">
-                                    * **정의**: 일정한 규칙에 맞춰 행과 열이 정해진 표(Table) 형태로 깔끔하게 구조화된 데이터입니다.
-                                    <br>* **예시**: 데이터베이스 테이블, 엑셀 파일, 붓꽃(Iris) 통계치, 학생 성적부.
-                                    <br>* **특징**: 수식 연산 및 데이터 처리가 매우 간단하며, 가명처리(개인정보 가리기) 난이도가 비교적 낮습니다.
+                    <div style="margin-bottom: 1.5rem;">
+                        <h3 style="color: var(--secondary);">📂 2. 데이터의 종류: 정형 vs 비정형</h3>
+                        <p style="font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                            컴퓨터가 학습하는 데이터는 형태에 따라 크게 2가지로 나뉩니다.
+                        </p>
+                        <ul style="margin-left: 1.2rem; font-size: 0.88rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.3rem;">
+                            <li><strong>정형 데이터 (Structured Data)</strong>: 엑셀 표나 데이터베이스 테이블처럼 행과 열이 정해진 깔끔한 수치 데이터 (예: 기온 통계, 붓꽃 측정치)</li>
+                            <li><strong>비정형 데이터 (Unstructured Data)</strong>: 그림, 음성, 텍스트처럼 규격화되지 않은 일상의 자료 (예: 개/고양이 사진, 동영상)</li>
+                        </ul>
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <h3 style="color: var(--success);">🧠 3. 머신러닝의 3대 학습 방식</h3>
+                        <div style="display: flex; flex-direction: column; gap: 0.8rem; font-size: 0.88rem;">
+                            <div style="background: rgba(0,255,136,0.03); border: 1px solid rgba(0,255,136,0.15); padding: 0.8rem; border-radius: 8px;">
+                                <strong style="color: var(--success);">🎯 A. 지도학습 (Supervised Learning)</strong>
+                                <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 0.2rem;">과거 데이터에 **원인(Feature)**과 **정답(Target)**을 함께 족보처럼 주어 학습시키는 방식입니다. (예: 기온으로 판매량 예측하기, 붓꽃 품종 분류)</p>
+                            </div>
+                            <div style="background: rgba(0, 240, 255, 0.03); border: 1px solid rgba(0, 240, 255, 0.15); padding: 0.8rem; border-radius: 8px;">
+                                <strong style="color: var(--secondary);">🔵 B. 비지도학습 (Unsupervised Learning)</strong>
+                                <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 0.2rem;">
+                                    **정답(라벨)이 없는 상태**에서 컴퓨터 스스로 데이터의 특징을 비교하여 비슷한 무리끼리 묶어주는 학습입니다. 
+                                    <br>💡 <strong>과일 가게 비유:</strong> 이름표(정답)가 없는 사과, 배, 바나나를 과일 장수 AI가 오직 <strong>색깔과 형태(Feature)의 유사점</strong>만 보고 자동으로 분류하는 것과 같습니다! (대표 위젯: K-Means 군집화)
                                 </p>
                             </div>
-                            <div style="background: rgba(255, 107, 0, 0.03); border: 1px solid rgba(255, 107, 0, 0.15); padding: 1.2rem; border-radius: 12px;">
-                                <strong style="color: var(--primary); font-size: 1.05rem; display: block; margin-bottom: 0.5rem;">🖼️ 비정형 데이터 (Unstructured Data)</strong>
-                                <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.5;">
-                                    * **정의**: 정해진 규격이나 일정한 형태가 없어 구조화되지 않은 채 존재하는 날것의 데이터입니다.
-                                    <br>* **예시**: 강아지/고양이 사진, 음성 녹음, 메신저 대화 기록, 유튜브 동영상, 블로그 글.
-                                    <br>* **특징**: 사전 정의된 구조가 없어 그대로는 인공지능 분석이 불가능하여 가공이 필수적이며, 처리 기술과 가명처리가 매우 복잡하고 다양합니다.
-                                </p>
+                            <div style="background: rgba(255, 107, 0, 0.03); border: 1px solid rgba(255, 107, 0, 0.15); padding: 0.8rem; border-radius: 8px;">
+                                <strong style="color: var(--primary);">🟢 C. 강화학습 (Reinforcement Learning)</strong>
+                                <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 0.2rem;">행동에 대한 잘잘못에 따라 **보상(Reward)**을 줌으로써, 바둑판이나 운전 중 최고의 점수를 얻을 수 있는 최적의 경로를 스스로 시행착오를 통해 깨우치게 하는 방식입니다. (예: 알파고)</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Section 1.3: Public Data Portal -->
-                    <div style="margin-bottom: 2rem;">
-                        <h3>🌐 3. 데이터 수집의 보물창고: 공공 데이터 포털</h3>
-                        <p style="margin-bottom: 0.8rem;">국가 기관이나 국제 기구들이 보유하고 있는 다양한 공공 데이터를 누구나 무료로 다운로드받아 인공지능 분석과 앱 개발에 활용할 수 있도록 개방해 놓은 웹사이트입니다.</p>
-                        
-                        <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; font-size: 0.88rem;">
-                            <p>🗺️ <strong>대표적인 공공 데이터 플랫폼:</strong></p>
-                            <ul style="margin-left: 1.5rem; margin-top: 0.4rem; display: flex; flex-direction: column; gap: 0.3rem;">
-                                <li>🇰🇷 **대한민국 공공데이터포털**: <a href="https://www.data.go.kr/" target="_blank" style="color: var(--secondary);">data.go.kr</a> (공공 안전, 교통, 기상 통계 등 자료의 요람)</li>
-                                <li>🇺🇸 **미국 공공데이터**: <a href="https://data.gov/" target="_blank" style="color: var(--secondary);">data.gov</a></li>
-                                <li>🇪🇺 **유럽 연합 데이터**: <a href="https://data.europa.eu/" target="_blank" style="color: var(--secondary);">data.europa.eu</a></li>
-                                <li>🏦 **국제 기구 데이터**: 세계은행(World Bank), 세계보건기구(WHO), OECD, NASA 포털.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Section 1.4: Rescaling -->
-                    <div style="margin-bottom: 2rem;">
-                        <h3 style="color: var(--primary);">⚖️ 4. 데이터 범위 재조정: 표준화와 정규화</h3>
-                        <p style="margin-bottom: 0.8rem;">여러 변수를 함께 학습시킬 때 각각의 수치 범위가 다르면 특정 변수에만 가중치가 쏠리는 문제가 생깁니다. 이를 방지하기 위해 데이터 범위를 통일하는 **전처리(Rescaling)**를 수행합니다.</p>
-                        
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem;">
-                            <div style="background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); padding: 1rem; border-radius: 10px;">
-                                <strong style="color: var(--primary); display: block; margin-bottom: 0.4rem;">📏 정규화 (Normalization)</strong>
-                                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem;">데이터들의 최솟값을 0, 최댓값을 1로 고정하여 모든 수치를 **0 ~ 1 범위 안**으로 재조정합니다.</p>
-                                <div style="background: #000; padding: 0.4rem; border-radius: 6px; font-size: 0.8rem; text-align: center; color: var(--primary); font-family: monospace;">
-                                    x_new = (x - Min) / (Max - Min)
-                                </div>
-                            </div>
-                            <div style="background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); padding: 1rem; border-radius: 10px;">
-                                <strong style="color: var(--secondary); display: block; margin-bottom: 0.4rem;">🎯 표준화 (Standardization)</strong>
-                                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.6rem;">데이터의 평균으로부터 얼마나 멀리 떨어져 있는지를 계산해 **평균이 0, 표준편차가 1**이 되도록 조정합니다.</p>
-                                <div style="background: #000; padding: 0.4rem; border-radius: 6px; font-size: 0.8rem; text-align: center; color: var(--secondary); font-family: monospace;">
-                                    x_new = (x - Mean) / StdDev
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- School Score Rescaling Example -->
-                        <div style="background: rgba(0, 240, 255, 0.04); border: 1px solid var(--secondary-glow); padding: 1.2rem; border-radius: 12px; margin-bottom: 1.5rem;">
-                            <strong style="color: #fff; font-size: 0.95rem; display: block; margin-bottom: 0.5rem;">🏫 고교 1학년 시험 점수로 보는 시각적 전처리 비교</strong>
-                            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem;">다섯 명 학생들의 수학 점수(최고 90점, 최저 45점)가 표준화 및 정규화를 통해 어떻게 공평하게 환산되는지 슬라이더 옵션을 바꿔 실시간 확인해 보세요.</p>
-                            
-                            <div class="slider-control-box" style="margin: 0; background: #0b0d18;">
-                                <label for="transform-type-select" style="font-weight: 700; font-size: 0.85rem; display: block; margin-bottom: 0.5rem;">⚙️ 데이터 전처리 방식 선택:</label>
-                                <select id="transform-type-select" style="background: #14172b; color: white; border: 1px solid var(--border-color); padding: 0.5rem; border-radius: 8px; width: 100%; outline: none; font-family: var(--font-outfit);">
-                                    <option value="none">학생들의 실제 원점수 (45점 ~ 90점)</option>
-                                    <option value="normalization">정규화 (Normalization) ➔ [모든 점수를 0 ~ 1 비율로 압축]</option>
-                                    <option value="standardization">표준화 (Standardization) ➔ [평균을 0으로 놓고 편차 분포 환산]</option>
-                                </select>
-
-                                <div class="chart-container">
-                                    <canvas id="mathChart"></canvas>
-                                </div>
-                                <div class="math-formula-box" id="math-formula-display" style="margin-top: 0.5rem; font-size: 0.85rem;">
-                                    원시 데이터: 가공되지 않은 학생들의 시험 원점수 (만점 기준 100점)
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section 1.5: Machine Learning Types & Fitting -->
-                    <div style="margin-bottom: 2rem;">
-                        <h3 style="color: var(--secondary);">🧠 5. 학습(Fitting)의 원리와 지도/비지도 학습</h3>
-                        <p style="margin-bottom: 0.8rem;">인공지능은 학습 방식과 정답의 유무에 따라 세 가지 유형으로 나뉩니다.</p>
-                        
-                        <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.2rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; font-size: 0.88rem;">
-                            <div>
-                                <strong style="color: var(--primary);">🟢 지도학습 (Supervised Learning)</strong>
-                                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.1rem;">학습에 사용되는 데이터에 **정답(Label, 라벨링)**이 지정되어 있는 경우입니다. 인공지능에게 정답 족보를 주고 공부를 시켜, 나중에 새로운 질문에 대한 정확한 정답을 분류 및 예측합니다. (예: 회귀분석, 개와 고양이 이미지 분류)</p>
-                            </div>
-                            <div style="border-top: 1px solid var(--border-color); padding-top: 0.8rem;">
-                                <strong style="color: var(--secondary);">🔵 비지도학습 (Unsupervised Learning)</strong>
-                                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.1rem;">학습용 데이터에 **정답이 없는** 경우입니다. 인공지능이 스스로 데이터의 유사한 성질과 패턴을 스스로 분석하여 비슷한 무리끼리 묶어주는 학습을 진행합니다. (예: 군집화, 추천 알고리즘)</p>
-                            </div>
-                            <div style="border-top: 1px solid var(--border-color); padding-top: 0.8rem;">
-                                <strong style="color: #fbbf24;">🟡 강화학습 (Reinforcement Learning)</strong>
-                                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.1rem;">정답 대신 자신의 행동에 따른 **보상(Reward)**을 줌으로써, 보상을 극대화하는 최적의 행동 방법을 컴퓨터가 시행착오를 통해 스스로 터득하게 만드는 기법입니다. (예: 바둑 AI 알파고, 자율주행)</p>
-                            </div>
-                        </div>
-
-                        <div style="background: rgba(255, 107, 0, 0.04); border: 1px solid var(--primary-glow); padding: 1.2rem; border-radius: 12px; margin-bottom: 1.5rem;">
-                            <strong style="color: #fff; font-size: 0.95rem; display: block; margin-bottom: 0.5rem;">🎯 적합시키기 (Fitting)와 변수 탐색</strong>
-                            <p style="font-size: 0.88rem; color: var(--text-muted);">머신러닝에서 **적합시키기(Fitting)**란 수집한 데이터들의 패턴을 가장 잘 반영하는 수학적 **추세선(방정식)**이나 **분류 경계선**을 찾아내는 과정입니다. 이 선을 찾는 것은 데이터의 영향력을 결정하는 **가중치(Weight)**와 **보정값(Bias)**을 미세하게 조정하여 맞추는 행위입니다.</p>
-                            
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
-                                <div style="background: #080a14; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
-                                    <strong style="font-size: 0.85rem; color: var(--primary); display: block; margin-bottom: 0.4rem;">🐟 예시 A: 붕어빵 판매량 예측 (회귀분석)</strong>
-                                    <span style="font-size: 0.8rem; color: var(--text-muted);">
-                                        겨울철 기온과 붕어빵 판매 데이터를 그래프에 점으로 찍고(산점도), 이 분포를 관통하는 직선($y = ax + b$)을 수학적으로 피팅해 둡니다. 이 선이 생기면 "기온이 영상 5도일 때 붕어빵은 대략 50개 팔릴 것이다"라고 판매량을 명확하게 예측할 수 있습니다.
-                                    </span>
-                                </div>
-                                <div style="background: #080a14; padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
-                                    <strong style="font-size: 0.85rem; color: var(--secondary); display: block; margin-bottom: 0.4rem;">🐈 예시 B: 고양이와 개 분류 (분류 경계선)</strong>
-                                    <span style="font-size: 0.8rem; color: var(--text-muted);">
-                                        고양이 사진 100장(라벨 0)과 강아지 사진 100장(라벨 1)의 특징값들을 분포 공간에 펼친 뒤, 두 집단을 가장 고르게 쪼개고 구별해 줄 수 있는 최적의 **분류 경계선(Decision Boundary)**을 긋는 과정이 바로 피팅(Fitting)입니다.
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Section 1.6: Train vs Test Split -->
-                    <div style="margin-bottom: 2rem;">
-                        <h3 style="color: var(--secondary);">⚖️ 6. 훈련 데이터(Train)와 테스트 데이터(Test) 분할</h3>
-                        <p style="margin-bottom: 0.8rem;">우리가 모은 데이터를 모델 학습에만 전부 사용해 버리면 인공지능이 문제를 제대로 푸는지 공정하게 시험할 수 없습니다. 모의고사 문제를 다 외워버렸기 때문이죠!</p>
-                        
-                        <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.2rem; display: flex; gap: 1rem; align-items: center;">
-                            <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--secondary), var(--primary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; flex-shrink: 0; box-shadow: 0 0 15px var(--secondary-glow);">📊</div>
-                            <div style="font-size: 0.88rem; color: var(--text-muted);">
-                                * **훈련 데이터 (Train Data - 70%)**: 인공지능이 유형을 분석하고 학습(Fitting)을 하는 주재료로 쓰입니다.
-                                <br>* **테스트 데이터 (Test Data - 30%)**: 학습 과정에서는 절대 보여주지 않고 숨겨둔 뒤, 인공지능의 학습이 완료된 후 실제 정답값과 인공지능의 예측값 간의 차이(오차)를 채점하여 성능과 정확도를 정밀 테스트하는 데 활용합니다.
-                            </div>
-                        </div>
-                        <p style="margin-top: 1.2rem; font-size: 0.9rem;">👉 **모든 이론을 숙지하셨다면 상단 내비게이터의 [2] 버튼이나 아래 [다음 단계]를 눌러 오렌지3 설치 실습으로 넘어가 보세요!**</p>
+                    <div style="margin-bottom: 1.5rem;">
+                        <h3 style="color: #fbbf24;">⚖️ 4. 훈련(Train) 데이터 vs 테스트(Test) 데이터</h3>
+                        <p style="font-size: 0.92rem; color: var(--text-muted);">
+                            가지고 있는 데이터를 전부 공부에만 쓰면 시험 능력을 평가할 수 없습니다. 오렌지3에서는 보통 데이터를 **훈련용 70%(공부용)**와 **테스트용 30%(모의고사용)**로 쪼개어 인공지능이 처음 보는 데이터도 잘 맞히는지 정밀 평가합니다.
+                        </p>
                     </div>
                 </div>
 
                 <!-- STEP 2: SETUP ORANGE3 -->
                 <div class="tab-content" data-step="2">
-                    <h2>🍊 2단계: Orange3 설치 및 구성 요소</h2>
-                    <p class="desc">코딩 없이 마우스 드래그로 머신러닝을 구현할 수 있는 도구인 오렌지3를 설치해봅시다.</p>
+                    <h2>🍊 2단계: Orange3 설치 및 화면 이해</h2>
+                    <p class="desc">코딩 없이 마우스 드래그로 복잡한 인공지능을 구현하는 데이터 분석 도구 Orange3를 준비해 봅시다.</p>
                     
                     <div class="info-box tip">
                         <div class="info-box-title">💻 Orange3 데이터 마이닝 프로그램이란?</div>
-                        <div class="info-box-desc">구글, 네이버 등 대형 IT 플랫폼들도 사용하는 머신러닝 파이프라인 구축 프로그램입니다. 위젯(기능 블록)을 드래그하여 실시간으로 데이터 마이닝, 시각화, 인공지능 분석을 수행할 수 있습니다.</div>
+                        <div class="info-box-desc">데이터 불러오기, 시각화, 인공지능 알고리즘 연결 등을 위젯(기능 박스)을 서로 선으로 이어서 파이프라인을 구축하는 GUI 기반 기계학습 분석기입니다.</div>
                     </div>
 
-                    <div style="font-size: 0.95rem; margin-top: 1rem;">
-                        <p style="margin-bottom: 0.5rem;"><strong>🔽 다운로드 안내:</strong></p>
-                        <ul style="margin-left: 1.5rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem;">
-                            <li><a href="https://orangedatamining.com/download/" target="_blank" style="color: var(--primary); font-weight: 700;">[Orange3 공식 웹 다운로드 페이지]</a> 로 접속합니다.</li>
-                            <li>설치 도중 <strong>Miniconda3</strong>를 같이 설치하는 창이 뜨면 확인을 누르고 모두 설치해 줍니다.</li>
-                            <li>설치 완료 후 실행하면 아래와 같이 데이터 전처리, 시각화, 평가 위젯들이 모인 대시보드가 열립니다.</li>
-                        </ul>
-                    </div>
-
-                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.2rem;">
-                        <p style="font-weight: 700; margin-bottom: 0.5rem;">🧩 핵심 위젯 분류표:</p>
-                        <table style="width: 100%; font-size: 0.85rem; border-collapse: collapse; text-align: left;">
-                            <tr style="border-bottom: 1px solid var(--border-color);">
-                                <td style="padding: 0.5rem 0; color: var(--primary); font-weight: 700; width: 30%;">Data</td>
-                                <td style="padding: 0.5rem 0; color: var(--text-muted);">데이터를 불러오고(File), 테이블로 열어보는(Data Table) 위젯군</td>
-                            </tr>
-                            <tr style="border-bottom: 1px solid var(--border-color);">
-                                <td style="padding: 0.5rem 0; color: var(--secondary); font-weight: 700;">Visualize</td>
-                                <td style="padding: 0.5rem 0; color: var(--text-muted);">데이터 분포를 그리는(Scatter Plot, Box Plot) 시각화 위젯군</td>
-                            </tr>
-                            <tr style="border-bottom: 1px solid var(--border-color);">
-                                <td style="padding: 0.5rem 0; color: var(--success); font-weight: 700;">Transform</td>
-                                <td style="padding: 0.5rem 0; color: var(--text-muted);">데이터의 범위를 변경하거나 학습용/테스트용으로 섞어 나누는 위젯군</td>
-                            </tr>
-                            <tr>
-                                <td style="padding: 0.5rem 0; color: #fbbf24; font-weight: 700;">Model & Evaluate</td>
-                                <td style="padding: 0.5rem 0; color: var(--text-muted);">기계학습 알고리즘(SVM, KNN, Logistic Regression) 및 평가 위젯군</td>
-                            </tr>
-                        </table>
+                    <div style="font-size: 0.95rem; margin-top: 1.5rem;">
+                        <p style="margin-bottom: 0.5rem; font-weight: 700; color: var(--primary);">🔽 다운로드 및 설치 순서:</p>
+                        <ol style="margin-left: 1.2rem; display: flex; flex-direction: column; gap: 0.5rem; color: var(--text-muted); font-size: 0.88rem;">
+                            <li><a href="https://orangedatamining.com/download/" target="_blank" style="color: var(--secondary); font-weight: 700;">[Orange3 공식 웹 다운로드 페이지]</a>에 접속합니다.</li>
+                            <li>자신의 운영체제(Windows/Mac)에 맞는 설치 파일(.exe/.dmg)을 실행합니다.</li>
+                            <li>설치 도중 Miniconda(파이썬 가상환경) 설치 권장 창이 뜨면 체크를 유지하고 끝까지 설치해 줍니다.</li>
+                            <li>오렌지3를 실행하면 비어있는 하얀 캔버스와 왼쪽의 다양한 위젯 그룹들이 나타납니다.</li>
+                        </ol>
                     </div>
                 </div>
 
-                <!-- STEP 3: WORKSPACE SIMULATOR -->
+                <!-- STEP 3: SUPERVISED LEARNING SIMULATOR (MAIN STEP) -->
                 <div class="tab-content" data-step="3">
-                    <h2>🧩 3단계: Orange3 붓꽃(Iris) 분석 시뮬레이터</h2>
-                    <p class="desc">우측 워크스페이스에서 마우스 드래그로 위젯을 연결하여 실제 데이터 마이닝 과정을 미리 체험해봅시다.</p>
+                    <h2>🎯 3단계: Orange3 지도학습 실습 교실</h2>
+                    <p class="desc">오렌지3를 활용해 수치 예측(회귀)과 품종 판독(분류)을 진행하는 두 가지 수업 시나리오를 직접 체험해 봅시다.</p>
                     
-                    <div class="info-box">
-                        <div class="info-box-title">🎮 드래그 & 연결 실습 방법:</div>
-                        <div class="info-box-desc">
-                            1. **`File`** 위젯 우측에 있는 <strong>주황색 연결 포트(●)</strong>를 마우스 왼쪽 버튼으로 클릭 후 드래그합니다.
-                            <br>2. 점선이 나오면, 연결하고자 하는 대상 위젯(**`Data Table`**, **`Scatter Plot`**, **`Data Sampler`**)의 <strong>왼쪽 회색 포트(●)</strong>에 마우스를 뗍니다.
-                            <br>3. 연결선이 완성되면 위젯이 환하게 활성화됩니다. 활성화된 위젯을 <strong>클릭(터치)</strong>하시면 팝업창으로 데이터의 내용이 시각화되어 출력됩니다!
+                    <!-- Sub-tabs for Step 3 Simulators -->
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+                        <button class="btn btn-tab active" id="tab-btn-regression">🎬 1차시: 레몬에이드 예측 (회귀)</button>
+                        <button class="btn btn-tab" id="tab-btn-classification">🎬 2차시: 붓꽃 품종 알아맞히기 (분류)</button>
+                    </div>
+
+                    <!-- Regression Sub-content -->
+                    <div id="sub-content-regression" class="sub-tab-panel active">
+                        <div class="concept-card" style="margin-bottom: 1.2rem;">
+                            <div class="concept-title" style="color: var(--primary);">📈 레몬에이드 예측 모델 시나리오</div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+                                * **원인 변수 (Feature)**: 기온 (온도가 높을수록 더 목이 마르겠죠?)
+                                <br>* **결과 변수 (Target)**: 레몬에이드 판매량 (**수치형 양적 데이터**)
+                                <br>* **핵심 알고리즘**: **Linear Regression (선형 회귀)**
+                            </p>
+                        </div>
+
+                        <!-- Dialogue Box -->
+                        <div class="dialogue-box">
+                            <div class="dialogue-title">🎬 1차시 수업 현장 속으로</div>
+                            <div class="dialogue-scroll" id="regression-dialogue-area">
+                                <div class="line active" id="line-r1"><strong>교사:</strong> "여러분, 만약 여러분이 레몬에이드 카페 사장님인데, 내일 주스를 몇 잔이나 팔지 미리 알 수 있다면 어떨까요?"</div>
+                                <div class="line" id="line-r2"><strong>학생:</strong> "재료를 딱 맞게 준비할 수 있어서 버리는 게 없을 것 같아요!"</div>
+                                <div class="line" id="line-r3"><strong>교사:</strong> "맞아요! 원인이 되는 변수를 Feature, 결과 변수를 Target이라고 불러요. 숫자를 예측하는 머신러닝 기법을 <strong>'회귀(Regression)'</strong>라고 해요."</div>
+                                <div class="line" id="line-r4"><strong>교사:</strong> "Linear Regression 위젯을 데이터와 연결하면 인공지능이 스스로 공식을 학습합니다."</div>
+                                <div class="line" id="line-r5"><strong>학생:</strong> "우와! 온도가 24도일 때 48개가 팔릴 거라고 정답을 딱 예측해 줘요!"</div>
+                                <div class="line" id="line-r6"><strong>교사:</strong> "과거 데이터를 분석해서 규칙을 찾아 미래를 맞힌 것입니다. 회귀 마스터 완료!"</div>
+                            </div>
                         </div>
                     </div>
 
-                    <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted);">👉 <strong>File 위젯</strong>은 기본적으로 150개의 붓꽃 표본 데이터를 가집니다. 위젯들을 모두 연결하여 데이터 표와 그래프, 그리고 70% 학습 데이터 분할 정보를 직접 열람해 보세요!</p>
+                    <!-- Classification Sub-content -->
+                    <div id="sub-content-classification" class="sub-tab-panel">
+                        <div class="concept-card" style="margin-bottom: 1.2rem;">
+                            <div class="concept-title" style="color: var(--secondary);">🌸 붓꽃 품종 알아맞히기 시나리오</div>
+                            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+                                * **원인 변수 (Feature)**: 꽃잎 길이, 꽃잎 너비 (수치형 측정치)
+                                <br>* **결과 변수 (Target)**: 붓꽃 품종 (Setosa / Versicolor / Virginica - **범주형 데이터**)
+                                <br>* **알고리즘 시합**: **Logistic Regression (로지스틱 회귀)** vs **Decision Tree (의사결정나무)**
+                            </p>
+                        </div>
+
+                        <!-- Dialogue Box -->
+                        <div class="dialogue-box">
+                            <div class="dialogue-title">🎬 2차시 수업 현장 속으로</div>
+                            <div class="dialogue-scroll" id="classification-dialogue-area">
+                                <div class="line active" id="line-c1"><strong>교사:</strong> "결과가 숫자가 아니라 '이름'이나 '종류'일 때 사용하는 머신러닝 기법을 <strong>'분류(Classification)'</strong>라고 불러요."</div>
+                                <div class="line" id="line-c2"><strong>학생:</strong> "붓꽃 데이터에는 Target 자리에 꽃 이름들이 들어있네요!"</div>
+                                <div class="line" id="line-c3"><strong>교사:</strong> "맞아요. 이번엔 여러 분류 알고리즘에게 시합을 붙여서 누가 더 똑똑한지 알아봅시다."</div>
+                                <div class="line" id="line-c4"><strong>교사:</strong> "Logistic Regression과 Tree 위젯을 Test and Score에 연결하면 모의고사 정확도(CA) 점수가 나옵니다."</div>
+                                <div class="line" id="line-c5"><strong>학생:</strong> "선생님, 제 화면에는 Logistic Regression이 점수가 조금 더 높게 나와요!"</div>
+                                <div class="line" id="line-c6"><strong>교사:</strong> "아주 잘 찾았어요! 인공지능이 알아낸 예측 결과를 가지고 우리 인간은 더 창의적인 의사결정에 집중하면 됩니다."</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- STEP 4: IMAGE EMBEDDING & CLASSIFICATION -->
+                <!-- STEP 4: UNSTRUCTURED DATA & EMBEDDING -->
                 <div class="tab-content" data-step="4">
-                    <h2>🐈 4단계: 개와 고양이 이미지 분류 (임베딩 체험)</h2>
-                    <p class="desc">비정형 데이터인 사진을 인공지능이 어떻게 숫자로 변환하고 분류하는지 체험해 봅시다.</p>
-
-                    <div class="info-box tip">
-                        <div class="info-box-title">🤖 이미지 임베딩 (Image Embedding) 이란?</div>
-                        <div class="info-box-desc">컴퓨터는 고양이나 강아지 사진을 픽셀 그대로 분석하여 지도학습하기 어렵습니다. 구글의 합성곱신경망(CNN) 기반 모델이 이미지에서 털의 재질, 눈과 귀의 모양, 주둥이 비율 등을 분석하여 수천 개의 숫자 정보(특성 벡터, Feature Vector)로 가공해주는 기법입니다.</div>
+                    <h2>🖼️ 4단계: 비정형 데이터와 이미지 분류</h2>
+                    <p class="desc">숫자가 아닌 사진이나 텍스트를 인공지능은 어떻게 이해하고 분류해 내는지 학습합니다.</p>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h3 style="color: var(--primary);">⚙️ 1. 이미지 임베딩(Image Embedding)이란?</h3>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+                            고양이나 강아지 사진을 컴퓨터는 그대로 계산할 수 없습니다. 그래서 인공신경망(CNN) 모델을 거쳐 이미지 내의 특징점(눈의 간격, 귀의 뾰족함, 주둥이 길이 등)을 수많은 <strong>대표 숫자 벡터</strong>로 변환하여 수치 데이터로 가공해 주어야 머신러닝 분류 알고리즘이 동작할 수 있습니다.
+                        </p>
                     </div>
 
-                    <h3>👁️ 이미지 임베딩 & 분류 예측 실시간 테스트</h3>
-                    <p class="desc" style="margin-bottom: 1rem;">아래 이미지 중 하나를 클릭하세요. AI 임베딩 모델이 사진의 특징을 숫자로 자동 추출하고, 로지스틱 회귀 모델이 개와 고양이 중 하나로 즉시 판독합니다.</p>
-
-                    <div class="embedding-panel">
-                        <!-- Image selector thumbs -->
-                        <div class="image-selector-box">
-                            <p style="font-size: 0.85rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.5rem;">실습용 사진 선택:</p>
-                            <div class="image-thumbs">
-                                <img src="assets/cat1.jpg" class="thumb-option" data-image="cat1" alt="Cat A">
-                                <img src="assets/cat2.jpg" class="thumb-option" data-image="cat2" alt="Cat B">
-                                <img src="assets/cat3.jpg" class="thumb-option" data-image="cat3" alt="Cat C">
-                                <img src="assets/dog1.jpg" class="thumb-option" data-image="dog1" alt="Dog A">
-                                <img src="assets/dog2.jpg" class="thumb-option" data-image="dog2" alt="Dog B">
-                                <img src="assets/dog3.jpg" class="thumb-option" data-image="dog3" alt="Dog C">
-                            </div>
-                            <img src="assets/cat1.jpg" class="preview-full-image" id="preview-image" alt="Preview">
-                        </div>
-
-                        <!-- Feature vector progress bars -->
-                        <div class="feature-vector-box">
-                            <p id="embedding-progress-text" style="text-align: center; color: var(--primary); font-weight: 700; font-size: 0.9rem;">(왼쪽에서 분석할 사진을 클릭해 주세요!)</p>
-                            
-                            <div id="vector-panel" style="display: none;">
-                                <p style="font-size: 0.8rem; font-weight: 700; color: var(--secondary); margin-bottom: 0.8rem;">🧬 딥러닝 임베딩 벡터값 (5개 대표 특성):</p>
-                                
-                                <div class="feature-bar-group">
-                                    <label>귀의 크기/뽀족함 (Ear Shape) <span id="val-ear">0</span></label>
-                                    <div class="vector-progress-bar"><div class="vector-progress-fill" id="v-ear"></div></div>
-                                </div>
-                                <div class="feature-bar-group">
-                                    <label>꼬리 길이 분석 (Tail Length) <span id="val-tail">0</span></label>
-                                    <div class="vector-progress-bar"><div class="vector-progress-fill" id="v-tail"></div></div>
-                                </div>
-                                <div class="feature-bar-group">
-                                    <label>털의 질감/줄무늬 패턴 (Texture) <span id="val-texture">0</span></label>
-                                    <div class="vector-progress-bar"><div class="vector-progress-fill" id="v-texture"></div></div>
-                                </div>
-                                <div class="feature-bar-group">
-                                    <label>주둥이 튀어나옴 정도 (Snout Proportion) <span id="val-snout">0</span></label>
-                                    <div class="vector-progress-bar"><div class="vector-progress-fill" id="v-snout"></div></div>
-                                </div>
-                                <div class="feature-bar-group">
-                                    <label>발목 굵기 및 발 크기 (Paw Size) <span id="val-paw">0</span></label>
-                                    <div class="vector-progress-bar"><div class="vector-progress-fill" id="v-paw"></div></div>
-                                </div>
-                                
-                                <div class="prediction-result-overlay" id="ai-prediction-box" style="display: none;">
-                                    <span id="prediction-text">분석 결과: 고양이 98.4%</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div style="background: rgba(255, 107, 0, 0.04); border: 1px solid var(--primary-glow); padding: 1rem; border-radius: 12px; font-size: 0.88rem;">
+                        <p>💡 <strong>비정형 데이터 가명처리와 특징 추출의 난이도:</strong></p>
+                        <p style="color: var(--text-muted); font-size: 0.82rem; margin-top: 0.3rem;">
+                            텍스트나 사진은 개인정보(얼굴, 주민번호 등)가 무작위로 포함될 수 있어 가명처리(개인정보 가리기) 난이도가 정형 데이터보다 훨씬 복잡하고 가공 시 많은 가중치 분석 연산이 요구됩니다.
+                        </p>
                     </div>
                 </div>
 
                 <!-- STEP 5: FINAL QUIZ -->
                 <div class="tab-content" data-step="5">
-                    <h2>🏆 5단계: Orange3 퀴즈 및 학습 수료</h2>
-                    <p class="desc">지금까지 배운 데이터 분석 이론과 위젯 활용 지식을 확인해 봅시다.</p>
+                    <h2>🏆 5단계: Orange3 퀴즈 및 학습 완료</h2>
+                    <p class="desc">지금까지 배운 오렌지3 지도학습의 핵심 개념들을 퀴즈로 직접 최종 정리해 봅시다.</p>
 
                     <div class="quiz-section">
                         <!-- Q1 -->
                         <div class="quiz-question">
-                            <div class="quiz-question-title">Q1. 데이터를 전처리할 때 최솟값과 최댓값을 이용하여 모든 점수들을 [0 ~ 1 사이]의 일정한 비율로 재조정하는 작업을 무엇이라 부를까요?</div>
+                            <div class="quiz-question-title">Q1. 온도에 따른 레몬에이드 판매량 예측처럼 '연속된 숫자'를 맞히는 지도학습 모델을 무엇이라 할까요?</div>
                             <div class="quiz-options">
-                                <div class="quiz-option" data-question="1" data-value="표준화">표준화 (Standardization)</div>
-                                <div class="quiz-option" data-question="1" data-value="정규화">정규화 (Normalization) (정답)</div>
-                                <div class="quiz-option" data-question="1" data-value="이미지 임베딩">이미지 임베딩 (Image Embedding)</div>
+                                <div class="quiz-option" data-question="1" data-value="회귀">회귀 (Regression) (정답)</div>
+                                <div class="quiz-option" data-question="1" data-value="분류">분류 (Classification)</div>
+                                <div class="quiz-option" data-question="1" data-value="군집화">군집화 (Clustering)</div>
                             </div>
                         </div>
 
                         <!-- Q2 -->
                         <div class="quiz-question">
-                            <div class="quiz-question-title">Q2. 개와 고양이 사진처럼 정답이 정해진 데이터셋을 주고 컴퓨터를 학습시킨 후, 새로운 사진이 개인지 고양이인지 맞추는 기법은 어떤 학습 방식에 해당할까요?</div>
+                            <div class="quiz-question-title">Q2. 꽃의 품종이나 스팸 메일 여부처럼 '이름'이나 '카테고리 종류'를 식별하는 지도학습 모델은?</div>
                             <div class="quiz-options">
-                                <div class="quiz-option" data-question="2" data-value="비지도학습">비지도학습 (Unsupervised Learning)</div>
+                                <div class="quiz-option" data-question="2" data-value="회귀">회귀 (Regression)</div>
+                                <div class="quiz-option" data-question="2" data-value="분류">분류 (Classification) (정답)</div>
                                 <div class="quiz-option" data-question="2" data-value="강화학습">강화학습 (Reinforcement Learning)</div>
-                                <div class="quiz-option" data-question="2" data-value="지도학습">지도학습 (Supervised Learning) (정답)</div>
                             </div>
                         </div>
 
                         <!-- Q3 -->
                         <div class="quiz-question">
-                            <div class="quiz-question-title">Q3. 인공지능이 강아지와 고양이 이미지 파일을 분석해 '귀의 크기', '털 무늬' 등 사람이 바로 읽을 수 있는 고차원적인 숫자 특징 값으로 가공하는 작업을 무엇이라 하나요?</div>
+                            <div class="quiz-question-title">Q3. 정답 라벨이 없는 데이터 공간에서 과일 분류 비유처럼 스스로의 패턴을 분석해 자동으로 묶어주는 학습은?</div>
                             <div class="quiz-options">
-                                <div class="quiz-option" data-question="3" data-value="데이터 테이블">데이터 테이블 (Data Table)</div>
-                                <div class="quiz-option" data-question="3" data-value="이미지 임베딩">이미지 임베딩 (Image Embedding) (정답)</div>
-                                <div class="quiz-option" data-question="3" data-value="데이터 샘플링">데이터 샘플링 (Data Sampling)</div>
+                                <div class="quiz-option" data-question="3" data-value="지도학습">지도학습 (Supervised Learning)</div>
+                                <div class="quiz-option" data-question="3" data-value="비지도학습">비지도학습 (Unsupervised Learning) (정답)</div>
+                                <div class="quiz-option" data-question="3" data-value="강화학습">강화학습 (Reinforcement Learning)</div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Completion Banner -->
-                    <div class="completion-banner" id="quiz-success-banner">
-                        <h3>🎓 Orange3 데이터 과학 기초 교육과정 수료!</h3>
-                        <p>고등학교 1학년 인공지능 및 정보 기술 교실 데이터 시각화, 표준화/정규화 전처리, 위젯 분석 및 인공신경망 이미지 임베딩 과정까지 성공적으로 모두 이수하셨습니다. 수고하셨습니다!</p>
+                    <div class="completion-banner" id="quiz-success-banner" style="display:none;">
+                        <h3>🎉 축하합니다! Orange3 데이터 과학 과정을 모두 완수했습니다!</h3>
+                        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:0.5rem;">회귀, 분류, 결정 경계선 및 비정형 임베딩 특징 추출 개념까지 완벽하게 소화하셨습니다. 미래 인공지능 마스터 수료증이 발급되었습니다!</p>
                     </div>
                 </div>
 
@@ -391,62 +260,207 @@
 
             </div>
 
-            <!-- Right Column: Interactive Orange3 Simulation Workspace (Card 2) -->
-            <div class="card" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem;">
-                <h2 style="font-size: 1.5rem; background: linear-gradient(90deg, var(--primary), #ffa15a); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🎛️ Orange3 실시간 캔버스 시뮬레이터</h2>
-                <p class="desc" style="margin-bottom: 0.5rem; font-size: 0.88rem;">마우스 드래그로 포트를 이어주세요! 선이 연결되면 위젯을 클릭하여 가상 모달에서 분석 결과를 볼 수 있습니다.</p>
+            <!-- Right Column: Interactive Simulators (Card 2) -->
+            <div class="card" style="padding: 2rem; display: flex; flex-direction: column; gap: 1rem;" id="right-simulator-card">
                 
-                <div class="workspace-wrapper" id="orange3-workspace">
-                    <!-- Background Canvas for drawing connections -->
-                    <canvas class="canvas-background" id="connection-canvas"></canvas>
-                    
-                    <!-- File Widget (Start Node) -->
-                    <div class="widget-node" id="node-file">
-                        <div class="widget-icon-box">📂
-                            <div class="port port-out" id="port-file-out" title="출력 포트 (드래그하여 연결 시작)"></div>
+                <!-- SIMULATOR STEP 1: MATH TRANSFORM CHART -->
+                <div class="simulator-panel active" data-step="1">
+                    <h2 style="font-size: 1.35rem; color: var(--secondary);">⚖️ 데이터 범위 통일 전처리 (Rescaling)</h2>
+                    <p class="desc">가공되지 않은 시험 원점수가 표준화/정규화를 거치며 어떻게 일정한 비율로 재조정되는지 관찰하세요.</p>
+
+                    <div style="background: #090b14; border: 1px solid var(--border-color); border-radius: 12px; padding: 1rem; margin-top: 0.5rem;">
+                        <label for="transform-type-select" style="font-weight: 700; font-size: 0.82rem; display: block; margin-bottom: 0.4rem; color: var(--primary);">⚙️ 전처리 모델 위젯 방식 변경:</label>
+                        <select id="transform-type-select" style="background: #14172b; color: white; border: 1px solid var(--border-color); padding: 0.4rem; border-radius: 6px; width: 100%; outline: none; font-size: 0.85rem;">
+                            <option value="none">학생들의 실제 원점수 (45점 ~ 90점 분포)</option>
+                            <option value="normalization">정규화 (Normalization) ➔ [모든 값을 0 ~ 1 범위로 스케일링]</option>
+                            <option value="standardization">표준화 (Standardization) ➔ [평균 0, 표준편차 1로 스케일링]</option>
+                        </select>
+
+                        <div style="position: relative; height: 260px; margin-top: 1rem;">
+                            <canvas id="mathChart"></canvas>
                         </div>
-                        <div class="label">File<br><span style="font-size:0.6rem; color:var(--text-muted);">(iris.tab)</span></div>
-                    </div>
-                    
-                    <!-- Data Table Widget -->
-                    <div class="widget-node" id="node-datatable">
-                        <div class="widget-icon-box">📋
-                            <div class="port port-in" id="port-datatable-in" title="입력 포트"></div>
+                        
+                        <div class="info-box-desc" id="math-formula-display" style="font-size: 0.8rem; text-align: center; margin-top: 0.5rem; color: var(--text-muted);">
+                            원시 데이터: 가공되지 않은 학생들의 시험 원점수 (만점 기준 100점)
                         </div>
-                        <div class="label">Data Table</div>
-                    </div>
-                    
-                    <!-- Scatter Plot Widget -->
-                    <div class="widget-node" id="node-scatterplot">
-                        <div class="widget-icon-box">📊
-                            <div class="port port-in" id="port-scatterplot-in" title="입력 포트"></div>
-                        </div>
-                        <div class="label">Scatter Plot</div>
-                    </div>
-                    
-                    <!-- Data Sampler Widget -->
-                    <div class="widget-node" id="node-sampler">
-                        <div class="widget-icon-box">⚖️
-                            <div class="port port-in" id="port-sampler-in" title="입력 포트"></div>
-                        </div>
-                        <div class="label">Data Sampler</div>
                     </div>
                 </div>
 
-                <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center; margin-top: 0.5rem;">※ 위젯 카드 몸통을 잡고 움직이면 연결 상태가 깨지지 않고 부드럽게 재배치됩니다.</p>
+                <!-- SIMULATOR STEP 2: ORANGE3 INSTALLER CARD -->
+                <div class="simulator-panel" data-step="2">
+                    <h2 style="font-size: 1.35rem; color: var(--primary);">🧩 Orange3 설치 가이드 및 핵심 위젯 일람</h2>
+                    <p class="desc">마치 블록을 맞추듯 분석을 돕는 오렌지3 인터페이스 레이아웃 구성도를 확인해 보세요.</p>
+                    
+                    <div style="background: #090b14; border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; text-align: center;">
+                        <div style="font-size: 3.5rem; margin-bottom: 0.8rem;">🍊</div>
+                        <h4 style="color:#fff; font-size: 1.1rem; margin-bottom: 0.5rem;">Orange3 Data Mining Suite</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; text-align: left; margin-bottom: 1rem;">
+                            왼쪽에서 **[File]** 위젯으로 데이터를 입력받은 뒤 ➔ **[Scatter Plot]**이나 **[Data Table]**로 시각화 분석을 가치있게 수행하고 ➔ **[Model]** 및 **[Evaluate]**로 이어지는 선형 파이프라인의 핵심 구조를 사용합니다.
+                        </p>
+                        <a href="https://orangedatamining.com/download/" target="_blank" class="btn" style="width: 100%; justify-content: center; font-size: 0.88rem; padding: 0.6rem;">공식 홈페이지 다운로드 바로가기 ➔</a>
+                    </div>
+                </div>
+
+                <!-- SIMULATOR STEP 3-1: LEMONADE REGRESSION SIMULATOR -->
+                <div class="simulator-panel" data-step="3" id="sim-panel-regression">
+                    <h2 style="font-size: 1.35rem; color: var(--primary);">📈 1차시: 레몬에이드 선형 회귀 시뮬레이터</h2>
+                    <p class="desc">온도와 판매량 데이터 위에 선형 회귀 학습 공식을 긋고 미래 판매량을 맞혀봅시다.</p>
+
+                    <div style="background:#090b14; border:1px solid var(--border-color); border-radius:12px; padding:1rem; margin-bottom: 0.8rem;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 0.6rem;">
+                            <span style="font-size: 0.85rem; font-weight: 700; color: #fff;">내일의 예보 기온 설정:</span>
+                            <span id="lemonade-temp-text" style="color:var(--primary); font-weight:800; font-size:1.2rem; font-family:'Outfit';">24 °C</span>
+                        </div>
+                        <input type="range" id="lemonade-temp-slider" min="15" max="35" step="1" value="18" style="width:100%; accent-color:var(--primary);">
+                    </div>
+
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.8rem;">
+                        <button class="btn btn-secondary" style="flex:1; font-size:0.8rem; padding: 0.5rem;" id="btn-fit-regression">🧠 [Linear Regression] 선형 회귀 공식 학습</button>
+                    </div>
+
+                    <!-- Interactive Chart -->
+                    <div style="position: relative; height: 200px; background: rgba(0,0,0,0.2); border-radius: 8px; padding: 0.5rem;">
+                        <canvas id="regressionChart"></canvas>
+                    </div>
+
+                    <!-- Predictions Box Output -->
+                    <div style="background: rgba(255, 107, 0, 0.05); border: 1px solid var(--primary-glow); border-radius: 8px; padding: 0.8rem; display: flex; align-items: center; justify-content: space-between; margin-top: 0.8rem;">
+                        <div>
+                            <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Orange3 Predictions 예측값</span>
+                            <strong style="color: #fff; font-size: 0.92rem;">내일 예상 판매량:</strong>
+                        </div>
+                        <div id="regression-predicted-sales-box" style="font-size: 1.5rem; font-weight: 900; color: var(--primary);">기다리는 중...</div>
+                    </div>
+                </div>
+
+                <!-- SIMULATOR STEP 3-2: IRIS CLASSIFICATION SIMULATOR -->
+                <div class="simulator-panel" data-step="3" id="sim-panel-classification" style="display: none;">
+                    <h2 style="font-size: 1.35rem; color: var(--secondary);">🌸 2차시: 붓꽃 분류 및 결정 경계선 시각화</h2>
+                    <p class="desc">로지스틱 회귀와 의사결정나무 모델의 2D 데이터 공간 분할 경계 차이와 CA 정확도를 비교하세요.</p>
+
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 0.8rem;">
+                        <button class="btn btn-secondary active-model" style="flex:1; font-size:0.8rem; padding:0.5rem;" id="btn-model-logistic">로지스틱 회귀 (Logistic Regression)</button>
+                        <button class="btn btn-secondary" style="flex:1; font-size:0.8rem; padding:0.5rem;" id="btn-model-tree">의사결정나무 (Decision Tree)</button>
+                    </div>
+
+                    <!-- Accuracies Test and Score board -->
+                    <div style="background:#0b0d18; border:1px solid var(--border-color); border-radius:8px; padding:0.8rem; margin-bottom:0.8rem;">
+                        <span style="font-size: 0.75rem; color: var(--text-muted); display: block; margin-bottom: 0.4rem;">📊 Test and Score 위젯 채점 결과 (분류 정확도)</span>
+                        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.3rem;">
+                            <span style="font-size:0.75rem; color:var(--text-muted); width:80px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">Logistic Reg.:</span>
+                            <div style="flex:1; height:8px; background:rgba(255,255,255,0.05); border-radius:4px; overflow:hidden;">
+                                <div style="width: 96.7%; height: 100%; background: var(--secondary);"></div>
+                            </div>
+                            <span style="font-size:0.75rem; font-weight:700; color:var(--secondary);">CA = 96.7%</span>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:0.5rem;">
+                            <span style="font-size:0.75rem; color:var(--text-muted); width:80px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">Decision Tree:</span>
+                            <div style="flex:1; height:8px; background:rgba(255,255,255,0.05); border-radius:4px; overflow:hidden;">
+                                <div style="width: 93.3%; height: 100%; background: #fbbf24;"></div>
+                            </div>
+                            <span style="font-size:0.75rem; font-weight:700; color:#fbbf24;">CA = 93.3%</span>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Canvas Chart for Iris Plotting and Decision Boundary -->
+                    <div style="position: relative; height: 180px; background: rgba(0,0,0,0.25); border-radius: 8px; padding: 0.5rem; overflow:hidden;">
+                        <canvas id="irisClassificationChart"></canvas>
+                    </div>
+
+                    <!-- Test point controls -->
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem; background:rgba(255,255,255,0.02); padding:0.6rem; border-radius:8px; border: 1px solid var(--border-color);">
+                        <div>
+                            <span style="font-size:0.72rem; color:var(--text-muted);">가상의 꽃잎 길이:</span>
+                            <input type="range" id="test-petal-length" min="1.0" max="6.5" step="0.1" value="4.8" style="width:100%; accent-color:var(--secondary);">
+                        </div>
+                        <div>
+                            <span style="font-size:0.72rem; color:var(--text-muted);">가상의 꽃잎 너비:</span>
+                            <input type="range" id="test-petal-width" min="0.1" max="2.6" step="0.1" value="1.6" style="width:100%; accent-color:var(--secondary);">
+                        </div>
+                    </div>
+
+                    <!-- Predictions result box -->
+                    <div style="background: rgba(0, 240, 255, 0.05); border: 1px solid var(--secondary-glow); border-radius: 8px; padding: 0.6rem; display: flex; align-items: center; justify-content: space-between; margin-top: 0.5rem;">
+                        <div>
+                            <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Orange3 Predictions 예측 품종 결과</span>
+                            <strong style="color: #fff; font-size: 0.85rem;">판독된 붓꽃 꽃 품종:</strong>
+                        </div>
+                        <div id="iris-predicted-species-box" style="font-size: 1.15rem; font-weight: 900; color: var(--secondary);">Versicolor</div>
+                    </div>
+                </div>
+
+                <!-- SIMULATOR STEP 4: IMAGE EMBEDDING AI PREDICTOR -->
+                <div class="simulator-panel" data-step="4">
+                    <h2 style="font-size: 1.35rem; color: var(--primary);">🐕 개와 고양이 AI 이미지 분류 시뮬레이션</h2>
+                    <p class="desc">사진을 클릭하면 CNN 임베딩 특징 벡터를 추출하고 로지스틱 회귀 분류기가 즉시 판독합니다.</p>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 1rem; align-items: center;">
+                        <div class="image-selector-box" style="margin:0;">
+                            <span style="font-size: 0.75rem; font-weight: 700; color: var(--primary); display:block; margin-bottom:0.4rem;">실습용 사진 목록:</span>
+                            <div class="image-thumbs" style="display:grid; grid-template-columns:repeat(3, 1fr); gap: 0.3rem; margin-bottom: 0.5rem;">
+                                <img src="assets/cat1.jpg" class="thumb-option selected" data-image="cat1" alt="Cat A" style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:4px; cursor:pointer; border: 1px solid transparent;">
+                                <img src="assets/cat2.jpg" class="thumb-option" data-image="cat2" alt="Cat B" style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:4px; cursor:pointer; border: 1px solid transparent;">
+                                <img src="assets/cat3.jpg" class="thumb-option" data-image="cat3" alt="Cat C" style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:4px; cursor:pointer; border: 1px solid transparent;">
+                                <img src="assets/dog1.jpg" class="thumb-option" data-image="dog1" alt="Dog A" style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:4px; cursor:pointer; border: 1px solid transparent;">
+                                <img src="assets/dog2.jpg" class="thumb-option" data-image="dog2" alt="Dog B" style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:4px; cursor:pointer; border: 1px solid transparent;">
+                                <img src="assets/dog3.jpg" class="thumb-option" data-image="dog3" alt="Dog C" style="width:100%; aspect-ratio:1; object-fit:cover; border-radius:4px; cursor:pointer; border: 1px solid transparent;">
+                            </div>
+                            <img src="assets/cat1.jpg" class="preview-full-image" id="preview-image" alt="Preview" style="width:100%; height:100px; object-fit:cover; border-radius:8px; border:1px solid var(--border-color);">
+                        </div>
+
+                        <!-- Feature vector progress bars -->
+                        <div class="feature-vector-box" style="margin:0; background:rgba(0,0,0,0.2); padding:0.8rem; border-radius:8px; border:1px solid var(--border-color);">
+                            <p id="embedding-progress-text" style="text-align: center; color: var(--primary); font-weight: 700; font-size: 0.8rem; margin: 1rem 0; display:none;">⌛ 이미지 특징 분석 중 (Image Embedding)...</p>
+                            
+                            <div id="vector-panel">
+                                <span style="font-size: 0.72rem; font-weight: 700; color: var(--secondary); display:block; margin-bottom: 0.4rem;">🧬 딥러닝 임베딩 특징 수치 (특성 벡터):</span>
+                                
+                                <div class="feature-bar-group" style="margin-bottom:0.3rem;">
+                                    <label style="font-size:0.68rem; display:flex; justify-content:space-between; color:var(--text-muted);">귀의 크기/뾰족함 <span id="val-ear">88</span></label>
+                                    <div class="vector-progress-bar" style="height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden;"><div class="vector-progress-fill" id="v-ear" style="height:100%; background:var(--primary); width:88%;"></div></div>
+                                </div>
+                                <div class="feature-bar-group" style="margin-bottom:0.3rem;">
+                                    <label style="font-size:0.68rem; display:flex; justify-content:space-between; color:var(--text-muted);">꼬리 길이 분석 <span id="val-tail">15</span></label>
+                                    <div class="vector-progress-bar" style="height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden;"><div class="vector-progress-fill" id="v-tail" style="height:100%; background:var(--primary); width:15%;"></div></div>
+                                </div>
+                                <div class="feature-bar-group" style="margin-bottom:0.3rem;">
+                                    <label style="font-size:0.68rem; display:flex; justify-content:space-between; color:var(--text-muted);">털의 패턴/줄무늬 <span id="val-texture">92</span></label>
+                                    <div class="vector-progress-bar" style="height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden;"><div class="vector-progress-fill" id="v-texture" style="height:100%; background:var(--primary); width:92%;"></div></div>
+                                </div>
+                                <div class="feature-bar-group" style="margin-bottom:0.3rem;">
+                                    <label style="font-size:0.68rem; display:flex; justify-content:space-between; color:var(--text-muted);">주둥이 튀어나옴 정도 <span id="val-snout">12</span></label>
+                                    <div class="vector-progress-bar" style="height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden;"><div class="vector-progress-fill" id="v-snout" style="height:100%; background:var(--primary); width:12%;"></div></div>
+                                </div>
+                                <div class="feature-bar-group" style="margin-bottom:0.5rem;">
+                                    <label style="font-size:0.68rem; display:flex; justify-content:space-between; color:var(--text-muted);">발의 굵기/크기 <span id="val-paw">85</span></label>
+                                    <div class="vector-progress-bar" style="height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden;"><div class="vector-progress-fill" id="v-paw" style="height:100%; background:var(--primary); width:85%;"></div></div>
+                                </div>
+                                
+                                <div class="prediction-result-overlay" id="ai-prediction-box" style="background:rgba(0,255,136,0.1); border:1px solid rgba(0,255,136,0.3); padding:0.5rem; border-radius:6px; text-align:center;">
+                                    <span id="prediction-text" style="font-size:0.8rem; font-weight:700; color:var(--success);">😻 분석 결과: 고양이 (98.4%)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SIMULATOR STEP 5: MASTER CERTIFICATE -->
+                <div class="simulator-panel" data-step="5" style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 0.5rem;">🎖️</div>
+                    <h2 style="font-size: 1.5rem; color: var(--secondary); background: none; -webkit-text-fill-color: initial;">머신러닝 & 데이터 과학 마스터</h2>
+                    <p class="desc">정형/비정형 데이터의 구분부터 회귀, 분류 결정 경계선 및 이미지 특징 수치 가공 원리를 모두 수료했습니다!</p>
+                    
+                    <div style="background:#090b14; border: 1px dashed var(--secondary-glow); padding: 1.5rem; border-radius: 12px; margin-top: 1rem; position: relative;">
+                        <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">데이터 과학 교육과정 수료인증</span>
+                        <div style="display:flex; justify-content:center; align-items:center; gap:0.5rem; margin-top:0.8rem;">
+                            <label for="student-name-input" style="font-size:0.85rem; color:#fff;">학생 이름:</label>
+                            <input type="text" id="student-name-input" placeholder="이름을 입력하세요" style="background:#14172b; border:1px solid var(--border-color); color:var(--text-main); font-size:1rem; padding:0.3rem 0.8rem; border-radius:4px; text-align:center; font-weight:700; width:150px; outline:none;">
+                        </div>
+                        <button class="btn btn-success" id="btn-cert-done" style="margin-top:1rem; width:100%; justify-content:center; font-size:0.9rem;">수료증서 발급받기 🎉</button>
+                    </div>
+                </div>
             </div>
 
-        </div>
-    </div>
-
-    <!-- Data Details Popup Modal -->
-    <div class="modal-overlay" id="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" id="modal-close">×</button>
-            <div class="modal-title" id="modal-title">위젯 상세 속성</div>
-            <div id="modal-body-content" style="color: var(--text-main); font-size: 0.95rem; line-height: 1.6;">
-                <!-- Content will load dynamically -->
-            </div>
         </div>
     </div>
 

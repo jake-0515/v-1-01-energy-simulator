@@ -890,3 +890,117 @@ code {
         box-shadow: 0 0 25px rgba(0, 240, 255, 0.25);
     }
 }
+
+/* ==================== NEW CLASSROOM SIMULATOR STYLES ==================== */
+
+.btn-tab {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 0;
+    box-shadow: none;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-tab:hover {
+    color: var(--text-main);
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn-tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    text-shadow: 0 0 8px var(--primary-glow);
+}
+
+.sub-tab-panel {
+    display: none;
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+.sub-tab-panel.active {
+    display: block;
+}
+
+/* Dialogue box showing Teacher-Student Script */
+.dialogue-box {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 1rem;
+    max-height: 250px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dialogue-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.3rem;
+}
+
+.dialogue-scroll {
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding-right: 0.4rem;
+}
+
+.dialogue-scroll::-webkit-scrollbar {
+    width: 4px;
+}
+
+.dialogue-scroll .line {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+    padding: 0.4rem;
+    border-radius: 6px;
+    transition: var(--transition);
+    border-left: 2px solid transparent;
+}
+
+.dialogue-scroll .line strong {
+    color: var(--text-main);
+}
+
+.dialogue-scroll .line.active {
+    background: rgba(0, 240, 255, 0.08);
+    color: var(--text-main);
+    border-left-color: var(--secondary);
+    box-shadow: 0 2px 10px rgba(0, 240, 255, 0.05);
+}
+
+/* Simulator Panel toggles */
+.simulator-panel {
+    display: none;
+    animation: fadeIn 0.4s ease-out forwards;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.simulator-panel.active {
+    display: flex;
+}
+
+/* Model Toggle buttons styling */
+.btn-secondary.active-model {
+    background: rgba(0, 240, 255, 0.15) !important;
+    border-color: var(--secondary) !important;
+    color: var(--secondary) !important;
+    box-shadow: 0 0 10px var(--secondary-glow);
+}
+
