@@ -348,6 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (regressionChartInstance) regressionChartInstance.destroy();
 
         regressionChartInstance = new Chart(ctx, {
+            type: 'scatter',
             data: { datasets: datasets },
             options: {
                 responsive: true,
@@ -526,6 +527,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (irisChartInstance) irisChartInstance.destroy();
 
         irisChartInstance = new Chart(ctx, {
+            type: 'scatter',
             data: { datasets: datasets },
             plugins: [decisionBoundaryPlugin],
             options: {
