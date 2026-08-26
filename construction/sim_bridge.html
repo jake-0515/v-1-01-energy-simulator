@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3차시 — 토목 구조물 & 교량의 힘</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Segoe UI','Malgun Gothic',sans-serif;
+  background:linear-gradient(160deg,#0f172a,#1e293b);
+  color:#e2e8f0; min-height:100vh;
+}
+.container { max-width:1050px; margin:0 auto; padding:20px 18px 80px; }
+.top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.top-nav a { color:#7dd3fc; text-decoration:none; font-size:.9rem; }
+.top-nav a:hover { text-decoration:underline; }
+h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
+.lesson-tag { display:inline-block; background:#fbbf24; color:#1e293b; font-weight:800; border-radius:8px; padding:3px 12px; font-size:.8rem; margin-bottom:10px; }
+.goal-box {
+  background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0;
+  padding:14px 18px; margin:14px 0 30px; font-size:.92rem; line-height:1.7;
+}
+.goal-box b { color:#7dd3fc; }
+.step-title { font-size:1.25rem; color:#fbbf24; margin:40px 0 6px; display:flex; align-items:center; gap:10px; }
+.step-num { background:#f59e0b; color:#1e293b; width:30px; height:30px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:.95rem; flex-shrink:0; }
+.step-desc { color:#94a3b8; font-size:.9rem; margin-bottom:16px; line-height:1.6; }
+
+/* ===== 토목 구조물 카드 ===== */
+.civil-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+.civil-card {
+  background:rgba(30,41,59,.8); border:1px solid #475569; border-radius:14px; padding:16px;
+  cursor:pointer; transition:.25s;
+}
+.civil-card:hover { border-color:#fbbf24; transform:translateY(-3px); }
+.civil-card .ci { font-size:1.7rem; }
+.civil-card b { display:block; color:#fbbf24; margin:6px 0 4px; font-size:.95rem; }
+.civil-card p { font-size:.8rem; color:#94a3b8; line-height:1.55; }
+.civil-card .more { display:none; margin-top:8px; font-size:.78rem; color:#cbd5e1; line-height:1.6; background:rgba(251,191,36,.07); border-radius:8px; padding:8px 10px; }
+.civil-card.open .more { display:block; }
+.civil-card.open { border-color:#f59e0b; }
+
+/* ===== 교량 시뮬레이터 ===== */
+.bridge-sim { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.bridge-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.btab {
+  background:#334155; color:#cbd5e1; border:1px solid #64748b; border-radius:999px;
+  padding:8px 18px; font-size:.88rem; cursor:pointer; font-family:inherit; transition:.2s;
+}
+.btab.active { background:linear-gradient(135deg,#f59e0b,#d97706); color:#1e293b; font-weight:800; border-color:#f59e0b; }
+.bridge-stage { background:linear-gradient(180deg,#082f49 60%,#0c4a6e); border-radius:12px; overflow:hidden; position:relative; }
+.bridge-stage svg { display:block; width:100%; height:auto; }
+.bridge-info {
+  margin-top:12px; background:rgba(251,191,36,.07); border:1px dashed rgba(251,191,36,.35);
+  border-radius:10px; padding:12px 16px; font-size:.87rem; line-height:1.65;
+}
+.bridge-info b { color:#fbbf24; }
+.load-row { display:flex; align-items:center; gap:14px; margin-top:14px; flex-wrap:wrap; }
+.load-row label { font-size:.9rem; color:#cbd5e1; white-space:nowrap; }
+.load-row input[type=range] { flex:1; min-width:160px; accent-color:#f59e0b; height:6px; }
+.load-val { font-weight:800; color:#fbbf24; min-width:70px; font-size:.95rem; }
+.legend { display:flex; gap:18px; margin-top:10px; font-size:.82rem; flex-wrap:wrap; }
+.legend span { display:flex; align-items:center; gap:6px; }
+.lg-c { width:26px; height:4px; background:#f87171; border-radius:2px; }
+.lg-t { width:26px; height:4px; background:#60a5fa; border-radius:2px; }
+
+/* ===== 힘 개념 박스 ===== */
+.force-box { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px; }
+.fcard { border-radius:12px; padding:16px; border:2px solid; }
+.fcard.comp { background:rgba(248,113,113,.07); border-color:rgba(248,113,113,.45); }
+.fcard.tens { background:rgba(96,165,250,.07); border-color:rgba(96,165,250,.45); }
+.fcard h4 { margin-bottom:6px; font-size:1rem; }
+.fcard.comp h4 { color:#fca5a5; } .fcard.tens h4 { color:#93c5fd; }
+.fcard p { font-size:.85rem; line-height:1.6; color:#cbd5e1; }
+.fcard .arr { font-size:1.3rem; text-align:center; margin:6px 0; letter-spacing:4px; }
+@media(max-width:560px){ .force-box{grid-template-columns:1fr} }
+
+/* ===== 내진 시뮬레이터 ===== */
+.eq-sim { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.eq-stage { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+.eq-cell { background:rgba(15,23,42,.6); border-radius:12px; padding:12px; text-align:center; }
+.eq-cell h4 { font-size:.95rem; margin-bottom:2px; }
+.eq-cell .eq-sub { font-size:.72rem; color:#94a3b8; margin-bottom:8px; line-height:1.5; min-height:2.3em; }
+.eq-cell[data-type="naijin"] h4 { color:#fbbf24; }
+.eq-cell[data-type="myeonjin"] h4 { color:#4ade80; }
+.eq-cell[data-type="jejin"] h4 { color:#38bdf8; }
+.eq-svg-wrap { overflow:hidden; }
+@keyframes shakeGround { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+@keyframes swayHard { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-2.4deg)} 75%{transform:rotate(2.4deg)} }
+@keyframes swayLight { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-0.7deg)} 75%{transform:rotate(0.7deg)} }
+@keyframes swayMid { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-1.3deg)} 75%{transform:rotate(1.3deg)} }
+.quaking .eq-ground { animation:shakeGround 1.2s ease-in-out infinite; }
+.quaking .bld-naijin { animation:swayHard 1.2s ease-in-out infinite; transform-origin:bottom center; }
+.quaking .bld-myeonjin { animation:swayLight 1.2s ease-in-out infinite; transform-origin:bottom center; }
+.quaking .bld-jejin { animation:swayMid 1.2s ease-in-out infinite; transform-origin:bottom center; }
+.quaking .damper-el { animation:shakeGround 1.2s ease-in-out infinite reverse; }
+.eq-controls { text-align:center; margin-top:16px; }
+.btn-main {
+  background:linear-gradient(135deg,#f59e0b,#d97706); color:#1e293b; font-weight:800;
+  border:none; border-radius:10px; padding:11px 26px; font-size:.95rem; cursor:pointer; font-family:inherit; transition:.2s;
+}
+.btn-main:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(245,158,11,.35); }
+.eq-desc { margin-top:14px; font-size:.85rem; line-height:1.7; }
+.eq-desc .d-item { padding:8px 12px; border-radius:8px; margin-bottom:6px; }
+.eq-desc .d-item.n { background:rgba(251,191,36,.07); }
+.eq-desc .d-item.m { background:rgba(74,222,128,.07); }
+.eq-desc .d-item.j { background:rgba(56,189,248,.07); }
+@media(max-width:640px){ .eq-stage{grid-template-columns:1fr} }
+
+/* ===== 교량 미니 퀴즈 ===== */
+.mini-quiz { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.mqz-item { margin-bottom:16px; }
+.mqz-q { font-size:.95rem; margin-bottom:10px; line-height:1.6; }
+.mqz-q .qn { color:#fbbf24; font-weight:700; }
+.mqz-opts { display:flex; gap:8px; flex-wrap:wrap; }
+.mqz-btn {
+  background:#334155; color:#e2e8f0; border:1px solid #64748b; border-radius:999px;
+  padding:7px 16px; font-size:.85rem; cursor:pointer; transition:.2s; font-family:inherit;
+}
+.mqz-btn:hover:not(:disabled) { border-color:#fbbf24; color:#fbbf24; }
+.mqz-btn.correct { background:#14532d; border-color:#4ade80; color:#bbf7d0; }
+.mqz-btn.wrong { background:#7f1d1d; border-color:#f87171; color:#fecaca; }
+.mqz-btn:disabled { cursor:default; opacity:.85; }
+.mqz-fb { font-size:.82rem; margin-top:8px; min-height:1.2em; }
+.mqz-fb.ok { color:#4ade80; } .mqz-fb.no { color:#f87171; }
+
+/* ===== 스스로 확인 ===== */
+.self-check { background:rgba(74,222,128,.07); border:1px solid rgba(74,222,128,.35); border-radius:14px; padding:20px; }
+.self-check h3 { color:#86efac; font-size:1rem; margin-bottom:12px; }
+.sc-item { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:.9rem; line-height:1.55; }
+.sc-item input { margin-top:3px; width:16px; height:16px; accent-color:#4ade80; cursor:pointer; }
+.sc-progress { margin-top:12px; font-size:.85rem; color:#86efac; }
+.next-link { display:block; text-align:center; margin-top:34px; }
+.next-link a {
+  display:inline-block; background:linear-gradient(135deg,#a78bfa,#7c3aed); color:#f8fafc;
+  font-weight:800; text-decoration:none; border-radius:12px; padding:14px 34px; font-size:1rem; transition:.2s;
+}
+.next-link a:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(167,139,250,.35); }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-nav">
+    <a href="sim_building.html">← 2차시: 건축 구조물</a>
+    <a href="activity_quiz.html">4차시: 형성평가 →</a>
+  </div>
+
+  <span class="lesson-tag">3차시</span>
+  <h1>🌉 토목 구조물 & 교량의 힘</h1>
+  <div class="goal-box">
+    <b>학습 목표</b><br>
+    ① 토목 구조물의 <b>종류와 역할</b>을 설명할 수 있다.<br>
+    ② 교량 4종류(현수교·사장교·트러스교·아치교)의 <b>구조 원리</b>를 구분할 수 있다.<br>
+    ③ 구조물에 작용하는 <b>압축력·인장력</b>을 시뮬레이션으로 확인하고, <b>내진 설계</b> 3가지 방식을 비교할 수 있다.
+  </div>
+
+  <!-- STEP 1 : 토목 구조물 탐색 -->
+  <div class="step-title"><span class="step-num">1</span> 토목 구조물의 종류</div>
+  <p class="step-desc">토목 구조물은 <b>공공의 이익</b>을 위해 자연환경을 개량하거나 인간의 생활 환경을 개선하기 위해 만든 구조물입니다. 카드를 <b>클릭</b>하면 자세한 설명이 열려요.</p>
+  <div class="civil-grid">
+    <div class="civil-card"><div class="ci">🛣️</div><b>도로</b><p>사람과 차량의 통행을 위해 설치한 육상 통로</p>
+      <div class="more">옛날에는 자갈·흙·벽돌 등으로 만들었으나, 최근에는 아스팔트·콘크리트 등으로 포장한 도로가 대부분. 철도와 함께 육상 교통을 분담하는 중요한 교통 시설.</div></div>
+    <div class="civil-card"><div class="ci">🚇</div><b>터널</b><p>산이나 땅, 강 밑을 뚫어 만든 통로</p>
+      <div class="more">도로의 일부로, 지하 공간으로 이용하는 구조물. 위치에 따라 산악 터널, 도시 터널, 지하 터널, 해저 터널, 하저 터널 등으로 나뉨.</div></div>
+    <div class="civil-card"><div class="ci">🌉</div><b>교량</b><p>장애물이나 다른 통로를 건너기 위한 구조물</p>
+      <div class="more">도로·철도·인도 등이 하천, 계곡, 해협 등을 건너기 위해 만듦. <b>상부 구조</b>(하중을 하부에 전달)와 <b>하부 구조</b>(하중을 지반으로 분산)로 구성.</div></div>
+    <div class="civil-card"><div class="ci">🚆</div><b>철도</b><p>침목 위에 철제 레일을 설치한 선로</p>
+      <div class="more">기차는 다른 교통 기관에 비해 동력의 경제성, 대량 수송성, 신속성, 쾌적성 등이 뛰어나 장거리 수송에 유리.</div></div>
+    <div class="civil-card"><div class="ci">⚓</div><b>항만</b><p>육상 교통과 해상 교통을 연결해 주는 관문</p>
+      <div class="more">선박이 안전하게 출입하고 정박할 수 있도록 한 구조물. 물류를 하역할 수 있는 시설을 포함.</div></div>
+    <div class="civil-card"><div class="ci">💧</div><b>댐</b><p>물을 저장하기 위해 하천을 가로질러 만든 구조물</p>
+      <div class="more">저수·취수뿐 아니라 토사 유출 방지, 수력 발전, 생활용수·공업용수·농업용수 공급, 하천 수위 조절 기능.</div></div>
+    <div class="civil-card"><div class="ci">🏞️</div><b>하천 및 제방</b><p>빗물·눈 녹은 물·지하수 등에 의해 만들어진 수로 관리</p>
+      <div class="more">하천 관리 공사에는 <b>이수 공사</b>(하천의 물을 효과적으로 이용: 공사 수로, 댐, 취수 설치)와 <b>치수 공사</b>(홍수 범람 막기, 하천 폭 넓히기, 제방 쌓기, 유량 조절)가 있음.</div></div>
+    <div class="civil-card"><div class="ci">🚰</div><b>상하수도</b><p>깨끗한 물 공급과 사용한 물 처리 시설</p>
+      <div class="more">상수도는 생활에 필요한 물을 공급하고, 하수도는 사용한 물과 빗물을 모아 처리하는 기반 시설.</div></div>
+  </div>
+
+  <!-- STEP 2 : 힘 개념 -->
+  <div class="step-title"><span class="step-num">2</span> 구조물에 작용하는 두 가지 힘</div>
+  <p class="step-desc">교량 시뮬레이터를 실험하기 전, 두 힘의 개념을 먼저 이해하세요.</p>
+  <div class="force-box">
+    <div class="fcard comp">
+      <h4>🔴 압축력</h4>
+      <div class="arr">→ ⬛ ←</div>
+      <p>물체에 압력을 가하여 <b>부피를 줄이려는 힘</b>. 양쪽에서 미는 힘입니다. 기둥·아치가 주로 받아요.</p>
+    </div>
+    <div class="fcard tens">
+      <h4>🔵 인장력</h4>
+      <div class="arr">← ⬛ →</div>
+      <p>물체를 <b>늘이거나 잡아당기는 힘</b>. 양쪽에서 당기는 힘입니다. 케이블·줄이 주로 받아요.</p>
+    </div>
+  </div>
+
+  <!-- STEP 3 : 교량 시뮬레이터 -->
+  <div class="step-title"><span class="step-num">3</span> 교량의 힘 시뮬레이터</div>
+  <p class="step-desc">교량 종류를 선택하고 <b>하중 슬라이더</b>를 움직여 보세요. 트럭이 이동하며 다리가 받는 <b style="color:#fca5a5">압축력(빨강)</b>과 <b style="color:#93c5fd">인장력(파랑)</b>이 표시됩니다. 하중이 클수록 힘 표시가 굵어져요!</p>
+  <div class="bridge-sim">
+    <div class="bridge-tabs">
+      <button class="btab active" data-b="suspension">현수교</button>
+      <button class="btab" data-b="cablestayed">사장교</button>
+      <button class="btab" data-b="truss">트러스교</button>
+      <button class="btab" data-b="arch">아치교</button>
+    </div>
+    <div class="bridge-stage">
+      <svg id="bridgeSvg" viewBox="0 0 800 340"></svg>
+    </div>
+    <div class="load-row">
+      <label>🚚 트럭 위치</label>
+      <input type="range" id="truckPos" min="0" max="100" value="50">
+    </div>
+    <div class="load-row">
+      <label>⚖️ 하중 크기</label>
+      <input type="range" id="loadAmt" min="1" max="10" value="4">
+      <span class="load-val" id="loadVal">4 톤</span>
+    </div>
+    <div class="legend">
+      <span><span class="lg-c"></span> 압축력 (미는 힘 → ←)</span>
+      <span><span class="lg-t"></span> 인장력 (당기는 힘 ← →)</span>
+    </div>
+    <div class="bridge-info" id="bridgeInfo"></div>
+  </div>
+
+  <!-- STEP 4 : 내진 설계 -->
+  <div class="step-title"><span class="step-num">4</span> 내진 설계 비교 실험</div>
+  <p class="step-desc">지진으로부터 건물을 지키는 3가지 설계! <b>지진 발생</b> 버튼을 눌러 세 건물의 흔들림 차이를 관찰하세요.</p>
+  <div class="eq-sim" id="eqSim">
+    <div class="eq-stage">
+      <div class="eq-cell" data-type="naijin">
+        <h4>💪 내진 구조</h4>
+        <div class="eq-sub">기둥·내력벽의 강도를 높여<br>구조물 자체 내력으로 저항</div>
+        <div class="eq-svg-wrap">
+          <svg viewBox="0 0 160 190" width="100%">
+            <g class="bld-naijin">
+              <rect x="45" y="30" width="70" height="130" fill="#78350f" stroke="#f59e0b" stroke-width="3" rx="3"/>
+              <line x1="45" y1="30" x2="115" y2="95" stroke="#fbbf24" stroke-width="3"/>
+              <line x1="115" y1="30" x2="45" y2="95" stroke="#fbbf24" stroke-width="3"/>
+              <line x1="45" y1="95" x2="115" y2="160" stroke="#fbbf24" stroke-width="3"/>
+              <line x1="115" y1="95" x2="45" y2="160" stroke="#fbbf24" stroke-width="3"/>
+            </g>
+            <g class="eq-ground"><rect x="10" y="160" width="140" height="14" fill="#57534e"/></g>
+          </svg>
+        </div>
+      </div>
+      <div class="eq-cell" data-type="myeonjin">
+        <h4>🛡️ 면진 구조</h4>
+        <div class="eq-sub">기둥과 지반 사이 고무·베어링으로<br>지진이 구조물에 전달되는 것 최소화</div>
+        <div class="eq-svg-wrap">
+          <svg viewBox="0 0 160 190" width="100%">
+            <g class="bld-myeonjin">
+              <rect x="45" y="25" width="70" height="120" fill="#14532d" stroke="#4ade80" stroke-width="3" rx="3"/>
+              <g fill="#86efac"><rect x="55" y="40" width="14" height="14"/><rect x="91" y="40" width="14" height="14"/><rect x="55" y="72" width="14" height="14"/><rect x="91" y="72" width="14" height="14"/><rect x="55" y="104" width="14" height="14"/><rect x="91" y="104" width="14" height="14"/></g>
+            </g>
+            <g class="eq-ground">
+              <ellipse cx="60" cy="152" rx="10" ry="7" fill="#22c55e"/>
+              <ellipse cx="100" cy="152" rx="10" ry="7" fill="#22c55e"/>
+              <rect x="10" y="160" width="140" height="14" fill="#57534e"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="eq-cell" data-type="jejin">
+        <h4>⚙️ 제진 구조</h4>
+        <div class="eq-sub">진동을 감소시키는 장치를 설치해<br>지진의 힘을 상쇄</div>
+        <div class="eq-svg-wrap">
+          <svg viewBox="0 0 160 190" width="100%">
+            <g class="bld-jejin">
+              <rect x="45" y="25" width="70" height="135" fill="#0c4a6e" stroke="#38bdf8" stroke-width="3" rx="3"/>
+              <g class="damper-el">
+                <circle cx="80" cy="55" r="13" fill="#facc15" stroke="#eab308" stroke-width="2"/>
+                <line x1="80" y1="68" x2="80" y2="82" stroke="#eab308" stroke-width="3"/>
+              </g>
+              <g fill="#7dd3fc"><rect x="55" y="95" width="14" height="12"/><rect x="91" y="95" width="14" height="12"/><rect x="55" y="120" width="14" height="12"/><rect x="91" y="120" width="14" height="12"/></g>
+            </g>
+            <g class="eq-ground"><rect x="10" y="160" width="140" height="14" fill="#57534e"/></g>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="eq-controls">
+      <button class="btn-main" id="quakeBtn">🌋 지진 발생!</button>
+    </div>
+    <div class="eq-desc">
+      <div class="d-item n"><b style="color:#fbbf24">내진</b> — 기둥과 내력벽의 강도를 높여 구조물 자체의 힘으로 <b>버티는</b> 방식. 건물이 가장 크게 흔들려요.</div>
+      <div class="d-item m"><b style="color:#4ade80">면진</b> — 지반과 건물 사이에 고무 받침을 넣어 지진 에너지가 <b>전달되지 않게 차단</b>. 흔들림이 가장 적어요.</div>
+      <div class="d-item j"><b style="color:#38bdf8">제진</b> — 건물 안 감쇠 장치(진자 등)가 반대로 움직이며 흔들림을 <b>상쇄</b>. 중간 정도로 흔들려요.</div>
+    </div>
+  </div>
+
+  <!-- STEP 5 : 미니 퀴즈 -->
+  <div class="step-title"><span class="step-num">5</span> 적용 미니 퀴즈</div>
+  <p class="step-desc">시뮬레이터에서 관찰한 내용을 바탕으로 답해 보세요.</p>
+  <div class="mini-quiz" id="miniQuiz">
+    <div class="mqz-item" data-answer="인장력">
+      <div class="mqz-q"><span class="qn">Q1.</span> 현수교의 주케이블과 행어(수직 케이블)가 주로 받는 힘은?</div>
+      <div class="mqz-opts" data-opts="압축력,인장력"></div><div class="mqz-fb"></div>
+    </div>
+    <div class="mqz-item" data-answer="압축력">
+      <div class="mqz-q"><span class="qn">Q2.</span> 아치교의 곡선(아치) 부분이 주로 받는 힘은?</div>
+      <div class="mqz-opts" data-opts="압축력,인장력"></div><div class="mqz-fb"></div>
+    </div>
+    <div class="mqz-item" data-answer="사장교">
+      <div class="mqz-q"><span class="qn">Q3.</span> 교량 양쪽에 주탑을 세우고, 주탑에서 상판의 여러 지점에 케이블을 <b>직접</b> 연결한 교량은?</div>
+      <div class="mqz-opts" data-opts="현수교,사장교,트러스교,아치교"></div><div class="mqz-fb"></div>
+    </div>
+    <div class="mqz-item" data-answer="면진 구조">
+      <div class="mqz-q"><span class="qn">Q4.</span> 기둥과 지반 사이에 고무 받침을 설치하여 지진이 건물에 전달되는 것을 줄이는 설계는?</div>
+      <div class="mqz-opts" data-opts="내진 구조,면진 구조,제진 구조"></div><div class="mqz-fb"></div>
+    </div>
+    <div style="text-align:center;margin-top:6px;font-size:.9rem" id="mqzScore"></div>
+  </div>
+
+  <!-- STEP 6 : 스스로 확인 -->
+  <div class="step-title"><span class="step-num">6</span> 스스로 확인하기 <span style="font-size:.75rem;color:#86efac">🧠 메타인지</span></div>
+  <div class="self-check">
+    <h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>토목 구조물의 종류를 5가지 이상 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>압축력(미는 힘)과 인장력(당기는 힘)을 화살표로 표현할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>현수교와 사장교의 케이블 연결 방식 차이를 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>아치교가 하중을 어떻게 분산하는지 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>내진·면진·제진의 차이를 한 문장씩으로 정리할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress">체크: 0 / 5</div>
+  </div>
+
+  <div class="next-link"><a href="activity_quiz.html">다음 → 4차시: 형성평가 (15문제)</a></div>
+</div>
+
+<script>
+/* ===== 토목 카드 토글 ===== */
+document.querySelectorAll('.civil-card').forEach(c => c.addEventListener('click', () => c.classList.toggle('open')));
+
+/* ===================================================== */
+/* 교량 시뮬레이터                                        */
+/* ===================================================== */
+const svg = document.getElementById('bridgeSvg');
+const NS = 'http://www.w3.org/2000/svg';
+let bridgeType = 'suspension';
+
+const BRIDGE_INFO = {
+  suspension: '<b>현수교</b> — 주탑 사이에 <b>주케이블</b>을 연결하고, 상부 구조(상판)에 수직 케이블(행어)을 매달아 연결한 교량. 케이블은 <b style="color:#93c5fd">인장력</b>을, 주탑은 <b style="color:#fca5a5">압축력</b>을 받아요. 예) 금문교, 광안대교, 영종대교',
+  cablestayed: '<b>사장교</b> — 교량 양쪽에 <b>주탑</b>을 세우고, 상부 구조의 여러 지점에 케이블을 <b>직접 연결</b>한 교량. 현수교와 달리 주케이블 없이 주탑에서 바로 상판으로! 예) 서해대교, 인천대교, 목포대교',
+  truss: '<b>트러스교</b> — 교각 또는 교대 위에 <b>삼각형 모양</b>의 철제 트러스를 얹은 교량. 삼각형은 힘을 골고루 분산시키는 가장 안정적인 도형! 부재마다 압축·인장을 나눠 받아요. 예) 성산대교, 한강철교',
+  arch: '<b>아치교</b> — 보를 <b>원 모양 곡선(아치)</b>으로 만들어 교각 사이가 긴 교량. 하중이 아치 곡선을 타고 양끝 지반으로 흘러가며 아치 전체가 <b style="color:#fca5a5">압축력</b>을 받아요. 예) 한강대교, 서강대교',
+};
+
+function el(tag, attrs) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  return e;
+}
+function drawTruck(x, y, load) {
+  const g = el('g', {});
+  const scale = 0.8 + load * 0.05;
+  g.setAttribute('transform', `translate(${x},${y}) scale(${scale})`);
+  g.appendChild(el('rect', { x:-26, y:-30, width:34, height:20, fill:'#dc2626', rx:3 }));
+  g.appendChild(el('rect', { x:8, y:-24, width:16, height:14, fill:'#f87171', rx:2 }));
+  g.appendChild(el('circle', { cx:-14, cy:-8, r:6, fill:'#1e293b', stroke:'#94a3b8','stroke-width':2 }));
+  g.appendChild(el('circle', { cx:14, cy:-8, r:6, fill:'#1e293b', stroke:'#94a3b8','stroke-width':2 }));
+  const t = el('text', { x:-9, y:-16, 'font-size':11, fill:'#fff', 'font-weight':'bold' });
+  t.textContent = '🚚'; g.appendChild(t);
+  return g;
+}
+/* 힘 화살표: comp = 마주보는 화살표(압축), tens = 바깥 화살표(인장) */
+function forceArrow(x1,y1,x2,y2,type,w) {
+  const g = el('g', {});
+  const color = type === 'comp' ? '#f87171' : '#60a5fa';
+  g.appendChild(el('line', { x1,y1,x2,y2, stroke:color, 'stroke-width':w, 'stroke-linecap':'round', opacity:.9 }));
+  const ang = Math.atan2(y2-y1, x2-x1);
+  const ah = 7 + w;
+  function head(px,py,dir) {
+    const a1 = ang + (dir>0?0:Math.PI);
+    const p1x = px - ah*Math.cos(a1 - .45), p1y = py - ah*Math.sin(a1 - .45);
+    const p2x = px - ah*Math.cos(a1 + .45), p2y = py - ah*Math.sin(a1 + .45);
+    g.appendChild(el('polygon', { points:`${px},${py} ${p1x},${p1y} ${p2x},${p2y}`, fill:color }));
+  }
+  const mx=(x1+x2)/2, my=(y1+y2)/2;
+  if (type === 'comp') { // 양끝→중앙
+    head(mx - (mx-x1)*0.25, my - (my-y1)*0.25, 1);
+    head(mx + (x2-mx)*0.25, my + (y2-my)*0.25, -1);
+  } else { // 중앙→양끝
+    head(x1 + (x1-mx)*0.02, y1 + (y1-my)*0.02, -1);
+    head(x2 + (x2-mx)*0.02, y2 + (y2-my)*0.02, 1);
+  }
+  return g;
+}
+function water() {
+  const g = el('g', {});
+  g.appendChild(el('path', { d:'M0 300 Q100 292 200 300 T400 300 T600 300 T800 300 V340 H0 Z', fill:'#164e63' }));
+  return g;
+}
+function ground() {
+  const g = el('g', {});
+  g.appendChild(el('rect', { x:0, y:255, width:80, height:85, fill:'#3f3f2e' }));
+  g.appendChild(el('rect', { x:720, y:255, width:80, height:85, fill:'#3f3f2e' }));
+  return g;
+}
+
+function drawBridge() {
+  svg.innerHTML = '';
+  const pos = +document.getElementById('truckPos').value;   // 0-100
+  const load = +document.getElementById('loadAmt').value;   // 1-10
+  const tx = 80 + (640 * pos / 100);
+  const W = 1 + load * 0.55;                                 // 힘 화살표 굵기
+  const sag = load * 1.1;                                    // 처짐
+  const deckY = 250;
+
+  svg.appendChild(water());
+  svg.appendChild(ground());
+
+  if (bridgeType === 'suspension') {
+    // 주탑
+    svg.appendChild(el('rect', { x:196, y:60, width:12, height:195, fill:'#b91c1c' }));
+    svg.appendChild(el('rect', { x:592, y:60, width:12, height:195, fill:'#b91c1c' }));
+    // 주탑 압축력
+    svg.appendChild(forceArrow(180, 80, 180, 240, 'comp', W));
+    svg.appendChild(forceArrow(628, 80, 628, 240, 'comp', W));
+    // 주케이블 (인장, 하중따라 늘어짐)
+    const d1 = `M60 ${deckY-10} Q200 ${60} 400 ${140+sag}`;
+    const d2 = `M400 ${140+sag} Q600 ${60} 740 ${deckY-10}`;
+    svg.appendChild(el('path', { d:`M60 ${deckY-10} Q205 55 400 ${140+sag} Q595 55 740 ${deckY-10}`, fill:'none', stroke:'#60a5fa', 'stroke-width':2+W*0.7 }));
+    // 행어
+    for (let i=0;i<9;i++){
+      const hx = 140 + i*65;
+      const t = Math.abs(hx-400)/260;
+      const hy = 140+sag + (55-(140+sag))*t*t;
+      svg.appendChild(el('line', { x1:hx, y1:Math.min(hy, deckY-8), x2:hx, y2:deckY-4, stroke:'#93c5fd', 'stroke-width':1.5+W*0.35, opacity:.85 }));
+    }
+    // 케이블 인장 표시
+    svg.appendChild(forceArrow(300, 105, 500, 105, 'tens', W));
+    // 상판 (처짐)
+    svg.appendChild(el('path', { d:`M60 ${deckY} Q${tx} ${deckY+sag*1.5} 740 ${deckY}`, fill:'none', stroke:'#e2e8f0', 'stroke-width':8 }));
+    svg.appendChild(drawTruck(tx, deckY + sag*0.9, load));
+  }
+  else if (bridgeType === 'cablestayed') {
+    svg.appendChild(el('rect', { x:246, y:40, width:14, height:215, fill:'#b91c1c' }));
+    svg.appendChild(el('rect', { x:540, y:40, width:14, height:215, fill:'#b91c1c' }));
+    svg.appendChild(forceArrow(230, 60, 230, 240, 'comp', W));
+    svg.appendChild(forceArrow(578, 60, 578, 240, 'comp', W));
+    // 사장 케이블 — 주탑에서 상판 직접 연결
+    const anchors = [90, 150, 210, 330, 390, 450, 510, 630, 690];
+    anchors.forEach(ax => {
+      const tower = ax < 300 ? {x:253,y:55} : (ax < 520 ? (Math.abs(ax-253)<Math.abs(ax-547)?{x:253,y:55}:{x:547,y:55}) : {x:547,y:55});
+      svg.appendChild(el('line', { x1:tower.x, y1:tower.y, x2:ax, y2:deckY-4, stroke:'#60a5fa', 'stroke-width':1.4+W*0.4, opacity:.85 }));
+    });
+    svg.appendChild(forceArrow(320, 130, 420, 210, 'tens', W));
+    svg.appendChild(el('path', { d:`M60 ${deckY} Q${tx} ${deckY+sag*1.3} 740 ${deckY}`, fill:'none', stroke:'#e2e8f0', 'stroke-width':8 }));
+    svg.appendChild(drawTruck(tx, deckY + sag*0.8, load));
+  }
+  else if (bridgeType === 'truss') {
+    // 교각
+    svg.appendChild(el('rect', { x:150, y:255, width:16, height:60, fill:'#57534e' }));
+    svg.appendChild(el('rect', { x:634, y:255, width:16, height:60, fill:'#57534e' }));
+    // 트러스 (삼각형)
+    const topY = 185, n = 8, span = 680/n;
+    for (let i=0;i<n;i++){
+      const x0 = 60+i*span, x1 = 60+(i+1)*span, xm = (x0+x1)/2;
+      svg.appendChild(el('line', { x1:x0, y1:deckY, x2:xm, y2:topY, stroke:'#f59e0b', 'stroke-width':4 }));
+      svg.appendChild(el('line', { x1:xm, y1:topY, x2:x1, y2:deckY, stroke:'#f59e0b', 'stroke-width':4 }));
+      if (i<n-1) svg.appendChild(el('line', { x1:xm, y1:topY, x2:xm+span, y2:topY, stroke:'#f59e0b', 'stroke-width':4 }));
+    }
+    // 상현재 압축 / 하현재 인장
+    svg.appendChild(forceArrow(250, 165, 550, 165, 'comp', W));
+    svg.appendChild(forceArrow(250, 285, 550, 285, 'tens', W));
+    svg.appendChild(el('path', { d:`M60 ${deckY} Q${tx} ${deckY+sag} 740 ${deckY}`, fill:'none', stroke:'#e2e8f0', 'stroke-width':8 }));
+    svg.appendChild(drawTruck(tx, deckY + sag*0.6, load));
+  }
+  else if (bridgeType === 'arch') {
+    // 아치
+    svg.appendChild(el('path', { d:`M80 ${298} Q400 ${70+sag} 720 ${298}`, fill:'none', stroke:'#f59e0b', 'stroke-width':13 }));
+    // 수직재
+    for (let i=1;i<10;i++){
+      const ax = 80 + i*64;
+      const t = (ax-400)/320;
+      const ay = (70+sag) + (298-(70+sag))*t*t;
+      const topEnd = Math.max(ay, 150);
+      if (topEnd < deckY-6) svg.appendChild(el('line', { x1:ax, y1:topEnd, x2:ax, y2:deckY-4, stroke:'#fbbf24', 'stroke-width':3, opacity:.8 }));
+    }
+    // 아치 압축력 (곡선 따라)
+    svg.appendChild(forceArrow(210, 218, 340, 132, 'comp', W));
+    svg.appendChild(forceArrow(460, 132, 590, 218, 'comp', W));
+    svg.appendChild(el('path', { d:`M60 ${deckY} Q${tx} ${deckY+sag*0.9} 740 ${deckY}`, fill:'none', stroke:'#e2e8f0', 'stroke-width':8 }));
+    svg.appendChild(drawTruck(tx, deckY + sag*0.5, load));
+  }
+
+  document.getElementById('bridgeInfo').innerHTML = BRIDGE_INFO[bridgeType];
+  document.getElementById('loadVal').textContent = load + ' 톤';
+}
+document.querySelectorAll('.btab').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.btab').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  bridgeType = b.dataset.b;
+  drawBridge();
+}));
+document.getElementById('truckPos').addEventListener('input', drawBridge);
+document.getElementById('loadAmt').addEventListener('input', drawBridge);
+drawBridge();
+
+/* ===================================================== */
+/* 내진 시뮬레이터                                        */
+/* ===================================================== */
+const eqSim = document.getElementById('eqSim');
+const quakeBtn = document.getElementById('quakeBtn');
+let quakeTimer = null;
+quakeBtn.addEventListener('click', () => {
+  if (eqSim.classList.contains('quaking')) {
+    eqSim.classList.remove('quaking');
+    clearTimeout(quakeTimer);
+    quakeBtn.textContent = '🌋 지진 발생!';
+    return;
+  }
+  eqSim.classList.add('quaking');
+  quakeBtn.textContent = '⏹️ 지진 멈추기';
+  quakeTimer = setTimeout(() => {
+    eqSim.classList.remove('quaking');
+    quakeBtn.textContent = '🌋 지진 발생!';
+  }, 8000);
+});
+
+/* ===================================================== */
+/* 미니 퀴즈                                              */
+/* ===================================================== */
+let mqzCorrect = 0, mqzDone = 0;
+const mqzItems = document.querySelectorAll('#miniQuiz .mqz-item');
+mqzItems.forEach(item => {
+  const ans = item.dataset.answer;
+  const optsEl = item.querySelector('.mqz-opts');
+  const fb = item.querySelector('.mqz-fb');
+  optsEl.dataset.opts.split(',').forEach(o => {
+    const b = document.createElement('button');
+    b.className = 'mqz-btn'; b.textContent = o;
+    b.onclick = () => {
+      if (item.dataset.done) return;
+      item.dataset.done = '1'; mqzDone++;
+      optsEl.querySelectorAll('.mqz-btn').forEach(x => x.disabled = true);
+      if (o === ans) {
+        b.classList.add('correct'); mqzCorrect++;
+        fb.textContent = '⭕ 정답!'; fb.className = 'mqz-fb ok';
+      } else {
+        b.classList.add('wrong');
+        optsEl.querySelectorAll('.mqz-btn').forEach(x => { if (x.textContent === ans) x.classList.add('correct'); });
+        fb.textContent = '❌ 정답은 「' + ans + '」. 시뮬레이터에서 다시 관찰해 보세요.'; fb.className = 'mqz-fb no';
+      }
+      if (mqzDone === mqzItems.length) {
+        document.getElementById('mqzScore').innerHTML =
+          '🎯 미니 퀴즈: <b style="color:#fbbf24">' + mqzCorrect + ' / ' + mqzItems.length + '</b>' +
+          (mqzCorrect === mqzItems.length ? ' — 완벽!' : ' — 틀린 부분은 시뮬레이터로 복습!');
+      }
+    };
+    optsEl.appendChild(b);
+  });
+});
+
+/* ===== 체크리스트 ===== */
+document.querySelectorAll('.sc').forEach(c => c.addEventListener('change', () => {
+  const n = document.querySelectorAll('.sc:checked').length;
+  const p = document.getElementById('scProgress');
+  p.textContent = '체크: ' + n + ' / 5';
+  if (n === 5) p.textContent += ' — 🌟 완벽! 형성평가 도전!';
+  else if (n >= 3) p.textContent += ' — 좋아요! 나머지도 복습하세요.';
+}));
+</script>
+</body>
+</html>

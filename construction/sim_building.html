@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2차시 — 건축 구조물 분류하기</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Segoe UI','Malgun Gothic',sans-serif;
+  background:linear-gradient(160deg,#0f172a,#1e293b);
+  color:#e2e8f0; min-height:100vh;
+}
+.container { max-width:1050px; margin:0 auto; padding:20px 18px 80px; }
+.top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.top-nav a { color:#7dd3fc; text-decoration:none; font-size:.9rem; }
+.top-nav a:hover { text-decoration:underline; }
+h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
+.lesson-tag { display:inline-block; background:#fbbf24; color:#1e293b; font-weight:800; border-radius:8px; padding:3px 12px; font-size:.8rem; margin-bottom:10px; }
+.goal-box {
+  background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0;
+  padding:14px 18px; margin:14px 0 30px; font-size:.92rem; line-height:1.7;
+}
+.goal-box b { color:#7dd3fc; }
+.step-title { font-size:1.25rem; color:#fbbf24; margin:40px 0 6px; display:flex; align-items:center; gap:10px; }
+.step-num { background:#f59e0b; color:#1e293b; width:30px; height:30px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:.95rem; flex-shrink:0; }
+.step-desc { color:#94a3b8; font-size:.9rem; margin-bottom:16px; line-height:1.6; }
+
+/* ===== 구조 탐색 탭 ===== */
+.struct-explorer { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.tab-row { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px; }
+.tab-btn {
+  background:#334155; color:#cbd5e1; border:1px solid #64748b; border-radius:999px;
+  padding:8px 18px; font-size:.88rem; cursor:pointer; font-family:inherit; transition:.2s;
+}
+.tab-btn.active { background:linear-gradient(135deg,#f59e0b,#d97706); color:#1e293b; font-weight:800; border-color:#f59e0b; }
+.tab-panel { display:none; }
+.tab-panel.active { display:block; animation:fadeIn .4s; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+.sp-flex { display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap; }
+.sp-svg { flex:0 0 260px; background:rgba(15,23,42,.6); border-radius:12px; padding:10px; text-align:center; }
+.sp-text { flex:1; min-width:240px; }
+.sp-text h3 { color:#fdba74; font-size:1.1rem; margin-bottom:8px; }
+.sp-text p { font-size:.9rem; line-height:1.7; color:#cbd5e1; margin-bottom:10px; }
+.sp-text .ex-chip { display:inline-block; background:rgba(56,189,248,.12); color:#7dd3fc; font-size:.78rem; padding:3px 12px; border-radius:999px; margin:2px; }
+.sp-point { background:rgba(251,191,36,.08); border:1px dashed rgba(251,191,36,.4); border-radius:10px; padding:10px 14px; font-size:.83rem; line-height:1.6; margin-top:8px; }
+.sp-point b { color:#fbbf24; }
+
+/* ===== SVG 애니메이션 (아주 느리게) ===== */
+@keyframes slowPulse { 0%,100%{opacity:.4} 50%{opacity:1} }
+@keyframes slowRise { 0%{transform:translateY(6px);opacity:0} 20%{opacity:1} 100%{transform:translateY(-4px);opacity:1} }
+.pulse-el { animation:slowPulse 9s ease-in-out infinite; }
+
+/* ===== 드래그앤드롭 게임 공통 ===== */
+.dnd-game { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.dnd-pool { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; min-height:56px; padding:12px; background:rgba(15,23,42,.6); border-radius:12px; margin-bottom:18px; }
+.dnd-chip {
+  background:linear-gradient(135deg,#475569,#334155); border:2px solid #94a3b8; border-radius:10px;
+  padding:8px 14px; font-size:.85rem; cursor:grab; user-select:none; transition:.2s;
+}
+.dnd-chip:active { cursor:grabbing; }
+.dnd-chip.dragging { opacity:.4; }
+.dnd-chip.ok { border-color:#4ade80; background:linear-gradient(135deg,#14532d,#166534); }
+.dnd-chip.bad { border-color:#f87171; background:linear-gradient(135deg,#7f1d1d,#991b1b); }
+.dnd-zones { display:grid; gap:12px; }
+.dnd-zones.cols3 { grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); }
+.dnd-zones.cols4 { grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); }
+.dnd-zone { border-radius:14px; border:2px dashed #64748b; padding:14px; min-height:130px; transition:.25s; }
+.dnd-zone.dragover { border-color:#fbbf24; background:rgba(251,191,36,.08); }
+.dnd-zone h4 { text-align:center; margin-bottom:4px; font-size:.98rem; color:#fbbf24; }
+.dnd-zone .zone-hint { text-align:center; font-size:.72rem; color:#94a3b8; margin-bottom:10px; line-height:1.5; }
+.dnd-zone .dropzone { display:flex; flex-direction:column; gap:6px; min-height:60px; }
+.dnd-controls { text-align:center; margin-top:16px; display:flex; gap:10px; justify-content:center; }
+.btn-main {
+  background:linear-gradient(135deg,#f59e0b,#d97706); color:#1e293b; font-weight:800;
+  border:none; border-radius:10px; padding:11px 26px; font-size:.95rem; cursor:pointer; font-family:inherit; transition:.2s;
+}
+.btn-main:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(245,158,11,.35); }
+.btn-sub { background:#334155; color:#cbd5e1; border:1px solid #64748b; border-radius:10px; padding:11px 20px; font-size:.9rem; cursor:pointer; font-family:inherit; }
+.dnd-result { text-align:center; margin-top:14px; font-size:1rem; min-height:1.4em; font-weight:600; }
+
+/* ===== 스스로 확인 ===== */
+.self-check { background:rgba(74,222,128,.07); border:1px solid rgba(74,222,128,.35); border-radius:14px; padding:20px; }
+.self-check h3 { color:#86efac; font-size:1rem; margin-bottom:12px; }
+.sc-item { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:.9rem; line-height:1.55; }
+.sc-item input { margin-top:3px; width:16px; height:16px; accent-color:#4ade80; cursor:pointer; }
+.sc-progress { margin-top:12px; font-size:.85rem; color:#86efac; }
+.next-link { display:block; text-align:center; margin-top:34px; }
+.next-link a {
+  display:inline-block; background:linear-gradient(135deg,#38bdf8,#0284c7); color:#0f172a;
+  font-weight:800; text-decoration:none; border-radius:12px; padding:14px 34px; font-size:1rem; transition:.2s;
+}
+.next-link a:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(56,189,248,.35); }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-nav">
+    <a href="sim_intro.html">← 1차시: 건설 기술의 이해</a>
+    <a href="sim_bridge.html">3차시: 토목·교량 →</a>
+  </div>
+
+  <span class="lesson-tag">2차시</span>
+  <h1>🏠 건축 구조물 분류하기</h1>
+  <div class="goal-box">
+    <b>학습 목표</b><br>
+    ① 건축 구조물을 <b>용도</b>에 따라 주거용·공공용·상업용으로 분류할 수 있다.<br>
+    ② 건축 구조물을 <b>구조</b>에 따라 가구식·일체식·조적식·특수식으로 구분할 수 있다.<br>
+    ③ 우리 주변 건물이 어떤 구조로 지어졌는지 추론할 수 있다.
+  </div>
+
+  <!-- STEP 1 : 구조 방식 탐색 -->
+  <div class="step-title"><span class="step-num">1</span> 구조에 따른 건축 방식 탐색</div>
+  <p class="step-desc">건축 구조물은 바닥·벽체·지붕·기둥같이 <b>공간을 조성하는 구조</b>에 따라 4가지로 분류됩니다. 탭을 눌러 각각의 원리를 확인하세요.</p>
+  <div class="struct-explorer">
+    <div class="tab-row">
+      <button class="tab-btn active" data-tab="t1">🪵 가구식</button>
+      <button class="tab-btn" data-tab="t2">🏗️ 일체식</button>
+      <button class="tab-btn" data-tab="t3">🧱 조적식</button>
+      <button class="tab-btn" data-tab="t4">🛸 특수식</button>
+    </div>
+
+    <div class="tab-panel active" id="t1">
+      <div class="sp-flex">
+        <div class="sp-svg">
+          <svg viewBox="0 0 240 180" width="240" height="180">
+            <line x1="20" y1="165" x2="220" y2="165" stroke="#64748b" stroke-width="3"/>
+            <rect x="45" y="70" width="10" height="95" fill="#b45309"/>
+            <rect x="115" y="70" width="10" height="95" fill="#b45309"/>
+            <rect x="185" y="70" width="10" height="95" fill="#b45309"/>
+            <rect x="35" y="58" width="170" height="12" fill="#92400e"/>
+            <polygon points="30,58 120,18 210,58" fill="none" stroke="#f59e0b" stroke-width="6"/>
+            <text x="120" y="150" text-anchor="middle" font-size="11" fill="#fdba74">기둥 + 보 = 조립!</text>
+            <circle class="pulse-el" cx="50" cy="64" r="6" fill="#fbbf24"/>
+            <circle class="pulse-el" cx="120" cy="64" r="6" fill="#fbbf24" style="animation-delay:3s"/>
+            <circle class="pulse-el" cx="190" cy="64" r="6" fill="#fbbf24" style="animation-delay:6s"/>
+          </svg>
+        </div>
+        <div class="sp-text">
+          <h3>🪵 가구식 구조</h3>
+          <p><b>기둥</b>과 비교적 가늘고 긴 재료(보)를 <b>조립</b>하여 뼈대를 만드는 구조. 부재를 짜 맞추는 방식이라 조립 순서가 중요해요.</p>
+          <span class="ex-chip">목 구조 (한옥, 목조 주택)</span>
+          <span class="ex-chip">철골 구조 (체육관, 공장)</span>
+          <div class="sp-point"><b>핵심!</b> 부재(기둥·보)를 <b>짜 맞춰(조립)</b> 만든다 → "가구를 조립하듯" 기억하세요.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="t2">
+      <div class="sp-flex">
+        <div class="sp-svg">
+          <svg viewBox="0 0 240 180" width="240" height="180">
+            <line x1="20" y1="165" x2="220" y2="165" stroke="#64748b" stroke-width="3"/>
+            <rect x="60" y="40" width="120" height="125" fill="#475569" rx="4"/>
+            <g stroke="#94a3b8" stroke-width="1.5" opacity=".7">
+              <line x1="75" y1="40" x2="75" y2="165"/><line x1="105" y1="40" x2="105" y2="165"/>
+              <line x1="135" y1="40" x2="135" y2="165"/><line x1="165" y1="40" x2="165" y2="165"/>
+              <line x1="60" y1="70" x2="180" y2="70"/><line x1="60" y1="100" x2="180" y2="100"/><line x1="60" y1="130" x2="180" y2="130"/>
+            </g>
+            <text x="120" y="30" text-anchor="middle" font-size="11" fill="#7dd3fc">철근을 넣고 콘크리트를 부어 한 덩어리!</text>
+            <rect class="pulse-el" x="60" y="40" width="120" height="125" fill="none" stroke="#38bdf8" stroke-width="3" rx="4"/>
+          </svg>
+        </div>
+        <div class="sp-text">
+          <h3>🏗️ 일체식 구조</h3>
+          <p>거푸집을 짜서 모든 구조가 <b>일체(한 덩어리)</b>가 되도록 철근을 배치하고 콘크리트를 부어 만드는 구조. 튼튼하고 내구성이 좋아요.</p>
+          <span class="ex-chip">철근 콘크리트 구조 (아파트)</span>
+          <span class="ex-chip">철골 철근 콘크리트 구조 (고층 빌딩)</span>
+          <div class="sp-point"><b>핵심!</b> 기둥·벽·바닥이 <b>한 덩어리로 굳어</b> 있다 → 아파트 벽을 떠올리세요.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="t3">
+      <div class="sp-flex">
+        <div class="sp-svg">
+          <svg viewBox="0 0 240 180" width="240" height="180">
+            <line x1="20" y1="165" x2="220" y2="165" stroke="#64748b" stroke-width="3"/>
+            <g id="brickwall"></g>
+            <text x="120" y="30" text-anchor="middle" font-size="11" fill="#fca5a5">벽돌·블록·돌을 차곡차곡 쌓아 올려요</text>
+          </svg>
+        </div>
+        <div class="sp-text">
+          <h3>🧱 조적식 구조</h3>
+          <p>벽돌, 블록, 돌 등을 <b>쌓아 올려</b> 만든 구조. 만들기 쉽지만 높이 쌓는 데는 한계가 있어요.</p>
+          <span class="ex-chip">벽돌 구조 (단독주택, 담장)</span>
+          <span class="ex-chip">블록 구조 (창고, 저층 건물)</span>
+          <div class="sp-point"><b>핵심!</b> 재료를 <b>쌓아서(조적)</b> 만든다 → 레고 블록 쌓기를 떠올리세요.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="t4">
+      <div class="sp-flex">
+        <div class="sp-svg">
+          <svg viewBox="0 0 240 180" width="240" height="180">
+            <line x1="20" y1="165" x2="220" y2="165" stroke="#64748b" stroke-width="3"/>
+            <path d="M40 165 Q120 40 200 165 Z" fill="#0e7490" opacity=".85"/>
+            <path d="M60 165 Q120 75 180 165" fill="none" stroke="#67e8f9" stroke-width="2" opacity=".7"/>
+            <path d="M80 165 Q120 105 160 165" fill="none" stroke="#67e8f9" stroke-width="2" opacity=".5"/>
+            <text x="120" y="30" text-anchor="middle" font-size="11" fill="#67e8f9">얇은 곡면(셸)·돔·케이블로 넓은 공간!</text>
+            <path class="pulse-el" d="M40 165 Q120 40 200 165" fill="none" stroke="#22d3ee" stroke-width="3"/>
+          </svg>
+        </div>
+        <div class="sp-text">
+          <h3>🛸 특수식 구조</h3>
+          <p>넓은 공간과 다양한 기능에 대한 요구를 충족하기 위해 만든 구조. 기둥 없이 <b>넓은 내부 공간</b>을 만들 수 있어요.</p>
+          <span class="ex-chip">셸 구조 (시드니 오페라하우스)</span>
+          <span class="ex-chip">돔 구조 (경기장, 체육관)</span>
+          <span class="ex-chip">케이블 구조 (현수교, 막 구조)</span>
+          <div class="sp-point"><b>핵심!</b> 곡면·케이블로 <b>기둥 없는 넓은 공간</b>을 만든다 → 달걀 껍데기처럼 얇지만 튼튼!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 : 용도별 분류 게임 -->
+  <div class="step-title"><span class="step-num">2</span> 용도별 분류 게임</div>
+  <p class="step-desc">건물 카드를 <b>용도에 맞는 칸으로 드래그</b>하세요. 주거용? 공공용? 상업용?</p>
+  <div class="dnd-game" id="useGame">
+    <div class="dnd-pool"></div>
+    <div class="dnd-zones cols3">
+      <div class="dnd-zone" data-cat="res">
+        <h4>🏡 주거용</h4>
+        <div class="zone-hint">인간이 생활하는 데 필요한<br>가장 기초적인 생활 공간<br>(장기간 독립적으로 주거)</div>
+        <div class="dropzone"></div>
+      </div>
+      <div class="dnd-zone" data-cat="pub">
+        <h4>🏛️ 공공용</h4>
+        <div class="zone-hint">공공의 편의와 복리 증진,<br>더 나은 삶을 위한 기반 시설</div>
+        <div class="dropzone"></div>
+      </div>
+      <div class="dnd-zone" data-cat="com">
+        <h4>🏬 상업용</h4>
+        <div class="zone-hint">상업적인 활동이 이루어지는 곳<br>(판매·서비스·사무·생산)</div>
+        <div class="dropzone"></div>
+      </div>
+    </div>
+    <div class="dnd-controls">
+      <button class="btn-main check-btn">정답 확인 (Enter)</button>
+      <button class="btn-sub reset-btn">다시 하기</button>
+    </div>
+    <div class="dnd-result"></div>
+  </div>
+
+  <!-- STEP 3 : 구조별 분류 게임 -->
+  <div class="step-title"><span class="step-num">3</span> 구조별 분류 게임</div>
+  <p class="step-desc">이번엔 <b>구조 방식</b>입니다. 8가지 구조를 알맞은 유형으로 드래그하세요. 헷갈리면 1단계 탭으로 돌아가 복습!</p>
+  <div class="dnd-game" id="structGame">
+    <div class="dnd-pool"></div>
+    <div class="dnd-zones cols4">
+      <div class="dnd-zone" data-cat="frame">
+        <h4>🪵 가구식</h4>
+        <div class="zone-hint">기둥·보를 조립</div>
+        <div class="dropzone"></div>
+      </div>
+      <div class="dnd-zone" data-cat="mono">
+        <h4>🏗️ 일체식</h4>
+        <div class="zone-hint">콘크리트로 한 덩어리</div>
+        <div class="dropzone"></div>
+      </div>
+      <div class="dnd-zone" data-cat="masonry">
+        <h4>🧱 조적식</h4>
+        <div class="zone-hint">재료를 쌓아 올림</div>
+        <div class="dropzone"></div>
+      </div>
+      <div class="dnd-zone" data-cat="special">
+        <h4>🛸 특수식</h4>
+        <div class="zone-hint">넓은 공간·특수 기능</div>
+        <div class="dropzone"></div>
+      </div>
+    </div>
+    <div class="dnd-controls">
+      <button class="btn-main check-btn">정답 확인 (Enter)</button>
+      <button class="btn-sub reset-btn">다시 하기</button>
+    </div>
+    <div class="dnd-result"></div>
+  </div>
+
+  <!-- STEP 4 : 스스로 확인 -->
+  <div class="step-title"><span class="step-num">4</span> 스스로 확인하기 <span style="font-size:.75rem;color:#86efac">🧠 메타인지</span></div>
+  <p class="step-desc">설명할 수 없다면 위로 돌아가 다시 학습하세요. 아는 것과 모르는 것을 구분하는 것이 실력입니다!</p>
+  <div class="self-check">
+    <h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>주거용·공공용·상업용 건축 구조물의 예를 각각 2개 이상 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>가구식과 일체식 구조의 차이를 설명할 수 있다 (조립 vs 한 덩어리)</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>조적식 구조의 원리(쌓기)와 한계(높이)를 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>시드니 오페라하우스가 왜 특수식(셸) 구조인지 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>우리 학교 건물이 어떤 구조인지 추론할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress">체크: 0 / 5</div>
+  </div>
+
+  <div class="next-link"><a href="sim_bridge.html">다음 → 3차시: 토목 구조물 & 교량의 힘</a></div>
+</div>
+
+<script>
+/* ===== 벽돌 SVG 생성 ===== */
+(function(){
+  const g = document.getElementById('brickwall');
+  let rows = 7;
+  for (let r = 0; r < rows; r++) {
+    const y = 165 - (r+1)*18;
+    const offset = (r % 2) ? 20 : 0;
+    for (let c = 0; c < 4; c++) {
+      const x = 60 + offset + c*38 - 19;
+      if (x < 45 || x > 170) continue;
+      const rect = document.createElementNS('http://www.w3.org/2000/svg','rect');
+      rect.setAttribute('x', x); rect.setAttribute('y', y);
+      rect.setAttribute('width', 36); rect.setAttribute('height', 16);
+      rect.setAttribute('fill', '#9a3412'); rect.setAttribute('stroke', '#7c2d12');
+      rect.setAttribute('rx', 2);
+      g.appendChild(rect);
+    }
+  }
+})();
+
+/* ===== 탭 ===== */
+document.querySelectorAll('.tab-btn').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(x => x.classList.remove('active'));
+  b.classList.add('active');
+  document.getElementById(b.dataset.tab).classList.add('active');
+}));
+
+/* ===== 드래그앤드롭 게임 엔진 ===== */
+function setupDnd(gameId, items, successMsg) {
+  const game = document.getElementById(gameId);
+  const pool = game.querySelector('.dnd-pool');
+  const result = game.querySelector('.dnd-result');
+  let dragEl = null;
+
+  function makeChip(it) {
+    const c = document.createElement('div');
+    c.className = 'dnd-chip'; c.draggable = true;
+    c.dataset.cat = it.cat;
+    c.textContent = it.emoji + ' ' + it.name;
+    c.addEventListener('dragstart', () => { dragEl = c; c.classList.add('dragging'); });
+    c.addEventListener('dragend', () => c.classList.remove('dragging'));
+    return c;
+  }
+  function init() {
+    pool.innerHTML = '';
+    game.querySelectorAll('.dropzone').forEach(z => z.innerHTML = '');
+    result.textContent = '';
+    [...items].sort(() => Math.random() - .5).forEach(it => pool.appendChild(makeChip(it)));
+  }
+  [...game.querySelectorAll('.dnd-zone'), pool].forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault(); zone.classList.remove('dragover');
+      if (!dragEl) return;
+      dragEl.classList.remove('ok','bad');
+      if (zone === pool) pool.appendChild(dragEl);
+      else zone.querySelector('.dropzone').appendChild(dragEl);
+      dragEl = null;
+    });
+  });
+  function check() {
+    const remaining = pool.querySelectorAll('.dnd-chip').length;
+    if (remaining > 0) {
+      result.innerHTML = '<span style="color:#fbbf24">⚠️ 아직 ' + remaining + '개 카드가 남았어요. 모두 배치하세요!</span>';
+      return;
+    }
+    let ok = 0;
+    game.querySelectorAll('.dnd-zone').forEach(zone => {
+      zone.querySelectorAll('.dnd-chip').forEach(chip => {
+        if (chip.dataset.cat === zone.dataset.cat) { chip.classList.add('ok'); chip.classList.remove('bad'); ok++; }
+        else { chip.classList.add('bad'); chip.classList.remove('ok'); }
+      });
+    });
+    if (ok === items.length) result.innerHTML = '<span style="color:#4ade80">🎉 ' + ok + '/' + items.length + ' 전부 정답! ' + successMsg + '</span>';
+    else result.innerHTML = '<span style="color:#f87171">🔍 ' + ok + '/' + items.length + ' 정답. 빨간 카드를 다시 옮겨 보세요.</span>';
+  }
+  game.querySelector('.check-btn').onclick = check;
+  game.querySelector('.reset-btn').onclick = init;
+  init();
+  return check;
+}
+
+const useCheck = setupDnd('useGame', [
+  { name:'아파트', emoji:'🏢', cat:'res' },
+  { name:'단독주택', emoji:'🏡', cat:'res' },
+  { name:'주상복합', emoji:'🏙️', cat:'res' },
+  { name:'학교', emoji:'🏫', cat:'pub' },
+  { name:'도서관', emoji:'📚', cat:'pub' },
+  { name:'병원', emoji:'🏥', cat:'pub' },
+  { name:'백화점', emoji:'🛍️', cat:'com' },
+  { name:'호텔', emoji:'🏨', cat:'com' },
+  { name:'은행', emoji:'🏦', cat:'com' },
+], '용도별 분류 완벽 이해!');
+
+const structCheck = setupDnd('structGame', [
+  { name:'목 구조', emoji:'🪵', cat:'frame' },
+  { name:'철골 구조', emoji:'🔩', cat:'frame' },
+  { name:'철근 콘크리트 구조', emoji:'🏗️', cat:'mono' },
+  { name:'철골 철근 콘크리트 구조', emoji:'🏢', cat:'mono' },
+  { name:'벽돌 구조', emoji:'🧱', cat:'masonry' },
+  { name:'블록 구조', emoji:'⬜', cat:'masonry' },
+  { name:'셸 구조', emoji:'🐚', cat:'special' },
+  { name:'돔 구조', emoji:'⛩️', cat:'special' },
+], '구조별 분류 마스터!');
+
+/* Enter → 가까운 게임 채점 (화면에 보이는 것 우선) */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter' || ['SELECT','INPUT'].includes(e.target.tagName)) return;
+  e.preventDefault();
+  const sg = document.getElementById('structGame').getBoundingClientRect();
+  if (sg.top < window.innerHeight * 0.6) structCheck(); else useCheck();
+});
+
+/* ===== 체크리스트 ===== */
+document.querySelectorAll('.sc').forEach(c => c.addEventListener('change', () => {
+  const n = document.querySelectorAll('.sc:checked').length;
+  const p = document.getElementById('scProgress');
+  p.textContent = '체크: ' + n + ' / 5';
+  if (n === 5) p.textContent += ' — 🌟 완벽! 3차시로 출발!';
+  else if (n >= 3) p.textContent += ' — 좋아요! 나머지도 복습해 보세요.';
+}));
+</script>
+</body>
+</html>

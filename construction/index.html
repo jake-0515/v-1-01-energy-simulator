@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏗️ 건설 기술과 지속 가능</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Segoe UI','Malgun Gothic',sans-serif;
+  background:linear-gradient(160deg,#0f172a 0%,#1e293b 50%,#334155 100%);
+  color:#e2e8f0; min-height:100vh;
+}
+.container { max-width:1100px; margin:0 auto; padding:24px 20px 80px; }
+
+/* ===== Hero ===== */
+.hero {
+  text-align:center; padding:48px 20px 36px;
+  background:linear-gradient(135deg,rgba(251,146,60,.12),rgba(56,189,248,.10));
+  border-radius:24px; border:1px solid rgba(251,146,60,.25);
+  margin-bottom:32px; position:relative; overflow:hidden;
+}
+.hero::before {
+  content:''; position:absolute; inset:0;
+  background:radial-gradient(circle at 80% 20%,rgba(251,146,60,.15),transparent 55%);
+  pointer-events:none;
+}
+.hero h1 { font-size:2.2rem; margin-bottom:12px; color:#fbbf24; }
+.hero p.sub { font-size:1.05rem; color:#cbd5e1; max-width:640px; margin:0 auto; line-height:1.7; }
+.hero .badge-row { margin-top:18px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.badge {
+  background:rgba(251,191,36,.15); color:#fbbf24; padding:6px 14px;
+  border-radius:999px; font-size:.85rem; border:1px solid rgba(251,191,36,.3);
+}
+
+/* ===== Section headers ===== */
+.sec-title { font-size:1.4rem; color:#fbbf24; margin:36px 0 6px; display:flex; align-items:center; gap:10px; }
+.sec-desc { color:#94a3b8; margin-bottom:18px; font-size:.95rem; line-height:1.6; }
+
+/* ===== Concept map ===== */
+.concept-box {
+  background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:18px;
+  padding:26px; margin-bottom:8px;
+}
+.concept-flow { display:flex; align-items:stretch; justify-content:center; gap:14px; flex-wrap:wrap; }
+.cnode {
+  background:linear-gradient(135deg,#1e3a5f,#164e63); border:2px solid #38bdf8;
+  border-radius:14px; padding:16px 20px; text-align:center; min-width:150px; flex:1;
+  max-width:240px;
+}
+.cnode.root { border-color:#fbbf24; background:linear-gradient(135deg,#452c03,#78350f); }
+.cnode h3 { font-size:1.05rem; margin-bottom:6px; color:#f8fafc; }
+.cnode p { font-size:.82rem; color:#cbd5e1; line-height:1.5; }
+.carrow { display:flex; align-items:center; font-size:1.5rem; color:#fbbf24; }
+.feat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-top:18px; }
+.feat {
+  background:rgba(51,65,85,.6); border-radius:10px; padding:12px; text-align:center;
+  border:1px solid #475569; transition:.25s;
+}
+.feat:hover { border-color:#fbbf24; transform:translateY(-3px); }
+.feat .fi { font-size:1.5rem; }
+.feat b { display:block; margin:6px 0 4px; color:#fbbf24; font-size:.92rem; }
+.feat span { font-size:.76rem; color:#94a3b8; line-height:1.45; display:block; }
+
+/* ===== Lesson cards ===== */
+.lessons { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; }
+.lesson-card {
+  background:rgba(30,41,59,.85); border-radius:18px; overflow:hidden;
+  border:1px solid #475569; transition:.3s; text-decoration:none; color:inherit;
+  display:flex; flex-direction:column;
+}
+.lesson-card:hover { transform:translateY(-6px); border-color:#fbbf24; box-shadow:0 12px 32px rgba(0,0,0,.4); }
+.lc-head { padding:18px 20px 12px; }
+.lc-num {
+  display:inline-block; background:#fbbf24; color:#1e293b; font-weight:800;
+  border-radius:8px; padding:3px 12px; font-size:.82rem; margin-bottom:10px;
+}
+.lc-num.q { background:#a78bfa; }
+.lesson-card h3 { font-size:1.12rem; color:#f8fafc; margin-bottom:6px; }
+.lesson-card .lc-desc { font-size:.85rem; color:#94a3b8; line-height:1.55; }
+.lc-visual { height:120px; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.lc-foot {
+  margin-top:auto; padding:12px 20px 16px; font-size:.83rem; color:#38bdf8; font-weight:600;
+}
+.lc-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+.lc-tag { font-size:.72rem; background:rgba(56,189,248,.12); color:#7dd3fc; padding:2px 9px; border-radius:999px; }
+
+/* ===== Flow guide ===== */
+.flow-steps { display:flex; gap:0; align-items:center; justify-content:center; flex-wrap:wrap; margin:10px 0 6px; }
+.fstep {
+  background:rgba(51,65,85,.7); border:1px solid #64748b; padding:10px 18px;
+  border-radius:12px; text-align:center; font-size:.88rem;
+}
+.fstep b { color:#fbbf24; display:block; font-size:.8rem; margin-bottom:2px; }
+.fsep { color:#fbbf24; font-size:1.3rem; padding:0 10px; }
+
+/* ===== SVG anims — deliberately very slow ===== */
+@keyframes craneSwing { 0%,100%{transform:rotate(-4deg)} 50%{transform:rotate(4deg)} }
+@keyframes hookUp { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+@keyframes cityGlow { 0%,100%{opacity:.5} 50%{opacity:1} }
+@keyframes slowFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
+.crane-arm { transform-origin:60px 40px; animation:craneSwing 14s ease-in-out infinite; }
+.crane-hook { animation:hookUp 10s ease-in-out infinite; }
+.win-glow { animation:cityGlow 8s ease-in-out infinite; }
+.float-slow { animation:slowFloat 12s ease-in-out infinite; }
+
+footer { text-align:center; margin-top:48px; color:#64748b; font-size:.82rem; line-height:1.7; }
+@media(max-width:640px){ .hero h1{font-size:1.6rem} .carrow{transform:rotate(90deg)} }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ===== HERO ===== -->
+  <div class="hero">
+    <h1>🏗️ 건설 기술과 지속 가능</h1>
+    <p class="sub">건설 기술의 개념부터 건축·토목 구조물, 교량의 힘과 내진 설계까지 —<br>
+    직접 만지고 실험하며 배우는 <b style="color:#fbbf24">중학교 기술 시뮬레이터</b></p>
+    <div class="badge-row">
+      <span class="badge">📚 4차시 구성</span>
+      <span class="badge">🎮 인터랙티브 시뮬레이션</span>
+      <span class="badge">🧠 메타인지 학습</span>
+      <span class="badge">✅ 형성평가 포함</span>
+    </div>
+  </div>
+
+  <!-- ===== 개념 지도 ===== -->
+  <h2 class="sec-title">🗺️ 한눈에 보는 건설 기술</h2>
+  <p class="sec-desc">건설 기술은 크게 <b>건축 기술</b>과 <b>토목 기술</b>로 나뉩니다. 아래 구조를 기억하며 학습을 시작하세요.</p>
+  <div class="concept-box">
+    <div class="concept-flow">
+      <div class="cnode root">
+        <h3>🏗️ 건설 기술</h3>
+        <p>쾌적하고 안락한 삶을 위해<br>공간에 자원을 효과적으로 이용하여<br>구조물을 만드는 기술</p>
+      </div>
+      <div class="carrow">➜</div>
+      <div class="cnode">
+        <h3>🏠 건축 기술</h3>
+        <p>인간이 생활하는 데 필요한<br><b>유용한 공간</b>이 있는 구조물<br>(주택, 학교, 상가 등)</p>
+      </div>
+      <div class="carrow" style="font-size:1rem;color:#64748b">＋</div>
+      <div class="cnode">
+        <h3>🌉 토목 기술</h3>
+        <p>생활에 필요한 <b>기반 시설</b><br>(도로, 교량, 댐, 터널,<br>항만, 철도 등)</p>
+      </div>
+    </div>
+    <div class="feat-grid">
+      <div class="feat"><div class="fi">🏛️</div><b>공공성</b><span>많은 사람이 함께<br>사용하는 공간 제공</span></div>
+      <div class="feat"><div class="fi">🗺️</div><b>지역성</b><span>지역 자연환경과<br>특성을 고려</span></div>
+      <div class="feat"><div class="fi">1️⃣</div><b>일회성</b><span>한 번 시공하면<br>다시 짓기 어려움</span></div>
+      <div class="feat"><div class="fi">🏙️</div><b>대형성</b><span>대규모 인력과 장비가<br>결합된 큰 규모</span></div>
+      <div class="feat"><div class="fi">💰</div><b>경제성</b><span>움직일 수 없는<br>큰 자산 형성</span></div>
+      <div class="feat"><div class="fi">⏳</div><b>장기성</b><span>오랜 기간 계획·시공,<br>오래 사용</span></div>
+    </div>
+  </div>
+
+  <!-- ===== 학습 흐름 ===== -->
+  <h2 class="sec-title">🧭 학습 흐름</h2>
+  <p class="sec-desc">순서대로 학습하면 개념 → 적용 → 평가로 자연스럽게 이어집니다.</p>
+  <div class="flow-steps">
+    <div class="fstep"><b>1차시</b>개념 이해</div><div class="fsep">→</div>
+    <div class="fstep"><b>2차시</b>건축 구조물</div><div class="fsep">→</div>
+    <div class="fstep"><b>3차시</b>토목·교량·내진</div><div class="fsep">→</div>
+    <div class="fstep"><b>4차시</b>형성평가</div>
+  </div>
+
+  <!-- ===== 차시 카드 ===== -->
+  <h2 class="sec-title">🎮 차시별 학습 시뮬레이터</h2>
+  <div class="lessons">
+
+    <a class="lesson-card" href="sim_intro.html">
+      <div class="lc-head">
+        <span class="lc-num">1차시</span>
+        <h3>건설 기술의 이해</h3>
+        <div class="lc-desc">건설 기술의 개념과 6가지 특징을 탐구하고, 고대부터 현대까지 발달 과정을 타임라인으로 정리해요.</div>
+        <div class="lc-tags"><span class="lc-tag">개념 카드</span><span class="lc-tag">특징 매칭</span><span class="lc-tag">타임라인 게임</span></div>
+      </div>
+      <div class="lc-visual">
+        <svg viewBox="0 0 200 90" width="200" height="90">
+          <rect x="20" y="60" width="30" height="25" fill="#92400e" rx="2"/>
+          <polygon points="15,60 35,42 55,60" fill="#b45309"/>
+          <rect x="80" y="45" width="34" height="40" fill="#475569" rx="2"/>
+          <rect class="win-glow" x="86" y="52" width="8" height="8" fill="#fbbf24"/>
+          <rect class="win-glow" x="100" y="52" width="8" height="8" fill="#fbbf24" style="animation-delay:2s"/>
+          <rect x="140" y="30" width="26" height="55" fill="#334155" rx="2"/>
+          <rect class="win-glow" x="145" y="38" width="6" height="6" fill="#7dd3fc" style="animation-delay:4s"/>
+          <rect class="win-glow" x="155" y="38" width="6" height="6" fill="#7dd3fc"/>
+          <rect class="win-glow" x="145" y="50" width="6" height="6" fill="#7dd3fc"/>
+          <line x1="0" y1="85" x2="200" y2="85" stroke="#64748b" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="lc-foot">학습 시작 →</div>
+    </a>
+
+    <a class="lesson-card" href="sim_building.html">
+      <div class="lc-head">
+        <span class="lc-num">2차시</span>
+        <h3>건축 구조물 분류하기</h3>
+        <div class="lc-desc">용도별(주거·공공·상업)과 구조별(가구식·일체식·조적식·특수식)로 건축 구조물을 직접 분류해 봐요.</div>
+        <div class="lc-tags"><span class="lc-tag">드래그&드롭</span><span class="lc-tag">구조 탐색</span><span class="lc-tag">분류 게임</span></div>
+      </div>
+      <div class="lc-visual">
+        <svg viewBox="0 0 200 90" width="200" height="90">
+          <g class="float-slow">
+            <rect x="30" y="35" width="40" height="50" fill="#7c2d12" rx="2"/>
+            <g fill="#fdba74"><rect x="36" y="42" width="9" height="9"/><rect x="55" y="42" width="9" height="9"/><rect x="36" y="58" width="9" height="9"/><rect x="55" y="58" width="9" height="9"/></g>
+          </g>
+          <g class="float-slow" style="animation-delay:4s">
+            <path d="M110 85 Q130 20 150 85 Z" fill="#0e7490"/>
+            <path d="M120 85 Q130 45 140 85 Z" fill="#155e75"/>
+          </g>
+          <line x1="0" y1="85" x2="200" y2="85" stroke="#64748b" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="lc-foot">학습 시작 →</div>
+    </a>
+
+    <a class="lesson-card" href="sim_bridge.html">
+      <div class="lc-head">
+        <span class="lc-num">3차시</span>
+        <h3>토목 구조물 & 교량의 힘</h3>
+        <div class="lc-desc">교량 4종류에 하중을 실어 압축력·인장력을 눈으로 확인하고, 내진 설계 3가지 방식을 비교해요.</div>
+        <div class="lc-tags"><span class="lc-tag">힘 시뮬레이터</span><span class="lc-tag">교량 실험</span><span class="lc-tag">내진 비교</span></div>
+      </div>
+      <div class="lc-visual">
+        <svg viewBox="0 0 200 90" width="200" height="90">
+          <line x1="10" y1="65" x2="190" y2="65" stroke="#94a3b8" stroke-width="4"/>
+          <rect x="55" y="20" width="6" height="45" fill="#dc2626"/>
+          <rect x="139" y="20" width="6" height="45" fill="#dc2626"/>
+          <path d="M15 30 Q58 8 100 30" stroke="#fbbf24" stroke-width="2" fill="none"/>
+          <path d="M100 30 Q142 8 185 30" stroke="#fbbf24" stroke-width="2" fill="none"/>
+          <g stroke="#fbbf24" stroke-width="1">
+            <line x1="40" y1="24" x2="40" y2="65"/><line x1="75" y1="22" x2="75" y2="65"/>
+            <line x1="125" y1="22" x2="125" y2="65"/><line x1="160" y1="24" x2="160" y2="65"/>
+          </g>
+          <path d="M0 78 Q50 72 100 78 T200 78 V90 H0 Z" fill="#164e63"/>
+        </svg>
+      </div>
+      <div class="lc-foot">학습 시작 →</div>
+    </a>
+
+    <a class="lesson-card" href="activity_quiz.html">
+      <div class="lc-head">
+        <span class="lc-num q">4차시</span>
+        <h3>형성평가 — 확인 퀴즈</h3>
+        <div class="lc-desc">15문제로 배운 내용을 점검해요. 문제마다 확신도를 선택하면 나의 메타인지 정확도까지 분석해 줘요.</div>
+        <div class="lc-tags"><span class="lc-tag">15문제</span><span class="lc-tag">확신도 체크</span><span class="lc-tag">영역별 분석</span></div>
+      </div>
+      <div class="lc-visual">
+        <svg viewBox="0 0 200 90" width="200" height="90">
+          <rect x="55" y="12" width="90" height="66" rx="8" fill="#312e81" stroke="#818cf8" stroke-width="2"/>
+          <text x="100" y="45" font-size="26" text-anchor="middle" fill="#c7d2fe">?</text>
+          <text x="100" y="68" font-size="11" text-anchor="middle" fill="#a5b4fc">QUIZ</text>
+          <circle class="win-glow" cx="45" cy="30" r="6" fill="#4ade80"/>
+          <circle class="win-glow" cx="158" cy="55" r="6" fill="#f87171" style="animation-delay:3s"/>
+        </svg>
+      </div>
+      <div class="lc-foot">평가 시작 →</div>
+    </a>
+  </div>
+
+  <!-- ===== 크레인 장식 ===== -->
+  <div style="text-align:center;margin-top:40px">
+    <svg viewBox="0 0 300 130" width="300" height="130">
+      <rect x="55" y="40" width="8" height="80" fill="#f59e0b"/>
+      <g class="crane-arm">
+        <rect x="30" y="36" width="150" height="7" fill="#f59e0b"/>
+        <g class="crane-hook">
+          <line x1="150" y1="43" x2="150" y2="75" stroke="#94a3b8" stroke-width="2"/>
+          <rect x="138" y="75" width="24" height="16" fill="#64748b" rx="2"/>
+        </g>
+      </g>
+      <rect x="45" y="115" width="28" height="10" fill="#78350f"/>
+      <rect x="200" y="80" width="50" height="40" fill="#334155"/>
+      <rect class="win-glow" x="208" y="88" width="9" height="9" fill="#fbbf24"/>
+      <rect class="win-glow" x="224" y="88" width="9" height="9" fill="#fbbf24" style="animation-delay:2.5s"/>
+      <line x1="0" y1="125" x2="300" y2="125" stroke="#64748b" stroke-width="2"/>
+    </svg>
+  </div>
+
+  <footer>
+    중학교 기술·가정 ② — IV. 지속 가능한 기술과 융합 &gt; 1. 건설 기술과 지속 가능<br>
+    개념 이해 → 적용 → 형성평가 → 메타인지 성찰
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4차시 — 형성평가</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Segoe UI','Malgun Gothic',sans-serif;
+  background:linear-gradient(160deg,#0f172a,#1e293b);
+  color:#e2e8f0; min-height:100vh;
+}
+.container { max-width:820px; margin:0 auto; padding:20px 18px 80px; }
+.top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.top-nav a { color:#7dd3fc; text-decoration:none; font-size:.9rem; }
+h1 { color:#c4b5fd; font-size:1.5rem; margin-bottom:6px; }
+.lesson-tag { display:inline-block; background:#a78bfa; color:#1e293b; font-weight:800; border-radius:8px; padding:3px 12px; font-size:.8rem; margin-bottom:10px; }
+
+/* ===== 진행바 ===== */
+.progress-wrap { background:#1e293b; border-radius:999px; height:12px; margin:18px 0 6px; overflow:hidden; border:1px solid #475569; }
+.progress-bar { height:100%; background:linear-gradient(90deg,#a78bfa,#7c3aed); width:0; transition:width .4s; }
+.progress-label { font-size:.8rem; color:#94a3b8; text-align:right; margin-bottom:16px; }
+
+/* ===== 시작 화면 ===== */
+.panel { background:rgba(30,41,59,.8); border:1px solid #475569; border-radius:18px; padding:28px; }
+.start-panel { text-align:center; }
+.start-panel h2 { color:#fbbf24; margin-bottom:14px; }
+.start-panel p { color:#cbd5e1; line-height:1.8; font-size:.93rem; margin-bottom:8px; }
+.hint-box { background:rgba(167,139,250,.08); border:1px solid rgba(167,139,250,.3); border-radius:12px; padding:14px 18px; margin:18px auto; max-width:520px; font-size:.85rem; line-height:1.7; text-align:left; }
+.hint-box b { color:#c4b5fd; }
+
+/* ===== 문제 화면 ===== */
+.q-domain { display:inline-block; font-size:.75rem; padding:3px 12px; border-radius:999px; margin-bottom:12px; font-weight:700; }
+.q-domain.d1 { background:rgba(251,191,36,.15); color:#fbbf24; }
+.q-domain.d2 { background:rgba(249,115,22,.15); color:#fdba74; }
+.q-domain.d3 { background:rgba(56,189,248,.15); color:#7dd3fc; }
+.q-text { font-size:1.08rem; line-height:1.7; margin-bottom:20px; font-weight:600; }
+.q-text .qnum { color:#a78bfa; }
+.opts { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+.opt {
+  background:#334155; border:2px solid #64748b; border-radius:12px; padding:13px 16px;
+  cursor:pointer; font-size:.95rem; transition:.2s; display:flex; align-items:center; gap:12px;
+  font-family:inherit; color:#e2e8f0; text-align:left; width:100%;
+}
+.opt:hover:not(:disabled) { border-color:#a78bfa; }
+.opt .onum {
+  background:#1e293b; width:26px; height:26px; border-radius:8px; display:inline-flex;
+  align-items:center; justify-content:center; font-weight:800; font-size:.85rem; flex-shrink:0; color:#94a3b8;
+}
+.opt.selected { border-color:#a78bfa; background:#3b3663; }
+.opt.selected .onum { background:#a78bfa; color:#1e293b; }
+.opt.correct { border-color:#4ade80; background:#14532d; }
+.opt.correct .onum { background:#4ade80; color:#1e293b; }
+.opt.wrong { border-color:#f87171; background:#7f1d1d; }
+.opt.wrong .onum { background:#f87171; color:#1e293b; }
+.opt:disabled { cursor:default; }
+
+/* ===== 확신도 ===== */
+.conf-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:20px; }
+.conf-label { font-size:.88rem; color:#c4b5fd; font-weight:600; }
+.conf-btn {
+  background:#334155; color:#cbd5e1; border:2px solid #64748b; border-radius:999px;
+  padding:8px 18px; font-size:.85rem; cursor:pointer; font-family:inherit; transition:.2s;
+}
+.conf-btn:hover:not(:disabled) { border-color:#c4b5fd; }
+.conf-btn.sel { background:#4c1d95; border-color:#a78bfa; color:#e9d5ff; font-weight:700; }
+.conf-btn:disabled { cursor:default; opacity:.8; }
+.conf-hint { font-size:.75rem; color:#64748b; width:100%; }
+
+/* ===== 확인/다음 버튼 ===== */
+.action-row { display:flex; gap:10px; align-items:center; }
+.btn-check {
+  background:linear-gradient(135deg,#a78bfa,#7c3aed); color:#f8fafc; font-weight:800;
+  border:none; border-radius:12px; padding:13px 30px; font-size:1rem; cursor:pointer; font-family:inherit; transition:.2s;
+}
+.btn-check:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 16px rgba(167,139,250,.35); }
+.btn-check:disabled { opacity:.4; cursor:default; }
+.key-hint { font-size:.78rem; color:#64748b; }
+
+.feedback { margin-top:18px; border-radius:12px; padding:14px 18px; font-size:.9rem; line-height:1.7; display:none; }
+.feedback.show { display:block; animation:fadeIn .3s; }
+.feedback.ok { background:rgba(74,222,128,.1); border:1px solid rgba(74,222,128,.4); }
+.feedback.no { background:rgba(248,113,113,.1); border:1px solid rgba(248,113,113,.4); }
+.feedback b.head { display:block; margin-bottom:6px; font-size:1rem; }
+.feedback.ok b.head { color:#4ade80; } .feedback.no b.head { color:#f87171; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+/* ===== 결과 화면 ===== */
+.result-score { text-align:center; margin-bottom:24px; }
+.result-score .big { font-size:3rem; font-weight:800; color:#fbbf24; }
+.result-score .msg { color:#cbd5e1; font-size:1rem; margin-top:6px; }
+.r-sec-title { color:#c4b5fd; font-size:1.05rem; margin:26px 0 12px; }
+.domain-bars { display:flex; flex-direction:column; gap:12px; }
+.dbar-row { display:flex; align-items:center; gap:12px; font-size:.88rem; }
+.dbar-name { width:170px; flex-shrink:0; }
+.dbar-track { flex:1; background:#1e293b; height:16px; border-radius:999px; overflow:hidden; border:1px solid #475569; }
+.dbar-fill { height:100%; border-radius:999px; transition:width .8s; }
+.dbar-pct { width:60px; text-align:right; font-weight:700; }
+/* 캘리브레이션 매트릭스 */
+.cal-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.cal-cell { border-radius:12px; padding:14px; font-size:.85rem; line-height:1.6; border:1px solid; }
+.cal-cell h5 { font-size:.92rem; margin-bottom:6px; }
+.cal-cell .cnt { font-size:1.6rem; font-weight:800; }
+.cal-cell.good { background:rgba(74,222,128,.08); border-color:rgba(74,222,128,.4); }
+.cal-cell.good h5,.cal-cell.good .cnt { color:#4ade80; }
+.cal-cell.danger { background:rgba(248,113,113,.1); border-color:rgba(248,113,113,.5); }
+.cal-cell.danger h5,.cal-cell.danger .cnt { color:#f87171; }
+.cal-cell.lucky { background:rgba(251,191,36,.08); border-color:rgba(251,191,36,.4); }
+.cal-cell.lucky h5,.cal-cell.lucky .cnt { color:#fbbf24; }
+.cal-cell.aware { background:rgba(56,189,248,.08); border-color:rgba(56,189,248,.4); }
+.cal-cell.aware h5,.cal-cell.aware .cnt { color:#38bdf8; }
+.cal-note { margin-top:12px; font-size:.83rem; color:#94a3b8; line-height:1.65; background:rgba(15,23,42,.5); border-radius:10px; padding:12px 14px; }
+.cal-note b { color:#c4b5fd; }
+/* 오답노트 */
+.wrong-list { display:flex; flex-direction:column; gap:10px; }
+.wrong-item { background:rgba(248,113,113,.06); border:1px solid rgba(248,113,113,.3); border-radius:12px; padding:14px; font-size:.87rem; line-height:1.65; }
+.wrong-item b { color:#fca5a5; }
+.wrong-item .ans { color:#4ade80; }
+.review-reco { margin-top:16px; background:rgba(56,189,248,.08); border:1px solid rgba(56,189,248,.35); border-radius:12px; padding:14px 18px; font-size:.9rem; line-height:1.7; }
+.review-reco a { color:#7dd3fc; font-weight:700; }
+.result-actions { text-align:center; margin-top:26px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.btn-sub { background:#334155; color:#cbd5e1; border:1px solid #64748b; border-radius:10px; padding:11px 22px; font-size:.9rem; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+.hidden { display:none !important; }
+@media(max-width:560px){ .cal-grid{grid-template-columns:1fr} .dbar-name{width:110px;font-size:.78rem} }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-nav">
+    <a href="sim_bridge.html">← 3차시: 토목·교량</a>
+    <a href="index.html">홈으로</a>
+  </div>
+
+  <span class="lesson-tag">4차시</span>
+  <h1>📝 형성평가 — 건설 기술 확인 퀴즈</h1>
+
+  <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+  <div class="progress-label" id="plabel">시작 전</div>
+
+  <!-- 시작 화면 -->
+  <div class="panel start-panel" id="startPanel">
+    <h2>🎯 15문제 도전!</h2>
+    <p>1~3차시에서 배운 내용을 확인합니다.<br>각 문제마다 <b style="color:#c4b5fd">답</b>과 <b style="color:#c4b5fd">확신도</b>를 함께 선택해요.</p>
+    <div class="hint-box">
+      <b>🧠 확신도가 왜 중요할까?</b><br>
+      "내가 아는 것"과 "안다고 착각하는 것"을 구분하는 힘이 <b>메타인지</b>입니다.<br>
+      결과에서 나의 <b>메타인지 정확도</b>를 분석해 드려요!<br><br>
+      <b>⌨️ 키보드:</b> 숫자키 <b>1~4</b> = 보기 선택 · <b>Q/W/E</b> = 확신도 · <b>Enter</b> = 확인/다음
+    </div>
+    <button class="btn-check" id="startBtn">평가 시작 (Enter)</button>
+  </div>
+
+  <!-- 문제 화면 -->
+  <div class="panel hidden" id="quizPanel">
+    <span class="q-domain" id="qDomain"></span>
+    <div class="q-text" id="qText"></div>
+    <div class="opts" id="qOpts"></div>
+    <div class="conf-row" id="confRow">
+      <span class="conf-label">🧠 확신도:</span>
+      <button class="conf-btn" data-c="high">😎 확실해요 (Q)</button>
+      <button class="conf-btn" data-c="mid">🤔 아마도? (W)</button>
+      <button class="conf-btn" data-c="low">🎲 찍었어요 (E)</button>
+      <span class="conf-hint">답과 확신도를 모두 선택해야 확인할 수 있어요</span>
+    </div>
+    <div class="action-row">
+      <button class="btn-check" id="checkBtn" disabled>정답 확인</button>
+      <span class="key-hint">Enter ⏎</span>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <!-- 결과 화면 -->
+  <div class="panel hidden" id="resultPanel">
+    <div class="result-score">
+      <div class="big" id="scoreBig"></div>
+      <div class="msg" id="scoreMsg"></div>
+    </div>
+
+    <h3 class="r-sec-title">📊 영역별 성취도</h3>
+    <div class="domain-bars" id="domainBars"></div>
+
+    <h3 class="r-sec-title">🧠 메타인지 분석 — 나는 나를 얼마나 알까?</h3>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-note" id="calNote"></div>
+
+    <h3 class="r-sec-title" id="wrongTitle">📖 오답노트</h3>
+    <div class="wrong-list" id="wrongList"></div>
+    <div class="review-reco" id="reviewReco"></div>
+
+    <div class="result-actions">
+      <button class="btn-check" id="retryBtn">다시 도전하기</button>
+      <a class="btn-sub" href="index.html">홈으로</a>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ===================== 문제 데이터 ===================== */
+/* domain: 1=건설기술의 이해(1차시), 2=건축 구조물(2차시), 3=토목·교량·내진(3차시) */
+const QUESTIONS = [
+  { d:1, q:'인간이 쾌적하고 안락한 삶을 위해 공간에 자원을 효과적으로 이용하여 구조물을 만드는 기술은?',
+    opts:['수송 기술','건설 기술','제조 기술','통신 기술'], a:1,
+    exp:'건설 기술은 공간에 자원을 효과적으로 이용하여 구조물을 만드는 기술로, 건축 기술과 토목 기술로 구분됩니다.' },
+  { d:1, q:'다음 중 「토목 기술」로 만든 구조물이 아닌 것은?',
+    opts:['교량','댐','아파트','터널'], a:2,
+    exp:'아파트는 사람이 안에서 생활하는 유용한 공간 → 건축 기술. 교량·댐·터널은 기반 시설 → 토목 기술.' },
+  { d:1, q:'"한 번 시공하면 다시 짓기 어려워 처음부터 신중하게 계획해야 한다"는 건설 기술의 특징은?',
+    opts:['공공성','대형성','일회성','경제성'], a:2,
+    exp:'일회성 — 건설 구조물은 한 번 시공하면 다시 짓거나 옮기기 어렵습니다.' },
+  { d:1, q:'근대 건설 기술 시기에 새롭게 등장한 건설 재료를 모두 고른 것은?',
+    opts:['돌, 나무, 벽돌','철, 유리, 시멘트','흙, 볏짚, 기와','플라스틱, 탄소섬유, 티타늄'], a:1,
+    exp:'근대에는 산업 혁명으로 철·유리·시멘트 등 새로운 재료가 등장했고, 철근 콘크리트 구조와 철골 구조가 발달했습니다.' },
+  { d:1, q:'건설 구조물을 시대 순서대로 바르게 나열한 것은?',
+    opts:['피라미드 → 성 소피아 성당 → 에펠탑 → 부르즈 할리파','에펠탑 → 피라미드 → 성 소피아 성당 → 부르즈 할리파','피라미드 → 에펠탑 → 성 소피아 성당 → 부르즈 할리파','성 소피아 성당 → 피라미드 → 부르즈 할리파 → 에펠탑'], a:0,
+    exp:'고대(피라미드) → 중세(성 소피아 성당) → 근대(에펠탑) → 현대(부르즈 할리파) 순입니다.' },
+  { d:2, q:'다음 중 「공공용 건축 구조물」끼리 바르게 묶인 것은?',
+    opts:['아파트, 단독주택','호텔, 백화점','학교, 도서관, 병원','은행, 사무실'], a:2,
+    exp:'공공용은 공공의 편의와 복리 증진을 위한 구조물 — 학교, 도서관, 병원, 체육관 등입니다.' },
+  { d:2, q:'기둥과 보 등 가늘고 긴 재료를 「조립」하여 뼈대를 만드는 건축 구조 방식은?',
+    opts:['가구식 구조','일체식 구조','조적식 구조','특수식 구조'], a:0,
+    exp:'가구식 구조 — 가구를 조립하듯 기둥과 보를 짜 맞춰 만들며, 목 구조와 철골 구조가 대표적입니다.' },
+  { d:2, q:'철근을 배치하고 콘크리트를 부어 기둥·벽·바닥이 「한 덩어리」가 되게 만드는 구조는?',
+    opts:['가구식 구조','일체식 구조','조적식 구조','특수식 구조'], a:1,
+    exp:'일체식 구조 — 철근 콘크리트 구조, 철골 철근 콘크리트 구조가 여기에 속하며 아파트가 대표적입니다.' },
+  { d:2, q:'벽돌, 블록, 돌 등을 「쌓아 올려」 만드는 조적식 구조의 한계로 가장 알맞은 것은?',
+    opts:['좁은 공간만 만들 수 있다','높이 쌓는 데 한계가 있다','비용이 너무 많이 든다','곡선을 만들 수 없다'], a:1,
+    exp:'조적식은 재료를 쌓는 방식이라 높이의 한계가 있어 주로 저층 건물에 사용됩니다.' },
+  { d:2, q:'시드니 오페라하우스처럼 얇은 곡면으로 넓은 내부 공간을 만드는 특수식 구조는?',
+    opts:['셸 구조','블록 구조','철골 구조','벽돌 구조'], a:0,
+    exp:'셸 구조 — 달걀 껍데기처럼 얇은 곡면판으로 기둥 없이 넓은 공간을 덮을 수 있습니다.' },
+  { d:3, q:'댐의 기능으로 알맞지 않은 것은?',
+    opts:['물 저장과 하천 수위 조절','수력 발전','생활·공업·농업용수 공급','선박의 정박과 물류 하역'], a:3,
+    exp:'선박 정박과 물류 하역은 항만의 기능입니다. 댐은 저수·취수·발전·수위 조절 등을 담당해요.' },
+  { d:3, q:'교량에서 하중을 받아 하부 구조에 전달하는 부분과, 이를 지반으로 분산하는 부분을 순서대로 쓰면?',
+    opts:['상부 구조 → 하부 구조','하부 구조 → 상부 구조','주탑 → 케이블','케이블 → 상판'], a:0,
+    exp:'상부 구조(상판 등)가 하중을 받아 하부 구조(교각·교대)에 전달하고, 하부 구조가 지반으로 분산합니다.' },
+  { d:3, q:'주탑 사이에 「주케이블」을 걸고 상판을 수직 케이블로 매달아 연결한 교량은?',
+    opts:['트러스교','아치교','현수교','사장교'], a:2,
+    exp:'현수교 — 주케이블에 매다는 방식(금문교, 광안대교). 사장교는 주탑에서 상판으로 케이블을 직접 연결합니다.' },
+  { d:3, q:'교량의 케이블이 주로 받는 힘과 아치교의 아치가 주로 받는 힘을 순서대로 쓰면?',
+    opts:['압축력, 인장력','인장력, 압축력','인장력, 인장력','압축력, 압축력'], a:1,
+    exp:'케이블은 당겨지는 인장력, 아치는 눌리는 압축력을 주로 받습니다.' },
+  { d:3, q:'기둥과 지반 사이에 고무 받침을 설치하여 지진이 구조물에 전달되는 것을 최소화하는 내진 설계 방식은?',
+    opts:['내진 구조','면진 구조','제진 구조','방진 구조'], a:1,
+    exp:'면진 구조 — 지반과 건물을 분리(絶緣)해 지진 에너지 전달을 차단합니다. 내진은 튼튼하게 버티기, 제진은 장치로 상쇄하기!' },
+];
+const DOMAIN_NAMES = { 1:'건설 기술의 이해', 2:'건축 구조물', 3:'토목·교량·내진' };
+const DOMAIN_CLASS = { 1:'d1', 2:'d2', 3:'d3' };
+const DOMAIN_LINK = { 1:'sim_intro.html', 2:'sim_building.html', 3:'sim_bridge.html' };
+const DOMAIN_COLOR = { 1:'#fbbf24', 2:'#fdba74', 3:'#7dd3fc' };
+
+/* ===================== 상태 ===================== */
+let order = [], idx = 0, answered = false;
+let selOpt = null, selConf = null;
+let records = []; // {d, correct, conf, qIdx}
+
+const $ = id => document.getElementById(id);
+
+function startQuiz() {
+  order = QUESTIONS.map((_, i) => i).sort(() => Math.random() - .5);
+  idx = 0; records = [];
+  $('startPanel').classList.add('hidden');
+  $('resultPanel').classList.add('hidden');
+  $('quizPanel').classList.remove('hidden');
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = QUESTIONS[order[idx]];
+  answered = false; selOpt = null; selConf = null;
+  $('pbar').style.width = (idx / QUESTIONS.length * 100) + '%';
+  $('plabel').textContent = '문제 ' + (idx + 1) + ' / ' + QUESTIONS.length;
+  $('qDomain').textContent = '📚 ' + DOMAIN_NAMES[q.d];
+  $('qDomain').className = 'q-domain ' + DOMAIN_CLASS[q.d];
+  $('qText').innerHTML = '<span class="qnum">Q' + (idx + 1) + '.</span> ' + q.q;
+  const optsEl = $('qOpts'); optsEl.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const b = document.createElement('button');
+    b.className = 'opt';
+    b.innerHTML = '<span class="onum">' + (i + 1) + '</span><span>' + o + '</span>';
+    b.onclick = () => selectOpt(i);
+    optsEl.appendChild(b);
+  });
+  document.querySelectorAll('.conf-btn').forEach(b => { b.classList.remove('sel'); b.disabled = false; });
+  $('checkBtn').disabled = true;
+  $('checkBtn').textContent = '정답 확인';
+  $('feedback').className = 'feedback'; $('feedback').innerHTML = '';
+}
+
+function selectOpt(i) {
+  if (answered) return;
+  selOpt = i;
+  document.querySelectorAll('#qOpts .opt').forEach((b, j) => b.classList.toggle('selected', j === i));
+  updateCheckBtn();
+}
+function selectConf(c) {
+  if (answered) return;
+  selConf = c;
+  document.querySelectorAll('.conf-btn').forEach(b => b.classList.toggle('sel', b.dataset.c === c));
+  updateCheckBtn();
+}
+function updateCheckBtn() { $('checkBtn').disabled = !(selOpt !== null && selConf !== null); }
+
+function checkAnswer() {
+  if (answered || selOpt === null || selConf === null) return;
+  answered = true;
+  const q = QUESTIONS[order[idx]];
+  const correct = selOpt === q.a;
+  records.push({ d: q.d, correct, conf: selConf, qIdx: order[idx], picked: selOpt });
+  document.querySelectorAll('#qOpts .opt').forEach((b, j) => {
+    b.disabled = true;
+    if (j === q.a) b.classList.add('correct');
+    else if (j === selOpt && !correct) b.classList.add('wrong');
+  });
+  document.querySelectorAll('.conf-btn').forEach(b => b.disabled = true);
+  const fb = $('feedback');
+  fb.className = 'feedback show ' + (correct ? 'ok' : 'no');
+  fb.innerHTML = '<b class="head">' + (correct ? '⭕ 정답입니다!' : '❌ 아쉬워요!') + '</b>' + q.exp;
+  $('checkBtn').disabled = false;
+  $('checkBtn').textContent = idx + 1 < QUESTIONS.length ? '다음 문제 →' : '결과 보기 🎉';
+}
+
+function nextStep() {
+  if (!answered) { checkAnswer(); return; }
+  idx++;
+  if (idx < QUESTIONS.length) showQuestion();
+  else showResult();
+}
+
+/* ===================== 결과 ===================== */
+function showResult() {
+  $('quizPanel').classList.add('hidden');
+  $('resultPanel').classList.remove('hidden');
+  $('pbar').style.width = '100%';
+  $('plabel').textContent = '완료!';
+
+  const total = records.length;
+  const score = records.filter(r => r.correct).length;
+  $('scoreBig').textContent = score + ' / ' + total;
+  $('scoreMsg').textContent =
+    score === total ? '🏆 만점! 건설 기술 마스터!' :
+    score >= 12 ? '🌟 훌륭해요! 조금만 더 다듬으면 완벽!' :
+    score >= 8 ? '💪 좋은 출발! 오답 영역을 복습해요.' :
+    '📚 아직 기초가 필요해요. 1차시부터 차근차근 다시!';
+
+  /* 영역별 바 */
+  const bars = $('domainBars'); bars.innerHTML = '';
+  const domainScores = {};
+  [1,2,3].forEach(d => {
+    const rs = records.filter(r => r.d === d);
+    const ok = rs.filter(r => r.correct).length;
+    const pct = rs.length ? Math.round(ok / rs.length * 100) : 0;
+    domainScores[d] = pct;
+    const row = document.createElement('div');
+    row.className = 'dbar-row';
+    row.innerHTML = '<span class="dbar-name">' + DOMAIN_NAMES[d] + '</span>' +
+      '<div class="dbar-track"><div class="dbar-fill" style="width:0;background:' + DOMAIN_COLOR[d] + '"></div></div>' +
+      '<span class="dbar-pct" style="color:' + DOMAIN_COLOR[d] + '">' + ok + '/' + rs.length + '</span>';
+    bars.appendChild(row);
+    requestAnimationFrame(() => setTimeout(() => row.querySelector('.dbar-fill').style.width = pct + '%', 60));
+  });
+
+  /* 메타인지 캘리브레이션 */
+  const hi = r => r.conf === 'high';
+  const cells = {
+    good: records.filter(r => hi(r) && r.correct).length,
+    danger: records.filter(r => hi(r) && !r.correct).length,
+    lucky: records.filter(r => !hi(r) && r.correct).length,
+    aware: records.filter(r => !hi(r) && !r.correct).length,
+  };
+  $('calGrid').innerHTML =
+    '<div class="cal-cell good"><h5>✅ 알고 있음</h5><span class="cnt">' + cells.good + '문제</span><br>확신 + 정답 — 진짜 실력!</div>' +
+    '<div class="cal-cell danger"><h5>⚠️ 착각 주의!</h5><span class="cnt">' + cells.danger + '문제</span><br>확신 + 오답 — 잘못 알고 있던 개념. 가장 먼저 복습!</div>' +
+    '<div class="cal-cell lucky"><h5>🍀 감으로 맞힘</h5><span class="cnt">' + cells.lucky + '문제</span><br>불확신 + 정답 — 개념을 확실히 다지면 진짜 실력이 돼요.</div>' +
+    '<div class="cal-cell aware"><h5>🧭 모름을 앎</h5><span class="cnt">' + cells.aware + '문제</span><br>불확신 + 오답 — 모른다는 걸 정확히 알고 있어요. 복습하면 OK!</div>';
+  const calMsg = cells.danger === 0
+    ? '👍 <b>착각이 없어요!</b> 자신이 아는 것과 모르는 것을 정확히 구분하고 있습니다. 메타인지가 뛰어나요.'
+    : '🔍 <b>「착각 주의」 ' + cells.danger + '문제</b>가 가장 위험해요. 틀렸는데 확신했던 문제부터 아래 오답노트로 다시 확인하세요. 자신의 이해 상태를 점검하는 것이 최고의 공부법입니다!';
+  $('calNote').innerHTML = calMsg;
+
+  /* 오답노트 */
+  const wrongs = records.filter(r => !r.correct);
+  const wl = $('wrongList'); wl.innerHTML = '';
+  if (wrongs.length === 0) {
+    $('wrongTitle').textContent = '📖 오답노트 — 없음! 🎉';
+    wl.innerHTML = '<div style="color:#4ade80;font-size:.9rem">모든 문제를 맞혔습니다. 완벽해요!</div>';
+  } else {
+    $('wrongTitle').textContent = '📖 오답노트 (' + wrongs.length + '문제)';
+    wrongs.forEach(r => {
+      const q = QUESTIONS[r.qIdx];
+      const div = document.createElement('div');
+      div.className = 'wrong-item';
+      div.innerHTML = '<b>Q. ' + q.q + '</b><br>내 답: ' + q.opts[r.picked] +
+        (r.conf === 'high' ? ' <span style="color:#f87171">(확신했음 ⚠️)</span>' : '') +
+        '<br><span class="ans">정답: ' + q.opts[q.a] + '</span><br>' + q.exp;
+      wl.appendChild(div);
+    });
+  }
+
+  /* 복습 추천 */
+  const weakest = [1,2,3].sort((a,b) => domainScores[a] - domainScores[b])[0];
+  $('reviewReco').innerHTML = domainScores[weakest] === 100
+    ? '🎓 모든 영역을 완벽히 이해했어요! 축하합니다!'
+    : '💡 <b>복습 추천:</b> 「' + DOMAIN_NAMES[weakest] + '」 영역이 가장 약해요 (' + domainScores[weakest] + '%). ' +
+      '<a href="' + DOMAIN_LINK[weakest] + '">여기를 눌러 해당 차시로 이동</a>해 복습한 뒤 다시 도전해 보세요!';
+}
+
+/* ===================== 이벤트 ===================== */
+$('startBtn').onclick = startQuiz;
+$('checkBtn').onclick = nextStep;
+$('retryBtn').onclick = startQuiz;
+document.querySelectorAll('.conf-btn').forEach(b => b.onclick = () => selectConf(b.dataset.c));
+
+document.addEventListener('keydown', e => {
+  if (!$('startPanel').classList.contains('hidden')) {
+    if (e.key === 'Enter') { e.preventDefault(); startQuiz(); }
+    return;
+  }
+  if (!$('quizPanel').classList.contains('hidden')) {
+    if (['1','2','3','4'].includes(e.key) && !answered) { selectOpt(parseInt(e.key) - 1); return; }
+    const confMap = { q:'high', w:'mid', e:'low' };
+    if (confMap[e.key.toLowerCase()] && !answered) { selectConf(confMap[e.key.toLowerCase()]); return; }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!$('checkBtn').disabled) nextStep();
+    }
+    return;
+  }
+  if (!$('resultPanel').classList.contains('hidden')) {
+    if (e.key === 'Enter') { e.preventDefault(); startQuiz(); }
+  }
+});
+</script>
+</body>
+</html>

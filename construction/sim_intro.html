@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1차시 — 건설 기술의 이해</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Segoe UI','Malgun Gothic',sans-serif;
+  background:linear-gradient(160deg,#0f172a,#1e293b);
+  color:#e2e8f0; min-height:100vh;
+}
+.container { max-width:1050px; margin:0 auto; padding:20px 18px 80px; }
+.top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.top-nav a { color:#7dd3fc; text-decoration:none; font-size:.9rem; }
+.top-nav a:hover { text-decoration:underline; }
+h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
+.lesson-tag { display:inline-block; background:#fbbf24; color:#1e293b; font-weight:800; border-radius:8px; padding:3px 12px; font-size:.8rem; margin-bottom:10px; }
+.goal-box {
+  background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0;
+  padding:14px 18px; margin:14px 0 30px; font-size:.92rem; line-height:1.7;
+}
+.goal-box b { color:#7dd3fc; }
+
+.step-title { font-size:1.25rem; color:#fbbf24; margin:40px 0 6px; display:flex; align-items:center; gap:10px; }
+.step-num { background:#f59e0b; color:#1e293b; width:30px; height:30px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:.95rem; flex-shrink:0; }
+.step-desc { color:#94a3b8; font-size:.9rem; margin-bottom:16px; line-height:1.6; }
+
+/* ===== KWL 자기점검 ===== */
+.kwl {
+  background:rgba(167,139,250,.08); border:1px solid rgba(167,139,250,.35); border-radius:14px;
+  padding:20px; margin-bottom:8px;
+}
+.kwl h3 { color:#c4b5fd; font-size:1rem; margin-bottom:10px; }
+.kwl-row { display:flex; flex-direction:column; gap:10px; }
+.kwl-item { display:flex; align-items:center; gap:10px; font-size:.9rem; }
+.kwl-item select {
+  background:#1e293b; color:#e2e8f0; border:1px solid #64748b; border-radius:8px;
+  padding:5px 10px; font-size:.85rem; cursor:pointer;
+}
+.kwl-note { font-size:.78rem; color:#a78bfa; margin-top:10px; }
+
+/* ===== 개념 카드 ===== */
+.concept-wrap { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.concept-def {
+  font-size:1rem; line-height:1.8; background:rgba(251,191,36,.07); border:1px dashed rgba(251,191,36,.4);
+  border-radius:12px; padding:16px 18px; margin-bottom:18px;
+}
+.concept-def b { color:#fbbf24; }
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.tech-card { border-radius:14px; padding:18px; border:2px solid; }
+.tech-card.arch { background:rgba(249,115,22,.08); border-color:rgba(249,115,22,.5); }
+.tech-card.civil { background:rgba(14,165,233,.08); border-color:rgba(14,165,233,.5); }
+.tech-card h3 { font-size:1.05rem; margin-bottom:8px; }
+.tech-card.arch h3 { color:#fdba74; } .tech-card.civil h3 { color:#7dd3fc; }
+.tech-card p { font-size:.87rem; line-height:1.65; color:#cbd5e1; }
+.tech-card .ex { margin-top:10px; font-size:.8rem; color:#94a3b8; }
+@media(max-width:620px){ .two-col{grid-template-columns:1fr} }
+
+/* ===== 특징 플립카드 ===== */
+.flip-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; }
+.flip { perspective:800px; height:170px; cursor:pointer; }
+.flip-inner { position:relative; width:100%; height:100%; transition:transform .6s; transform-style:preserve-3d; }
+.flip.on .flip-inner { transform:rotateY(180deg); }
+.flip-face {
+  position:absolute; inset:0; backface-visibility:hidden; border-radius:14px;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:14px; text-align:center;
+}
+.flip-front { background:linear-gradient(135deg,#334155,#1e293b); border:2px solid #64748b; }
+.flip-front .fi { font-size:2.2rem; margin-bottom:8px; }
+.flip-front b { font-size:1.05rem; color:#fbbf24; }
+.flip-front span { font-size:.72rem; color:#64748b; margin-top:8px; }
+.flip-back {
+  background:linear-gradient(135deg,#78350f,#92400e); border:2px solid #f59e0b;
+  transform:rotateY(180deg); font-size:.8rem; line-height:1.55; color:#fef3c7;
+}
+.flip-back b { color:#fde68a; display:block; margin-bottom:6px; }
+
+/* ===== 특징 매칭 퀴즈 ===== */
+.match-quiz { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.mq-item { margin-bottom:16px; }
+.mq-q { font-size:.95rem; margin-bottom:10px; line-height:1.6; }
+.mq-q .qnum { color:#fbbf24; font-weight:700; }
+.mq-opts { display:flex; gap:8px; flex-wrap:wrap; }
+.mq-btn {
+  background:#334155; color:#e2e8f0; border:1px solid #64748b; border-radius:999px;
+  padding:7px 16px; font-size:.85rem; cursor:pointer; transition:.2s; font-family:inherit;
+}
+.mq-btn:hover:not(:disabled) { border-color:#fbbf24; color:#fbbf24; }
+.mq-btn.correct { background:#14532d; border-color:#4ade80; color:#bbf7d0; }
+.mq-btn.wrong { background:#7f1d1d; border-color:#f87171; color:#fecaca; }
+.mq-btn:disabled { cursor:default; opacity:.85; }
+.mq-fb { font-size:.82rem; margin-top:8px; min-height:1.2em; }
+.mq-fb.ok { color:#4ade80; } .mq-fb.no { color:#f87171; }
+
+/* ===== 타임라인 게임 ===== */
+.tl-game { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.tl-pool { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; min-height:60px; padding:12px; background:rgba(15,23,42,.6); border-radius:12px; margin-bottom:18px; }
+.tl-chip {
+  background:linear-gradient(135deg,#475569,#334155); border:2px solid #94a3b8; border-radius:10px;
+  padding:8px 14px; font-size:.85rem; cursor:grab; user-select:none; transition:.2s;
+}
+.tl-chip:active { cursor:grabbing; }
+.tl-chip.dragging { opacity:.4; }
+.tl-chip .emoji { margin-right:5px; }
+.tl-eras { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
+.tl-era { border-radius:14px; border:2px dashed #64748b; padding:14px; min-height:150px; transition:.25s; }
+.tl-era.dragover { border-color:#fbbf24; background:rgba(251,191,36,.08); }
+.tl-era h4 { text-align:center; margin-bottom:4px; font-size:1rem; }
+.tl-era .era-hint { text-align:center; font-size:.72rem; color:#94a3b8; margin-bottom:10px; line-height:1.5; }
+.tl-era[data-era="ancient"] h4 { color:#fbbf24; }
+.tl-era[data-era="medieval"] h4 { color:#a78bfa; }
+.tl-era[data-era="modern"] h4 { color:#38bdf8; }
+.tl-era[data-era="contemporary"] h4 { color:#4ade80; }
+.tl-era .dropzone { display:flex; flex-direction:column; gap:6px; min-height:70px; }
+.tl-chip.placed { cursor:grab; font-size:.8rem; }
+.tl-chip.ok { border-color:#4ade80; background:linear-gradient(135deg,#14532d,#166534); }
+.tl-chip.bad { border-color:#f87171; background:linear-gradient(135deg,#7f1d1d,#991b1b); }
+.tl-controls { text-align:center; margin-top:16px; display:flex; gap:10px; justify-content:center; }
+.btn-main {
+  background:linear-gradient(135deg,#f59e0b,#d97706); color:#1e293b; font-weight:800;
+  border:none; border-radius:10px; padding:11px 26px; font-size:.95rem; cursor:pointer; font-family:inherit; transition:.2s;
+}
+.btn-main:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(245,158,11,.35); }
+.btn-sub {
+  background:#334155; color:#cbd5e1; border:1px solid #64748b; border-radius:10px;
+  padding:11px 20px; font-size:.9rem; cursor:pointer; font-family:inherit;
+}
+.tl-result { text-align:center; margin-top:14px; font-size:1rem; min-height:1.4em; font-weight:600; }
+
+/* ===== 스스로 확인 체크리스트 ===== */
+.self-check { background:rgba(74,222,128,.07); border:1px solid rgba(74,222,128,.35); border-radius:14px; padding:20px; }
+.self-check h3 { color:#86efac; font-size:1rem; margin-bottom:12px; }
+.sc-item { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:.9rem; line-height:1.55; }
+.sc-item input { margin-top:3px; width:16px; height:16px; accent-color:#4ade80; cursor:pointer; }
+.sc-progress { margin-top:12px; font-size:.85rem; color:#86efac; }
+.next-link { display:block; text-align:center; margin-top:34px; }
+.next-link a {
+  display:inline-block; background:linear-gradient(135deg,#38bdf8,#0284c7); color:#0f172a;
+  font-weight:800; text-decoration:none; border-radius:12px; padding:14px 34px; font-size:1rem; transition:.2s;
+}
+.next-link a:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(56,189,248,.35); }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-nav">
+    <a href="index.html">← 홈으로</a>
+    <a href="sim_building.html">2차시: 건축 구조물 →</a>
+  </div>
+
+  <span class="lesson-tag">1차시</span>
+  <h1>🏗️ 건설 기술의 이해</h1>
+  <div class="goal-box">
+    <b>학습 목표</b><br>
+    ① 건설 기술의 <b>개념</b>과 건축·토목 기술의 차이를 설명할 수 있다.<br>
+    ② 건설 기술의 <b>6가지 특징</b>을 실제 사례에 적용할 수 있다.<br>
+    ③ 고대~현대 건설 기술의 <b>발달 과정</b>을 시대순으로 구분할 수 있다.
+  </div>
+
+  <!-- STEP 0 : 사전 자기점검 -->
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span style="font-size:.75rem;color:#a78bfa">🧠 메타인지</span></div>
+  <p class="step-desc">시작하기 전, 지금 나의 상태를 솔직하게 체크해 보세요. 학습이 끝나면 다시 비교해 봅니다.</p>
+  <div class="kwl">
+    <h3>📋 나는 지금 얼마나 알고 있을까?</h3>
+    <div class="kwl-row">
+      <div class="kwl-item"><span>"건설 기술"이 무엇인지 설명할 수 있다</span>
+        <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+      <div class="kwl-item"><span>건축 기술과 토목 기술의 차이를 안다</span>
+        <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+      <div class="kwl-item"><span>피라미드·에펠탑이 어느 시대 구조물인지 안다</span>
+        <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+    </div>
+    <div class="kwl-note">💡 "모른다"고 체크해도 괜찮아요. 자신의 상태를 아는 것이 메타인지의 시작입니다!</div>
+  </div>
+
+  <!-- STEP 1 : 개념 -->
+  <div class="step-title"><span class="step-num">1</span> 건설 기술이란?</div>
+  <p class="step-desc">먼저 핵심 개념을 정확히 이해합니다.</p>
+  <div class="concept-wrap">
+    <div class="concept-def">
+      인류는 자연환경으로부터 자신을 보호하고, 더 편안하고 쾌적한 생활을 위해 집·도로·교량 등 다양한 구조물을 만들어 왔습니다.
+      <b>건설 기술</b>이란 인간이 쾌적하고 안락한 삶을 위해 <b>공간에 자원을 효과적으로 이용하여 구조물을 만드는 기술</b>이며,
+      크게 <b>건축 기술</b>과 <b>토목 기술</b>로 구분됩니다.
+    </div>
+    <div class="two-col">
+      <div class="tech-card arch">
+        <h3>🏠 건축 기술</h3>
+        <p>인간이 생활하는 데 필요한 <b>유용한 공간</b>을 만드는 기술. 사람이 그 <b>안에서 생활</b>하는 구조물을 만들어요.</p>
+        <div class="ex">예) 주택, 학교, 병원, 상가, 아파트, 체육관</div>
+      </div>
+      <div class="tech-card civil">
+        <h3>🌉 토목 기술</h3>
+        <p>생활에 필요한 <b>기반 시설</b>을 만드는 기술. 공공의 이익을 위해 <b>자연환경을 개량</b>하는 구조물을 만들어요.</p>
+        <div class="ex">예) 도로, 교량, 터널, 댐, 항만, 철도, 상하수도</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 : 특징 플립카드 -->
+  <div class="step-title"><span class="step-num">2</span> 건설 기술의 6가지 특징</div>
+  <p class="step-desc">카드를 <b>클릭</b>하면 뒤집혀 설명이 나타납니다. 6장 모두 확인해 보세요!</p>
+  <div class="flip-grid" id="flipGrid">
+    <div class="flip" data-name="공공성"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="fi">🏛️</div><b>공공성</b><span>클릭해서 확인</span></div>
+      <div class="flip-face flip-back"><b>공공성</b>많은 사람이 함께 사용할 수 있는 공간을 제공한다.<br>예) 도서관, 공원, 도로</div>
+    </div></div>
+    <div class="flip" data-name="지역성"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="fi">🗺️</div><b>지역성</b><span>클릭해서 확인</span></div>
+      <div class="flip-face flip-back"><b>지역성</b>해당 지역의 자연환경과 전통·문화 특성을 고려해 만든다.<br>예) 제주 돌집, 수상 가옥</div>
+    </div></div>
+    <div class="flip" data-name="일회성"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="fi">1️⃣</div><b>일회성</b><span>클릭해서 확인</span></div>
+      <div class="flip-face flip-back"><b>일회성</b>한 번 시공하면 다시 짓거나 옮기기 어렵다. 그래서 처음부터 신중하게 계획해야 한다.</div>
+    </div></div>
+    <div class="flip" data-name="대형성"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="fi">🏙️</div><b>대형성</b><span>클릭해서 확인</span></div>
+      <div class="flip-face flip-back"><b>대형성</b>다양한 분야의 인력과 장비가 결합된 큰 규모의 공사이다.<br>예) 초고층 빌딩, 댐</div>
+    </div></div>
+    <div class="flip" data-name="경제성"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="fi">💰</div><b>경제성</b><span>클릭해서 확인</span></div>
+      <div class="flip-face flip-back"><b>경제성</b>건물, 도로, 항만 등은 움직일 수 없는 큰 자산이 된다. 비용을 계획적으로 관리해야 한다.</div>
+    </div></div>
+    <div class="flip" data-name="장기성"><div class="flip-inner">
+      <div class="flip-face flip-front"><div class="fi">⏳</div><b>장기성</b><span>클릭해서 확인</span></div>
+      <div class="flip-face flip-back"><b>장기성</b>오랜 기간에 걸쳐 계획·시공하며, 완성 후에도 오래 사용한다.<br>예) 교량 100년 사용</div>
+    </div></div>
+  </div>
+
+  <!-- STEP 3 : 특징 적용 퀴즈 -->
+  <div class="step-title"><span class="step-num">3</span> 특징 적용하기</div>
+  <p class="step-desc">아래 사례가 건설 기술의 어떤 <b>특징</b>과 가장 관련 있는지 골라 보세요. (버튼 클릭)</p>
+  <div class="match-quiz" id="matchQuiz">
+    <div class="mq-item" data-answer="지역성">
+      <div class="mq-q"><span class="qnum">Q1.</span> 제주도의 전통 가옥은 바람이 강한 기후에 맞춰 지붕을 줄로 엮어 고정했다.</div>
+      <div class="mq-opts"></div><div class="mq-fb"></div>
+    </div>
+    <div class="mq-item" data-answer="일회성">
+      <div class="mq-q"><span class="qnum">Q2.</span> 아파트를 잘못 지었다고 해서 헐고 다시 짓는 것은 매우 어렵기 때문에 설계 단계부터 꼼꼼히 검토한다.</div>
+      <div class="mq-opts"></div><div class="mq-fb"></div>
+    </div>
+    <div class="mq-item" data-answer="공공성">
+      <div class="mq-q"><span class="qnum">Q3.</span> 시민 누구나 이용할 수 있는 시립 도서관과 공원이 건설되었다.</div>
+      <div class="mq-opts"></div><div class="mq-fb"></div>
+    </div>
+    <div class="mq-item" data-answer="장기성">
+      <div class="mq-q"><span class="qnum">Q4.</span> 한강 다리는 수십 년 전에 만들어졌지만 지금도 안전하게 사용되고 있다.</div>
+      <div class="mq-opts"></div><div class="mq-fb"></div>
+    </div>
+    <div class="mq-item" data-answer="대형성">
+      <div class="mq-q"><span class="qnum">Q5.</span> 초고층 타워 공사에는 설계사, 기술자, 중장비 등 수천 명의 인력과 장비가 투입되었다.</div>
+      <div class="mq-opts"></div><div class="mq-fb"></div>
+    </div>
+    <div style="text-align:center;margin-top:6px;font-size:.9rem" id="mqScore"></div>
+  </div>
+
+  <!-- STEP 4 : 발달사 타임라인 -->
+  <div class="step-title"><span class="step-num">4</span> 건설 기술 발달사 — 타임라인 게임</div>
+  <p class="step-desc">구조물 카드를 <b>알맞은 시대로 드래그</b>하세요. 모두 배치한 뒤 <b>정답 확인</b>을 누르면 채점됩니다. <b>Enter</b> 키로도 확인할 수 있어요.</p>
+  <div class="tl-game">
+    <div class="tl-pool" id="tlPool"></div>
+    <div class="tl-eras">
+      <div class="tl-era" data-era="ancient">
+        <h4>🏺 고대</h4>
+        <div class="era-hint">돌·나무·벽돌 등 자연 재료<br>규모가 크고 튼튼한 구조물</div>
+        <div class="dropzone"></div>
+      </div>
+      <div class="tl-era" data-era="medieval">
+        <h4>⛪ 중세</h4>
+        <div class="era-hint">정치·종교의 영향<br>비잔틴·로마네스크·고딕 양식</div>
+        <div class="dropzone"></div>
+      </div>
+      <div class="tl-era" data-era="modern">
+        <h4>🏭 근대</h4>
+        <div class="era-hint">산업 혁명 — 철·유리·시멘트<br>철근 콘크리트·철골 구조 등장</div>
+        <div class="dropzone"></div>
+      </div>
+      <div class="tl-era" data-era="contemporary">
+        <h4>🌆 현대</h4>
+        <div class="era-hint">초고층화·거대화·자동화<br>스마트 도시·친환경 구조물</div>
+        <div class="dropzone"></div>
+      </div>
+    </div>
+    <div class="tl-controls">
+      <button class="btn-main" id="tlCheck">정답 확인 (Enter)</button>
+      <button class="btn-sub" id="tlReset">다시 하기</button>
+    </div>
+    <div class="tl-result" id="tlResult"></div>
+  </div>
+
+  <!-- STEP 5 : 스스로 확인 -->
+  <div class="step-title"><span class="step-num">5</span> 스스로 확인하기 <span style="font-size:.75rem;color:#86efac">🧠 메타인지</span></div>
+  <p class="step-desc">오늘 배운 내용을 스스로 점검해 보세요. 설명할 수 <b>없다면</b> 위로 돌아가 다시 확인!</p>
+  <div class="self-check">
+    <h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>건설 기술의 개념을 <b>내 말로</b> 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>건축 기술과 토목 기술의 차이를 예시와 함께 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>건설 기술의 6가지 특징 중 <b>4가지 이상</b>을 떠올릴 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>피라미드 → 성당 → 에펠탑 → 부르즈 할리파를 시대순으로 나열할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>근대에 등장한 새로운 건설 재료(철, 유리, 시멘트)를 말할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress">체크: 0 / 5</div>
+  </div>
+
+  <div class="next-link"><a href="sim_building.html">다음 → 2차시: 건축 구조물 분류하기</a></div>
+</div>
+
+<script>
+/* ===== 플립카드 ===== */
+document.querySelectorAll('.flip').forEach(f => {
+  f.addEventListener('click', () => f.classList.toggle('on'));
+});
+
+/* ===== 특징 매칭 퀴즈 ===== */
+const FEATURES = ['공공성','지역성','일회성','대형성','경제성','장기성'];
+let mqCorrect = 0, mqDone = 0;
+document.querySelectorAll('#matchQuiz .mq-item').forEach(item => {
+  const ans = item.dataset.answer;
+  const opts = item.querySelector('.mq-opts');
+  const fb = item.querySelector('.mq-fb');
+  FEATURES.forEach(f => {
+    const b = document.createElement('button');
+    b.className = 'mq-btn'; b.textContent = f;
+    b.onclick = () => {
+      if (item.dataset.done) return;
+      item.dataset.done = '1'; mqDone++;
+      opts.querySelectorAll('.mq-btn').forEach(x => x.disabled = true);
+      if (f === ans) {
+        b.classList.add('correct'); mqCorrect++;
+        fb.textContent = '⭕ 정답! ' + ans + ' — 잘 이해했어요.'; fb.className = 'mq-fb ok';
+      } else {
+        b.classList.add('wrong');
+        opts.querySelectorAll('.mq-btn').forEach(x => { if (x.textContent === ans) x.classList.add('correct'); });
+        fb.textContent = '❌ 정답은 「' + ans + '」 입니다. 카드 설명을 다시 읽어 보세요.'; fb.className = 'mq-fb no';
+      }
+      if (mqDone === 5) {
+        document.getElementById('mqScore').innerHTML =
+          '🎯 적용 퀴즈 결과: <b style="color:#fbbf24">' + mqCorrect + ' / 5</b>' +
+          (mqCorrect >= 4 ? ' — 훌륭해요!' : ' — 플립카드를 다시 보고 복습해 보세요.');
+      }
+    };
+    opts.appendChild(b);
+  });
+});
+
+/* ===== 타임라인 게임 ===== */
+const STRUCTURES = [
+  { name:'피라미드', emoji:'🔺', era:'ancient' },
+  { name:'콜로세움', emoji:'🏟️', era:'ancient' },
+  { name:'만리장성', emoji:'🧱', era:'ancient' },
+  { name:'파르테논 신전', emoji:'🏛️', era:'ancient' },
+  { name:'성 소피아 성당', emoji:'🕌', era:'medieval' },
+  { name:'피사 대성당', emoji:'⛪', era:'medieval' },
+  { name:'서원·향교', emoji:'🏯', era:'medieval' },
+  { name:'에펠탑', emoji:'🗼', era:'modern' },
+  { name:'금문교', emoji:'🌉', era:'modern' },
+  { name:'제철소', emoji:'🏭', era:'modern' },
+  { name:'부르즈 할리파', emoji:'🏙️', era:'contemporary' },
+  { name:'스마트 빌딩', emoji:'🤖', era:'contemporary' },
+];
+const pool = document.getElementById('tlPool');
+let dragEl = null;
+
+function makeChip(s) {
+  const c = document.createElement('div');
+  c.className = 'tl-chip'; c.draggable = true;
+  c.dataset.era = s.era;
+  c.innerHTML = '<span class="emoji">' + s.emoji + '</span>' + s.name;
+  c.addEventListener('dragstart', () => { dragEl = c; c.classList.add('dragging'); });
+  c.addEventListener('dragend', () => { c.classList.remove('dragging'); });
+  return c;
+}
+function initTimeline() {
+  pool.innerHTML = '';
+  document.querySelectorAll('.tl-era .dropzone').forEach(z => z.innerHTML = '');
+  document.getElementById('tlResult').textContent = '';
+  const shuffled = [...STRUCTURES].sort(() => Math.random() - .5);
+  shuffled.forEach(s => pool.appendChild(makeChip(s)));
+}
+[...document.querySelectorAll('.tl-era'), pool].forEach(zone => {
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('dragover');
+    if (!dragEl) return;
+    dragEl.classList.remove('ok','bad');
+    if (zone === pool) { pool.appendChild(dragEl); dragEl.classList.remove('placed'); }
+    else { zone.querySelector('.dropzone').appendChild(dragEl); dragEl.classList.add('placed'); }
+    dragEl = null;
+  });
+});
+function checkTimeline() {
+  const remaining = pool.querySelectorAll('.tl-chip').length;
+  if (remaining > 0) {
+    document.getElementById('tlResult').innerHTML = '<span style="color:#fbbf24">⚠️ 아직 ' + remaining + '개 카드가 남아 있어요. 모두 배치해 주세요!</span>';
+    return;
+  }
+  let ok = 0, total = STRUCTURES.length;
+  document.querySelectorAll('.tl-era').forEach(era => {
+    era.querySelectorAll('.tl-chip').forEach(chip => {
+      if (chip.dataset.era === era.dataset.era) { chip.classList.add('ok'); chip.classList.remove('bad'); ok++; }
+      else { chip.classList.add('bad'); chip.classList.remove('ok'); }
+    });
+  });
+  const r = document.getElementById('tlResult');
+  if (ok === total) r.innerHTML = '<span style="color:#4ade80">🎉 완벽해요! ' + ok + '/' + total + ' — 발달 순서를 모두 이해했어요!</span>';
+  else r.innerHTML = '<span style="color:#f87171">🔍 ' + ok + '/' + total + ' 정답. 빨간 카드를 올바른 시대로 옮기고 다시 확인해 보세요.</span>';
+}
+document.getElementById('tlCheck').onclick = checkTimeline;
+document.getElementById('tlReset').onclick = initTimeline;
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.tagName !== 'SELECT') { e.preventDefault(); checkTimeline(); }
+});
+initTimeline();
+
+/* ===== 체크리스트 진행률 ===== */
+document.querySelectorAll('.sc').forEach(c => c.addEventListener('change', () => {
+  const n = document.querySelectorAll('.sc:checked').length;
+  const p = document.getElementById('scProgress');
+  p.textContent = '체크: ' + n + ' / 5';
+  if (n === 5) p.textContent += ' — 🌟 완벽! 다음 차시로 넘어갈 준비 완료!';
+  else if (n >= 3) p.textContent += ' — 좋아요! 나머지 항목도 복습해 보세요.';
+}));
+</script>
+</body>
+</html>
