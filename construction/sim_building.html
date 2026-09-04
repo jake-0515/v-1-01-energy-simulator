@@ -91,6 +91,116 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
   font-weight:800; text-decoration:none; border-radius:12px; padding:14px 34px; font-size:1rem; transition:.2s;
 }
 .next-link a:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(56,189,248,.35); }
+
+/* ===== 추가 : 수업 흐름 / 단계 시간 ===== */
+.step-time { font-size:.7rem; background:#334155; color:#94a3b8; border-radius:999px; padding:3px 10px; font-weight:600; }
+.step-title { flex-wrap:wrap; }
+.flow-bar {
+  display:flex; gap:6px; flex-wrap:wrap; background:rgba(15,23,42,.6);
+  border:1px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:30px;
+  font-size:.76rem; color:#94a3b8;
+}
+.flow-bar span { background:#1e293b; border:1px solid #475569; border-radius:999px; padding:4px 11px; white-space:nowrap; }
+.flow-bar span b { color:#fbbf24; }
+
+/* ===== 추가 : 자기점검 ===== */
+.kwl { background:rgba(167,139,250,.08); border:1px solid rgba(167,139,250,.35); border-radius:14px; padding:20px; }
+.kwl h3 { color:#c4b5fd; font-size:1rem; margin-bottom:10px; }
+.kwl-row { display:flex; flex-direction:column; gap:10px; }
+.kwl-item { display:flex; align-items:center; gap:10px; font-size:.9rem; flex-wrap:wrap; }
+.kwl-item span { flex:1; min-width:220px; }
+.kwl-item select { background:#1e293b; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:5px 10px; font-size:.85rem; cursor:pointer; }
+.kwl-note { font-size:.78rem; color:#a78bfa; margin-top:10px; }
+
+.panel { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.hook { margin-top:16px; background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0; padding:14px 16px; font-size:.9rem; line-height:1.75; }
+.hook b { color:#7dd3fc; }
+
+/* ===== 추가 : 건축물 구성 요소 (단면도) ===== */
+.parts-wrap { display:grid; grid-template-columns:1fr 1fr; gap:18px; align-items:start; }
+@media(max-width:760px){ .parts-wrap{grid-template-columns:1fr} }
+.parts-svg { background:rgba(15,23,42,.6); border-radius:14px; padding:10px; }
+.parts-svg svg { width:100%; height:auto; display:block; }
+.part-hit { cursor:pointer; transition:.2s; }
+.part-hit:hover { opacity:.85; }
+.part-hit.on { stroke:#fbbf24 !important; stroke-width:4 !important; }
+.parts-list { display:flex; flex-direction:column; gap:8px; }
+.part-btn {
+  background:#1e293b; border:2px solid #475569; border-radius:10px; padding:10px 13px;
+  cursor:pointer; font-family:inherit; text-align:left; color:#e2e8f0; font-size:.87rem; transition:.18s;
+}
+.part-btn:hover { border-color:#94a3b8; }
+.part-btn.on { border-color:#fbbf24; background:rgba(251,191,36,.12); color:#fbbf24; }
+.part-detail {
+  margin-top:14px; background:rgba(15,23,42,.7); border:1px solid #475569; border-radius:12px;
+  padding:15px; font-size:.88rem; line-height:1.75; min-height:110px;
+}
+.part-detail h4 { color:#fbbf24; font-size:1rem; margin-bottom:6px; }
+.part-detail .pd-role { margin-top:8px; background:rgba(56,189,248,.08); border-left:3px solid #38bdf8; padding:8px 11px; border-radius:0 8px 8px 0; color:#bae6fd; font-size:.84rem; }
+
+/* ===== 추가 : 하중 시뮬레이터 ===== */
+.load-wrap { display:grid; grid-template-columns:1.1fr 1fr; gap:18px; align-items:start; }
+@media(max-width:760px){ .load-wrap{grid-template-columns:1fr} }
+.load-stage { background:rgba(15,23,42,.65); border-radius:14px; padding:12px; }
+.load-stage svg { width:100%; height:auto; display:block; }
+.load-ctrl { display:flex; flex-direction:column; gap:9px; }
+.load-btn {
+  display:flex; align-items:center; gap:10px; background:#1e293b; border:2px solid #475569;
+  border-radius:10px; padding:11px 13px; cursor:pointer; font-family:inherit; color:#e2e8f0;
+  font-size:.87rem; text-align:left; transition:.18s;
+}
+.load-btn:hover { border-color:#94a3b8; }
+.load-btn.on { border-color:#f87171; background:rgba(248,113,113,.12); }
+.load-btn .le { font-size:1.4rem; }
+.load-btn b { display:block; font-size:.9rem; }
+.load-btn small { color:#94a3b8; font-size:.75rem; }
+.load-btn.on b { color:#fca5a5; }
+.load-detail {
+  margin-top:14px; background:rgba(15,23,42,.7); border:1px solid #475569; border-radius:12px;
+  padding:15px; font-size:.88rem; line-height:1.75; min-height:96px;
+}
+.load-detail h4 { color:#fca5a5; font-size:1rem; margin-bottom:6px; }
+.load-detail .ld-ex { margin-top:8px; font-size:.83rem; color:#94a3b8; }
+
+/* ===== 추가 : 구조 비교표 ===== */
+.cmp-table { width:100%; border-collapse:collapse; font-size:.85rem; }
+.cmp-table th, .cmp-table td { border:1px solid #475569; padding:10px 11px; text-align:left; line-height:1.6; vertical-align:top; }
+.cmp-table th { background:rgba(251,191,36,.12); color:#fbbf24; font-weight:800; white-space:nowrap; }
+.cmp-table td:first-child { color:#e2e8f0; font-weight:700; white-space:nowrap; }
+.cmp-table .good { color:#86efac; }
+.cmp-table .bad { color:#fca5a5; }
+.cmp-scroll { overflow-x:auto; }
+
+/* ===== 추가 : 추론 퀴즈 ===== */
+.infer { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.infer-item { margin-bottom:18px; padding-bottom:16px; border-bottom:1px solid #334155; }
+.infer-item:last-of-type { border-bottom:none; }
+.infer-q { font-size:.92rem; line-height:1.7; margin-bottom:10px; }
+.infer-q b { color:#fbbf24; }
+.infer-opts { display:flex; gap:8px; flex-wrap:wrap; }
+.infer-btn {
+  background:#334155; color:#e2e8f0; border:1px solid #64748b; border-radius:999px;
+  padding:7px 16px; font-size:.85rem; cursor:pointer; font-family:inherit; transition:.2s;
+}
+.infer-btn:hover:not(:disabled) { border-color:#fbbf24; color:#fbbf24; }
+.infer-btn.correct { background:#14532d; border-color:#4ade80; color:#bbf7d0; }
+.infer-btn.wrong { background:#7f1d1d; border-color:#f87171; color:#fecaca; }
+.infer-btn:disabled { cursor:default; opacity:.85; }
+.infer-fb { font-size:.83rem; margin-top:9px; min-height:1.2em; line-height:1.65; }
+.infer-fb.ok { color:#4ade80; } .infer-fb.no { color:#f87171; }
+
+/* ===== 추가 : 친환경 건축 ===== */
+.green-box {
+  background:linear-gradient(135deg,rgba(74,222,128,.1),rgba(56,189,248,.08));
+  border:1px solid rgba(74,222,128,.4); border-radius:16px; padding:22px;
+}
+.green-box h3 { color:#86efac; font-size:1.08rem; margin-bottom:10px; }
+.green-box > p { font-size:.9rem; line-height:1.8; color:#d1fae5; margin-bottom:14px; }
+.green-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; }
+.green-card { background:rgba(15,23,42,.55); border:1px solid rgba(74,222,128,.25); border-radius:12px; padding:14px; font-size:.83rem; line-height:1.6; }
+.green-card .ge { font-size:1.7rem; display:block; margin-bottom:6px; }
+.green-card b { color:#86efac; display:block; margin-bottom:5px; font-size:.92rem; }
+.green-card span { color:#94a3b8; }
 </style>
 </head>
 <body>
@@ -105,12 +215,180 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
   <div class="goal-box">
     <b>학습 목표</b><br>
     ① 건축 구조물을 <b>용도</b>에 따라 주거용·공공용·상업용으로 분류할 수 있다.<br>
-    ② 건축 구조물을 <b>구조</b>에 따라 가구식·일체식·조적식·특수식으로 구분할 수 있다.<br>
-    ③ 우리 주변 건물이 어떤 구조로 지어졌는지 추론할 수 있다.
+    ② 건축물의 <b>구성 요소</b>(기초·기둥·보·슬래브 등)와 각각의 역할을 설명할 수 있다.<br>
+    ③ 건축물에 작용하는 <b>하중의 종류</b> 5가지를 구분할 수 있다.<br>
+    ④ 건축 구조물을 <b>구조</b>에 따라 가구식·일체식·조적식·특수식으로 구분할 수 있다.<br>
+    ⑤ 우리 주변 건물이 어떤 구조로 지어졌는지 <b>근거를 들어 추론</b>할 수 있다.
   </div>
 
-  <!-- STEP 1 : 구조 방식 탐색 -->
-  <div class="step-title"><span class="step-num">1</span> 구조에 따른 건축 방식 탐색</div>
+  <div class="flow-bar">
+    <span><b>0</b> 자기점검 3분</span>
+    <span><b>1</b> 구성 요소 7분</span>
+    <span><b>2</b> 하중의 종류 8분</span>
+    <span><b>3</b> 4가지 구조 8분</span>
+    <span><b>4</b> 구조 비교 4분</span>
+    <span><b>5</b> 용도별 게임 5분</span>
+    <span><b>6</b> 구조별 게임 5분</span>
+    <span><b>7</b> 추론 퀴즈 4분</span>
+    <span><b>8</b> 친환경 건축 3분</span>
+  </div>
+
+  <!-- STEP 0 : 자기점검 -->
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">3분 · 🧠 메타인지</span></div>
+  <p class="step-desc">지금 나의 상태를 솔직하게 체크해 보세요. 마지막 단계에서 다시 비교합니다.</p>
+  <div class="kwl">
+    <h3>📋 나는 지금 얼마나 알고 있을까?</h3>
+    <div class="kwl-row">
+      <div class="kwl-item"><span>건물에서 <b>기초·기둥·보</b>가 각각 무슨 일을 하는지 안다</span>
+        <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+      <div class="kwl-item"><span>건물에 작용하는 <b>하중</b>의 종류를 말할 수 있다</span>
+        <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+      <div class="kwl-item"><span>가구식·일체식·조적식·특수식 구조를 구분할 수 있다</span>
+        <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+      <div class="kwl-item"><span>우리 학교가 어떤 구조로 지어졌는지 짐작할 수 있다</span>
+        <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+    </div>
+    <div class="kwl-note">💡 "모른다"고 체크해도 괜찮아요. 자신의 상태를 아는 것이 메타인지의 시작입니다!</div>
+  </div>
+
+  <!-- STEP 1 : 건축물의 구성 요소 -->
+  <div class="step-title"><span class="step-num">1</span> 건물은 무엇으로 이루어져 있을까? <span class="step-time">7분 · 기초 개념</span></div>
+  <p class="step-desc">
+    구조를 배우기 전에 <b>부품의 이름</b>부터 알아야 합니다.
+    아래 단면도의 색칠된 부분이나 오른쪽 버튼을 <b>클릭</b>해 각 요소의 역할을 확인하세요.
+  </p>
+  <div class="panel">
+    <div class="parts-wrap">
+      <div class="parts-svg">
+        <svg viewBox="0 0 300 260">
+          <!-- 지반 -->
+          <rect x="0" y="215" width="300" height="45" fill="#422006"/>
+          <line x1="0" y1="215" x2="300" y2="215" stroke="#78350f" stroke-width="3"/>
+          <text x="8" y="252" fill="#a16207" font-size="11">지반(땅)</text>
+
+          <!-- 기초 -->
+          <g class="part-hit" data-part="found">
+            <rect x="45" y="205" width="60" height="26" fill="#78716c" stroke="#a8a29e" stroke-width="2" rx="2"/>
+            <rect x="195" y="205" width="60" height="26" fill="#78716c" stroke="#a8a29e" stroke-width="2" rx="2"/>
+          </g>
+
+          <!-- 기둥 -->
+          <g class="part-hit" data-part="column">
+            <rect x="62" y="95" width="26" height="112" fill="#0ea5e9" stroke="#7dd3fc" stroke-width="2" rx="2"/>
+            <rect x="212" y="95" width="26" height="112" fill="#0ea5e9" stroke="#7dd3fc" stroke-width="2" rx="2"/>
+          </g>
+
+          <!-- 보 -->
+          <g class="part-hit" data-part="beam">
+            <rect x="55" y="78" width="190" height="20" fill="#f97316" stroke="#fdba74" stroke-width="2" rx="2"/>
+          </g>
+
+          <!-- 슬래브(바닥) -->
+          <g class="part-hit" data-part="slab">
+            <rect x="55" y="140" width="190" height="14" fill="#a78bfa" stroke="#c4b5fd" stroke-width="2" rx="2"/>
+          </g>
+
+          <!-- 벽체 -->
+          <g class="part-hit" data-part="wall">
+            <rect x="88" y="98" width="124" height="42" fill="#4ade8055" stroke="#4ade80" stroke-width="2"/>
+            <rect x="88" y="154" width="124" height="53" fill="#4ade8055" stroke="#4ade80" stroke-width="2"/>
+          </g>
+
+          <!-- 지붕 -->
+          <g class="part-hit" data-part="roof">
+            <polygon points="40,78 150,26 260,78" fill="#ef4444" stroke="#fca5a5" stroke-width="2"/>
+          </g>
+
+          <text x="150" y="16" fill="#94a3b8" font-size="11" text-anchor="middle">건축물 단면도 — 클릭해 보세요</text>
+        </svg>
+      </div>
+      <div>
+        <div class="parts-list" id="partsList"></div>
+      </div>
+    </div>
+    <div class="part-detail" id="partDetail"></div>
+    <div class="hook">
+      💡 <b>힘이 전달되는 순서를 기억하세요.</b><br>
+      지붕·바닥의 무게 → <b>보</b> → <b>기둥</b> → <b>기초</b> → <b>지반</b><br>
+      건물이 무너지지 않는 이유는, 위에서 누르는 힘을 이 순서로 <b>땅까지 안전하게 흘려보내기</b> 때문입니다.
+    </div>
+  </div>
+
+  <!-- STEP 2 : 하중의 종류 -->
+  <div class="step-title"><span class="step-num">2</span> 건물이 견뎌야 하는 힘 — 하중 <span class="step-time">8분 · 핵심 개념</span></div>
+  <p class="step-desc">
+    <b>하중</b>이란 구조물에 작용하는 <b>모든 힘</b>을 말합니다.
+    설계자는 이 하중을 모두 계산해서 건물이 무너지지 않도록 만듭니다.
+    버튼을 눌러 각 하중이 <b>어느 방향에서</b> 작용하는지 확인하세요.
+  </p>
+  <div class="panel">
+    <div class="load-wrap">
+      <div class="load-stage">
+        <svg viewBox="0 0 320 240">
+          <rect x="0" y="205" width="320" height="35" fill="#422006"/>
+          <!-- 건물 -->
+          <rect x="110" y="80" width="100" height="125" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
+          <polygon points="100,80 160,45 220,80" fill="#475569" stroke="#94a3b8" stroke-width="2"/>
+          <rect x="128" y="110" width="24" height="24" fill="#0ea5e9" opacity=".6"/>
+          <rect x="168" y="110" width="24" height="24" fill="#0ea5e9" opacity=".6"/>
+          <rect x="128" y="155" width="24" height="24" fill="#0ea5e9" opacity=".6"/>
+          <rect x="168" y="155" width="24" height="24" fill="#0ea5e9" opacity=".6"/>
+
+          <!-- 고정하중 : 건물 자체 무게 (아래 화살표, 내부) -->
+          <g id="ld-dead" class="ld-arrow" style="display:none">
+            <line x1="160" y1="95" x2="160" y2="185" stroke="#fbbf24" stroke-width="5"/>
+            <polygon points="160,198 152,182 168,182" fill="#fbbf24"/>
+            <text x="172" y="145" fill="#fbbf24" font-size="13" font-weight="bold">자체 무게</text>
+          </g>
+          <!-- 활하중 : 사람·가구 -->
+          <g id="ld-live" class="ld-arrow" style="display:none">
+            <text x="130" y="105" font-size="18">🧍</text>
+            <text x="172" y="105" font-size="18">🪑</text>
+            <line x1="160" y1="118" x2="160" y2="180" stroke="#4ade80" stroke-width="5"/>
+            <polygon points="160,193 152,177 168,177" fill="#4ade80"/>
+            <text x="215" y="150" fill="#4ade80" font-size="13" font-weight="bold">사람·물건</text>
+          </g>
+          <!-- 풍하중 : 옆에서 -->
+          <g id="ld-wind" class="ld-arrow" style="display:none">
+            <line x1="30" y1="110" x2="100" y2="110" stroke="#38bdf8" stroke-width="5"/>
+            <polygon points="108,110 92,102 92,118" fill="#38bdf8"/>
+            <line x1="30" y1="150" x2="100" y2="150" stroke="#38bdf8" stroke-width="5"/>
+            <polygon points="108,150 92,142 92,158" fill="#38bdf8"/>
+            <text x="24" y="96" fill="#38bdf8" font-size="13" font-weight="bold">바람 💨</text>
+          </g>
+          <!-- 적설하중 : 지붕 위 -->
+          <g id="ld-snow" class="ld-arrow" style="display:none">
+            <path d="M104,80 Q160,36 216,80 Z" fill="#e0f2fe" opacity=".92"/>
+            <text x="140" y="34" font-size="17">❄️</text>
+            <line x1="160" y1="58" x2="160" y2="76" stroke="#e0f2fe" stroke-width="4"/>
+            <polygon points="160,86 153,72 167,72" fill="#e0f2fe"/>
+            <text x="225" y="60" fill="#e0f2fe" font-size="13" font-weight="bold">눈 무게</text>
+          </g>
+          <!-- 지진하중 : 땅이 흔들림 -->
+          <g id="ld-quake" class="ld-arrow" style="display:none">
+            <line x1="60" y1="220" x2="260" y2="220" stroke="#f87171" stroke-width="5"/>
+            <polygon points="50,220 66,212 66,228" fill="#f87171"/>
+            <polygon points="270,220 254,212 254,228" fill="#f87171"/>
+            <text x="112" y="238" fill="#f87171" font-size="13" font-weight="bold">지반 흔들림</text>
+            <path d="M110,205 L120,195 L130,205 L140,195" stroke="#f87171" stroke-width="3" fill="none"/>
+          </g>
+          <text x="160" y="20" fill="#94a3b8" font-size="11" text-anchor="middle">버튼을 누르면 힘의 방향이 표시됩니다</text>
+        </svg>
+      </div>
+      <div class="load-ctrl" id="loadCtrl"></div>
+    </div>
+    <div class="load-detail" id="loadDetail"></div>
+    <div class="hook">
+      🤔 <b>왜 하중을 나누어 배울까요?</b><br>
+      하중마다 <b>작용하는 방향이 다르기</b> 때문입니다. 아래로 누르는 힘(고정·활·적설)은 기둥으로 버티지만,
+      <b>옆에서 미는 힘</b>(풍·지진)은 건물을 <b>넘어뜨리거나 비틀려고</b> 합니다.
+      그래서 초고층 건물과 지진이 잦은 지역의 건물은 <b>구조가 완전히 달라집니다.</b>
+      (3차시에서 내진 설계를 배웁니다)
+    </div>
+  </div>
+
+  <!-- STEP 3 : 구조 방식 탐색 -->
+  <div class="step-title"><span class="step-num">3</span> 구조에 따른 건축 방식 탐색 <span class="step-time">8분 · 개념</span></div>
   <p class="step-desc">건축 구조물은 바닥·벽체·지붕·기둥같이 <b>공간을 조성하는 구조</b>에 따라 4가지로 분류됩니다. 탭을 눌러 각각의 원리를 확인하세요.</p>
   <div class="struct-explorer">
     <div class="tab-row">
@@ -215,7 +493,57 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
   </div>
 
   <!-- STEP 2 : 용도별 분류 게임 -->
-  <div class="step-title"><span class="step-num">2</span> 용도별 분류 게임</div>
+  <!-- STEP 4 : 구조 비교표 -->
+  <div class="step-title"><span class="step-num">4</span> 네 가지 구조 한눈에 비교하기 <span class="step-time">4분 · 정리</span></div>
+  <p class="step-desc">위에서 탭으로 살펴본 내용을 표로 정리했습니다. <b>장점과 단점을 짝지어</b> 외우면 오래 기억에 남습니다.</p>
+  <div class="panel">
+    <div class="cmp-scroll">
+      <table class="cmp-table">
+        <thead>
+          <tr><th>구조</th><th>만드는 방법</th><th>주요 재료</th><th>장점</th><th>단점</th><th>대표 사례</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>🪵 가구식</td>
+            <td>기둥과 보를 <b>짜 맞춰</b> 뼈대를 만듦</td>
+            <td>목재, 철골</td>
+            <td class="good">공사가 빠르고 해체·수리가 쉬움. 넓은 창을 낼 수 있음</td>
+            <td class="bad">이음 부분이 약할 수 있음. 목재는 화재에 약함</td>
+            <td>한옥, 목조 주택, 체육관, 공장</td>
+          </tr>
+          <tr>
+            <td>🏗️ 일체식</td>
+            <td>거푸집에 철근을 넣고 콘크리트를 부어 <b>한 덩어리</b>로 굳힘</td>
+            <td>철근 + 콘크리트</td>
+            <td class="good">튼튼하고 내구성·내화성이 뛰어남. 고층에 유리</td>
+            <td class="bad">무겁고 공사 기간이 김. 한번 굳으면 고치기 어려움</td>
+            <td>아파트, 고층 빌딩, 학교</td>
+          </tr>
+          <tr>
+            <td>🧱 조적식</td>
+            <td>벽돌·블록·돌을 <b>쌓아 올림</b></td>
+            <td>벽돌, 블록, 석재</td>
+            <td class="good">시공이 간단하고 비용이 저렴. 단열·방음에 유리</td>
+            <td class="bad">인장력·지진에 약해 <b>높이에 한계</b>가 있음</td>
+            <td>단독주택, 담장, 창고</td>
+          </tr>
+          <tr>
+            <td>🛸 특수식</td>
+            <td>곡면(셸)·돔·케이블 등 <b>특수한 형태</b>로 힘을 분산</td>
+            <td>콘크리트, 강재, 케이블, 막</td>
+            <td class="good"><b>기둥 없이</b> 매우 넓은 공간을 만들 수 있음</td>
+            <td class="bad">설계·시공이 어렵고 비용이 많이 듦</td>
+            <td>시드니 오페라하우스, 경기장 돔</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="hook">
+      🔑 <b>한 줄 요약</b> — 가구식은 <b>조립</b>, 일체식은 <b>한 덩어리</b>, 조적식은 <b>쌓기</b>, 특수식은 <b>기둥 없는 넓은 공간</b>.
+    </div>
+  </div>
+
+  <div class="step-title"><span class="step-num">5</span> 용도별 분류 게임 <span class="step-time">5분 · 활동</span></div>
   <p class="step-desc">건물 카드를 <b>용도에 맞는 칸으로 드래그</b>하세요. 주거용? 공공용? 상업용?</p>
   <div class="dnd-game" id="useGame">
     <div class="dnd-pool"></div>
@@ -244,7 +572,7 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
   </div>
 
   <!-- STEP 3 : 구조별 분류 게임 -->
-  <div class="step-title"><span class="step-num">3</span> 구조별 분류 게임</div>
+  <div class="step-title"><span class="step-num">6</span> 구조별 분류 게임 <span class="step-time">5분 · 활동</span></div>
   <p class="step-desc">이번엔 <b>구조 방식</b>입니다. 8가지 구조를 알맞은 유형으로 드래그하세요. 헷갈리면 1단계 탭으로 돌아가 복습!</p>
   <div class="dnd-game" id="structGame">
     <div class="dnd-pool"></div>
@@ -278,16 +606,79 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
   </div>
 
   <!-- STEP 4 : 스스로 확인 -->
-  <div class="step-title"><span class="step-num">4</span> 스스로 확인하기 <span style="font-size:.75rem;color:#86efac">🧠 메타인지</span></div>
+  <!-- STEP 7 : 추론 퀴즈 -->
+  <div class="step-title"><span class="step-num">7</span> 우리 주변 건물 추론하기 <span class="step-time">4분 · 적용</span></div>
+  <p class="step-desc">
+    배운 내용을 <b>실제 상황</b>에 적용해 봅시다. 단서를 읽고 <b>어떤 구조인지</b> 또는 <b>어떤 하중인지</b> 추론하세요.
+  </p>
+  <div class="infer" id="inferQuiz">
+    <div class="infer-item" data-answer="일체식" data-opts="가구식|일체식|조적식|특수식"
+         data-why="벽·기둥·바닥이 이어져 한 덩어리로 굳은 것은 철근 콘크리트로 만든 일체식 구조의 특징입니다.">
+      <div class="infer-q"><b>Q1.</b> 우리 학교 교실 벽에 못을 박으려 했더니 매우 단단했고, 벽·기둥·바닥이 모두 이어져 한 덩어리처럼 보였다. 5층 건물이다.</div>
+      <div class="infer-opts"></div><div class="infer-fb"></div>
+    </div>
+    <div class="infer-item" data-answer="가구식" data-opts="가구식|일체식|조적식|특수식"
+         data-why="굵은 기둥과 보를 짜 맞추고 벽이 힘을 받지 않는 것은 가구식 구조(목 구조)의 특징입니다.">
+      <div class="infer-q"><b>Q2.</b> 한옥 대청마루에 서 보니 굵은 <b>나무 기둥</b>과 그 위를 가로지르는 <b>보</b>가 보였고, 벽을 트고 문을 크게 낼 수 있었다.</div>
+      <div class="infer-opts"></div><div class="infer-fb"></div>
+    </div>
+    <div class="infer-item" data-answer="특수식" data-opts="가구식|일체식|조적식|특수식"
+         data-why="기둥 없이 넓은 공간을 덮은 곡면 지붕은 특수식(셸·돔) 구조입니다.">
+      <div class="infer-q"><b>Q3.</b> 실내 체육관에 들어갔더니 <b>기둥이 하나도 없는데</b> 천장이 둥근 곡면으로 넓게 덮여 있었다.</div>
+      <div class="infer-opts"></div><div class="infer-fb"></div>
+    </div>
+    <div class="infer-item" data-answer="조적식" data-opts="가구식|일체식|조적식|특수식"
+         data-why="벽돌을 쌓아 만든 조적식 구조는 높이에 한계가 있어 주로 저층 건물에 쓰입니다.">
+      <div class="infer-q"><b>Q4.</b> 오래된 2층 단독주택의 담장과 외벽이 <b>붉은 벽돌을 차곡차곡 쌓아</b> 만들어져 있었다. 주변에 이런 방식의 고층 건물은 없었다.</div>
+      <div class="infer-opts"></div><div class="infer-fb"></div>
+    </div>
+    <div class="infer-item" data-answer="적설하중" data-opts="고정하중|활하중|풍하중|적설하중|지진하중"
+         data-why="지붕에 쌓인 눈의 무게가 원인이므로 적설하중입니다. 눈이 많이 오는 지역은 지붕을 경사지게 만들어 눈이 흘러내리게 합니다.">
+      <div class="infer-q"><b>Q5.</b> 폭설이 내린 다음 날, 넓고 평평한 지붕을 가진 비닐하우스가 내려앉았다는 뉴스가 나왔다. 어떤 하중 때문일까?</div>
+      <div class="infer-opts"></div><div class="infer-fb"></div>
+    </div>
+    <div class="infer-item" data-answer="풍하중" data-opts="고정하중|활하중|풍하중|적설하중|지진하중"
+         data-why="옆에서 미는 바람의 힘이므로 풍하중입니다. 초고층 건물일수록 풍하중의 영향이 커집니다.">
+      <div class="infer-q"><b>Q6.</b> 태풍이 오자 63층 건물의 꼭대기가 좌우로 미세하게 흔들렸다. 어떤 하중 때문일까?</div>
+      <div class="infer-opts"></div><div class="infer-fb"></div>
+    </div>
+    <div style="text-align:center;margin-top:6px;font-size:.9rem" id="inferScore"></div>
+  </div>
+
+  <!-- STEP 8 : 친환경 건축 -->
+  <div class="step-title"><span class="step-num">8</span> 튼튼하게, 그리고 지구에 덜 부담되게 <span class="step-time">3분 · 지속 가능</span></div>
+  <p class="step-desc">같은 건물이라도 <b>어떻게 짓느냐</b>에 따라 수십 년간 쓰는 에너지가 크게 달라집니다.</p>
+  <div class="green-box">
+    <h3>🌱 친환경 건축 — 구조를 배우는 이유가 하나 더 있습니다</h3>
+    <p>
+      건물은 한 번 지으면 <b>수십 년을 사용</b>합니다(장기성). 그래서 처음 설계할 때
+      <b>재료·구조·배치</b>를 잘 선택하면 사는 동안 계속 에너지를 아낄 수 있습니다.
+    </p>
+    <div class="green-grid">
+      <div class="green-card"><span class="ge">☀️</span><b>패시브 설계</b><span>기계 장치 없이 <b>구조 자체로</b> 에너지를 아낌. 남향 배치, 두꺼운 단열재, 이중창으로 냉난방을 줄인다.</span></div>
+      <div class="green-card"><span class="ge">🔋</span><b>액티브 설계</b><span>태양광 패널, 지열 냉난방 등 <b>설비로 에너지를 직접 생산</b>한다.</span></div>
+      <div class="green-card"><span class="ge">♻️</span><b>자원 순환</b><span>철거한 건물의 콘크리트·철근을 <b>재활용</b>해 새 공사에 쓴다. 건설 폐기물을 줄인다.</span></div>
+      <div class="green-card"><span class="ge">🌳</span><b>옥상·벽면 녹화</b><span>지붕과 벽에 식물을 심어 <b>도시 열섬 현상</b>을 줄이고 단열 효과도 얻는다.</span></div>
+      <div class="green-card"><span class="ge">🏚️</span><b>그린 리모델링</b><span>낡은 건물을 <b>부수지 않고</b> 단열·창호를 고쳐 다시 쓴다. 새로 짓는 것보다 자원을 훨씬 아낀다.</span></div>
+      <div class="green-card"><span class="ge">📏</span><b>구조의 경량화</b><span>필요한 만큼만 튼튼하게 설계해 <b>재료를 덜 쓴다.</b> 구조 계산이 정확할수록 낭비가 줄어든다.</span></div>
+    </div>
+  </div>
+
+  <div class="step-title"><span class="step-num">✓</span> 스스로 확인하기 <span class="step-time">3분 · 🧠 메타인지</span></div>
   <p class="step-desc">설명할 수 없다면 위로 돌아가 다시 학습하세요. 아는 것과 모르는 것을 구분하는 것이 실력입니다!</p>
   <div class="self-check">
     <h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>기초·기둥·보·슬래브</b>가 각각 무슨 일을 하는지 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>힘이 <b>보 → 기둥 → 기초 → 지반</b> 순으로 전달됨을 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>하중 5가지(고정·활·풍·적설·지진)를 <b>구분</b>할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>아래로 누르는 하중과 <b>옆에서 미는</b> 하중의 차이를 설명할 수 있다</span></label>
     <label class="sc-item"><input type="checkbox" class="sc"><span>주거용·공공용·상업용 건축 구조물의 예를 각각 2개 이상 말할 수 있다</span></label>
     <label class="sc-item"><input type="checkbox" class="sc"><span>가구식과 일체식 구조의 차이를 설명할 수 있다 (조립 vs 한 덩어리)</span></label>
     <label class="sc-item"><input type="checkbox" class="sc"><span>조적식 구조의 원리(쌓기)와 한계(높이)를 설명할 수 있다</span></label>
     <label class="sc-item"><input type="checkbox" class="sc"><span>시드니 오페라하우스가 왜 특수식(셸) 구조인지 말할 수 있다</span></label>
-    <label class="sc-item"><input type="checkbox" class="sc"><span>우리 학교 건물이 어떤 구조인지 추론할 수 있다</span></label>
-    <div class="sc-progress" id="scProgress">체크: 0 / 5</div>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>우리 학교 건물이 어떤 구조인지 <b>근거를 들어</b> 추론할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>패시브 설계</b>와 액티브 설계의 차이를 한 문장으로 말할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress">체크: 0 / 10</div>
   </div>
 
   <div class="next-link"><a href="sim_bridge.html">다음 → 3차시: 토목 구조물 & 교량의 힘</a></div>
@@ -409,13 +800,132 @@ document.addEventListener('keydown', e => {
   if (sg.top < window.innerHeight * 0.6) structCheck(); else useCheck();
 });
 
+/* ===== 건축물의 구성 요소 ===== */
+const PARTS = [
+  { key:'roof',   emoji:'🔺', name:'지붕',        color:'#ef4444',
+    body:'비·눈·햇빛으로부터 건물을 보호하는 <b>맨 위 덮개</b>입니다. 눈이 많이 오는 지역은 경사를 급하게 만들어 눈이 흘러내리게 합니다.',
+    role:'받은 하중(눈·비·바람)을 아래의 보와 벽으로 전달합니다.' },
+  { key:'beam',   emoji:'➖', name:'보',          color:'#f97316',
+    body:'기둥과 기둥 사이를 <b>가로로 잇는</b> 수평 부재입니다. 위에서 내려오는 무게를 받아 기둥으로 넘깁니다.',
+    role:'바닥·지붕의 하중을 모아 <b>기둥</b>으로 전달합니다. 길수록 휘려는 힘을 크게 받습니다.' },
+  { key:'column', emoji:'❙',  name:'기둥',        color:'#0ea5e9',
+    body:'건물을 <b>수직으로 떠받치는</b> 부재입니다. 위에서 누르는 힘(압축력)을 주로 받습니다.',
+    role:'보에서 받은 하중을 <b>기초</b>로 전달합니다. 기둥이 굵고 촘촘할수록 높이 올릴 수 있습니다.' },
+  { key:'slab',   emoji:'▭',  name:'슬래브(바닥)', color:'#a78bfa',
+    body:'각 층의 <b>바닥판</b>입니다. 사람과 가구가 올라가는 면이며, 위층의 바닥이 아래층의 천장이 됩니다.',
+    role:'사람·물건의 무게(활하중)를 받아 <b>보</b>로 전달합니다.' },
+  { key:'wall',   emoji:'⬛', name:'벽체',        color:'#4ade80',
+    body:'공간을 <b>나누고 감싸는</b> 부분입니다. 힘을 받는 <b>내력벽</b>과, 칸막이 역할만 하는 <b>비내력벽</b>으로 나뉩니다.',
+    role:'내력벽은 하중을 전달하고, 모든 벽은 바람·소음·열을 막아 줍니다. <b>내력벽은 함부로 허물면 안 됩니다.</b>' },
+  { key:'found',  emoji:'⬜', name:'기초',        color:'#78716c',
+    body:'건물의 <b>맨 아래에서 땅과 만나는</b> 부분입니다. 눈에 보이지 않지만 가장 중요합니다.',
+    role:'건물 전체의 하중을 <b>넓게 펴서 지반으로</b> 전달합니다. 기초가 부실하면 건물이 기울거나 무너집니다.' },
+];
+const partsList = document.getElementById('partsList');
+const partDetail = document.getElementById('partDetail');
+PARTS.forEach((p, i) => {
+  const b = document.createElement('button');
+  b.className = 'part-btn' + (i === 0 ? ' on' : '');
+  b.dataset.part = p.key;
+  b.innerHTML = '<span style="color:' + p.color + '">■</span> ' + p.name;
+  b.onclick = () => selectPart(p.key);
+  partsList.appendChild(b);
+});
+document.querySelectorAll('.part-hit').forEach(g => {
+  g.addEventListener('click', () => selectPart(g.dataset.part));
+});
+function selectPart(key) {
+  const p = PARTS.find(x => x.key === key);
+  if (!p) return;
+  document.querySelectorAll('.part-btn').forEach(b => b.classList.toggle('on', b.dataset.part === key));
+  document.querySelectorAll('.part-hit').forEach(g => g.classList.toggle('on', g.dataset.part === key));
+  partDetail.innerHTML =
+    '<h4>' + p.emoji + ' ' + p.name + '</h4><div>' + p.body + '</div>' +
+    '<div class="pd-role">🔧 <b>역할</b> — ' + p.role + '</div>';
+}
+selectPart('roof');
+
+/* ===== 하중의 종류 ===== */
+const LOADS = [
+  { key:'dead',  emoji:'🏢', name:'고정하중', sub:'건물 자체의 무게',
+    body:'구조물 <b>자기 자신의 무게</b>입니다. 기둥·보·벽·바닥 등 건물을 이루는 모든 재료의 무게로, <b>항상 일정하게</b> 작용합니다.',
+    ex:'예) 콘크리트 벽의 무게, 지붕 기와의 무게' },
+  { key:'live',  emoji:'🧍', name:'활하중',   sub:'사람·가구 등 움직이는 무게',
+    body:'건물을 <b>사용하면서 생기는</b> 하중입니다. 사람·가구·자동차처럼 <b>위치와 크기가 변합니다.</b>',
+    ex:'예) 교실에 학생이 가득 찼을 때, 주차장에 차가 세워졌을 때' },
+  { key:'wind',  emoji:'💨', name:'풍하중',   sub:'바람이 옆에서 미는 힘',
+    body:'바람이 건물의 <b>옆면을 미는</b> 힘입니다. 건물이 <b>높을수록</b> 훨씬 커집니다. 초고층 건물 설계에서 매우 중요합니다.',
+    ex:'예) 태풍 때 고층 건물이 흔들리는 현상' },
+  { key:'snow',  emoji:'❄️', name:'적설하중', sub:'지붕에 쌓인 눈의 무게',
+    body:'지붕에 <b>쌓인 눈</b>의 무게입니다. 눈은 생각보다 무거워서, 평평한 지붕에 많이 쌓이면 무너질 수 있습니다.',
+    ex:'예) 폭설로 비닐하우스·체육관 지붕이 내려앉는 사고' },
+  { key:'quake', emoji:'🌋', name:'지진하중', sub:'지반이 흔들리며 생기는 힘',
+    body:'지진으로 <b>땅이 흔들릴 때</b> 건물에 전해지는 힘입니다. 좌우로 흔들어 건물을 <b>넘어뜨리거나 비틀려고</b> 합니다.',
+    ex:'예) 지진 발생 시 건물 균열 — 3차시의 내진·면진·제진 설계로 대비합니다' },
+];
+const loadCtrl = document.getElementById('loadCtrl');
+const loadDetail = document.getElementById('loadDetail');
+LOADS.forEach((l, i) => {
+  const b = document.createElement('button');
+  b.className = 'load-btn' + (i === 0 ? ' on' : '');
+  b.dataset.load = l.key;
+  b.innerHTML = '<span class="le">' + l.emoji + '</span><span><b>' + l.name + '</b><small>' + l.sub + '</small></span>';
+  b.onclick = () => selectLoad(l.key);
+  loadCtrl.appendChild(b);
+});
+function selectLoad(key) {
+  const l = LOADS.find(x => x.key === key);
+  if (!l) return;
+  document.querySelectorAll('.load-btn').forEach(b => b.classList.toggle('on', b.dataset.load === key));
+  document.querySelectorAll('.ld-arrow').forEach(g => g.style.display = 'none');
+  const g = document.getElementById('ld-' + key);
+  if (g) g.style.display = '';
+  loadDetail.innerHTML =
+    '<h4>' + l.emoji + ' ' + l.name + '</h4><div>' + l.body + '</div>' +
+    '<div class="ld-ex">' + l.ex + '</div>';
+}
+selectLoad('dead');
+
+/* ===== 추론 퀴즈 ===== */
+const inferItems = document.querySelectorAll('#inferQuiz .infer-item');
+let infDone = 0, infOk = 0;
+inferItems.forEach(item => {
+  const ans = item.dataset.answer, why = item.dataset.why || '';
+  const opts = item.querySelector('.infer-opts');
+  const fb = item.querySelector('.infer-fb');
+  item.dataset.opts.split('|').forEach(o => {
+    const b = document.createElement('button');
+    b.className = 'infer-btn'; b.textContent = o;
+    b.onclick = () => {
+      if (item.dataset.done) return;
+      item.dataset.done = '1'; infDone++;
+      opts.querySelectorAll('.infer-btn').forEach(x => x.disabled = true);
+      if (o === ans) {
+        b.classList.add('correct'); infOk++;
+        fb.innerHTML = '⭕ 정답! <b>' + ans + '</b> — ' + why; fb.className = 'infer-fb ok';
+      } else {
+        b.classList.add('wrong');
+        opts.querySelectorAll('.infer-btn').forEach(x => { if (x.textContent === ans) x.classList.add('correct'); });
+        fb.innerHTML = '❌ 정답은 「<b>' + ans + '</b>」 입니다. ' + why; fb.className = 'infer-fb no';
+      }
+      if (infDone === inferItems.length) {
+        document.getElementById('inferScore').innerHTML =
+          '🎯 추론 퀴즈 결과: <b style="color:#fbbf24">' + infOk + ' / ' + inferItems.length + '</b>' +
+          (infOk >= inferItems.length - 1 ? ' — 훌륭해요! 실제 건물을 보는 눈이 생겼어요.' : ' — 비교표와 하중 설명을 다시 확인해 보세요.');
+      }
+    };
+    opts.appendChild(b);
+  });
+});
+
 /* ===== 체크리스트 ===== */
+const SC_TOTAL = document.querySelectorAll('.sc').length;
 document.querySelectorAll('.sc').forEach(c => c.addEventListener('change', () => {
   const n = document.querySelectorAll('.sc:checked').length;
   const p = document.getElementById('scProgress');
-  p.textContent = '체크: ' + n + ' / 5';
-  if (n === 5) p.textContent += ' — 🌟 완벽! 3차시로 출발!';
-  else if (n >= 3) p.textContent += ' — 좋아요! 나머지도 복습해 보세요.';
+  p.textContent = '체크: ' + n + ' / ' + SC_TOTAL;
+  if (n === SC_TOTAL) p.textContent += ' — 🌟 완벽! 3차시로 출발!';
+  else if (n >= Math.ceil(SC_TOTAL * .6)) p.textContent += ' — 좋아요! 나머지도 복습해 보세요.';
 }));
 </script>
 </body>

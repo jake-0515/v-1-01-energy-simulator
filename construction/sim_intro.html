@@ -19,12 +19,22 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
 .lesson-tag { display:inline-block; background:#fbbf24; color:#1e293b; font-weight:800; border-radius:8px; padding:3px 12px; font-size:.8rem; margin-bottom:10px; }
 .goal-box {
   background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0;
-  padding:14px 18px; margin:14px 0 30px; font-size:.92rem; line-height:1.7;
+  padding:14px 18px; margin:14px 0 18px; font-size:.92rem; line-height:1.7;
 }
 .goal-box b { color:#7dd3fc; }
 
-.step-title { font-size:1.25rem; color:#fbbf24; margin:40px 0 6px; display:flex; align-items:center; gap:10px; }
+/* 수업 흐름 안내 */
+.flow-bar {
+  display:flex; gap:6px; flex-wrap:wrap; background:rgba(15,23,42,.6);
+  border:1px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:30px;
+  font-size:.76rem; color:#94a3b8;
+}
+.flow-bar span { background:#1e293b; border:1px solid #475569; border-radius:999px; padding:4px 11px; white-space:nowrap; }
+.flow-bar span b { color:#fbbf24; }
+
+.step-title { font-size:1.25rem; color:#fbbf24; margin:44px 0 6px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
 .step-num { background:#f59e0b; color:#1e293b; width:30px; height:30px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:.95rem; flex-shrink:0; }
+.step-time { font-size:.7rem; background:#334155; color:#94a3b8; border-radius:999px; padding:3px 10px; font-weight:600; }
 .step-desc { color:#94a3b8; font-size:.9rem; margin-bottom:16px; line-height:1.6; }
 
 /* ===== KWL 자기점검 ===== */
@@ -34,15 +44,16 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
 }
 .kwl h3 { color:#c4b5fd; font-size:1rem; margin-bottom:10px; }
 .kwl-row { display:flex; flex-direction:column; gap:10px; }
-.kwl-item { display:flex; align-items:center; gap:10px; font-size:.9rem; }
+.kwl-item { display:flex; align-items:center; gap:10px; font-size:.9rem; flex-wrap:wrap; }
+.kwl-item span { flex:1; min-width:220px; }
 .kwl-item select {
   background:#1e293b; color:#e2e8f0; border:1px solid #64748b; border-radius:8px;
   padding:5px 10px; font-size:.85rem; cursor:pointer;
 }
 .kwl-note { font-size:.78rem; color:#a78bfa; margin-top:10px; }
 
-/* ===== 개념 카드 ===== */
-.concept-wrap { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+/* ===== 공통 패널 ===== */
+.panel { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
 .concept-def {
   font-size:1rem; line-height:1.8; background:rgba(251,191,36,.07); border:1px dashed rgba(251,191,36,.4);
   border-radius:12px; padding:16px 18px; margin-bottom:18px;
@@ -56,11 +67,50 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
 .tech-card.arch h3 { color:#fdba74; } .tech-card.civil h3 { color:#7dd3fc; }
 .tech-card p { font-size:.87rem; line-height:1.65; color:#cbd5e1; }
 .tech-card .ex { margin-top:10px; font-size:.8rem; color:#94a3b8; }
+.tech-card .key { margin-top:10px; font-size:.8rem; background:rgba(15,23,42,.55); border-radius:8px; padding:8px 10px; line-height:1.55; }
+.tech-card.arch .key { color:#fed7aa; } .tech-card.civil .key { color:#bae6fd; }
 @media(max-width:620px){ .two-col{grid-template-columns:1fr} }
+
+/* ===== 도입: 주변 구조물 ===== */
+.around-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-top:6px; }
+.around-item {
+  background:linear-gradient(135deg,#334155,#1e293b); border:1px solid #64748b; border-radius:12px;
+  padding:14px 12px; text-align:center; font-size:.84rem; line-height:1.5;
+}
+.around-item .ai { font-size:1.9rem; display:block; margin-bottom:6px; }
+.around-item b { color:#fbbf24; display:block; margin-bottom:3px; }
+.around-item span.t { color:#94a3b8; font-size:.75rem; }
+.hook {
+  margin-top:16px; background:rgba(56,189,248,.08); border-left:4px solid #38bdf8;
+  border-radius:0 12px 12px 0; padding:14px 16px; font-size:.9rem; line-height:1.75;
+}
+.hook b { color:#7dd3fc; }
+
+/* ===== 건축/토목 분류 게임 ===== */
+.sort-game { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.sort-card {
+  background:linear-gradient(135deg,#1e293b,#0f172a); border:2px solid #64748b; border-radius:14px;
+  padding:22px 18px; text-align:center; margin-bottom:16px;
+}
+.sort-card .sc-emoji { font-size:3rem; display:block; margin-bottom:8px; }
+.sort-card .sc-name { font-size:1.25rem; font-weight:800; color:#fbbf24; }
+.sort-card .sc-hint { font-size:.82rem; color:#94a3b8; margin-top:6px; }
+.sort-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.sort-btn {
+  border-radius:12px; padding:13px 30px; font-size:1rem; font-weight:800; cursor:pointer;
+  font-family:inherit; border:2px solid; transition:.18s;
+}
+.sort-btn.arch { background:rgba(249,115,22,.12); border-color:#f97316; color:#fdba74; }
+.sort-btn.civil { background:rgba(14,165,233,.12); border-color:#0ea5e9; color:#7dd3fc; }
+.sort-btn:hover:not(:disabled) { transform:translateY(-3px); }
+.sort-btn:disabled { opacity:.5; cursor:default; }
+.sort-fb { text-align:center; margin-top:14px; font-size:.9rem; min-height:2.6em; line-height:1.6; }
+.sort-fb.ok { color:#4ade80; } .sort-fb.no { color:#f87171; }
+.sort-prog { text-align:center; font-size:.82rem; color:#94a3b8; margin-top:10px; }
 
 /* ===== 특징 플립카드 ===== */
 .flip-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:14px; }
-.flip { perspective:800px; height:170px; cursor:pointer; }
+.flip { perspective:800px; height:180px; cursor:pointer; }
 .flip-inner { position:relative; width:100%; height:100%; transition:transform .6s; transform-style:preserve-3d; }
 .flip.on .flip-inner { transform:rotateY(180deg); }
 .flip-face {
@@ -74,13 +124,13 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
 .flip-front span { font-size:.72rem; color:#64748b; margin-top:8px; }
 .flip-back {
   background:linear-gradient(135deg,#78350f,#92400e); border:2px solid #f59e0b;
-  transform:rotateY(180deg); font-size:.8rem; line-height:1.55; color:#fef3c7;
+  transform:rotateY(180deg); font-size:.78rem; line-height:1.55; color:#fef3c7; overflow:auto;
 }
 .flip-back b { color:#fde68a; display:block; margin-bottom:6px; }
 
-/* ===== 특징 매칭 퀴즈 ===== */
+/* ===== 매칭 퀴즈 ===== */
 .match-quiz { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
-.mq-item { margin-bottom:16px; }
+.mq-item { margin-bottom:18px; }
 .mq-q { font-size:.95rem; margin-bottom:10px; line-height:1.6; }
 .mq-q .qnum { color:#fbbf24; font-weight:700; }
 .mq-opts { display:flex; gap:8px; flex-wrap:wrap; }
@@ -92,8 +142,28 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
 .mq-btn.correct { background:#14532d; border-color:#4ade80; color:#bbf7d0; }
 .mq-btn.wrong { background:#7f1d1d; border-color:#f87171; color:#fecaca; }
 .mq-btn:disabled { cursor:default; opacity:.85; }
-.mq-fb { font-size:.82rem; margin-top:8px; min-height:1.2em; }
+.mq-fb { font-size:.82rem; margin-top:8px; min-height:1.2em; line-height:1.6; }
 .mq-fb.ok { color:#4ade80; } .mq-fb.no { color:#f87171; }
+
+/* ===== 재료 발달 스테퍼 ===== */
+.mat-steps { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+.mat-step {
+  flex:1; min-width:96px; background:#1e293b; border:2px solid #475569; border-radius:12px;
+  padding:12px 8px; text-align:center; cursor:pointer; transition:.2s; font-size:.8rem;
+}
+.mat-step:hover { border-color:#94a3b8; }
+.mat-step.on { border-color:#fbbf24; background:rgba(251,191,36,.12); }
+.mat-step .me { font-size:1.6rem; display:block; margin-bottom:4px; }
+.mat-step b { color:#e2e8f0; display:block; font-size:.85rem; }
+.mat-step.on b { color:#fbbf24; }
+.mat-step span { color:#64748b; font-size:.7rem; }
+.mat-detail {
+  background:rgba(15,23,42,.7); border:1px solid #475569; border-radius:14px; padding:18px;
+  font-size:.9rem; line-height:1.75; min-height:130px;
+}
+.mat-detail h4 { color:#fbbf24; font-size:1.05rem; margin-bottom:8px; }
+.mat-detail .mat-why { margin-top:10px; background:rgba(56,189,248,.08); border-left:3px solid #38bdf8; padding:9px 12px; border-radius:0 8px 8px 0; font-size:.85rem; color:#bae6fd; }
+.mat-detail .mat-lim { margin-top:8px; font-size:.83rem; color:#fca5a5; }
 
 /* ===== 타임라인 게임 ===== */
 .tl-game { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
@@ -106,7 +176,7 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
 .tl-chip.dragging { opacity:.4; }
 .tl-chip .emoji { margin-right:5px; }
 .tl-eras { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; }
-.tl-era { border-radius:14px; border:2px dashed #64748b; padding:14px; min-height:150px; transition:.25s; }
+.tl-era { border-radius:14px; border:2px dashed #64748b; padding:14px; min-height:160px; transition:.25s; }
 .tl-era.dragover { border-color:#fbbf24; background:rgba(251,191,36,.08); }
 .tl-era h4 { text-align:center; margin-bottom:4px; font-size:1rem; }
 .tl-era .era-hint { text-align:center; font-size:.72rem; color:#94a3b8; margin-bottom:10px; line-height:1.5; }
@@ -118,7 +188,7 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
 .tl-chip.placed { cursor:grab; font-size:.8rem; }
 .tl-chip.ok { border-color:#4ade80; background:linear-gradient(135deg,#14532d,#166534); }
 .tl-chip.bad { border-color:#f87171; background:linear-gradient(135deg,#7f1d1d,#991b1b); }
-.tl-controls { text-align:center; margin-top:16px; display:flex; gap:10px; justify-content:center; }
+.tl-controls { text-align:center; margin-top:16px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
 .btn-main {
   background:linear-gradient(135deg,#f59e0b,#d97706); color:#1e293b; font-weight:800;
   border:none; border-radius:10px; padding:11px 26px; font-size:.95rem; cursor:pointer; font-family:inherit; transition:.2s;
@@ -130,11 +200,54 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
 }
 .tl-result { text-align:center; margin-top:14px; font-size:1rem; min-height:1.4em; font-weight:600; }
 
-/* ===== 스스로 확인 체크리스트 ===== */
+/* ===== 건설 공사 과정 ===== */
+.proc-flow { display:flex; align-items:stretch; gap:6px; flex-wrap:wrap; margin-bottom:16px; }
+.proc-node {
+  flex:1; min-width:120px; background:#1e293b; border:2px solid #475569; border-radius:12px;
+  padding:14px 10px; text-align:center; cursor:pointer; transition:.2s;
+}
+.proc-node:hover { border-color:#94a3b8; }
+.proc-node.on { border-color:#38bdf8; background:rgba(56,189,248,.12); }
+.proc-node .pn { font-size:1.7rem; display:block; margin-bottom:5px; }
+.proc-node b { font-size:.9rem; color:#e2e8f0; display:block; }
+.proc-node.on b { color:#7dd3fc; }
+.proc-node span { font-size:.7rem; color:#64748b; }
+.proc-arrow { display:flex; align-items:center; color:#475569; font-size:1.3rem; }
+@media(max-width:700px){ .proc-arrow{display:none} }
+.proc-detail {
+  background:rgba(15,23,42,.7); border:1px solid #475569; border-radius:14px; padding:18px;
+  font-size:.9rem; line-height:1.75; min-height:140px;
+}
+.proc-detail h4 { color:#7dd3fc; font-size:1.05rem; margin-bottom:8px; }
+.proc-detail ul { margin:8px 0 0 18px; }
+.proc-detail li { margin-bottom:5px; }
+.proc-detail .who { margin-top:10px; font-size:.83rem; color:#fbbf24; }
+
+/* ===== 진로 카드 ===== */
+.job-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; }
+.job-card {
+  background:linear-gradient(135deg,#1e293b,#0f172a); border:1px solid #475569;
+  border-radius:12px; padding:16px; font-size:.83rem; line-height:1.6;
+}
+.job-card .je { font-size:1.8rem; display:block; margin-bottom:6px; }
+.job-card b { color:#fbbf24; display:block; margin-bottom:5px; font-size:.95rem; }
+.job-card span { color:#94a3b8; }
+
+/* ===== 지속가능 예고 ===== */
+.sus-box {
+  background:linear-gradient(135deg,rgba(74,222,128,.1),rgba(56,189,248,.08));
+  border:1px solid rgba(74,222,128,.4); border-radius:16px; padding:22px;
+}
+.sus-box h3 { color:#86efac; font-size:1.1rem; margin-bottom:10px; }
+.sus-box p { font-size:.9rem; line-height:1.8; color:#d1fae5; }
+.sus-box .sus-q { margin-top:14px; background:rgba(15,23,42,.55); border-radius:10px; padding:13px 15px; font-size:.88rem; line-height:1.7; }
+.sus-box .sus-q b { color:#fbbf24; }
+
+/* ===== 스스로 확인 ===== */
 .self-check { background:rgba(74,222,128,.07); border:1px solid rgba(74,222,128,.35); border-radius:14px; padding:20px; }
 .self-check h3 { color:#86efac; font-size:1rem; margin-bottom:12px; }
 .sc-item { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:.9rem; line-height:1.55; }
-.sc-item input { margin-top:3px; width:16px; height:16px; accent-color:#4ade80; cursor:pointer; }
+.sc-item input { margin-top:3px; width:16px; height:16px; accent-color:#4ade80; cursor:pointer; flex-shrink:0; }
 .sc-progress { margin-top:12px; font-size:.85rem; color:#86efac; }
 .next-link { display:block; text-align:center; margin-top:34px; }
 .next-link a {
@@ -155,14 +268,29 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
   <h1>🏗️ 건설 기술의 이해</h1>
   <div class="goal-box">
     <b>학습 목표</b><br>
-    ① 건설 기술의 <b>개념</b>과 건축·토목 기술의 차이를 설명할 수 있다.<br>
+    ① 건설 기술의 <b>개념</b>과 건축·토목 기술의 차이를 구분하여 설명할 수 있다.<br>
     ② 건설 기술의 <b>6가지 특징</b>을 실제 사례에 적용할 수 있다.<br>
-    ③ 고대~현대 건설 기술의 <b>발달 과정</b>을 시대순으로 구분할 수 있다.
+    ③ <b>건설 재료의 발달</b>이 구조물의 변화를 이끌었음을 설명할 수 있다.<br>
+    ④ 고대~현대 건설 기술의 <b>발달 과정</b>을 시대순으로 구분할 수 있다.<br>
+    ⑤ <b>건설 공사의 4단계</b>(기획–설계–시공–유지관리)를 순서대로 말할 수 있다.
   </div>
 
-  <!-- STEP 0 : 사전 자기점검 -->
-  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span style="font-size:.75rem;color:#a78bfa">🧠 메타인지</span></div>
-  <p class="step-desc">시작하기 전, 지금 나의 상태를 솔직하게 체크해 보세요. 학습이 끝나면 다시 비교해 봅니다.</p>
+  <div class="flow-bar">
+    <span><b>0</b> 자기점검 3분</span>
+    <span><b>1</b> 도입 4분</span>
+    <span><b>2</b> 개념 5분</span>
+    <span><b>3</b> 분류 게임 5분</span>
+    <span><b>4</b> 6가지 특징 5분</span>
+    <span><b>5</b> 적용 퀴즈 5분</span>
+    <span><b>6</b> 재료 발달 5분</span>
+    <span><b>7</b> 타임라인 7분</span>
+    <span><b>8</b> 공사 과정 4분</span>
+    <span><b>9</b> 진로·정리 4분</span>
+  </div>
+
+  <!-- STEP 0 -->
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">3분 · 🧠 메타인지</span></div>
+  <p class="step-desc">시작하기 전, 지금 나의 상태를 솔직하게 체크해 보세요. 학습이 끝나면 마지막 단계에서 다시 비교해 봅니다.</p>
   <div class="kwl">
     <h3>📋 나는 지금 얼마나 알고 있을까?</h3>
     <div class="kwl-row">
@@ -170,16 +298,39 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
         <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
       <div class="kwl-item"><span>건축 기술과 토목 기술의 차이를 안다</span>
         <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+      <div class="kwl-item"><span>건설 기술의 특징을 3가지 이상 말할 수 있다</span>
+        <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
       <div class="kwl-item"><span>피라미드·에펠탑이 어느 시대 구조물인지 안다</span>
+        <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+      <div class="kwl-item"><span>건물이 어떤 순서로 지어지는지 안다</span>
         <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
     </div>
     <div class="kwl-note">💡 "모른다"고 체크해도 괜찮아요. 자신의 상태를 아는 것이 메타인지의 시작입니다!</div>
   </div>
 
-  <!-- STEP 1 : 개념 -->
-  <div class="step-title"><span class="step-num">1</span> 건설 기술이란?</div>
-  <p class="step-desc">먼저 핵심 개념을 정확히 이해합니다.</p>
-  <div class="concept-wrap">
+  <!-- STEP 1 도입 -->
+  <div class="step-title"><span class="step-num">1</span> 오늘 아침, 나는 몇 개의 구조물을 지나왔을까? <span class="step-time">4분 · 도입</span></div>
+  <p class="step-desc">집에서 학교까지 오는 길을 떠올려 보세요. 우리는 하루 종일 <b>건설 기술의 결과물 안에서</b> 살고 있습니다.</p>
+  <div class="panel">
+    <div class="around-grid">
+      <div class="around-item"><span class="ai">🏠</span><b>우리 집</b><span class="t">비·바람·추위로부터 보호</span></div>
+      <div class="around-item"><span class="ai">🛣️</span><b>도로·인도</b><span class="t">안전하게 이동</span></div>
+      <div class="around-item"><span class="ai">🌉</span><b>육교·다리</b><span class="t">장애물을 건넘</span></div>
+      <div class="around-item"><span class="ai">🚇</span><b>지하철·터널</b><span class="t">땅속 공간 활용</span></div>
+      <div class="around-item"><span class="ai">🚰</span><b>수도·하수도</b><span class="t">깨끗한 물 공급</span></div>
+      <div class="around-item"><span class="ai">🏫</span><b>학교</b><span class="t">배우고 생활하는 공간</span></div>
+    </div>
+    <div class="hook">
+      🤔 <b>생각해 봅시다.</b> 만약 이 중 <b>하나라도 없다면</b> 오늘 하루는 어떻게 달라졌을까요?<br>
+      건설 기술은 눈에 잘 띄지 않지만, 없으면 <b>생활 자체가 불가능</b>해지는 기술입니다.
+      그래서 건설 기술을 <b>“모든 산업의 기초”</b>라고 부릅니다.
+    </div>
+  </div>
+
+  <!-- STEP 2 개념 -->
+  <div class="step-title"><span class="step-num">2</span> 건설 기술이란? <span class="step-time">5분 · 개념</span></div>
+  <p class="step-desc">핵심 개념을 정확히 이해합니다. <b>밑줄 친 부분</b>이 시험에 자주 나오는 정의입니다.</p>
+  <div class="panel">
     <div class="concept-def">
       인류는 자연환경으로부터 자신을 보호하고, 더 편안하고 쾌적한 생활을 위해 집·도로·교량 등 다양한 구조물을 만들어 왔습니다.
       <b>건설 기술</b>이란 인간이 쾌적하고 안락한 삶을 위해 <b>공간에 자원을 효과적으로 이용하여 구조물을 만드는 기술</b>이며,
@@ -190,86 +341,121 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
         <h3>🏠 건축 기술</h3>
         <p>인간이 생활하는 데 필요한 <b>유용한 공간</b>을 만드는 기술. 사람이 그 <b>안에서 생활</b>하는 구조물을 만들어요.</p>
         <div class="ex">예) 주택, 학교, 병원, 상가, 아파트, 체육관</div>
+        <div class="key">🔑 <b>구분 요령</b> — “사람이 <u>들어가서</u> 지내는 곳인가?”<br>그렇다면 <b>건축</b>입니다.</div>
       </div>
       <div class="tech-card civil">
         <h3>🌉 토목 기술</h3>
         <p>생활에 필요한 <b>기반 시설</b>을 만드는 기술. 공공의 이익을 위해 <b>자연환경을 개량</b>하는 구조물을 만들어요.</p>
         <div class="ex">예) 도로, 교량, 터널, 댐, 항만, 철도, 상하수도</div>
+        <div class="key">🔑 <b>구분 요령</b> — “여러 사람이 <u>지나가거나 이용하는</u> 시설인가?”<br>그렇다면 <b>토목</b>입니다.</div>
       </div>
     </div>
   </div>
 
-  <!-- STEP 2 : 특징 플립카드 -->
-  <div class="step-title"><span class="step-num">2</span> 건설 기술의 6가지 특징</div>
+  <!-- STEP 3 분류 게임 -->
+  <div class="step-title"><span class="step-num">3</span> 건축? 토목? — 판별 훈련 <span class="step-time">5분 · 활동</span></div>
+  <p class="step-desc">구조물이 하나씩 나옵니다. <b>건축 기술</b>인지 <b>토목 기술</b>인지 골라 보세요. 총 10문제입니다.</p>
+  <div class="sort-game">
+    <div class="sort-card">
+      <span class="sc-emoji" id="sortEmoji">🏠</span>
+      <div class="sc-name" id="sortName">아파트</div>
+      <div class="sc-hint" id="sortHint">사람이 그 안에서 생활하나요?</div>
+    </div>
+    <div class="sort-btns">
+      <button class="sort-btn arch" id="btnArch">🏠 건축 기술</button>
+      <button class="sort-btn civil" id="btnCivil">🌉 토목 기술</button>
+    </div>
+    <div class="sort-fb" id="sortFb"></div>
+    <div class="sort-prog" id="sortProg">0 / 10 문제</div>
+    <div style="text-align:center;margin-top:12px"><button class="btn-sub" id="sortReset">↺ 다시 하기</button></div>
+  </div>
+
+  <!-- STEP 4 특징 -->
+  <div class="step-title"><span class="step-num">4</span> 건설 기술의 6가지 특징 <span class="step-time">5분 · 개념</span></div>
   <p class="step-desc">카드를 <b>클릭</b>하면 뒤집혀 설명이 나타납니다. 6장 모두 확인해 보세요!</p>
   <div class="flip-grid" id="flipGrid">
     <div class="flip" data-name="공공성"><div class="flip-inner">
       <div class="flip-face flip-front"><div class="fi">🏛️</div><b>공공성</b><span>클릭해서 확인</span></div>
-      <div class="flip-face flip-back"><b>공공성</b>많은 사람이 함께 사용할 수 있는 공간을 제공한다.<br>예) 도서관, 공원, 도로</div>
+      <div class="flip-face flip-back"><b>공공성</b>많은 사람이 함께 사용할 수 있는 공간을 제공한다. 그래서 개인의 이익보다 <u>공공의 이익</u>을 먼저 고려한다.<br>예) 도서관, 공원, 도로</div>
     </div></div>
     <div class="flip" data-name="지역성"><div class="flip-inner">
       <div class="flip-face flip-front"><div class="fi">🗺️</div><b>지역성</b><span>클릭해서 확인</span></div>
-      <div class="flip-face flip-back"><b>지역성</b>해당 지역의 자연환경과 전통·문화 특성을 고려해 만든다.<br>예) 제주 돌집, 수상 가옥</div>
+      <div class="flip-face flip-back"><b>지역성</b>지역의 기후·지형·전통·문화 특성을 고려해 만든다. 같은 집이라도 지역마다 모양이 다르다.<br>예) 제주 돌담집, 울릉도 우데기, 열대 수상 가옥</div>
     </div></div>
     <div class="flip" data-name="일회성"><div class="flip-inner">
       <div class="flip-face flip-front"><div class="fi">1️⃣</div><b>일회성</b><span>클릭해서 확인</span></div>
-      <div class="flip-face flip-back"><b>일회성</b>한 번 시공하면 다시 짓거나 옮기기 어렵다. 그래서 처음부터 신중하게 계획해야 한다.</div>
+      <div class="flip-face flip-back"><b>일회성</b>한 번 시공하면 다시 짓거나 옮기기 어렵다. 공장 제품처럼 시제품을 만들어 볼 수 없어 <u>설계 단계</u>가 매우 중요하다.</div>
     </div></div>
     <div class="flip" data-name="대형성"><div class="flip-inner">
       <div class="flip-face flip-front"><div class="fi">🏙️</div><b>대형성</b><span>클릭해서 확인</span></div>
-      <div class="flip-face flip-back"><b>대형성</b>다양한 분야의 인력과 장비가 결합된 큰 규모의 공사이다.<br>예) 초고층 빌딩, 댐</div>
+      <div class="flip-face flip-back"><b>대형성</b>여러 분야의 인력·장비·재료가 결합된 큰 규모의 공사이다. 그래서 <u>협업과 안전 관리</u>가 필수다.<br>예) 초고층 빌딩, 댐</div>
     </div></div>
     <div class="flip" data-name="경제성"><div class="flip-inner">
       <div class="flip-face flip-front"><div class="fi">💰</div><b>경제성</b><span>클릭해서 확인</span></div>
-      <div class="flip-face flip-back"><b>경제성</b>건물, 도로, 항만 등은 움직일 수 없는 큰 자산이 된다. 비용을 계획적으로 관리해야 한다.</div>
+      <div class="flip-face flip-back"><b>경제성</b>건물·도로·항만은 옮길 수 없는 <u>큰 자산(부동산)</u>이 된다. 막대한 비용이 들어가므로 계획적으로 관리해야 한다.</div>
     </div></div>
     <div class="flip" data-name="장기성"><div class="flip-inner">
       <div class="flip-face flip-front"><div class="fi">⏳</div><b>장기성</b><span>클릭해서 확인</span></div>
-      <div class="flip-face flip-back"><b>장기성</b>오랜 기간에 걸쳐 계획·시공하며, 완성 후에도 오래 사용한다.<br>예) 교량 100년 사용</div>
+      <div class="flip-face flip-back"><b>장기성</b>계획·시공에 오랜 기간이 걸리고, 완성 후에도 수십~수백 년 사용한다. 그래서 <u>유지·관리</u>가 중요하다.<br>예) 교량 100년 사용</div>
     </div></div>
   </div>
 
-  <!-- STEP 3 : 특징 적용 퀴즈 -->
-  <div class="step-title"><span class="step-num">3</span> 특징 적용하기</div>
+  <!-- STEP 5 적용 퀴즈 -->
+  <div class="step-title"><span class="step-num">5</span> 특징 적용하기 <span class="step-time">5분 · 형성</span></div>
   <p class="step-desc">아래 사례가 건설 기술의 어떤 <b>특징</b>과 가장 관련 있는지 골라 보세요. (버튼 클릭)</p>
   <div class="match-quiz" id="matchQuiz">
-    <div class="mq-item" data-answer="지역성">
+    <div class="mq-item" data-answer="지역성" data-why="지역의 기후(강한 바람)에 맞춰 만든 사례이므로 지역성입니다.">
       <div class="mq-q"><span class="qnum">Q1.</span> 제주도의 전통 가옥은 바람이 강한 기후에 맞춰 지붕을 줄로 엮어 고정했다.</div>
       <div class="mq-opts"></div><div class="mq-fb"></div>
     </div>
-    <div class="mq-item" data-answer="일회성">
+    <div class="mq-item" data-answer="일회성" data-why="다시 짓기 어려워 설계를 신중히 해야 한다는 점이 일회성입니다.">
       <div class="mq-q"><span class="qnum">Q2.</span> 아파트를 잘못 지었다고 해서 헐고 다시 짓는 것은 매우 어렵기 때문에 설계 단계부터 꼼꼼히 검토한다.</div>
       <div class="mq-opts"></div><div class="mq-fb"></div>
     </div>
-    <div class="mq-item" data-answer="공공성">
+    <div class="mq-item" data-answer="공공성" data-why="많은 시민이 함께 이용하는 시설이므로 공공성입니다.">
       <div class="mq-q"><span class="qnum">Q3.</span> 시민 누구나 이용할 수 있는 시립 도서관과 공원이 건설되었다.</div>
       <div class="mq-opts"></div><div class="mq-fb"></div>
     </div>
-    <div class="mq-item" data-answer="장기성">
+    <div class="mq-item" data-answer="장기성" data-why="완성 후 오랜 기간 사용한다는 점이 장기성입니다.">
       <div class="mq-q"><span class="qnum">Q4.</span> 한강 다리는 수십 년 전에 만들어졌지만 지금도 안전하게 사용되고 있다.</div>
       <div class="mq-opts"></div><div class="mq-fb"></div>
     </div>
-    <div class="mq-item" data-answer="대형성">
+    <div class="mq-item" data-answer="대형성" data-why="많은 인력·장비가 투입되는 큰 규모의 공사이므로 대형성입니다.">
       <div class="mq-q"><span class="qnum">Q5.</span> 초고층 타워 공사에는 설계사, 기술자, 중장비 등 수천 명의 인력과 장비가 투입되었다.</div>
+      <div class="mq-opts"></div><div class="mq-fb"></div>
+    </div>
+    <div class="mq-item" data-answer="경제성" data-why="건설물이 옮길 수 없는 큰 자산이 되고 비용 관리가 중요하다는 점이 경제성입니다.">
+      <div class="mq-q"><span class="qnum">Q6.</span> 신도시에 지하철역이 생기자 주변 건물과 토지의 가치가 크게 올랐고, 사업비도 수조 원이 들었다.</div>
       <div class="mq-opts"></div><div class="mq-fb"></div>
     </div>
     <div style="text-align:center;margin-top:6px;font-size:.9rem" id="mqScore"></div>
   </div>
 
-  <!-- STEP 4 : 발달사 타임라인 -->
-  <div class="step-title"><span class="step-num">4</span> 건설 기술 발달사 — 타임라인 게임</div>
+  <!-- STEP 6 재료 발달 -->
+  <div class="step-title"><span class="step-num">6</span> 건설 재료의 발달 — 무엇으로 지었나? <span class="step-time">5분 · 개념</span></div>
+  <p class="step-desc">
+    건설 기술의 역사는 곧 <b>재료의 역사</b>입니다. 새로운 재료가 나올 때마다 <b>더 높고, 더 길게</b> 지을 수 있게 되었어요.
+    아래 단계를 <b>클릭</b>해 보세요.
+  </p>
+  <div class="panel">
+    <div class="mat-steps" id="matSteps"></div>
+    <div class="mat-detail" id="matDetail"></div>
+  </div>
+
+  <!-- STEP 7 타임라인 -->
+  <div class="step-title"><span class="step-num">7</span> 건설 기술 발달사 — 타임라인 게임 <span class="step-time">7분 · 활동</span></div>
   <p class="step-desc">구조물 카드를 <b>알맞은 시대로 드래그</b>하세요. 모두 배치한 뒤 <b>정답 확인</b>을 누르면 채점됩니다. <b>Enter</b> 키로도 확인할 수 있어요.</p>
   <div class="tl-game">
     <div class="tl-pool" id="tlPool"></div>
     <div class="tl-eras">
       <div class="tl-era" data-era="ancient">
         <h4>🏺 고대</h4>
-        <div class="era-hint">돌·나무·벽돌 등 자연 재료<br>규모가 크고 튼튼한 구조물</div>
+        <div class="era-hint">돌·나무·흙벽돌 등 자연 재료<br>사람의 힘으로 크고 튼튼하게</div>
         <div class="dropzone"></div>
       </div>
       <div class="tl-era" data-era="medieval">
         <h4>⛪ 중세</h4>
-        <div class="era-hint">정치·종교의 영향<br>비잔틴·로마네스크·고딕 양식</div>
+        <div class="era-hint">종교·정치의 영향<br>아치·돔으로 높고 넓은 공간</div>
         <div class="dropzone"></div>
       </div>
       <div class="tl-era" data-era="modern">
@@ -290,20 +476,61 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
     <div class="tl-result" id="tlResult"></div>
   </div>
 
-  <!-- STEP 5 : 스스로 확인 -->
-  <div class="step-title"><span class="step-num">5</span> 스스로 확인하기 <span style="font-size:.75rem;color:#86efac">🧠 메타인지</span></div>
-  <p class="step-desc">오늘 배운 내용을 스스로 점검해 보세요. 설명할 수 <b>없다면</b> 위로 돌아가 다시 확인!</p>
+  <!-- STEP 8 공사 과정 -->
+  <div class="step-title"><span class="step-num">8</span> 건물은 어떤 순서로 지어질까? <span class="step-time">4분 · 개념</span></div>
+  <p class="step-desc">
+    건설은 <b>일회성</b>이 있어서 순서를 지키는 것이 매우 중요합니다.
+    각 단계를 <b>클릭</b>해서 무슨 일을 하는지 확인해 보세요.
+  </p>
+  <div class="panel">
+    <div class="proc-flow" id="procFlow"></div>
+    <div class="proc-detail" id="procDetail"></div>
+  </div>
+
+  <!-- STEP 9 지속가능 + 진로 -->
+  <div class="step-title"><span class="step-num">9</span> 건설 기술과 지속 가능한 미래 <span class="step-time">4분 · 연결</span></div>
+  <p class="step-desc">이 단원의 제목은 「건설 기술과 <b>지속 가능</b>」입니다. 왜 지속 가능성을 함께 배울까요?</p>
+  <div class="sus-box">
+    <h3>🌱 건설은 지구에 가장 큰 영향을 주는 기술입니다</h3>
+    <p>
+      건설 산업은 전 세계에서 사용하는 <b>자원과 에너지의 상당 부분</b>을 쓰고, 많은 <b>폐기물</b>을 만듭니다.
+      게다가 건설 기술은 <b>장기성</b>이 있어서, 오늘 잘못 지은 건물이 <b>수십 년 동안</b> 에너지를 낭비하게 됩니다.
+      반대로 잘 지으면 <b>수십 년 동안 이로움</b>을 줍니다.
+    </p>
+    <div class="sus-q">
+      🤔 <b>이번 단원을 관통하는 질문</b><br>
+      “<b>튼튼하게</b> 짓는 것과 <b>지구에 부담을 덜 주게</b> 짓는 것을 어떻게 함께 이룰 수 있을까?”<br>
+      <span style="color:#94a3b8;font-size:.84rem">2차시에서는 건물의 구조와 하중을, 3차시에서는 힘·교량·내진과 지속 가능한 건설을 배웁니다.</span>
+    </div>
+  </div>
+
+  <div class="step-title" style="margin-top:34px"><span class="step-num">＋</span> 건설 기술과 관련된 직업 <span class="step-time">참고</span></div>
+  <p class="step-desc">건설 기술은 <b>대형성</b>이 있어 여러 분야의 전문가가 협력합니다.</p>
+  <div class="job-grid">
+    <div class="job-card"><span class="je">📐</span><b>건축사</b><span>건물의 모양·공간을 설계하고 도면을 그린다.</span></div>
+    <div class="job-card"><span class="je">🧮</span><b>구조 기술자</b><span>건물이 하중을 견디는지 계산해 안전을 책임진다.</span></div>
+    <div class="job-card"><span class="je">👷</span><b>시공 기술자</b><span>설계도대로 현장에서 실제로 짓는 일을 관리한다.</span></div>
+    <div class="job-card"><span class="je">🌍</span><b>토목 기술자</b><span>도로·교량·댐 등 기반 시설을 계획하고 만든다.</span></div>
+    <div class="job-card"><span class="je">🛡️</span><b>안전 관리자</b><span>현장의 사고를 예방하고 안전 규칙을 관리한다.</span></div>
+    <div class="job-card"><span class="je">🌿</span><b>친환경 건축 전문가</b><span>에너지를 적게 쓰는 건물을 설계·인증한다.</span></div>
+  </div>
+
+  <!-- STEP 10 정리 -->
+  <div class="step-title"><span class="step-num">✓</span> 스스로 확인하기 <span class="step-time">3분 · 🧠 메타인지</span></div>
+  <p class="step-desc">오늘 배운 내용을 스스로 점검해 보세요. 설명할 수 <b>없다면</b> 해당 단계로 돌아가 다시 확인!</p>
   <div class="self-check">
     <h3>✅ 나는 이제 …</h3>
     <label class="sc-item"><input type="checkbox" class="sc"><span>건설 기술의 개념을 <b>내 말로</b> 설명할 수 있다</span></label>
-    <label class="sc-item"><input type="checkbox" class="sc"><span>건축 기술과 토목 기술의 차이를 예시와 함께 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>건축 기술과 토목 기술의 차이를 <b>구분 요령과 함께</b> 말할 수 있다</span></label>
     <label class="sc-item"><input type="checkbox" class="sc"><span>건설 기술의 6가지 특징 중 <b>4가지 이상</b>을 떠올릴 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>돌 → 벽돌 → 철 → 철근 콘크리트로 이어지는 <b>재료의 발달</b>을 설명할 수 있다</span></label>
     <label class="sc-item"><input type="checkbox" class="sc"><span>피라미드 → 성당 → 에펠탑 → 부르즈 할리파를 시대순으로 나열할 수 있다</span></label>
-    <label class="sc-item"><input type="checkbox" class="sc"><span>근대에 등장한 새로운 건설 재료(철, 유리, 시멘트)를 말할 수 있다</span></label>
-    <div class="sc-progress" id="scProgress">체크: 0 / 5</div>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>건설 공사의 <b>4단계</b>를 순서대로 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>건설 기술에 <b>지속 가능성</b>이 왜 중요한지 한 문장으로 말할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress">체크: 0 / 7</div>
   </div>
 
-  <div class="next-link"><a href="sim_building.html">다음 → 2차시: 건축 구조물 분류하기</a></div>
+  <div class="next-link"><a href="sim_building.html">다음 → 2차시: 건축 구조물과 힘</a></div>
 </div>
 
 <script>
@@ -312,11 +539,75 @@ document.querySelectorAll('.flip').forEach(f => {
   f.addEventListener('click', () => f.classList.toggle('on'));
 });
 
+/* ===== 건축/토목 판별 훈련 ===== */
+const SORT_ITEMS = [
+  { name:'아파트',     emoji:'🏢', type:'arch',  why:'사람이 그 안에서 생활하는 공간이므로 건축입니다.' },
+  { name:'고속도로',   emoji:'🛣️', type:'civil', why:'여러 사람이 지나다니는 기반 시설이므로 토목입니다.' },
+  { name:'학교',       emoji:'🏫', type:'arch',  why:'학생들이 안에서 생활하고 배우는 공간이므로 건축입니다.' },
+  { name:'댐',         emoji:'💧', type:'civil', why:'자연환경(하천)을 개량한 공공 시설이므로 토목입니다.' },
+  { name:'체육관',     emoji:'🏟️', type:'arch',  why:'사람이 안에서 활동하는 공간이므로 건축입니다.' },
+  { name:'해저 터널',  emoji:'🚇', type:'civil', why:'통행을 위한 기반 시설이므로 토목입니다.' },
+  { name:'병원',       emoji:'🏥', type:'arch',  why:'사람이 안에서 진료받고 머무는 공간이므로 건축입니다.' },
+  { name:'항만',       emoji:'⚓', type:'civil', why:'육상·해상 교통을 잇는 기반 시설이므로 토목입니다.' },
+  { name:'상하수도',   emoji:'🚰', type:'civil', why:'물을 공급·처리하는 공공 기반 시설이므로 토목입니다.' },
+  { name:'백화점',     emoji:'🏬', type:'arch',  why:'사람이 안에서 물건을 사고 머무는 공간이므로 건축입니다.' },
+];
+let sortOrder = [], sortIdx = 0, sortOk = 0;
+const $ = id => document.getElementById(id);
+
+function sortRender() {
+  if (sortIdx >= sortOrder.length) {
+    $('sortEmoji').textContent = '🎉';
+    $('sortName').textContent = '완료!';
+    $('sortHint').textContent = '';
+    $('btnArch').disabled = true; $('btnCivil').disabled = true;
+    const msg = sortOk === sortOrder.length
+      ? '완벽합니다! 건축과 토목의 차이를 정확히 이해했어요.'
+      : (sortOk >= 8 ? '잘했어요! 틀린 것만 다시 확인해 보세요.' : '2단계 구분 요령을 다시 읽고 도전해 보세요.');
+    $('sortFb').innerHTML = '<span style="color:#fbbf24">최종 ' + sortOk + ' / ' + sortOrder.length + ' — ' + msg + '</span>';
+    $('sortFb').className = 'sort-fb';
+    return;
+  }
+  const it = sortOrder[sortIdx];
+  $('sortEmoji').textContent = it.emoji;
+  $('sortName').textContent = it.name;
+  $('sortHint').textContent = '사람이 그 안에서 생활하나요? 아니면 여러 사람이 지나가거나 이용하는 시설인가요?';
+  $('btnArch').disabled = false; $('btnCivil').disabled = false;
+  $('sortProg').textContent = (sortIdx) + ' / ' + sortOrder.length + ' 문제  ·  정답 ' + sortOk + '개';
+}
+function sortAnswer(pick) {
+  if (sortIdx >= sortOrder.length) return;
+  const it = sortOrder[sortIdx];
+  const fb = $('sortFb');
+  if (pick === it.type) {
+    sortOk++;
+    fb.innerHTML = '⭕ 정답! <b>' + it.name + '</b> — ' + it.why;
+    fb.className = 'sort-fb ok';
+  } else {
+    fb.innerHTML = '❌ 아쉬워요. <b>' + it.name + '</b>은(는) <b>' +
+      (it.type === 'arch' ? '건축 기술' : '토목 기술') + '</b>입니다.<br>' + it.why;
+    fb.className = 'sort-fb no';
+  }
+  sortIdx++;
+  setTimeout(sortRender, 100);
+}
+function sortInit() {
+  sortOrder = [...SORT_ITEMS].sort(() => Math.random() - .5);
+  sortIdx = 0; sortOk = 0;
+  $('sortFb').textContent = ''; $('sortFb').className = 'sort-fb';
+  sortRender();
+}
+$('btnArch').onclick = () => sortAnswer('arch');
+$('btnCivil').onclick = () => sortAnswer('civil');
+$('sortReset').onclick = sortInit;
+sortInit();
+
 /* ===== 특징 매칭 퀴즈 ===== */
 const FEATURES = ['공공성','지역성','일회성','대형성','경제성','장기성'];
+const MQ_TOTAL = document.querySelectorAll('#matchQuiz .mq-item').length;
 let mqCorrect = 0, mqDone = 0;
 document.querySelectorAll('#matchQuiz .mq-item').forEach(item => {
-  const ans = item.dataset.answer;
+  const ans = item.dataset.answer, why = item.dataset.why || '';
   const opts = item.querySelector('.mq-opts');
   const fb = item.querySelector('.mq-fb');
   FEATURES.forEach(f => {
@@ -328,21 +619,69 @@ document.querySelectorAll('#matchQuiz .mq-item').forEach(item => {
       opts.querySelectorAll('.mq-btn').forEach(x => x.disabled = true);
       if (f === ans) {
         b.classList.add('correct'); mqCorrect++;
-        fb.textContent = '⭕ 정답! ' + ans + ' — 잘 이해했어요.'; fb.className = 'mq-fb ok';
+        fb.innerHTML = '⭕ 정답! <b>' + ans + '</b> — ' + why; fb.className = 'mq-fb ok';
       } else {
         b.classList.add('wrong');
         opts.querySelectorAll('.mq-btn').forEach(x => { if (x.textContent === ans) x.classList.add('correct'); });
-        fb.textContent = '❌ 정답은 「' + ans + '」 입니다. 카드 설명을 다시 읽어 보세요.'; fb.className = 'mq-fb no';
+        fb.innerHTML = '❌ 정답은 「<b>' + ans + '</b>」 입니다. ' + why; fb.className = 'mq-fb no';
       }
-      if (mqDone === 5) {
-        document.getElementById('mqScore').innerHTML =
-          '🎯 적용 퀴즈 결과: <b style="color:#fbbf24">' + mqCorrect + ' / 5</b>' +
-          (mqCorrect >= 4 ? ' — 훌륭해요!' : ' — 플립카드를 다시 보고 복습해 보세요.');
+      if (mqDone === MQ_TOTAL) {
+        $('mqScore').innerHTML =
+          '🎯 적용 퀴즈 결과: <b style="color:#fbbf24">' + mqCorrect + ' / ' + MQ_TOTAL + '</b>' +
+          (mqCorrect >= MQ_TOTAL - 1 ? ' — 훌륭해요!' : ' — 플립카드를 다시 보고 복습해 보세요.');
       }
     };
     opts.appendChild(b);
   });
 });
+
+/* ===== 재료 발달 스테퍼 ===== */
+const MATERIALS = [
+  { emoji:'🪨', name:'돌·흙', era:'고대',
+    body:'가장 먼저 쓴 재료입니다. 주변에서 쉽게 구할 수 있고 <b>압축(누르는 힘)에 매우 강해</b> 무겁게 쌓아 올리는 방식으로 지었습니다.',
+    why:'피라미드·고인돌처럼 <b>쌓아서 버티는</b> 구조물이 만들어졌습니다.',
+    lim:'한계 — 무겁고 가공이 어려우며, 넓은 공간을 만들기 힘듭니다.' },
+  { emoji:'🧱', name:'벽돌', era:'고대~중세',
+    body:'흙을 구워 만든 <b>규격이 일정한</b> 재료입니다. 크기가 같아 쌓기 쉽고, 운반과 시공이 편리해졌습니다.',
+    why:'아치·돔 같은 곡면 구조가 가능해져 <b>더 넓고 높은 실내 공간</b>을 만들 수 있게 되었습니다.',
+    lim:'한계 — 여전히 인장(당기는 힘)에 약해 높이에 제한이 있습니다.' },
+  { emoji:'🪵', name:'목재', era:'전 시대',
+    body:'가볍고 가공하기 쉬우며 <b>인장·압축 모두</b> 어느 정도 견딥니다. 한옥의 기둥과 보처럼 짜 맞추는 방식에 알맞습니다.',
+    why:'기둥과 보를 조립하는 <b>가구식 구조</b>가 발달했습니다. (2차시에서 배웁니다)',
+    lim:'한계 — 불에 타고 습기·벌레에 약하며, 큰 하중을 버티기 어렵습니다.' },
+  { emoji:'⚙️', name:'철(강재)', era:'근대',
+    body:'산업 혁명으로 철을 대량 생산하게 되었습니다. 철은 <b>인장력에 매우 강하고</b> 가늘어도 큰 힘을 견딥니다.',
+    why:'에펠탑·철교처럼 <b>가늘고 높고 긴</b> 구조물이 가능해졌습니다. 건설의 규모가 완전히 달라졌습니다.',
+    lim:'한계 — 녹슬고, 불에 오래 노출되면 강도가 떨어집니다.' },
+  { emoji:'🏗️', name:'철근 콘크리트', era:'근대~현대',
+    body:'<b>압축에 강한 콘크리트</b> 속에 <b>인장에 강한 철근</b>을 넣어 서로의 약점을 보완한 재료입니다.',
+    why:'두 힘을 모두 견디게 되어 <b>고층 건물과 긴 교량</b>이 가능해졌습니다. 오늘날 가장 널리 쓰입니다.',
+    lim:'한계 — 무겁고, 시멘트를 만들 때 이산화 탄소가 많이 나옵니다. → <b>지속 가능성 과제</b>' },
+  { emoji:'✨', name:'신소재', era:'현대',
+    body:'초고강도 콘크리트, 유리, 탄소 섬유, 스마트 재료 등이 쓰입니다. 스스로 갈라진 틈을 메우는 <b>자가 치유 콘크리트</b>도 연구되고 있습니다.',
+    why:'부르즈 할리파 같은 <b>초고층</b>과 친환경·스마트 건축이 가능해졌습니다.',
+    lim:'과제 — 비용이 비싸고, 환경 부담을 줄이는 연구가 계속되고 있습니다.' },
+];
+const matSteps = $('matSteps'), matDetail = $('matDetail');
+MATERIALS.forEach((m, i) => {
+  const d = document.createElement('div');
+  d.className = 'mat-step' + (i === 0 ? ' on' : '');
+  d.innerHTML = '<span class="me">' + m.emoji + '</span><b>' + m.name + '</b><span>' + m.era + '</span>';
+  d.onclick = () => {
+    document.querySelectorAll('.mat-step').forEach(x => x.classList.remove('on'));
+    d.classList.add('on'); showMat(i);
+  };
+  matSteps.appendChild(d);
+});
+function showMat(i) {
+  const m = MATERIALS[i];
+  matDetail.innerHTML =
+    '<h4>' + m.emoji + ' ' + m.name + ' <span style="font-size:.8rem;color:#94a3b8">— ' + m.era + '</span></h4>' +
+    '<div>' + m.body + '</div>' +
+    '<div class="mat-why">➡️ 이 재료 덕분에 : ' + m.why + '</div>' +
+    '<div class="mat-lim">⚠️ ' + m.lim + '</div>';
+}
+showMat(0);
 
 /* ===== 타임라인 게임 ===== */
 const STRUCTURES = [
@@ -359,7 +698,7 @@ const STRUCTURES = [
   { name:'부르즈 할리파', emoji:'🏙️', era:'contemporary' },
   { name:'스마트 빌딩', emoji:'🤖', era:'contemporary' },
 ];
-const pool = document.getElementById('tlPool');
+const pool = $('tlPool');
 let dragEl = null;
 
 function makeChip(s) {
@@ -374,9 +713,8 @@ function makeChip(s) {
 function initTimeline() {
   pool.innerHTML = '';
   document.querySelectorAll('.tl-era .dropzone').forEach(z => z.innerHTML = '');
-  document.getElementById('tlResult').textContent = '';
-  const shuffled = [...STRUCTURES].sort(() => Math.random() - .5);
-  shuffled.forEach(s => pool.appendChild(makeChip(s)));
+  $('tlResult').textContent = '';
+  [...STRUCTURES].sort(() => Math.random() - .5).forEach(s => pool.appendChild(makeChip(s)));
 }
 [...document.querySelectorAll('.tl-era'), pool].forEach(zone => {
   zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
@@ -393,34 +731,80 @@ function initTimeline() {
 function checkTimeline() {
   const remaining = pool.querySelectorAll('.tl-chip').length;
   if (remaining > 0) {
-    document.getElementById('tlResult').innerHTML = '<span style="color:#fbbf24">⚠️ 아직 ' + remaining + '개 카드가 남아 있어요. 모두 배치해 주세요!</span>';
+    $('tlResult').innerHTML = '<span style="color:#fbbf24">⚠️ 아직 ' + remaining + '개 카드가 남아 있어요. 모두 배치해 주세요!</span>';
     return;
   }
-  let ok = 0, total = STRUCTURES.length;
+  let ok = 0;
   document.querySelectorAll('.tl-era').forEach(era => {
     era.querySelectorAll('.tl-chip').forEach(chip => {
       if (chip.dataset.era === era.dataset.era) { chip.classList.add('ok'); chip.classList.remove('bad'); ok++; }
       else { chip.classList.add('bad'); chip.classList.remove('ok'); }
     });
   });
-  const r = document.getElementById('tlResult');
-  if (ok === total) r.innerHTML = '<span style="color:#4ade80">🎉 완벽해요! ' + ok + '/' + total + ' — 발달 순서를 모두 이해했어요!</span>';
-  else r.innerHTML = '<span style="color:#f87171">🔍 ' + ok + '/' + total + ' 정답. 빨간 카드를 올바른 시대로 옮기고 다시 확인해 보세요.</span>';
+  const r = $('tlResult');
+  if (ok === STRUCTURES.length) r.innerHTML = '<span style="color:#4ade80">🎉 완벽해요! ' + ok + '/' + STRUCTURES.length + ' — 발달 순서를 모두 이해했어요!</span>';
+  else r.innerHTML = '<span style="color:#f87171">🔍 ' + ok + '/' + STRUCTURES.length + ' 정답. 빨간 카드를 올바른 시대로 옮기고 다시 확인해 보세요.</span>';
 }
-document.getElementById('tlCheck').onclick = checkTimeline;
-document.getElementById('tlReset').onclick = initTimeline;
+$('tlCheck').onclick = checkTimeline;
+$('tlReset').onclick = initTimeline;
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && e.target.tagName !== 'SELECT') { e.preventDefault(); checkTimeline(); }
 });
 initTimeline();
 
+/* ===== 건설 공사 과정 ===== */
+const PROCESS = [
+  { emoji:'📝', name:'기획', sub:'무엇을 왜?',
+    body:'어떤 구조물이 <b>왜 필요한지</b> 정하고, 위치·규모·예산·기간을 계획합니다. 주변 환경에 주는 영향도 미리 조사합니다.',
+    items:['어디에 지을지 터를 고른다','얼마의 돈과 기간이 필요한지 따진다','환경·교통에 주는 영향을 조사한다'],
+    who:'👤 주로 참여 — 발주자, 기획자, 환경 조사원' },
+  { emoji:'📐', name:'설계', sub:'어떻게 지을까?',
+    body:'구조물의 모양·크기·재료를 정하고 <b>도면</b>으로 그립니다. 하중을 견딜 수 있는지 <b>구조 계산</b>도 이 단계에서 합니다.',
+    items:['평면도·입체도 등 설계 도면 작성','어떤 재료를 쓸지 결정','하중을 견디는지 안전성 계산'],
+    who:'👤 주로 참여 — 건축사, 구조 기술자' },
+  { emoji:'👷', name:'시공', sub:'실제로 짓기',
+    body:'설계도대로 <b>현장에서 실제로 짓는</b> 단계입니다. 터파기 → 기초 → 골조 → 마감 순으로 진행하며, <b>안전 관리</b>가 가장 중요합니다.',
+    items:['터를 파고 기초를 만든다','기둥·보·벽 등 뼈대(골조)를 세운다','창호·설비·마감 공사를 한다'],
+    who:'👤 주로 참여 — 시공 기술자, 기능공, 안전 관리자' },
+  { emoji:'🔧', name:'유지·관리', sub:'오래 쓰기',
+    body:'완성 뒤에도 <b>점검·보수</b>를 계속합니다. 건설은 <b>장기성</b>이 있어 수십 년 사용하므로, 이 단계가 안전을 좌우합니다.',
+    items:['정기적으로 안전 점검을 한다','낡거나 갈라진 곳을 보수한다','필요하면 리모델링하거나 철거·재활용한다'],
+    who:'👤 주로 참여 — 시설 관리자, 안전 진단 전문가' },
+];
+const procFlow = $('procFlow'), procDetail = $('procDetail');
+PROCESS.forEach((p, i) => {
+  const d = document.createElement('div');
+  d.className = 'proc-node' + (i === 0 ? ' on' : '');
+  d.innerHTML = '<span class="pn">' + p.emoji + '</span><b>' + (i+1) + '. ' + p.name + '</b><span>' + p.sub + '</span>';
+  d.onclick = () => {
+    document.querySelectorAll('.proc-node').forEach(x => x.classList.remove('on'));
+    d.classList.add('on'); showProc(i);
+  };
+  procFlow.appendChild(d);
+  if (i < PROCESS.length - 1) {
+    const a = document.createElement('div');
+    a.className = 'proc-arrow'; a.textContent = '▶';
+    procFlow.appendChild(a);
+  }
+});
+function showProc(i) {
+  const p = PROCESS[i];
+  procDetail.innerHTML =
+    '<h4>' + p.emoji + ' ' + (i+1) + '단계 · ' + p.name + '</h4>' +
+    '<div>' + p.body + '</div>' +
+    '<ul>' + p.items.map(x => '<li>' + x + '</li>').join('') + '</ul>' +
+    '<div class="who">' + p.who + '</div>';
+}
+showProc(0);
+
 /* ===== 체크리스트 진행률 ===== */
+const SC_TOTAL = document.querySelectorAll('.sc').length;
 document.querySelectorAll('.sc').forEach(c => c.addEventListener('change', () => {
   const n = document.querySelectorAll('.sc:checked').length;
-  const p = document.getElementById('scProgress');
-  p.textContent = '체크: ' + n + ' / 5';
-  if (n === 5) p.textContent += ' — 🌟 완벽! 다음 차시로 넘어갈 준비 완료!';
-  else if (n >= 3) p.textContent += ' — 좋아요! 나머지 항목도 복습해 보세요.';
+  const p = $('scProgress');
+  p.textContent = '체크: ' + n + ' / ' + SC_TOTAL;
+  if (n === SC_TOTAL) p.textContent += ' — 🌟 완벽! 다음 차시로 넘어갈 준비 완료!';
+  else if (n >= Math.ceil(SC_TOTAL * .6)) p.textContent += ' — 좋아요! 나머지 항목도 복습해 보세요.';
 }));
 </script>
 </body>

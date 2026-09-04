@@ -136,6 +136,84 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
   font-weight:800; text-decoration:none; border-radius:12px; padding:14px 34px; font-size:1rem; transition:.2s;
 }
 .next-link a:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(167,139,250,.35); }
+
+/* ===== 추가 : 흐름 / 시간 ===== */
+.step-time { font-size:.7rem; background:#334155; color:#94a3b8; border-radius:999px; padding:3px 10px; font-weight:600; }
+.step-title { flex-wrap:wrap; }
+.flow-bar {
+  display:flex; gap:6px; flex-wrap:wrap; background:rgba(15,23,42,.6);
+  border:1px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:30px;
+  font-size:.76rem; color:#94a3b8;
+}
+.flow-bar span { background:#1e293b; border:1px solid #475569; border-radius:999px; padding:4px 11px; white-space:nowrap; }
+.flow-bar span b { color:#fbbf24; }
+.panel { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.hook { margin-top:16px; background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0; padding:14px 16px; font-size:.9rem; line-height:1.75; }
+.hook b { color:#7dd3fc; }
+
+/* ===== 추가 : 자기점검 ===== */
+.kwl { background:rgba(167,139,250,.08); border:1px solid rgba(167,139,250,.35); border-radius:14px; padding:20px; }
+.kwl h3 { color:#c4b5fd; font-size:1rem; margin-bottom:10px; }
+.kwl-row { display:flex; flex-direction:column; gap:10px; }
+.kwl-item { display:flex; align-items:center; gap:10px; font-size:.9rem; flex-wrap:wrap; }
+.kwl-item span { flex:1; min-width:220px; }
+.kwl-item select { background:#1e293b; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:5px 10px; font-size:.85rem; cursor:pointer; }
+.kwl-note { font-size:.78rem; color:#a78bfa; margin-top:10px; }
+
+/* ===== 추가 : 4가지 힘 ===== */
+.force4 { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; }
+.f4card { border-radius:14px; padding:16px; border:2px solid; background:rgba(15,23,42,.5); }
+.f4card.c1 { border-color:#f87171; } .f4card.c2 { border-color:#60a5fa; }
+.f4card.c3 { border-color:#fbbf24; } .f4card.c4 { border-color:#a78bfa; }
+.f4card h4 { font-size:1rem; margin-bottom:8px; }
+.f4card.c1 h4 { color:#fca5a5; } .f4card.c2 h4 { color:#93c5fd; }
+.f4card.c3 h4 { color:#fde68a; } .f4card.c4 h4 { color:#c4b5fd; }
+.f4card svg { width:100%; height:auto; background:rgba(15,23,42,.6); border-radius:8px; margin-bottom:9px; }
+.f4card p { font-size:.84rem; line-height:1.65; color:#cbd5e1; }
+.f4card .where { margin-top:8px; font-size:.79rem; color:#94a3b8; }
+
+/* ===== 추가 : 트러스 실험 ===== */
+.truss-wrap { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:700px){ .truss-wrap{grid-template-columns:1fr} }
+.truss-box { background:rgba(15,23,42,.6); border-radius:14px; padding:14px; text-align:center; }
+.truss-box svg { width:100%; height:auto; }
+.truss-box h4 { font-size:.95rem; margin-bottom:8px; }
+.truss-box.sq h4 { color:#fca5a5; } .truss-box.tri h4 { color:#86efac; }
+.truss-box p { font-size:.82rem; color:#94a3b8; margin-top:8px; line-height:1.6; }
+.truss-btn { margin-top:10px; }
+
+/* ===== 추가 : 교량 구성 ===== */
+.bparts-svg { background:rgba(15,23,42,.6); border-radius:14px; padding:12px; }
+.bparts-svg svg { width:100%; height:auto; display:block; }
+.bpart-hit { cursor:pointer; }
+.bpart-hit.on { stroke:#fbbf24 !important; stroke-width:4 !important; }
+.bparts-btns { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.bpart-btn {
+  background:#1e293b; border:2px solid #475569; border-radius:999px; padding:8px 15px;
+  cursor:pointer; font-family:inherit; color:#e2e8f0; font-size:.85rem; transition:.18s;
+}
+.bpart-btn:hover { border-color:#94a3b8; }
+.bpart-btn.on { border-color:#fbbf24; background:rgba(251,191,36,.12); color:#fbbf24; }
+.bpart-detail {
+  margin-top:13px; background:rgba(15,23,42,.7); border:1px solid #475569; border-radius:12px;
+  padding:15px; font-size:.88rem; line-height:1.75; min-height:92px;
+}
+.bpart-detail h4 { color:#fbbf24; font-size:1rem; margin-bottom:6px; }
+
+/* ===== 추가 : 지속 가능한 건설 ===== */
+.sus-box {
+  background:linear-gradient(135deg,rgba(74,222,128,.1),rgba(56,189,248,.08));
+  border:1px solid rgba(74,222,128,.4); border-radius:16px; padding:22px;
+}
+.sus-box h3 { color:#86efac; font-size:1.08rem; margin-bottom:10px; }
+.sus-box > p { font-size:.9rem; line-height:1.8; color:#d1fae5; margin-bottom:14px; }
+.sus-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(185px,1fr)); gap:12px; }
+.sus-card { background:rgba(15,23,42,.55); border:1px solid rgba(74,222,128,.25); border-radius:12px; padding:14px; font-size:.83rem; line-height:1.6; }
+.sus-card .se { font-size:1.7rem; display:block; margin-bottom:6px; }
+.sus-card b { color:#86efac; display:block; margin-bottom:5px; font-size:.92rem; }
+.sus-card span { color:#94a3b8; }
+.sus-final { margin-top:16px; background:rgba(15,23,42,.6); border-radius:12px; padding:15px 17px; font-size:.9rem; line-height:1.8; }
+.sus-final b { color:#fbbf24; }
 </style>
 </head>
 <body>
@@ -150,12 +228,44 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
   <div class="goal-box">
     <b>학습 목표</b><br>
     ① 토목 구조물의 <b>종류와 역할</b>을 설명할 수 있다.<br>
-    ② 교량 4종류(현수교·사장교·트러스교·아치교)의 <b>구조 원리</b>를 구분할 수 있다.<br>
-    ③ 구조물에 작용하는 <b>압축력·인장력</b>을 시뮬레이션으로 확인하고, <b>내진 설계</b> 3가지 방식을 비교할 수 있다.
+    ② 구조물에 작용하는 <b>네 가지 힘</b>(압축·인장·전단·휨)을 구분할 수 있다.<br>
+    ③ <b>삼각형(트러스)</b>이 안정적인 이유를 실험으로 설명할 수 있다.<br>
+    ④ 교량의 <b>상부·하부 구조</b>와 4종류(현수교·사장교·트러스교·아치교)의 원리를 구분할 수 있다.<br>
+    ⑤ <b>내진 설계</b> 3가지 방식을 비교하고, <b>지속 가능한 건설</b>의 필요성을 설명할 수 있다.
+  </div>
+
+  <div class="flow-bar">
+    <span><b>0</b> 자기점검 3분</span>
+    <span><b>1</b> 토목 구조물 6분</span>
+    <span><b>2</b> 네 가지 힘 8분</span>
+    <span><b>2-1</b> 트러스 실험 5분</span>
+    <span><b>2-2</b> 교량 구성 5분</span>
+    <span><b>3</b> 교량 시뮬레이터 10분</span>
+    <span><b>4</b> 내진 설계 7분</span>
+    <span><b>5</b> 적용 퀴즈 5분</span>
+    <span><b>6</b> 지속 가능 7분</span>
+  </div>
+
+  <!-- STEP 0 : 자기점검 -->
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">3분 · 🧠 메타인지</span></div>
+  <p class="step-desc">지금 나의 상태를 솔직하게 체크해 보세요. 마지막 단계에서 다시 비교합니다.</p>
+  <div class="kwl">
+    <h3>📋 나는 지금 얼마나 알고 있을까?</h3>
+    <div class="kwl-row">
+      <div class="kwl-item"><span>압축력·인장력 말고 <b>전단력·휨</b>이 무엇인지 안다</span>
+        <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+      <div class="kwl-item"><span>다리에 <b>삼각형</b>이 많이 쓰이는 이유를 안다</span>
+        <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+      <div class="kwl-item"><span><b>교대·교각</b>이 무엇인지 구분할 수 있다</span>
+        <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+      <div class="kwl-item"><span>내진·면진·제진의 차이를 설명할 수 있다</span>
+        <select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+    </div>
+    <div class="kwl-note">💡 "모른다"고 체크해도 괜찮아요. 자신의 상태를 아는 것이 메타인지의 시작입니다!</div>
   </div>
 
   <!-- STEP 1 : 토목 구조물 탐색 -->
-  <div class="step-title"><span class="step-num">1</span> 토목 구조물의 종류</div>
+  <div class="step-title"><span class="step-num">1</span> 토목 구조물의 종류 <span class="step-time">6분 · 개념</span></div>
   <p class="step-desc">토목 구조물은 <b>공공의 이익</b>을 위해 자연환경을 개량하거나 인간의 생활 환경을 개선하기 위해 만든 구조물입니다. 카드를 <b>클릭</b>하면 자세한 설명이 열려요.</p>
   <div class="civil-grid">
     <div class="civil-card"><div class="ci">🛣️</div><b>도로</b><p>사람과 차량의 통행을 위해 설치한 육상 통로</p>
@@ -177,23 +287,168 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
   </div>
 
   <!-- STEP 2 : 힘 개념 -->
-  <div class="step-title"><span class="step-num">2</span> 구조물에 작용하는 두 가지 힘</div>
-  <p class="step-desc">교량 시뮬레이터를 실험하기 전, 두 힘의 개념을 먼저 이해하세요.</p>
-  <div class="force-box">
-    <div class="fcard comp">
-      <h4>🔴 압축력</h4>
-      <div class="arr">→ ⬛ ←</div>
-      <p>물체에 압력을 가하여 <b>부피를 줄이려는 힘</b>. 양쪽에서 미는 힘입니다. 기둥·아치가 주로 받아요.</p>
+  <div class="step-title"><span class="step-num">2</span> 구조물에 작용하는 네 가지 힘 <span class="step-time">8분 · 핵심 개념</span></div>
+  <p class="step-desc">
+    2차시에서 배운 <b>하중</b>이 구조물 안으로 들어오면, 부재는 네 가지 방식으로 힘을 받습니다.
+    교량 시뮬레이터를 실험하기 전에 먼저 이해하세요.
+  </p>
+  <div class="panel">
+    <div class="force4">
+      <div class="f4card c1">
+        <h4>🔴 압축력 (누르는 힘)</h4>
+        <svg viewBox="0 0 200 70">
+          <rect x="70" y="22" width="60" height="26" fill="#475569" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="18" y1="35" x2="62" y2="35" stroke="#f87171" stroke-width="5"/>
+          <polygon points="68,35 54,28 54,42" fill="#f87171"/>
+          <line x1="182" y1="35" x2="138" y2="35" stroke="#f87171" stroke-width="5"/>
+          <polygon points="132,35 146,28 146,42" fill="#f87171"/>
+        </svg>
+        <p>양쪽에서 <b>미는</b> 힘. 물체의 부피를 줄이려 합니다.</p>
+        <div class="where">📍 주로 받는 곳 — <b>기둥, 아치, 교각</b><br>💪 강한 재료 — 콘크리트, 돌</div>
+      </div>
+      <div class="f4card c2">
+        <h4>🔵 인장력 (당기는 힘)</h4>
+        <svg viewBox="0 0 200 70">
+          <rect x="70" y="22" width="60" height="26" fill="#475569" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="62" y1="35" x2="18" y2="35" stroke="#60a5fa" stroke-width="5"/>
+          <polygon points="12,35 26,28 26,42" fill="#60a5fa"/>
+          <line x1="138" y1="35" x2="182" y2="35" stroke="#60a5fa" stroke-width="5"/>
+          <polygon points="188,35 174,28 174,42" fill="#60a5fa"/>
+        </svg>
+        <p>양쪽에서 <b>잡아당기는</b> 힘. 물체를 늘이려 합니다.</p>
+        <div class="where">📍 주로 받는 곳 — <b>케이블, 와이어, 철근</b><br>💪 강한 재료 — 강재(철)</div>
+      </div>
+      <div class="f4card c3">
+        <h4>🟡 전단력 (자르는 힘)</h4>
+        <svg viewBox="0 0 200 70">
+          <rect x="70" y="14" width="60" height="20" fill="#475569" stroke="#94a3b8" stroke-width="2"/>
+          <rect x="70" y="36" width="60" height="20" fill="#475569" stroke="#94a3b8" stroke-width="2"/>
+          <line x1="20" y1="24" x2="64" y2="24" stroke="#fbbf24" stroke-width="5"/>
+          <polygon points="70,24 56,17 56,31" fill="#fbbf24"/>
+          <line x1="180" y1="46" x2="136" y2="46" stroke="#fbbf24" stroke-width="5"/>
+          <polygon points="130,46 144,39 144,53" fill="#fbbf24"/>
+          <line x1="70" y1="35" x2="130" y2="35" stroke="#f87171" stroke-width="2" stroke-dasharray="4 3"/>
+        </svg>
+        <p>서로 <b>엇갈린 방향</b>으로 미는 힘. 물체를 <b>가위처럼 잘라내려</b> 합니다.</p>
+        <div class="where">📍 주로 받는 곳 — <b>보와 기둥이 만나는 부분</b>, 볼트·못</div>
+      </div>
+      <div class="f4card c4">
+        <h4>🟣 휨(굽힘) 모멘트</h4>
+        <svg viewBox="0 0 200 70">
+          <path d="M25,30 Q100,58 175,30" stroke="#a78bfa" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <rect x="16" y="26" width="10" height="26" fill="#64748b"/>
+          <rect x="174" y="26" width="10" height="26" fill="#64748b"/>
+          <line x1="100" y1="8" x2="100" y2="38" stroke="#f87171" stroke-width="5"/>
+          <polygon points="100,48 92,32 108,32" fill="#f87171"/>
+        </svg>
+        <p>물체를 <b>휘게 만드는</b> 힘. 위쪽은 눌리고(압축), 아래쪽은 늘어납니다(인장).</p>
+        <div class="where">📍 주로 받는 곳 — <b>보, 다리 상판</b><br>💡 길이가 길수록 크게 작용</div>
+      </div>
     </div>
-    <div class="fcard tens">
-      <h4>🔵 인장력</h4>
-      <div class="arr">← ⬛ →</div>
-      <p>물체를 <b>늘이거나 잡아당기는 힘</b>. 양쪽에서 당기는 힘입니다. 케이블·줄이 주로 받아요.</p>
+    <div class="hook">
+      🔑 <b>왜 철근 콘크리트를 쓸까?</b> 이제 답할 수 있습니다.<br>
+      보가 <b>휨</b>을 받으면 <u>위쪽은 압축, 아래쪽은 인장</u>이 됩니다.
+      콘크리트는 압축에 강하지만 인장에 약하므로, <b>인장이 걸리는 아래쪽에 철근을 넣어</b> 보완하는 것입니다.
+    </div>
+  </div>
+
+  <!-- STEP 2-1 : 트러스 원리 -->
+  <div class="step-title"><span class="step-num">2</span>-1 왜 다리에는 삼각형이 많을까? <span class="step-time">5분 · 실험</span></div>
+  <p class="step-desc">
+    트러스교를 배우기 전에 꼭 알아야 할 원리입니다. 버튼을 눌러 <b>힘을 가해</b> 보세요.
+  </p>
+  <div class="panel">
+    <div class="truss-wrap">
+      <div class="truss-box sq">
+        <h4>⬜ 사각형 — 불안정</h4>
+        <svg viewBox="0 0 200 130">
+          <g id="sqShape">
+            <polygon points="45,25 155,25 155,105 45,105" fill="none" stroke="#f87171" stroke-width="6" stroke-linejoin="round"/>
+            <circle cx="45" cy="25" r="6" fill="#fca5a5"/><circle cx="155" cy="25" r="6" fill="#fca5a5"/>
+            <circle cx="155" cy="105" r="6" fill="#fca5a5"/><circle cx="45" cy="105" r="6" fill="#fca5a5"/>
+          </g>
+          <line x1="20" y1="115" x2="180" y2="115" stroke="#64748b" stroke-width="3"/>
+        </svg>
+        <p>변의 길이가 그대로여도 <b>모양이 찌그러집니다.</b> 각도가 고정되지 않기 때문입니다.</p>
+      </div>
+      <div class="truss-box tri">
+        <h4>🔺 삼각형 — 안정</h4>
+        <svg viewBox="0 0 200 130">
+          <g id="triShape">
+            <polygon points="100,25 155,105 45,105" fill="none" stroke="#4ade80" stroke-width="6" stroke-linejoin="round"/>
+            <circle cx="100" cy="25" r="6" fill="#86efac"/>
+            <circle cx="155" cy="105" r="6" fill="#86efac"/><circle cx="45" cy="105" r="6" fill="#86efac"/>
+          </g>
+          <line x1="20" y1="115" x2="180" y2="115" stroke="#64748b" stroke-width="3"/>
+        </svg>
+        <p>세 변의 길이가 정해지면 <b>모양이 단 하나로 결정</b>됩니다. 그래서 찌그러지지 않습니다.</p>
+      </div>
+    </div>
+    <div style="text-align:center" class="truss-btn">
+      <button class="btn-main" id="trussPush">💥 옆에서 힘 가해 보기</button>
+      <button class="btn-sub" id="trussReset">↺ 되돌리기</button>
+    </div>
+    <div class="hook">
+      💡 <b>트러스(truss)</b>란 부재를 <b>삼각형으로 짜 맞춘 구조</b>입니다.
+      삼각형은 찌그러지지 않으므로, 적은 재료로도 튼튼하고 <b>가벼운</b> 구조를 만들 수 있습니다.
+      트러스교·철탑·크레인·체육관 지붕에 널리 쓰입니다.
+    </div>
+  </div>
+
+  <!-- STEP 2-2 : 교량의 구성 -->
+  <div class="step-title"><span class="step-num">2</span>-2 교량은 어떻게 이루어져 있을까? <span class="step-time">5분 · 기초 개념</span></div>
+  <p class="step-desc">
+    교량은 크게 <b>상부 구조</b>와 <b>하부 구조</b>로 나뉩니다. 그림이나 버튼을 <b>클릭</b>해 각 부분의 이름과 역할을 확인하세요.
+  </p>
+  <div class="panel">
+    <div class="bparts-svg">
+      <svg viewBox="0 0 460 200">
+        <!-- 물 -->
+        <rect x="0" y="150" width="460" height="50" fill="#0c4a6e" opacity=".55"/>
+        <!-- 지반 -->
+        <rect x="0" y="140" width="70" height="60" fill="#422006"/>
+        <rect x="390" y="140" width="70" height="60" fill="#422006"/>
+
+        <!-- 상판(바닥판) -->
+        <g class="bpart-hit" data-bp="deck">
+          <rect x="52" y="78" width="356" height="16" fill="#94a3b8" stroke="#e2e8f0" stroke-width="2"/>
+        </g>
+        <!-- 주형(거더) -->
+        <g class="bpart-hit" data-bp="girder">
+          <rect x="60" y="94" width="340" height="12" fill="#f97316" stroke="#fdba74" stroke-width="2"/>
+        </g>
+        <!-- 교대 -->
+        <g class="bpart-hit" data-bp="abutment">
+          <polygon points="34,78 62,78 62,150 26,150" fill="#78716c" stroke="#d6d3d1" stroke-width="2"/>
+          <polygon points="398,78 426,78 434,150 398,150" fill="#78716c" stroke="#d6d3d1" stroke-width="2"/>
+        </g>
+        <!-- 교각 -->
+        <g class="bpart-hit" data-bp="pier">
+          <rect x="160" y="106" width="26" height="66" fill="#0ea5e9" stroke="#7dd3fc" stroke-width="2"/>
+          <rect x="274" y="106" width="26" height="66" fill="#0ea5e9" stroke="#7dd3fc" stroke-width="2"/>
+        </g>
+        <!-- 기초 -->
+        <g class="bpart-hit" data-bp="foundation">
+          <rect x="148" y="172" width="50" height="16" fill="#a78bfa" stroke="#c4b5fd" stroke-width="2"/>
+          <rect x="262" y="172" width="50" height="16" fill="#a78bfa" stroke="#c4b5fd" stroke-width="2"/>
+        </g>
+
+        <text x="230" y="26" fill="#fbbf24" font-size="13" text-anchor="middle" font-weight="bold">상부 구조 (위)</text>
+        <text x="230" y="44" fill="#94a3b8" font-size="11" text-anchor="middle">상판 · 주형</text>
+        <text x="230" y="196" fill="#7dd3fc" font-size="13" text-anchor="middle" font-weight="bold">하부 구조 (아래) — 교대 · 교각 · 기초</text>
+      </svg>
+    </div>
+    <div class="bparts-btns" id="bpartsBtns"></div>
+    <div class="bpart-detail" id="bpartDetail"></div>
+    <div class="hook">
+      🔑 <b>기억하세요.</b> <b>상부 구조</b>는 차와 사람의 하중을 <u>직접 받아</u> 하부로 전달하고,
+      <b>하부 구조</b>는 그 하중을 <u>지반까지</u> 안전하게 분산시킵니다.
+      2차시의 “보 → 기둥 → 기초 → 지반”과 <b>똑같은 원리</b>입니다.
     </div>
   </div>
 
   <!-- STEP 3 : 교량 시뮬레이터 -->
-  <div class="step-title"><span class="step-num">3</span> 교량의 힘 시뮬레이터</div>
+  <div class="step-title"><span class="step-num">3</span> 교량의 힘 시뮬레이터 <span class="step-time">10분 · 실험</span></div>
   <p class="step-desc">교량 종류를 선택하고 <b>하중 슬라이더</b>를 움직여 보세요. 트럭이 이동하며 다리가 받는 <b style="color:#fca5a5">압축력(빨강)</b>과 <b style="color:#93c5fd">인장력(파랑)</b>이 표시됩니다. 하중이 클수록 힘 표시가 굵어져요!</p>
   <div class="bridge-sim">
     <div class="bridge-tabs">
@@ -311,7 +566,39 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
   </div>
 
   <!-- STEP 6 : 스스로 확인 -->
-  <div class="step-title"><span class="step-num">6</span> 스스로 확인하기 <span style="font-size:.75rem;color:#86efac">🧠 메타인지</span></div>
+  <!-- STEP 6 : 지속 가능한 건설 -->
+  <div class="step-title"><span class="step-num">6</span> 지속 가능한 건설 — 이 단원의 결론 <span class="step-time">7분 · 지속 가능</span></div>
+  <p class="step-desc">
+    단원 제목이 「건설 기술과 <b>지속 가능</b>」인 이유를 정리합니다.
+    튼튼하게 짓는 것만큼, <b>지구에 부담을 덜 주게</b> 짓는 것이 중요합니다.
+  </p>
+  <div class="sus-box">
+    <h3>🌱 건설 기술은 지구에 가장 큰 영향을 주는 기술입니다</h3>
+    <p>
+      건설은 <b>많은 자원과 에너지</b>를 쓰고 <b>많은 폐기물</b>을 만듭니다.
+      게다가 <b>장기성</b>이 있어 오늘 지은 구조물이 수십 년간 영향을 줍니다.
+      그래서 오늘날의 건설 기술은 “<b>얼마나 튼튼한가</b>”와 함께
+      “<b>얼마나 오래, 적은 부담으로 쓸 수 있는가</b>”를 함께 묻습니다.
+    </p>
+    <div class="sus-grid">
+      <div class="sus-card"><span class="se">♻️</span><b>자원 순환</b><span>철거한 콘크리트를 부숴 <b>순환 골재</b>로 다시 쓰고, 철근은 녹여 재활용한다. 건설 폐기물을 줄인다.</span></div>
+      <div class="sus-card"><span class="se">🌉</span><b>구조물 장수명화</b><span>처음부터 <b>오래 쓰도록</b> 설계하고 정기 점검·보수한다. 100년 쓰는 다리가 30년 쓰고 부수는 다리보다 훨씬 친환경적이다.</span></div>
+      <div class="sus-card"><span class="se">🦌</span><b>생태 통로</b><span>도로·철도가 서식지를 끊지 않도록 <b>동물이 건널 다리·터널</b>을 만든다.</span></div>
+      <div class="sus-card"><span class="se">💧</span><b>물 순환 고려</b><span>빗물이 땅으로 스며들도록 <b>투수성 포장</b>을 쓰고, 빗물을 모아 재이용한다.</span></div>
+      <div class="sus-card"><span class="se">🏗️</span><b>친환경 재료</b><span>시멘트를 만들 때 이산화 탄소가 많이 나오므로, <b>탄소를 적게 배출하는 콘크리트</b>를 연구한다.</span></div>
+      <div class="sus-card"><span class="se">🛰️</span><b>스마트 유지관리</b><span>다리·터널에 <b>센서</b>를 붙여 균열과 진동을 실시간 감시한다. 큰 사고를 미리 막는다.</span></div>
+    </div>
+    <div class="sus-final">
+      🎯 <b>세 차시를 관통하는 답</b><br>
+      1차시에서 건설 기술의 <b>특징</b>(특히 일회성·장기성)을 배웠습니다.
+      2차시에서 <b>하중</b>을 견디는 구조를, 3차시에서 <b>힘의 원리와 내진 설계</b>를 배웠습니다.<br>
+      이 모든 것이 하나로 모이는 질문이 바로 —
+      “<b>안전하면서도 지구에 부담을 덜 주는 구조물을 어떻게 만들 것인가?</b>”입니다.
+      좋은 구조 설계는 <b>필요한 만큼만 튼튼하게</b> 만들어 재료 낭비를 줄이는 일이기도 합니다.
+    </div>
+  </div>
+
+  <div class="step-title"><span class="step-num">✓</span> 스스로 확인하기 <span class="step-time">3분 · 🧠 메타인지</span></div>
   <div class="self-check">
     <h3>✅ 나는 이제 …</h3>
     <label class="sc-item"><input type="checkbox" class="sc"><span>토목 구조물의 종류를 5가지 이상 말할 수 있다</span></label>
@@ -319,7 +606,12 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
     <label class="sc-item"><input type="checkbox" class="sc"><span>현수교와 사장교의 케이블 연결 방식 차이를 설명할 수 있다</span></label>
     <label class="sc-item"><input type="checkbox" class="sc"><span>아치교가 하중을 어떻게 분산하는지 설명할 수 있다</span></label>
     <label class="sc-item"><input type="checkbox" class="sc"><span>내진·면진·제진의 차이를 한 문장씩으로 정리할 수 있다</span></label>
-    <div class="sc-progress" id="scProgress">체크: 0 / 5</div>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>전단력</b>과 <b>휨</b>이 무엇인지 그림으로 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>보가 휨을 받을 때 <b>아래쪽에 철근을 넣는 이유</b>를 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>삼각형(트러스)</b>이 사각형보다 안정적인 이유를 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>교량의 <b>상부 구조</b>와 <b>하부 구조</b>를 구분하고 교대·교각을 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>지속 가능한 건설</b>의 방법을 3가지 이상 말할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress">체크: 0 / 10</div>
   </div>
 
   <div class="next-link"><a href="activity_quiz.html">다음 → 4차시: 형성평가 (15문제)</a></div>
@@ -550,13 +842,77 @@ mqzItems.forEach(item => {
   });
 });
 
+/* ===== 트러스 실험 (사각형은 찌그러지고 삼각형은 버팀) ===== */
+(function(){
+  const sq = document.getElementById('sqShape');
+  const tri = document.getElementById('triShape');
+  const push = document.getElementById('trussPush');
+  const reset = document.getElementById('trussReset');
+  if (!sq || !tri) return;
+  [sq, tri].forEach(g => { g.style.transition = 'transform .7s ease-out'; g.style.transformOrigin = '100px 105px'; });
+  push.onclick = () => {
+    // 사각형만 평행사변형으로 기울어진다 (삼각형은 형태가 유지됨)
+    sq.style.transform = 'skewX(-20deg)';
+    tri.style.transform = 'none';
+    push.textContent = '💥 힘을 가하는 중…';
+    setTimeout(() => push.textContent = '💥 옆에서 힘 가해 보기', 800);
+  };
+  reset.onclick = () => { sq.style.transform = 'none'; tri.style.transform = 'none'; };
+})();
+
+/* ===== 교량의 구성 ===== */
+const BPARTS = [
+  { key:'deck', name:'상판(바닥판)', group:'상부 구조', color:'#94a3b8',
+    body:'차와 사람이 <b>직접 지나다니는 바닥</b>입니다. 활하중을 가장 먼저 받습니다.',
+    role:'받은 하중을 아래의 <b>주형</b>으로 전달합니다.' },
+  { key:'girder', name:'주형(거더)', group:'상부 구조', color:'#f97316',
+    body:'상판 아래에서 다리를 <b>세로로 받치는 큰 보</b>입니다.',
+    role:'상판의 하중을 모아 <b>교각과 교대</b>로 전달합니다. 길수록 <b>휨</b>을 크게 받습니다.' },
+  { key:'abutment', name:'교대', group:'하부 구조', color:'#d6d3d1',
+    body:'다리의 <b>양쪽 끝</b>에서 다리와 땅(도로)을 이어 주는 구조물입니다.',
+    role:'다리 끝단의 하중을 지반에 전달하고, 뒤쪽 흙이 무너지지 않게 <b>막아 주는</b> 역할도 합니다.' },
+  { key:'pier', name:'교각', group:'하부 구조', color:'#7dd3fc',
+    body:'다리 <b>가운데</b>에서 상부 구조를 떠받치는 기둥입니다.',
+    role:'상부의 하중을 <b>압축력</b>으로 받아 기초로 전달합니다. 교각이 많을수록 한 경간이 짧아져 유리합니다.' },
+  { key:'foundation', name:'기초', group:'하부 구조', color:'#c4b5fd',
+    body:'교각·교대의 <b>맨 아래</b>에서 지반과 만나는 부분입니다. 물속이나 땅속에 있어 보이지 않습니다.',
+    role:'모든 하중을 최종적으로 <b>지반에 넓게 분산</b>시킵니다. 2차시에서 배운 건물의 기초와 같은 역할입니다.' },
+];
+(function(){
+  const btns = document.getElementById('bpartsBtns');
+  const detail = document.getElementById('bpartDetail');
+  if (!btns) return;
+  BPARTS.forEach((p, i) => {
+    const b = document.createElement('button');
+    b.className = 'bpart-btn' + (i === 0 ? ' on' : '');
+    b.dataset.bp = p.key;
+    b.innerHTML = '<span style="color:' + p.color + '">■</span> ' + p.name;
+    b.onclick = () => selectBPart(p.key);
+    btns.appendChild(b);
+  });
+  document.querySelectorAll('.bpart-hit').forEach(g =>
+    g.addEventListener('click', () => selectBPart(g.dataset.bp)));
+  window.selectBPart = function(key) {
+    const p = BPARTS.find(x => x.key === key);
+    if (!p) return;
+    document.querySelectorAll('.bpart-btn').forEach(b => b.classList.toggle('on', b.dataset.bp === key));
+    document.querySelectorAll('.bpart-hit').forEach(g => g.classList.toggle('on', g.dataset.bp === key));
+    detail.innerHTML =
+      '<h4>' + p.name + ' <span style="font-size:.78rem;color:#94a3b8">— ' + p.group + '</span></h4>' +
+      '<div>' + p.body + '</div>' +
+      '<div style="margin-top:8px;background:rgba(56,189,248,.08);border-left:3px solid #38bdf8;padding:8px 11px;border-radius:0 8px 8px 0;color:#bae6fd;font-size:.84rem">🔧 <b>역할</b> — ' + p.role + '</div>';
+  };
+  selectBPart('deck');
+})();
+
 /* ===== 체크리스트 ===== */
+const SC_TOTAL = document.querySelectorAll('.sc').length;
 document.querySelectorAll('.sc').forEach(c => c.addEventListener('change', () => {
   const n = document.querySelectorAll('.sc:checked').length;
   const p = document.getElementById('scProgress');
-  p.textContent = '체크: ' + n + ' / 5';
-  if (n === 5) p.textContent += ' — 🌟 완벽! 형성평가 도전!';
-  else if (n >= 3) p.textContent += ' — 좋아요! 나머지도 복습하세요.';
+  p.textContent = '체크: ' + n + ' / ' + SC_TOTAL;
+  if (n === SC_TOTAL) p.textContent += ' — 🌟 완벽! 형성평가 도전!';
+  else if (n >= Math.ceil(SC_TOTAL * .6)) p.textContent += ' — 좋아요! 나머지도 복습하세요.';
 }));
 </script>
 </body>
