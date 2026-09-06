@@ -243,6 +243,47 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
 .sus-box .sus-q { margin-top:14px; background:rgba(15,23,42,.55); border-radius:10px; padding:13px 15px; font-size:.88rem; line-height:1.7; }
 .sus-box .sus-q b { color:#fbbf24; }
 
+/* ===== 탐구·발표 입력 ===== */
+.inquiry {
+  margin-top:16px; background:rgba(167,139,250,.08); border:1px dashed rgba(167,139,250,.5);
+  border-radius:12px; padding:14px 16px;
+}
+.inquiry h4 { color:#c4b5fd; font-size:.95rem; margin-bottom:8px; }
+.inquiry p { font-size:.85rem; color:#cbd5e1; line-height:1.6; margin-bottom:8px; }
+.inquiry textarea {
+  width:100%; min-height:64px; background:#0f172a; color:#e2e8f0; border:1px solid #64748b;
+  border-radius:8px; padding:9px 11px; font-family:inherit; font-size:.86rem; resize:vertical;
+}
+.inquiry .iq-row { display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+.inquiry .iq-saved { font-size:.78rem; color:#a78bfa; }
+
+/* ===== 시대 구분 기준 ===== */
+.era-basis { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-bottom:16px; }
+.era-card { background:rgba(15,23,42,.6); border:1px solid #475569; border-radius:12px; padding:13px; font-size:.8rem; line-height:1.55; }
+.era-card h5 { font-size:.92rem; margin-bottom:5px; }
+.era-card .basis { color:#fbbf24; font-weight:700; display:block; margin-bottom:4px; }
+.era-card .eff { color:#94a3b8; }
+
+/* ===== 전통 건설 기술 ===== */
+.trad-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media(max-width:700px){ .trad-grid{grid-template-columns:1fr} }
+.trad-card { background:rgba(15,23,42,.6); border:2px solid #475569; border-radius:14px; padding:16px; }
+.trad-card h4 { color:#fbbf24; font-size:1.05rem; margin-bottom:8px; }
+.trad-card p { font-size:.86rem; line-height:1.7; color:#cbd5e1; }
+.trad-parts { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+.trad-part {
+  background:#1e293b; border:1px solid #64748b; border-radius:999px; padding:5px 12px;
+  font-size:.8rem; cursor:pointer; font-family:inherit; color:#e2e8f0; transition:.15s;
+}
+.trad-part:hover { border-color:#fbbf24; }
+.trad-part.on { background:rgba(251,191,36,.15); border-color:#fbbf24; color:#fbbf24; }
+.trad-detail { margin-top:10px; background:rgba(56,189,248,.08); border-left:3px solid #38bdf8; border-radius:0 8px 8px 0; padding:9px 12px; font-size:.83rem; line-height:1.65; color:#bae6fd; min-height:52px; }
+
+/* ===== 정리 질문 ===== */
+.wrap-q { background:rgba(251,191,36,.08); border:1px solid rgba(251,191,36,.4); border-radius:14px; padding:18px 20px; margin-bottom:16px; }
+.wrap-q h3 { color:#fbbf24; font-size:1rem; margin-bottom:8px; }
+.wrap-q p { font-size:.9rem; line-height:1.75; }
+
 /* ===== 스스로 확인 ===== */
 .self-check { background:rgba(74,222,128,.07); border:1px solid rgba(74,222,128,.35); border-radius:14px; padding:20px; }
 .self-check h3 { color:#86efac; font-size:1rem; margin-bottom:12px; }
@@ -283,9 +324,10 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
     <span><b>4</b> 6가지 특징 5분</span>
     <span><b>5</b> 적용 퀴즈 5분</span>
     <span><b>6</b> 재료 발달 5분</span>
-    <span><b>7</b> 타임라인 7분</span>
+    <span><b>7</b> 시대 기준·타임라인 7분</span>
+    <span><b>7-1</b> 전통 건설 4분</span>
     <span><b>8</b> 공사 과정 4분</span>
-    <span><b>9</b> 진로·정리 4분</span>
+    <span><b>9</b> 지속가능·정리 4분</span>
   </div>
 
   <!-- STEP 0 -->
@@ -324,6 +366,12 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
       🤔 <b>생각해 봅시다.</b> 만약 이 중 <b>하나라도 없다면</b> 오늘 하루는 어떻게 달라졌을까요?<br>
       건설 기술은 눈에 잘 띄지 않지만, 없으면 <b>생활 자체가 불가능</b>해지는 기술입니다.
       그래서 건설 기술을 <b>“모든 산업의 기초”</b>라고 부릅니다.
+    </div>
+    <div class="inquiry">
+      <h4>🔎 조사·발표 — 요즘 우리 동네에서 새로 짓고 있는 구조물은?</h4>
+      <p>등굣길이나 집 근처에서 <b>공사 중인 곳</b>을 떠올려 적어 보세요. 무엇을 짓는 것 같나요? 건축일까요, 토목일까요? (발표 후 온라인 게시판에 공유)</p>
+      <textarea id="iqAround" placeholder="예) 학교 앞 사거리에 지하차도 공사 중 — 토목 기술 / 아파트 단지 옆에 주민센터 신축 — 건축 기술"></textarea>
+      <div class="iq-row"><button class="btn-sub" onclick="saveIq('iqAround')">💾 저장</button><span class="iq-saved" id="iqAround-saved"></span></div>
     </div>
   </div>
 
@@ -444,7 +492,16 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
 
   <!-- STEP 7 타임라인 -->
   <div class="step-title"><span class="step-num">7</span> 건설 기술 발달사 — 타임라인 게임 <span class="step-time">7분 · 활동</span></div>
-  <p class="step-desc">구조물 카드를 <b>알맞은 시대로 드래그</b>하세요. 모두 배치한 뒤 <b>정답 확인</b>을 누르면 채점됩니다. <b>Enter</b> 키로도 확인할 수 있어요.</p>
+  <p class="step-desc">
+    🤔 <b>생각해 볼 질문</b> — 고대·중세·근대·현대를 나누는 <b>기준</b>은 무엇일까요? 그 기준이 건설 기술의 발달에 어떤 영향을 끼쳤을까요?
+    아래 표에서 먼저 확인하고, 구조물 카드를 <b>알맞은 시대로 드래그</b>하세요. (<b>Enter</b>로 채점)
+  </p>
+  <div class="era-basis">
+    <div class="era-card"><h5 style="color:#fbbf24">🏺 고대</h5><span class="basis">기준 — 문명의 탄생, 사람과 동물의 힘</span><span class="eff">돌·흙·나무 등 자연 재료를 수많은 인력으로 쌓아 올림. 왕과 신을 위한 거대한 구조물이 중심.</span></div>
+    <div class="era-card"><h5 style="color:#a78bfa">⛪ 중세</h5><span class="basis">기준 — 종교와 봉건 사회의 영향</span><span class="eff">성당·성곽처럼 종교·정치 권위를 나타내는 구조물. 아치·돔·버팀벽으로 높고 넓은 실내 공간을 만듦.</span></div>
+    <div class="era-card"><h5 style="color:#38bdf8">🏭 근대</h5><span class="basis">기준 — 산업 혁명, 기계와 새 재료</span><span class="eff">철·유리·시멘트를 대량 생산. 철골·철근 콘크리트가 등장해 규모와 높이가 비약적으로 커짐.</span></div>
+    <div class="era-card"><h5 style="color:#4ade80">🌆 현대</h5><span class="basis">기준 — 정보화·환경 문제의 등장</span><span class="eff">컴퓨터 설계와 자동화로 초고층·초장대 구조물이 가능해졌고, 동시에 친환경·지속 가능성이 새 과제가 됨.</span></div>
+  </div>
   <div class="tl-game">
     <div class="tl-pool" id="tlPool"></div>
     <div class="tl-eras">
@@ -474,6 +531,40 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
       <button class="btn-sub" id="tlReset">다시 하기</button>
     </div>
     <div class="tl-result" id="tlResult"></div>
+  </div>
+
+  <!-- STEP 7-1 전통 건설 기술 -->
+  <div class="step-title"><span class="step-num">7</span>-1 우리나라 전통 건설 기술의 우수성 <span class="step-time">4분 · 심화</span></div>
+  <p class="step-desc">
+    타임라인의 <b>중세</b>에 우리 조상들은 세계적으로 뛰어난 구조물을 남겼습니다. 구성 요소를 <b>클릭</b>해 어떤 과학 원리가 숨어 있는지 확인하세요.
+    (교과서 245쪽 포트폴리오 활동과 연계)
+  </p>
+  <div class="panel">
+    <div class="trad-grid">
+      <div class="trad-card" data-trad="hanok">
+        <h4>🏯 한옥 — 못 없이 짜 맞춘 가구식 구조</h4>
+        <p>나무 기둥과 보를 <b>결구(짜 맞춤)</b>로 조립합니다. 지진이 나면 이음 부분이 조금씩 움직이며 충격을 흡수하고, 자연 재료라 다시 쓸 수 있습니다.</p>
+        <div class="trad-parts">
+          <button class="trad-part" data-k="pillar">기둥·보</button>
+          <button class="trad-part" data-k="gongpo">공포</button>
+          <button class="trad-part" data-k="cheoma">처마</button>
+          <button class="trad-part" data-k="ondol">온돌</button>
+          <button class="trad-part" data-k="maru">마루</button>
+        </div>
+        <div class="trad-detail" id="trad-hanok">요소를 클릭해 보세요.</div>
+      </div>
+      <div class="trad-card" data-trad="ice">
+        <h4>🧊 석빙고 — 전기 없는 냉장고</h4>
+        <p>겨울에 얼음을 넣어 두면 <b>한여름까지</b> 보관되었습니다. 돌과 흙만으로 만든 과학적인 저장 구조물입니다. (경주·안동 석빙고 등)</p>
+        <div class="trad-parts">
+          <button class="trad-part" data-k="arch">화강암 아치 천장</button>
+          <button class="trad-part" data-k="vent">환기구</button>
+          <button class="trad-part" data-k="drain">배수로</button>
+          <button class="trad-part" data-k="soil">봉토(흙 덮개)</button>
+        </div>
+        <div class="trad-detail" id="trad-ice">요소를 클릭해 보세요.</div>
+      </div>
+    </div>
   </div>
 
   <!-- STEP 8 공사 과정 -->
@@ -518,6 +609,13 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
   <!-- STEP 10 정리 -->
   <div class="step-title"><span class="step-num">✓</span> 스스로 확인하기 <span class="step-time">3분 · 🧠 메타인지</span></div>
   <p class="step-desc">오늘 배운 내용을 스스로 점검해 보세요. 설명할 수 <b>없다면</b> 해당 단계로 돌아가 다시 확인!</p>
+  <div class="wrap-q">
+    <h3>❓ 정리 질문 — 짝과 이야기해 봅시다</h3>
+    <p>건설 기술이 <b>우리에게 미치는 영향</b>은 무엇이며, 앞으로 <b>어떤 방향으로 발전</b>해야 할까요?<br>
+       <span style="color:#94a3b8;font-size:.85rem">힌트 : 6가지 특징 중 <b>공공성·장기성</b>과, 9단계에서 본 <b>지속 가능성</b>을 연결해 보세요.</span></p>
+    <textarea id="iqWrap" placeholder="내 생각을 한두 문장으로 적어 보세요." style="width:100%;min-height:58px;background:#0f172a;color:#e2e8f0;border:1px solid #64748b;border-radius:8px;padding:9px 11px;font-family:inherit;font-size:.86rem;resize:vertical;margin-top:6px"></textarea>
+    <div class="iq-row" style="display:flex;gap:8px;align-items:center;margin-top:8px"><button class="btn-sub" onclick="saveIq('iqWrap')">💾 저장</button><span class="iq-saved" id="iqWrap-saved" style="font-size:.78rem;color:#a78bfa"></span></div>
+  </div>
   <div class="self-check">
     <h3>✅ 나는 이제 …</h3>
     <label class="sc-item"><input type="checkbox" class="sc"><span>건설 기술의 개념을 <b>내 말로</b> 설명할 수 있다</span></label>
@@ -525,9 +623,11 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
     <label class="sc-item"><input type="checkbox" class="sc"><span>건설 기술의 6가지 특징 중 <b>4가지 이상</b>을 떠올릴 수 있다</span></label>
     <label class="sc-item"><input type="checkbox" class="sc"><span>돌 → 벽돌 → 철 → 철근 콘크리트로 이어지는 <b>재료의 발달</b>을 설명할 수 있다</span></label>
     <label class="sc-item"><input type="checkbox" class="sc"><span>피라미드 → 성당 → 에펠탑 → 부르즈 할리파를 시대순으로 나열할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>시대를 나누는 <b>기준</b>(예: 산업 혁명)이 건설 기술에 미친 영향을 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>한옥</b>이나 <b>석빙고</b>에 숨은 과학 원리를 한 가지 설명할 수 있다</span></label>
     <label class="sc-item"><input type="checkbox" class="sc"><span>건설 공사의 <b>4단계</b>를 순서대로 말할 수 있다</span></label>
     <label class="sc-item"><input type="checkbox" class="sc"><span>건설 기술에 <b>지속 가능성</b>이 왜 중요한지 한 문장으로 말할 수 있다</span></label>
-    <div class="sc-progress" id="scProgress">체크: 0 / 7</div>
+    <div class="sc-progress" id="scProgress">체크: 0 / 9</div>
   </div>
 
   <div class="next-link"><a href="sim_building.html">다음 → 2차시: 건축 구조물과 힘</a></div>
@@ -796,6 +896,43 @@ function showProc(i) {
     '<div class="who">' + p.who + '</div>';
 }
 showProc(0);
+
+/* ===== 전통 건설 기술 ===== */
+const TRAD = {
+  hanok: {
+    pillar:'<b>기둥과 보</b> — 못을 쓰지 않고 홈을 파서 <b>짜 맞춥니다(결구)</b>. 지진이 나면 이음새가 살짝 움직이며 충격을 흡수해 쉽게 무너지지 않습니다. 2차시에서 배울 <b>가구식 구조</b>의 대표 사례입니다.',
+    gongpo:'<b>공포</b> — 기둥 위에서 지붕의 무거운 무게를 여러 갈래로 나누어 기둥에 전달하는 받침 구조입니다. 힘을 <b>분산</b>시키는 원리로, 궁궐·사찰에서 볼 수 있습니다.',
+    cheoma:'<b>처마</b> — 지붕을 벽보다 길게 내밀어 <b>여름 햇빛은 막고 겨울 햇빛은 들이는</b> 각도로 설계했습니다. 오늘날 친환경 건축의 <b>외부 차양</b>과 같은 원리입니다.',
+    ondol:'<b>온돌</b> — 아궁이의 열이 방바닥 아래 <b>고래(통로)</b>를 지나며 구들장을 데우는 바닥 난방입니다. 열이 오래 남는 돌의 성질을 이용한 세계에서 드문 난방 방식입니다.',
+    maru:'<b>마루</b> — 바닥을 땅에서 띄워 <b>습기와 열기</b>를 피하고 바람이 통하게 했습니다. 온돌(겨울)과 마루(여름)를 한 집에 함께 둔 것은 우리 기후에 맞춘 <b>지역성</b>의 사례입니다.'
+  },
+  ice: {
+    arch:'<b>화강암 아치 천장</b> — 무거운 흙을 덮어도 무너지지 않도록 돌을 <b>아치</b> 모양으로 쌓았습니다. 아치는 위의 무게를 <b>압축력</b>으로 바꿔 양옆으로 흘려보냅니다. (3차시 아치교와 같은 원리)',
+    vent:'<b>환기구</b> — 천장에 구멍을 내어 안의 <b>더운 공기가 위로 빠져나가게</b> 했습니다. 더운 공기는 가볍다는 원리를 이용했습니다.',
+    drain:'<b>배수로</b> — 바닥을 경사지게 만들고 물길을 내어 <b>녹은 물이 바로 빠지도록</b> 했습니다. 물이 고이면 얼음이 더 빨리 녹기 때문입니다.',
+    soil:'<b>봉토</b> — 돌 천장 위에 두꺼운 흙을 덮고 잔디를 심어 <b>바깥 열을 차단</b>했습니다. 오늘날의 <b>단열재</b>와 같은 역할입니다.'
+  }
+};
+document.querySelectorAll('.trad-card').forEach(card => {
+  const kind = card.dataset.trad;
+  card.querySelectorAll('.trad-part').forEach(btn => {
+    btn.onclick = () => {
+      card.querySelectorAll('.trad-part').forEach(b => b.classList.toggle('on', b === btn));
+      document.getElementById('trad-' + kind).innerHTML = TRAD[kind][btn.dataset.k];
+    };
+  });
+});
+
+/* ===== 탐구 입력 저장 (기기 안에만 저장) ===== */
+function saveIq(id) {
+  const el = document.getElementById(id);
+  try { localStorage.setItem('construction-' + id, el.value); } catch (e) {}
+  const s = document.getElementById(id + '-saved');
+  if (s) { s.textContent = '✔ 저장됨 ' + new Date().toLocaleTimeString('ko-KR', {hour:'2-digit',minute:'2-digit'}); }
+}
+['iqAround','iqWrap'].forEach(id => {
+  try { const v = localStorage.getItem('construction-' + id); if (v) document.getElementById(id).value = v; } catch (e) {}
+});
 
 /* ===== 체크리스트 진행률 ===== */
 const SC_TOTAL = document.querySelectorAll('.sc').length;

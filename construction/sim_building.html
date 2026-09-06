@@ -189,6 +189,14 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
 .infer-fb { font-size:.83rem; margin-top:9px; min-height:1.2em; line-height:1.65; }
 .infer-fb.ok { color:#4ade80; } .infer-fb.no { color:#f87171; }
 
+/* ===== 추가 : 탐구 입력 ===== */
+.inquiry { margin-top:16px; background:rgba(167,139,250,.08); border:1px dashed rgba(167,139,250,.5); border-radius:12px; padding:14px 16px; }
+.inquiry h4 { color:#c4b5fd; font-size:.95rem; margin-bottom:8px; }
+.inquiry p { font-size:.85rem; color:#cbd5e1; line-height:1.6; margin-bottom:8px; }
+.inquiry textarea { width:100%; min-height:64px; background:#0f172a; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:9px 11px; font-family:inherit; font-size:.86rem; resize:vertical; }
+.inquiry .iq-row { display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+.inquiry .iq-saved { font-size:.78rem; color:#a78bfa; }
+
 /* ===== 추가 : 친환경 건축 ===== */
 .green-box {
   background:linear-gradient(135deg,rgba(74,222,128,.1),rgba(56,189,248,.08));
@@ -572,6 +580,13 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
   </div>
 
   <!-- STEP 3 : 구조별 분류 게임 -->
+  <div class="inquiry">
+    <h4>🔎 조사·발표 — 우리 지역을 대표하는 건축물은? (교과서 186쪽 생각 키우기)</h4>
+    <p>우리 지역(시·군·구)에서 <b>대표적인 건축 구조물</b>을 하나 고르고, ① 어떤 <b>용도</b>로 쓰이는지 ② 어떤 <b>구조</b>로 지어졌을 것 같은지 근거와 함께 적어 보세요. 모둠별로 발표한 뒤 온라인 게시판에 공유합니다.</p>
+    <textarea id="iqLocal" placeholder="예) ○○시청 — 공공용 / 5층 건물이고 벽·바닥이 콘크리트로 이어져 있어 일체식(철근 콘크리트) 구조로 추정"></textarea>
+    <div class="iq-row"><button class="btn-sub" onclick="saveIq('iqLocal')">💾 저장</button><span class="iq-saved" id="iqLocal-saved"></span></div>
+  </div>
+
   <div class="step-title"><span class="step-num">6</span> 구조별 분류 게임 <span class="step-time">5분 · 활동</span></div>
   <p class="step-desc">이번엔 <b>구조 방식</b>입니다. 8가지 구조를 알맞은 유형으로 드래그하세요. 헷갈리면 1단계 탭으로 돌아가 복습!</p>
   <div class="dnd-game" id="structGame">
@@ -917,6 +932,15 @@ inferItems.forEach(item => {
     opts.appendChild(b);
   });
 });
+
+/* ===== 탐구 입력 저장 ===== */
+function saveIq(id) {
+  const el = document.getElementById(id);
+  try { localStorage.setItem('construction-' + id, el.value); } catch (e) {}
+  const s = document.getElementById(id + '-saved');
+  if (s) s.textContent = '✔ 저장됨 ' + new Date().toLocaleTimeString('ko-KR', {hour:'2-digit',minute:'2-digit'});
+}
+['iqLocal'].forEach(id => { try { const v = localStorage.getItem('construction-' + id); if (v) document.getElementById(id).value = v; } catch (e) {} });
 
 /* ===== 체크리스트 ===== */
 const SC_TOTAL = document.querySelectorAll('.sc').length;
