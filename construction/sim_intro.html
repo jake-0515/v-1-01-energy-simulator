@@ -666,6 +666,8 @@ function sortRender() {
       : (sortOk >= 8 ? '잘했어요! 틀린 것만 다시 확인해 보세요.' : '2단계 구분 요령을 다시 읽고 도전해 보세요.');
     $('sortFb').innerHTML = '<span style="color:#fbbf24">최종 ' + sortOk + ' / ' + sortOrder.length + ' — ' + msg + '</span>';
     $('sortFb').className = 'sort-fb';
+    // 완료 화면에서도 진행 표시를 마지막 답까지 반영 (이전에는 9/10 에서 멈추는 버그)
+    $('sortProg').textContent = '풀이 완료 ' + sortOrder.length + ' / ' + sortOrder.length + ' 문제  ·  정답 ' + sortOk + '개';
     return;
   }
   const it = sortOrder[sortIdx];
@@ -673,7 +675,7 @@ function sortRender() {
   $('sortName').textContent = it.name;
   $('sortHint').textContent = '사람이 그 안에서 생활하나요? 아니면 여러 사람이 지나가거나 이용하는 시설인가요?';
   $('btnArch').disabled = false; $('btnCivil').disabled = false;
-  $('sortProg').textContent = (sortIdx) + ' / ' + sortOrder.length + ' 문제  ·  정답 ' + sortOk + '개';
+  $('sortProg').textContent = '풀이 ' + sortIdx + ' / ' + sortOrder.length + ' 문제  ·  정답 ' + sortOk + '개';
 }
 function sortAnswer(pick) {
   if (sortIdx >= sortOrder.length) return;
