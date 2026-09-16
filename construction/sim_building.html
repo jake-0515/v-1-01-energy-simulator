@@ -197,6 +197,19 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
 .inquiry .iq-row { display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
 .inquiry .iq-saved { font-size:.78rem; color:#a78bfa; }
 
+/* ===== 추가 : 영상으로 보기 ===== */
+.vid-row { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+.vid-btn {
+  display:flex; align-items:center; gap:10px; flex:1 1 240px;
+  background:linear-gradient(135deg,#7f1d1d,#991b1b); border:2px solid #f87171; border-radius:12px;
+  padding:11px 14px; color:#fee2e2; text-decoration:none; transition:.18s;
+}
+.vid-btn:hover { transform:translateY(-2px); box-shadow:0 6px 16px rgba(248,113,113,.35); }
+.vid-btn .vi { font-size:1.5rem; flex-shrink:0; }
+.vid-btn b { display:block; font-size:.88rem; color:#fff; line-height:1.35; }
+.vid-btn small { display:block; font-size:.74rem; color:#fecaca; margin-top:2px; }
+.vid-note { font-size:.76rem; color:#94a3b8; margin-top:8px; }
+
 /* ===== 추가 : 친환경 건축 ===== */
 .green-box {
   background:linear-gradient(135deg,rgba(74,222,128,.1),rgba(56,189,248,.08));
@@ -398,6 +411,11 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
   <!-- STEP 3 : 구조 방식 탐색 -->
   <div class="step-title"><span class="step-num">3</span> 구조에 따른 건축 방식 탐색 <span class="step-time">8분 · 개념</span></div>
   <p class="step-desc">건축 구조물은 바닥·벽체·지붕·기둥같이 <b>공간을 조성하는 구조</b>에 따라 4가지로 분류됩니다. 탭을 눌러 각각의 원리를 확인하세요.</p>
+  <div class="vid-row" style="margin:-4px 0 16px">
+    <a class="vid-btn" href="https://www.youtube.com/watch?v=lR0Q_1wFW4M" target="_blank" rel="noopener">
+      <span class="vi">▶</span><span><b>영상으로 먼저 보기 — 건축 구조물의 종류</b><small>기가팍팍 · 8분 37초 · 네 가지 구조를 한 번에 개관</small></span>
+    </a>
+  </div>
   <div class="struct-explorer">
     <div class="tab-row">
       <button class="tab-btn active" data-tab="t1">🪵 가구식</button>
@@ -549,6 +567,18 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
     <div class="hook">
       🔑 <b>한 줄 요약</b> — 가구식은 <b>조립</b>, 일체식은 <b>한 덩어리</b>, 조적식은 <b>쌓기</b>, 특수식은 <b>기둥 없는 넓은 공간</b>.
     </div>
+    <div class="vid-row">
+      <a class="vid-btn" href="https://www.youtube.com/watch?v=lR0Q_1wFW4M" target="_blank" rel="noopener">
+        <span class="vi">▶</span><span><b>표 전체 — 건축 구조물의 종류</b><small>기가팍팍 · 8분 37초 · 중2 기술가정 수업 영상</small></span>
+      </a>
+      <a class="vid-btn" href="https://www.youtube.com/watch?v=9SeVpLghs6o" target="_blank" rel="noopener">
+        <span class="vi">▶</span><span><b>일체식 — 철근콘크리트는 어떻게 발명됐을까?</b><small>지식해적단 · 16분 24초 · 앞 7분 권장</small></span>
+      </a>
+      <a class="vid-btn" href="https://www.youtube.com/watch?v=Z55Ug-VKF8I" target="_blank" rel="noopener">
+        <span class="vi">▶</span><span><b>가구식 — 한옥에 숨겨진 과학적 원리 3가지</b><small>EBS 컬렉션 사이언스 · 5분 36초</small></span>
+      </a>
+    </div>
+    <div class="vid-note">※ 영상은 새 탭에서 열립니다. 학교 네트워크에서 유튜브가 막혀 있으면 교사 계정으로 미리 내려받아 두세요.</div>
   </div>
 
   <div class="step-title"><span class="step-num">5</span> 용도별 분류 게임 <span class="step-time">5분 · 활동</span></div>
