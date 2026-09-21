@@ -873,7 +873,7 @@ const NS = 'http://www.w3.org/2000/svg';
 let bridgeType = 'suspension';
 
 const BRIDGE_INFO = {
-  suspension: '<b>현수교</b> — 주탑 사이에 <b>주케이블</b>을 연결하고, 상부 구조(상판)에 수직 케이블(행어)을 매달아 연결한 교량. 케이블은 <b style="color:#93c5fd">인장력</b>을, 주탑은 <b style="color:#fca5a5">압축력</b>을 받아요. 예) 금문교, 광안대교, 영종대교',
+  suspension: '<b>현수교</b> — 주탑 사이에 <b>주케이블</b>을 연결하고, 상부 구조(상판)에 수직 케이블(행어)을 매달아 연결한 교량. 주케이블 양끝은 <b>앵커리지</b>에 고정돼요. 케이블은 <b style="color:#93c5fd">인장력</b>을, 주탑은 <b style="color:#fca5a5">압축력</b>을 받아요. 예) 금문교, 광안대교, 영종대교',
   cablestayed: '<b>사장교</b> — 교량 양쪽에 <b>주탑</b>을 세우고, 상부 구조의 여러 지점에 케이블을 <b>직접 연결</b>한 교량. 현수교와 달리 주케이블 없이 주탑에서 바로 상판으로! 예) 서해대교, 인천대교, 목포대교',
   truss: '<b>트러스교</b> — 교각 또는 교대 위에 <b>삼각형 모양</b>의 철제 트러스를 얹은 교량. 삼각형은 힘을 골고루 분산시키는 가장 안정적인 도형! 부재마다 압축·인장을 나눠 받아요. 예) 성산대교, 한강철교',
   arch: '<b>아치교</b> — 보를 <b>원 모양 곡선(아치)</b>으로 만들어 교각 사이가 긴 교량. 하중이 아치 곡선을 타고 양끝 지반으로 흘러가며 아치 전체가 <b style="color:#fca5a5">압축력</b>을 받아요. 예) 한강대교, 서강대교',
@@ -896,29 +896,71 @@ function drawTruck(x, y, load) {
   t.textContent = '🚚'; g.appendChild(t);
   return g;
 }
-/* 힘 화살표: comp = 마주보는 화살표(압축), tens = 바깥 화살표(인장) */
-function forceArrow(x1,y1,x2,y2,type,w) {
+/* 부재 이름표 (어두운 테두리로 배경 위에서 잘 보이게) */
+function label(x, y, text, anchor = 'middle') {
+  const t = el('text', { x, y, 'font-size':11, fill:'#e2e8f0', 'text-anchor':anchor, stroke:'#0f172a', 'stroke-width':3, 'paint-order':'stroke', 'font-weight':'600' });
+  t.textContent = text;
+  return t;
+}
+
+/* ---------- 곡선 도우미 ---------- */
+/* 2차 베지어 곡선 위의 점 (t: 0~1) */
+function quadPt(p0, p1, p2, t) {
+  const u = 1 - t;
+  return [u*u*p0[0] + 2*u*t*p1[0] + t*t*p2[0], u*u*p0[1] + 2*u*t*p1[1] + t*t*p2[1]];
+}
+/* 곡선의 t0~t1 구간을 점 목록으로 */
+function quadPts(p0, p1, p2, t0, t1, n = 24) {
+  const pts = [];
+  for (let i = 0; i <= n; i++) pts.push(quadPt(p0, p1, p2, t0 + (t1 - t0) * i / n));
+  return pts;
+}
+/* 직선의 f0~f1 구간을 점 목록으로 */
+function linePts(x1, y1, x2, y2, f0 = 0, f1 = 1) {
+  return [[x1 + (x2-x1)*f0, y1 + (y2-y1)*f0], [x1 + (x2-x1)*f1, y1 + (y2-y1)*f1]];
+}
+/* 점 목록 위에서 길이 비율 f(0~1) 위치와 접선 방향 */
+function alongPts(pts, f) {
+  const L = [0];
+  for (let i = 1; i < pts.length; i++) L.push(L[i-1] + Math.hypot(pts[i][0]-pts[i-1][0], pts[i][1]-pts[i-1][1]));
+  const target = L[L.length-1] * f;
+  let i = 1;
+  while (i < L.length-1 && L[i] < target) i++;
+  const k = (target - L[i-1]) / ((L[i]-L[i-1]) || 1);
+  return {
+    x: pts[i-1][0] + (pts[i][0]-pts[i-1][0])*k,
+    y: pts[i-1][1] + (pts[i][1]-pts[i-1][1])*k,
+    ang: Math.atan2(pts[i][1]-pts[i-1][1], pts[i][0]-pts[i-1][0]),
+  };
+}
+
+/* 힘 화살표 — 부재 위에 겹쳐 그린다.
+   comp = 마주보는 화살표(압축 → ←), tens = 바깥으로 향하는 화살표(인장 ← →) */
+const FORCE_COLOR = { comp:'#f87171', tens:'#60a5fa' };
+function forceArrowPts(pts, type, w) {
   const g = el('g', {});
-  const color = type === 'comp' ? '#f87171' : '#60a5fa';
-  g.appendChild(el('line', { x1,y1,x2,y2, stroke:color, 'stroke-width':w, 'stroke-linecap':'round', opacity:.9 }));
-  const ang = Math.atan2(y2-y1, x2-x1);
-  const ah = 7 + w;
-  function head(px,py,dir) {
-    const a1 = ang + (dir>0?0:Math.PI);
-    const p1x = px - ah*Math.cos(a1 - .45), p1y = py - ah*Math.sin(a1 - .45);
-    const p2x = px - ah*Math.cos(a1 + .45), p2y = py - ah*Math.sin(a1 + .45);
-    g.appendChild(el('polygon', { points:`${px},${py} ${p1x},${p1y} ${p2x},${p2y}`, fill:color }));
+  const color = FORCE_COLOR[type];
+  const d = pts.map((p, i) => (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+  // 어두운 테두리(halo)를 먼저 깔아 부재 색 위에서도 구분되게
+  g.appendChild(el('path', { d, fill:'none', stroke:'#0f172a', 'stroke-width':w+4, 'stroke-linecap':'round', 'stroke-linejoin':'round', opacity:.85 }));
+  g.appendChild(el('path', { d, fill:'none', stroke:color, 'stroke-width':w, 'stroke-linecap':'round', 'stroke-linejoin':'round' }));
+  const ah = 8 + w;
+  function head(f, dir) {  // f: 길이 비율, dir: +1 진행 방향, -1 반대 방향
+    const p = alongPts(pts, f);
+    const a = p.ang + (dir > 0 ? 0 : Math.PI);
+    const b1x = p.x - ah*Math.cos(a - .45), b1y = p.y - ah*Math.sin(a - .45);
+    const b2x = p.x - ah*Math.cos(a + .45), b2y = p.y - ah*Math.sin(a + .45);
+    g.appendChild(el('polygon', { points:`${p.x},${p.y} ${b1x},${b1y} ${b2x},${b2y}`, fill:color, stroke:'#0f172a', 'stroke-width':2.5, 'stroke-linejoin':'round', 'paint-order':'stroke' }));
   }
-  const mx=(x1+x2)/2, my=(y1+y2)/2;
-  if (type === 'comp') { // 양끝→중앙
-    head(mx - (mx-x1)*0.25, my - (my-y1)*0.25, 1);
-    head(mx + (x2-mx)*0.25, my + (y2-my)*0.25, -1);
-  } else { // 중앙→양끝
-    head(x1 + (x1-mx)*0.02, y1 + (y1-my)*0.02, -1);
-    head(x2 + (x2-mx)*0.02, y2 + (y2-my)*0.02, 1);
-  }
+  if (type === 'comp') { head(0.38, 1); head(0.62, -1); }   // 양끝 → 중앙
+  else { head(0, -1); head(1, 1); }                          // 중앙 → 양끝
   return g;
 }
+function forceArrow(x1, y1, x2, y2, type, w, f0 = 0, f1 = 1) {
+  return forceArrowPts(linePts(x1, y1, x2, y2, f0, f1), type, w);
+}
+
+/* ---------- 공통 배경·상판 ---------- */
 function water() {
   const g = el('g', {});
   g.appendChild(el('path', { d:'M0 300 Q100 292 200 300 T400 300 T600 300 T800 300 V340 H0 Z', fill:'#164e63' }));
@@ -930,6 +972,23 @@ function ground() {
   g.appendChild(el('rect', { x:720, y:255, width:80, height:85, fill:'#3f3f2e' }));
   return g;
 }
+const DECK = { x0:60, x1:740, y:250 };
+let deckCtrl = [400, DECK.y];   // 상판 처짐 곡선의 제어점 (트럭 위치, 처짐)
+function setDeck(tx, dip) { deckCtrl = [tx, DECK.y + dip]; }
+function drawDeck() {
+  return el('path', { d:`M${DECK.x0} ${DECK.y} Q${deckCtrl[0]} ${deckCtrl[1]} ${DECK.x1} ${DECK.y}`, fill:'none', stroke:'#e2e8f0', 'stroke-width':8 });
+}
+/* x 위치에서의 상판 높이 — 행어·수직재가 처진 상판에 정확히 닿도록 */
+function deckYAt(x) {
+  const [cx, cy] = deckCtrl;
+  const a = DECK.x0 - 2*cx + DECK.x1, b = 2*(cx - DECK.x0), c = DECK.x0 - x;
+  let t = Math.abs(a) < 1e-6 ? -c / b : (-b + Math.sqrt(Math.max(0, b*b - 4*a*c))) / (2*a);
+  t = Math.min(1, Math.max(0, t));
+  return quadPt([DECK.x0, DECK.y], [cx, cy], [DECK.x1, DECK.y], t)[1];
+}
+function tower(x, top, w = 16) {
+  return el('rect', { x:x - w/2, y:top - 4, width:w, height:302 - top, fill:'#b91c1c', rx:2 });
+}
 
 function drawBridge() {
   svg.innerHTML = '';
@@ -938,51 +997,71 @@ function drawBridge() {
   const tx = 80 + (640 * pos / 100);
   const W = 1 + load * 0.55;                                 // 힘 화살표 굵기
   const sag = load * 1.1;                                    // 처짐
-  const deckY = 250;
 
   svg.appendChild(water());
   svg.appendChild(ground());
 
   if (bridgeType === 'suspension') {
-    // 주탑
-    svg.appendChild(el('rect', { x:196, y:60, width:12, height:195, fill:'#b91c1c' }));
-    svg.appendChild(el('rect', { x:592, y:60, width:12, height:195, fill:'#b91c1c' }));
-    // 주탑 압축력
-    svg.appendChild(forceArrow(180, 80, 180, 240, 'comp', W));
-    svg.appendChild(forceArrow(628, 80, 628, 240, 'comp', W));
-    // 주케이블 (인장, 하중따라 늘어짐)
-    const d1 = `M60 ${deckY-10} Q200 ${60} 400 ${140+sag}`;
-    const d2 = `M400 ${140+sag} Q600 ${60} 740 ${deckY-10}`;
-    svg.appendChild(el('path', { d:`M60 ${deckY-10} Q205 55 400 ${140+sag} Q595 55 740 ${deckY-10}`, fill:'none', stroke:'#60a5fa', 'stroke-width':2+W*0.7 }));
-    // 행어
-    for (let i=0;i<9;i++){
-      const hx = 140 + i*65;
-      const t = Math.abs(hx-400)/260;
-      const hy = 140+sag + (55-(140+sag))*t*t;
-      svg.appendChild(el('line', { x1:hx, y1:Math.min(hy, deckY-8), x2:hx, y2:deckY-4, stroke:'#93c5fd', 'stroke-width':1.5+W*0.35, opacity:.85 }));
-    }
-    // 케이블 인장 표시
-    svg.appendChild(forceArrow(300, 105, 500, 105, 'tens', W));
-    // 상판 (처짐)
-    svg.appendChild(el('path', { d:`M60 ${deckY} Q${tx} ${deckY+sag*1.5} 740 ${deckY}`, fill:'none', stroke:'#e2e8f0', 'stroke-width':8 }));
-    svg.appendChild(drawTruck(tx, deckY + sag*0.9, load));
+    setDeck(tx, sag * 1.5);
+    const TL = 200, TR = 600, TOP = 62;                      // 주탑 위치·꼭대기
+    const AL = [38, 262], AR = [762, 262];                   // 앵커리지 (케이블을 땅에 고정)
+    const low = 150 + sag;                                   // 주케이블 최저점 (하중↑ → 더 처짐)
+    const main = [[TL, TOP], [400, 2*low - TOP], [TR, TOP]]; // 주탑 꼭대기 사이 주케이블
+    const sideL = [[TL, TOP], [(TL + AL[0])/2, (TOP + AL[1])/2 + 16], AL]; // 측경간 케이블
+    const sideR = [[TR, TOP], [(TR + AR[0])/2, (TOP + AR[1])/2 + 16], AR];
+    // 앵커리지 블록
+    [AL, AR].forEach(a => svg.appendChild(el('rect', { x:a[0]-16, y:a[1]-6, width:32, height:24, fill:'#57534e', rx:3 })));
+    // 주탑 (기초까지 내려감)
+    svg.appendChild(tower(TL, TOP)); svg.appendChild(tower(TR, TOP));
+    // 케이블
+    const cw = 2 + W * 0.6;
+    [main, sideL, sideR].forEach(c => svg.appendChild(el('path', { d:`M${c[0]} Q${c[1]} ${c[2]}`, fill:'none', stroke:'#2563eb', 'stroke-width':cw, 'stroke-linecap':'round' })));
+    // 행어(보조 케이블): 주케이블에서 상판을 매닮 — 케이블 위 점에서 상판까지
+    const hangers = [];
+    for (let x = TL + 40; x < TR; x += 40) hangers.push([x, quadPt(main[0], main[1], main[2], (x - TL) / (TR - TL))[1]]);
+    for (let x = TL - 40; x > 70; x -= 40) hangers.push([x, quadPt(sideL[0], sideL[1], sideL[2], (x - TL) / (AL[0] - TL))[1]]);
+    for (let x = TR + 40; x < 730; x += 40) hangers.push([x, quadPt(sideR[0], sideR[1], sideR[2], (x - TR) / (AR[0] - TR))[1]]);
+    hangers.forEach(([hx, hy]) => {
+      const dy = deckYAt(hx) - 4;
+      if (dy - hy > 6) svg.appendChild(el('line', { x1:hx, y1:hy, x2:hx, y2:dy, stroke:'#93c5fd', 'stroke-width':1.2 + W*0.25, opacity:.9 }));
+    });
+    svg.appendChild(drawDeck());
+    // 힘: 케이블 인장(곡선을 따라), 주탑 압축(주탑 위)
+    svg.appendChild(forceArrowPts(quadPts(main[0], main[1], main[2], 0.2, 0.8), 'tens', W));
+    svg.appendChild(forceArrowPts(quadPts(sideL[0], sideL[1], sideL[2], 0.25, 0.8), 'tens', W));
+    svg.appendChild(forceArrowPts(quadPts(sideR[0], sideR[1], sideR[2], 0.25, 0.8), 'tens', W));
+    svg.appendChild(forceArrow(TL, TOP + 18, TL, 244, 'comp', W));
+    svg.appendChild(forceArrow(TR, TOP + 18, TR, 244, 'comp', W));
+    svg.appendChild(drawTruck(tx, deckYAt(tx) - 3, load));
+    // 이름표
+    svg.appendChild(label(TL, TOP - 12, '주탑')); svg.appendChild(label(TR, TOP - 12, '주탑'));
+    svg.appendChild(label(400, low - 12, '주케이블'));
+    svg.appendChild(label(468, 215, '행어(보조 케이블)', 'start'));
+    svg.appendChild(label(AL[0], 296, '앵커리지')); svg.appendChild(label(AR[0], 296, '앵커리지'));
   }
   else if (bridgeType === 'cablestayed') {
-    svg.appendChild(el('rect', { x:246, y:40, width:14, height:215, fill:'#b91c1c' }));
-    svg.appendChild(el('rect', { x:540, y:40, width:14, height:215, fill:'#b91c1c' }));
-    svg.appendChild(forceArrow(230, 60, 230, 240, 'comp', W));
-    svg.appendChild(forceArrow(578, 60, 578, 240, 'comp', W));
-    // 사장 케이블 — 주탑에서 상판 직접 연결
-    const anchors = [90, 150, 210, 330, 390, 450, 510, 630, 690];
-    anchors.forEach(ax => {
-      const tower = ax < 300 ? {x:253,y:55} : (ax < 520 ? (Math.abs(ax-253)<Math.abs(ax-547)?{x:253,y:55}:{x:547,y:55}) : {x:547,y:55});
-      svg.appendChild(el('line', { x1:tower.x, y1:tower.y, x2:ax, y2:deckY-4, stroke:'#60a5fa', 'stroke-width':1.4+W*0.4, opacity:.85 }));
+    setDeck(tx, sag * 1.3);
+    const TL = 253, TR = 547, TOP = 42;
+    svg.appendChild(tower(TL, TOP)); svg.appendChild(tower(TR, TOP));
+    // 사장 케이블: 주탑 위쪽 여러 높이에서 상판으로 직접 비스듬히 연결 (부채꼴)
+    //   k = 주탑에서 몇 번째 케이블인지 (1이 가장 가까움) → 가까울수록 낮은 곳에 연결
+    const stays = [];
+    [[TL, -1, 3], [TL, 1, 2], [TR, -1, 2], [TR, 1, 3]].forEach(([tx0, dir, n]) => {
+      for (let k = 1; k <= n; k++) stays.push([tx0, TOP + 14 + (3 - k) * 20, tx0 + dir * 60 * k, k]);
     });
-    svg.appendChild(forceArrow(320, 130, 420, 210, 'tens', W));
-    svg.appendChild(el('path', { d:`M60 ${deckY} Q${tx} ${deckY+sag*1.3} 740 ${deckY}`, fill:'none', stroke:'#e2e8f0', 'stroke-width':8 }));
-    svg.appendChild(drawTruck(tx, deckY + sag*0.8, load));
+    stays.forEach(([sx, sy, dx]) => svg.appendChild(el('line', { x1:sx, y1:sy, x2:dx, y2:deckYAt(dx) - 4, stroke:'#2563eb', 'stroke-width':1.6 + W*0.35, 'stroke-linecap':'round' })));
+    svg.appendChild(drawDeck());
+    // 힘: 바깥쪽 긴 케이블 + 안쪽 케이블에 인장, 주탑에 압축
+    stays.filter(s => s[3] === 3 || (s[3] === 2 && ((s[0] === TL && s[2] > TL) || (s[0] === TR && s[2] < TR))))
+      .forEach(([sx, sy, dx]) => svg.appendChild(forceArrow(sx, sy, dx, deckYAt(dx) - 4, 'tens', W, 0.3, 0.72)));
+    svg.appendChild(forceArrow(TL, TOP + 74, TL, 244, 'comp', W));
+    svg.appendChild(forceArrow(TR, TOP + 74, TR, 244, 'comp', W));
+    svg.appendChild(drawTruck(tx, deckYAt(tx) - 3, load));
+    svg.appendChild(label(TL, TOP - 12, '주탑')); svg.appendChild(label(TR, TOP - 12, '주탑'));
+    svg.appendChild(label(400, 120, '케이블 (주탑 → 상판 직접 연결)'));
   }
   else if (bridgeType === 'truss') {
+    setDeck(tx, sag);
     // 교각
     svg.appendChild(el('rect', { x:150, y:255, width:16, height:60, fill:'#57534e' }));
     svg.appendChild(el('rect', { x:634, y:255, width:16, height:60, fill:'#57534e' }));
@@ -990,32 +1069,40 @@ function drawBridge() {
     const topY = 185, n = 8, span = 680/n;
     for (let i=0;i<n;i++){
       const x0 = 60+i*span, x1 = 60+(i+1)*span, xm = (x0+x1)/2;
-      svg.appendChild(el('line', { x1:x0, y1:deckY, x2:xm, y2:topY, stroke:'#f59e0b', 'stroke-width':4 }));
-      svg.appendChild(el('line', { x1:xm, y1:topY, x2:x1, y2:deckY, stroke:'#f59e0b', 'stroke-width':4 }));
+      svg.appendChild(el('line', { x1:x0, y1:DECK.y, x2:xm, y2:topY, stroke:'#f59e0b', 'stroke-width':4 }));
+      svg.appendChild(el('line', { x1:xm, y1:topY, x2:x1, y2:DECK.y, stroke:'#f59e0b', 'stroke-width':4 }));
       if (i<n-1) svg.appendChild(el('line', { x1:xm, y1:topY, x2:xm+span, y2:topY, stroke:'#f59e0b', 'stroke-width':4 }));
     }
-    // 상현재 압축 / 하현재 인장
-    svg.appendChild(forceArrow(250, 165, 550, 165, 'comp', W));
-    svg.appendChild(forceArrow(250, 285, 550, 285, 'tens', W));
-    svg.appendChild(el('path', { d:`M60 ${deckY} Q${tx} ${deckY+sag} 740 ${deckY}`, fill:'none', stroke:'#e2e8f0', 'stroke-width':8 }));
-    svg.appendChild(drawTruck(tx, deckY + sag*0.6, load));
+    svg.appendChild(drawDeck());
+    // 상현재(위쪽 부재) 압축 / 하현재(아래쪽 부재=상판) 인장 — 부재 위에 표시
+    svg.appendChild(forceArrow(250, topY, 550, topY, 'comp', W));
+    svg.appendChild(forceArrow(250, DECK.y, 550, DECK.y, 'tens', W));
+    svg.appendChild(drawTruck(tx, deckYAt(tx) - 3, load));
+    svg.appendChild(label(400, topY - 14, '상현재 (압축)'));
+    svg.appendChild(label(400, DECK.y + 24, '하현재 (인장)'));
+    svg.appendChild(label(158, 330, '교각')); svg.appendChild(label(642, 330, '교각'));
   }
   else if (bridgeType === 'arch') {
-    // 아치
-    svg.appendChild(el('path', { d:`M80 ${298} Q400 ${70+sag} 720 ${298}`, fill:'none', stroke:'#f59e0b', 'stroke-width':13 }));
-    // 수직재
-    for (let i=1;i<10;i++){
-      const ax = 80 + i*64;
-      const t = (ax-400)/320;
-      const ay = (70+sag) + (298-(70+sag))*t*t;
-      const topEnd = Math.max(ay, 150);
-      if (topEnd < deckY-6) svg.appendChild(el('line', { x1:ax, y1:topEnd, x2:ax, y2:deckY-4, stroke:'#fbbf24', 'stroke-width':3, opacity:.8 }));
+    setDeck(tx, sag * 0.9);
+    // 교대 (아치가 밀어내는 힘을 받아 주는 양끝 받침)
+    svg.appendChild(el('rect', { x:66, y:254, width:40, height:50, fill:'#57534e', rx:2 }));
+    svg.appendChild(el('rect', { x:694, y:254, width:40, height:50, fill:'#57534e', rx:2 }));
+    // 아치: 양끝 교대에서 시작해 상판 위로 솟음 (하중↑ → 살짝 낮아짐)
+    const A0 = [86, 258], A2 = [714, 258], apex = 108 + sag * 0.4, A1 = [400, 2*apex - A0[1]];
+    svg.appendChild(el('path', { d:`M${A0} Q${A1} ${A2}`, fill:'none', stroke:'#f59e0b', 'stroke-width':13, 'stroke-linecap':'round' }));
+    // 행어: 아치에서 상판을 매닮 — 아치 곡선 위 점에서 상판까지
+    for (let k = 1; k <= 9; k++) {
+      const [hx, hy] = quadPt(A0, A1, A2, k / 10);
+      svg.appendChild(el('line', { x1:hx, y1:hy, x2:hx, y2:deckYAt(hx) - 4, stroke:'#fbbf24', 'stroke-width':3, opacity:.85 }));
     }
-    // 아치 압축력 (곡선 따라)
-    svg.appendChild(forceArrow(210, 218, 340, 132, 'comp', W));
-    svg.appendChild(forceArrow(460, 132, 590, 218, 'comp', W));
-    svg.appendChild(el('path', { d:`M60 ${deckY} Q${tx} ${deckY+sag*0.9} 740 ${deckY}`, fill:'none', stroke:'#e2e8f0', 'stroke-width':8 }));
-    svg.appendChild(drawTruck(tx, deckY + sag*0.5, load));
+    svg.appendChild(drawDeck());
+    // 아치 압축력 — 곡선을 따라 양쪽에서 미는 모양
+    svg.appendChild(forceArrowPts(quadPts(A0, A1, A2, 0.07, 0.44), 'comp', W));
+    svg.appendChild(forceArrowPts(quadPts(A0, A1, A2, 0.56, 0.93), 'comp', W));
+    svg.appendChild(drawTruck(tx, deckYAt(tx) - 3, load));
+    svg.appendChild(label(400, apex - 14, '아치 (압축)'));
+    svg.appendChild(label(468, 200, '행어', 'start'));
+    svg.appendChild(label(86, 322, '교대')); svg.appendChild(label(714, 322, '교대'));
   }
 
   document.getElementById('bridgeInfo').innerHTML = BRIDGE_INFO[bridgeType];
