@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7차시 — 모듈러 학교 설계 활동</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI','Malgun Gothic',sans-serif; background:linear-gradient(160deg,#0f172a,#1e293b); color:#e2e8f0; min-height:100vh; }
+.container { max-width:1050px; margin:0 auto; padding:20px 18px 80px; }
+.top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.top-nav a { color:#7dd3fc; text-decoration:none; font-size:.9rem; }
+.top-nav a:hover { text-decoration:underline; }
+h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
+.lesson-tag { display:inline-block; background:#fbbf24; color:#1e293b; font-weight:800; border-radius:8px; padding:3px 12px; font-size:.8rem; margin-bottom:10px; }
+.unit-tag { display:inline-block; background:#334155; color:#94a3b8; border-radius:8px; padding:3px 10px; font-size:.75rem; margin-left:6px; }
+.goal-box { background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0; padding:14px 18px; margin:14px 0 30px; font-size:.92rem; line-height:1.7; }
+.goal-box b { color:#7dd3fc; }
+.step-title { font-size:1.25rem; color:#fbbf24; margin:40px 0 6px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.step-num { background:#f59e0b; color:#1e293b; width:30px; height:30px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:.95rem; flex-shrink:0; }
+.step-time { font-size:.7rem; background:#334155; color:#94a3b8; border-radius:999px; padding:3px 10px; font-weight:600; }
+.step-desc { color:#94a3b8; font-size:.9rem; margin-bottom:16px; line-height:1.6; }
+.flow-bar { display:flex; gap:6px; flex-wrap:wrap; background:rgba(15,23,42,.6); border:1px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:30px; font-size:.76rem; color:#94a3b8; }
+.flow-bar span { background:#1e293b; border:1px solid #475569; border-radius:999px; padding:4px 11px; white-space:nowrap; }
+.flow-bar span b { color:#fbbf24; }
+.panel { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.hook { margin-top:16px; background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0; padding:14px 16px; font-size:.9rem; line-height:1.75; }
+.hook b { color:#7dd3fc; }
+.btn-main { background:linear-gradient(135deg,#f59e0b,#d97706); color:#1e293b; font-weight:800; border:none; border-radius:10px; padding:11px 26px; font-size:.95rem; cursor:pointer; font-family:inherit; transition:.2s; }
+.btn-main:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 16px rgba(245,158,11,.35); }
+.btn-main:disabled { opacity:.45; cursor:default; }
+.btn-sub { background:#334155; color:#cbd5e1; border:1px solid #64748b; border-radius:10px; padding:9px 18px; font-size:.86rem; cursor:pointer; font-family:inherit; }
+.btn-sub:hover { border-color:#94a3b8; }
+
+/* ===== 자기점검 ===== */
+.kwl { background:rgba(167,139,250,.08); border:1px solid rgba(167,139,250,.35); border-radius:14px; padding:20px; }
+.kwl h3 { color:#c4b5fd; font-size:1rem; margin-bottom:10px; }
+.kwl-row { display:flex; flex-direction:column; gap:10px; }
+.kwl-item { display:flex; align-items:center; gap:10px; font-size:.9rem; flex-wrap:wrap; }
+.kwl-item span { flex:1; min-width:220px; }
+.kwl-item select { background:#1e293b; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:5px 10px; font-size:.85rem; cursor:pointer; font-family:inherit; }
+.kwl-note { font-size:.78rem; color:#a78bfa; margin-top:10px; }
+.kwl-compare { margin-top:14px; display:none; }
+.kwl-compare table { width:100%; border-collapse:collapse; font-size:.85rem; }
+.kwl-compare th, .kwl-compare td { padding:7px 8px; border-bottom:1px solid #334155; text-align:left; }
+.kwl-compare th { color:#c4b5fd; font-weight:600; font-size:.8rem; }
+.kwl-compare .up { color:#4ade80; font-weight:700; } .kwl-compare .same { color:#94a3b8; } .kwl-compare .down { color:#f87171; font-weight:700; }
+.kwl-summary { margin-top:10px; background:rgba(15,23,42,.6); border-radius:10px; padding:10px 14px; font-size:.88rem; line-height:1.7; }
+
+/* ===== 모듈러 개념 ===== */
+.cmp-wrap { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media(max-width:720px){ .cmp-wrap{grid-template-columns:1fr} }
+.cmp-box { background:rgba(15,23,42,.6); border-radius:12px; padding:14px; border:2px solid; }
+.cmp-box.trad { border-color:#94a3b8; } .cmp-box.mod { border-color:#4ade80; }
+.cmp-box h4 { font-size:1rem; margin-bottom:8px; }
+.cmp-box.trad h4 { color:#cbd5e1; } .cmp-box.mod h4 { color:#86efac; }
+.cmp-box svg { width:100%; height:auto; background:rgba(15,23,42,.5); border-radius:8px; }
+.cmp-box p { font-size:.84rem; line-height:1.6; color:#cbd5e1; margin-top:8px; }
+.race-row { display:flex; align-items:center; gap:12px; margin-top:12px; flex-wrap:wrap; }
+.race-bar { flex:1; min-width:200px; }
+.race-bar .lbl { font-size:.8rem; margin-bottom:4px; display:flex; justify-content:space-between; }
+.race-bar .trk { height:16px; background:#0f172a; border:1px solid #475569; border-radius:999px; overflow:hidden; }
+.race-bar .fil { height:100%; border-radius:999px; width:0; transition:width .3s linear; }
+.race-bar.t .fil { background:#94a3b8; } .race-bar.m .fil { background:#4ade80; }
+.adv-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin-top:14px; }
+.adv { background:rgba(74,222,128,.07); border:1px solid rgba(74,222,128,.35); border-radius:12px; padding:12px; font-size:.82rem; line-height:1.55; }
+.adv .ae { font-size:1.5rem; display:block; margin-bottom:4px; }
+.adv b { color:#86efac; display:block; margin-bottom:3px; }
+.adv span { color:#94a3b8; }
+/* 장점 OX 게임 */
+.ox-list { display:flex; flex-direction:column; gap:9px; margin-top:12px; }
+.ox-item { display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:rgba(15,23,42,.6); border:1px solid #475569; border-radius:12px; padding:10px 14px; font-size:.88rem; }
+.ox-item .t { flex:1; min-width:220px; line-height:1.5; }
+.ox-btn { border-radius:999px; padding:6px 16px; font-size:.9rem; font-weight:800; cursor:pointer; font-family:inherit; border:2px solid #64748b; background:#1e293b; color:#e2e8f0; }
+.ox-btn:hover:not(:disabled) { border-color:#fbbf24; }
+.ox-btn:disabled { cursor:default; opacity:.5; }
+.ox-btn.correct { background:#14532d !important; border-color:#4ade80 !important; color:#bbf7d0 !important; opacity:1; }
+.ox-btn.wrong { background:#7f1d1d !important; border-color:#f87171 !important; color:#fecaca !important; opacity:1; }
+.ox-fb { width:100%; font-size:.8rem; color:#94a3b8; line-height:1.5; }
+.ox-fb.ok { color:#86efac; } .ox-fb.no { color:#fca5a5; }
+
+/* ===== 문제 해결 5단계 ===== */
+.ps-steps { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+.ps-step { flex:1; min-width:120px; background:rgba(15,23,42,.6); border:2px solid #475569; border-radius:12px; padding:10px; text-align:center; font-size:.82rem; cursor:pointer; transition:.18s; }
+.ps-step b { display:block; color:#fde68a; font-size:.9rem; margin-bottom:2px; }
+.ps-step.on { border-color:#fbbf24; background:rgba(251,191,36,.1); }
+.ps-step.done { border-color:#4ade80; }
+.ps-step small { color:#94a3b8; }
+.cond-box { background:rgba(251,191,36,.07); border:1px dashed rgba(251,191,36,.5); border-radius:12px; padding:14px 16px; font-size:.88rem; line-height:1.75; }
+.cond-box b { color:#fde68a; }
+.mod-types { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+.mod-type { background:rgba(15,23,42,.6); border:2px solid; border-radius:10px; padding:8px 12px; font-size:.82rem; display:flex; align-items:center; gap:8px; }
+.mod-type .sw { width:22px; height:14px; border-radius:3px; }
+
+/* ===== 모듈 배치 시뮬레이터 ===== */
+.sim-wrap { display:grid; grid-template-columns:1fr 280px; gap:14px; align-items:start; }
+@media(max-width:820px){ .sim-wrap{grid-template-columns:1fr} }
+.board-wrap { background:rgba(15,23,42,.6); border-radius:12px; padding:10px; }
+.board-tools { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:8px; align-items:center; }
+.tool { background:#1e293b; border:2px solid #475569; border-radius:9px; padding:6px 10px; font-size:.8rem; cursor:pointer; font-family:inherit; color:#e2e8f0; display:flex; align-items:center; gap:6px; transition:.15s; }
+.tool:hover { border-color:#94a3b8; }
+.tool.on { border-color:#fbbf24; background:rgba(251,191,36,.12); color:#fbbf24; }
+.tool .sw { width:16px; height:10px; border-radius:2px; }
+.board { display:grid; grid-template-columns:repeat(12,1fr); gap:2px; background:#0f172a; border:2px solid #475569; border-radius:8px; padding:4px; user-select:none; touch-action:none; }
+.cell { aspect-ratio:1; background:#1e293b; border-radius:2px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-size:.6rem; color:#0f172a; font-weight:800; position:relative; transition:background .1s; }
+.cell:hover { outline:2px solid #fbbf24; z-index:1; }
+.cell.ok-preview { outline:2px solid #4ade80; z-index:1; }
+.cell.bad-preview { outline:2px solid #f87171; z-index:1; }
+.cell.rk { background:#fde68a; } .cell.of { background:#f9a8d4; } .cell.lb { background:#a5b4fc; } .cell.sp { background:#86efac; } .cell.wc { background:#7dd3fc; } .cell.hall { background:#e7e5e4; }
+.cell.entry { box-shadow:inset 0 0 0 2px #fbbf24; }
+.board-note { font-size:.76rem; color:#94a3b8; margin-top:6px; line-height:1.5; }
+.side { display:flex; flex-direction:column; gap:10px; }
+.req-box { background:rgba(15,23,42,.6); border:1px solid #475569; border-radius:12px; padding:12px; font-size:.83rem; }
+.req-box h4 { color:#fde68a; font-size:.9rem; margin-bottom:8px; }
+.req { display:flex; justify-content:space-between; align-items:center; padding:4px 0; border-bottom:1px dashed #334155; }
+.req:last-child { border-bottom:none; }
+.req .cnt { font-weight:800; }
+.req.met .cnt { color:#4ade80; } .req.unmet .cnt { color:#fca5a5; }
+.stat-box { background:rgba(15,23,42,.6); border:1px solid #475569; border-radius:12px; padding:12px; font-size:.83rem; line-height:1.7; }
+.stat-box b { color:#7dd3fc; }
+.floor-tabs { display:flex; gap:6px; margin-bottom:8px; }
+.ftab { background:#1e293b; border:2px solid #475569; border-radius:8px; padding:5px 12px; font-size:.82rem; cursor:pointer; font-family:inherit; color:#e2e8f0; }
+.ftab.on { border-color:#38bdf8; color:#7dd3fc; background:rgba(56,189,248,.12); }
+.eval-report { margin-top:12px; background:rgba(15,23,42,.7); border:1px solid #475569; border-radius:12px; padding:14px; font-size:.87rem; line-height:1.7; }
+.eval-report h4 { color:#fbbf24; font-size:1rem; margin-bottom:6px; }
+.eval-report .ev { padding:6px 10px; border-left:4px solid; border-radius:0 8px 8px 0; margin-bottom:6px; background:rgba(30,41,59,.7); }
+.eval-report .ev.good { border-color:#4ade80; } .eval-report .ev.meh { border-color:#fbbf24; } .eval-report .ev.bad { border-color:#f87171; }
+.score-big { font-size:1.8rem; font-weight:800; color:#fbbf24; }
+
+/* ===== 평가표 ===== */
+.rubric { width:100%; border-collapse:collapse; font-size:.85rem; margin-top:8px; }
+.rubric th, .rubric td { border:1px solid #475569; padding:8px 10px; text-align:left; vertical-align:top; }
+.rubric th { background:rgba(15,23,42,.7); color:#fde68a; font-weight:700; }
+.rubric select { background:#1e293b; color:#e2e8f0; border:1px solid #64748b; border-radius:6px; padding:3px 6px; font-family:inherit; font-size:.82rem; }
+.rubric td.crit { color:#cbd5e1; line-height:1.55; }
+
+/* ===== 공통: 탐구 / 미니퀴즈 / 체크 ===== */
+.inquiry { margin-top:16px; background:rgba(167,139,250,.08); border:1px dashed rgba(167,139,250,.5); border-radius:12px; padding:14px 16px; }
+.inquiry h4 { color:#c4b5fd; font-size:.95rem; margin-bottom:8px; }
+.inquiry p { font-size:.85rem; color:#cbd5e1; line-height:1.6; margin-bottom:8px; }
+.inquiry textarea { width:100%; min-height:64px; background:#0f172a; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:9px 11px; font-family:inherit; font-size:.86rem; resize:vertical; }
+.inquiry .iq-row { display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+.inquiry .iq-saved { font-size:.78rem; color:#a78bfa; }
+.mini-quiz { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.mqz-item { margin-bottom:16px; }
+.mqz-q { font-size:.95rem; margin-bottom:10px; line-height:1.6; }
+.mqz-q .qn { color:#fbbf24; font-weight:700; }
+.mqz-opts { display:flex; gap:8px; flex-wrap:wrap; }
+.mqz-btn { background:#334155; color:#e2e8f0; border:1px solid #64748b; border-radius:999px; padding:7px 16px; font-size:.85rem; cursor:pointer; transition:.2s; font-family:inherit; }
+.mqz-btn:hover:not(:disabled) { border-color:#fbbf24; color:#fbbf24; }
+.mqz-btn.correct { background:#14532d; border-color:#4ade80; color:#bbf7d0; }
+.mqz-btn.wrong { background:#7f1d1d; border-color:#f87171; color:#fecaca; }
+.mqz-btn:disabled { cursor:default; opacity:.85; }
+.mqz-fb { font-size:.82rem; margin-top:8px; min-height:1.2em; line-height:1.5; }
+.mqz-fb.ok { color:#4ade80; } .mqz-fb.no { color:#f87171; }
+.self-check { background:rgba(74,222,128,.07); border:1px solid rgba(74,222,128,.35); border-radius:14px; padding:20px; }
+.self-check h3 { color:#86efac; font-size:1rem; margin-bottom:12px; }
+.sc-item { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:.9rem; line-height:1.55; }
+.sc-item input { margin-top:3px; width:16px; height:16px; accent-color:#4ade80; cursor:pointer; }
+.sc-progress { margin-top:12px; font-size:.85rem; color:#86efac; }
+.next-link { display:block; text-align:center; margin-top:34px; }
+.next-link a { display:inline-block; background:linear-gradient(135deg,#a78bfa,#7c3aed); color:#f8fafc; font-weight:800; text-decoration:none; border-radius:12px; padding:14px 34px; font-size:1rem; transition:.2s; }
+.next-link a:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(167,139,250,.35); }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-nav">
+    <a href="sim_process_build.html">← 6차시: 시공·관리</a>
+    <a href="activity_quiz2.html">8차시: 형성평가 →</a>
+  </div>
+
+  <span class="lesson-tag">7차시</span><span class="unit-tag">단원 2 · 생각 키우기 (교과서 200~201쪽)</span>
+  <h1>🧩 모듈러 학교 설계 활동</h1>
+  <div class="goal-box">
+    <b>학습 목표</b><br>
+    ① <b>모듈러 하우스</b>의 원리와 장점을 설명할 수 있다.<br>
+    ② 주어진 <b>문제 해결 조건</b>(대지, 모듈 종류, 필요한 공간)을 분석할 수 있다.<br>
+    ③ 문제 해결 과정(<b>문제 확인 → 아이디어 → 구체화 → 실행 → 평가</b>)에 따라 모듈러 학교를 설계하고 평가할 수 있다.<br>
+    ④ 5·6차시에서 배운 <b>기획 → 설계 → 시공 → 관리</b>의 과정을 실제 설계 활동에 적용할 수 있다.
+  </div>
+
+  <div class="flow-bar">
+    <span><b>0</b> 자기점검 2분</span>
+    <span><b>1</b> 모듈러 하우스란? 7분</span>
+    <span><b>2</b> 문제 확인 4분</span>
+    <span><b>3</b> 아이디어 창출 5분</span>
+    <span><b>4</b> 구체화 — 배치 시뮬레이터 15분</span>
+    <span><b>5</b> 실행 · 평가 8분</span>
+    <span><b>6</b> 미니 퀴즈 2분</span>
+    <span><b>✓</b> 정리 2분</span>
+  </div>
+
+  <!-- STEP 0 -->
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">2분 · 🧠 메타인지</span></div>
+  <div class="kwl">
+    <h3>📋 나는 지금 얼마나 알고 있을까?</h3>
+    <div class="kwl-row" id="preRow"></div>
+    <div class="kwl-note">💡 "모른다"고 체크해도 괜찮아요. 자신의 상태를 아는 것이 메타인지의 시작입니다!</div>
+  </div>
+
+  <!-- STEP 1 : 모듈러 하우스 -->
+  <div class="step-title"><span class="step-num">1</span> 모듈러 하우스란? <span class="step-time">7분 · 개념 + 🎮 공사 속도 대결</span></div>
+  <p class="step-desc"><b>모듈러 하우스(Modular House)</b>는 <b>공장에서</b> 구조체, 내장재, 각종 설비 등이 설치된 각각의 모듈을 미리 제작하고, <b>건축 현장에서 모듈을 조립</b>하여 완성하는 구조물입니다. 6차시의 시공 순서와 무엇이 다른지 대결로 확인해 보세요!</p>
+  <div class="panel">
+    <div class="cmp-wrap">
+      <div class="cmp-box trad">
+        <h4>🏗️ 일반 건설 (현장에서 처음부터)</h4>
+        <svg id="tradSvg" viewBox="0 0 300 150"></svg>
+        <p>착공 → 가설 → 토공사 → 기초 → 골조 → 설비·마감을 <b>모두 현장에서 차례로</b> 진행. 앞 단계가 끝나야 다음 단계 시작.</p>
+      </div>
+      <div class="cmp-box mod">
+        <h4>🧩 모듈러 건설 (공장 + 현장 동시에)</h4>
+        <svg id="modSvg" viewBox="0 0 300 150"></svg>
+        <p>현장에서 토공사·기초를 하는 <b>동안</b> 공장에서는 모듈(방 한 칸 = 벽·바닥·창·전기·배관 완성)을 만든다 → 현장에 실어 와 <b>크레인으로 조립</b>.</p>
+      </div>
+    </div>
+    <div class="race-row">
+      <button class="btn-main" id="raceBtn">🏁 공사 속도 대결 시작</button>
+      <div class="race-bar t"><div class="lbl"><span>일반 건설</span><span id="raceT">0%</span></div><div class="trk"><div class="fil" id="raceTf"></div></div></div>
+      <div class="race-bar m"><div class="lbl"><span>모듈러 건설</span><span id="raceM">0%</span></div><div class="trk"><div class="fil" id="raceMf"></div></div></div>
+    </div>
+    <div id="raceMsg" style="font-size:.86rem;color:#86efac;margin-top:8px;min-height:1.4em;line-height:1.6"></div>
+    <div class="adv-grid">
+      <div class="adv"><span class="ae">⏱️</span><b>공사 기간 단축</b><span>공장에서 모듈이 생산되는 동안 현장에서 기초·토목 공사가 이루어짐</span></div>
+      <div class="adv"><span class="ae">🦺</span><b>현장 작업 감소</b><span>현장 작업이 줄어 인건비·사고 위험 감소</span></div>
+      <div class="adv"><span class="ae">🔇</span><b>소음·폐기물 감소</b><span>건축 소음, 현장 공사 폐기물을 줄일 수 있음</span></div>
+      <div class="adv"><span class="ae">🔧</span><b>유지 보수 편리</b><span>조립·해체가 쉬워 교체와 수리가 편리</span></div>
+      <div class="adv"><span class="ae">↔️</span><b>공간 확장·축소</b><span>사용 목적에 따라 공간을 늘리거나 불필요한 공간을 줄일 수 있음</span></div>
+    </div>
+    <p class="step-desc" style="margin:14px 0 4px">🎮 <b>OX 게임</b> — 모듈러 하우스에 대한 설명이 맞으면 O, 틀리면 X!</p>
+    <div class="ox-list" id="oxList"></div>
+    <div id="oxScore" style="text-align:center;margin-top:8px;font-size:.9rem"></div>
+    <div class="hook">
+      🔑 <b>5·6차시와 연결</b> — 모듈러 건설도 <b>기획 → 설계 → 시공 → 관리</b>를 똑같이 거칩니다. 다만 <b>골조·설비·마감 공사의 대부분이 공장에서</b> 이루어지고, 현장에서는 기초 공사와 조립만 하죠. 그래서 설계 단계에서 <b>모듈의 크기와 조합</b>을 정확히 정하는 것이 더욱 중요합니다.
+    </div>
+  </div>
+
+  <!-- STEP 2 : 문제 확인 -->
+  <div class="step-title"><span class="step-num">2</span> 문제 해결 과정 — ① 문제 확인하기 <span class="step-time">4분</span></div>
+  <div class="panel">
+    <div class="ps-steps" id="psSteps"></div>
+    <div class="cond-box">
+      <b>📌 상황</b> — 학교에서 공간 혁신 관련 공사가 진행 중입니다. <b>한 학기 동안 한 학년의 8개 학급</b> 학생들이 사용할 <b>모듈러 교실</b>이 필요한 상황을 가정하고, 다음 조건을 만족하는 모듈러 학교 모형을 제작해 봅시다.<br><br>
+      <b>✅ 문제 해결 조건</b><br>
+      ① 주어진 대지(운동장, A3 용지) 위에 <b>3가지 유형의 모듈</b>을 활용하여 제작한다.<br>
+      ② <b>교실 8개, 교무실 1개, 도서관 및 커뮤니티 공간, 특별실 3개, 화장실</b> 등의 공간이 갖추어질 수 있도록 모듈을 구성한다.
+      <div class="mod-types">
+        <div class="mod-type" style="border-color:#fde68a"><span class="sw" style="background:#fde68a"></span><b>A타입</b> 5×4×4 cm → 시뮬레이터 2×1칸</div>
+        <div class="mod-type" style="border-color:#f9a8d4"><span class="sw" style="background:#f9a8d4"></span><b>B타입</b> 5×6×4 cm → 시뮬레이터 3×1칸</div>
+        <div class="mod-type" style="border-color:#a5b4fc"><span class="sw" style="background:#a5b4fc"></span><b>C타입</b> 5×10×4 cm → 시뮬레이터 5×1칸</div>
+      </div>
+      <div style="margin-top:8px;font-size:.8rem;color:#94a3b8">※ 시뮬레이터에서는 모듈 1칸 = 1 m × 1 m로 축소해 표현합니다. 실제 모형은 A3 용지 위에 종이 상자로 만들어요.</div>
+    </div>
+    <div class="inquiry">
+      <h4>🔍 문제 분석 — 조건을 내 말로 정리하기 (메타인지)</h4>
+      <p>조건을 그대로 베끼지 말고, <b>"무엇이 정해져 있고, 무엇을 내가 정해야 하는지"</b> 구분해 적어 보세요. (5차시 건설 기획의 "대지 조건 · 규모 · 용도"와 같아요!)</p>
+      <textarea id="iqProblem" placeholder="예) 정해진 것: 대지 크기, 모듈 3종류, 공간 종류·개수. 내가 정할 것: 각 공간에 어떤 모듈을 쓸지, 어디에 배치할지, 몇 층으로 할지."></textarea>
+      <div class="iq-row"><button class="btn-sub" onclick="saveIq('iqProblem')">💾 저장</button><span class="iq-saved" id="iqProblem-saved"></span></div>
+    </div>
+  </div>
+
+  <!-- STEP 3 : 아이디어 -->
+  <div class="step-title"><span class="step-num">3</span> ② 아이디어 창출 및 선정하기 <span class="step-time">5분 · 모둠 토의</span></div>
+  <p class="step-desc">각 공간이 갖추어야 할 특징을 정리하고, <b>어떤 모듈</b>을 활용해 공간을 구성할지 토의해 보세요. 표에 직접 입력하면 저장됩니다.</p>
+  <div class="panel">
+    <table class="rubric" id="ideaTable">
+      <thead><tr><th style="width:110px">공간</th><th>갖추어야 할 특징 (누가, 무엇을, 어떻게 쓰나?)</th><th style="width:150px">활용할 모듈</th></tr></thead>
+      <tbody>
+        <tr><td><b>교실</b> (8개)</td><td><input class="idea" data-k="rk" placeholder="예) 25명이 앉을 넓이, 창문 필요, 복도와 연결"></td><td><select class="idea-mod" data-k="rk"><option value="">선택</option><option>A타입</option><option>B타입</option><option>C타입</option><option>조합(A+B 등)</option></select></td></tr>
+        <tr><td><b>교무실</b></td><td><input class="idea" data-k="of" placeholder="예) 선생님 책상, 학생이 찾기 쉬운 위치"></td><td><select class="idea-mod" data-k="of"><option value="">선택</option><option>A타입</option><option>B타입</option><option>C타입</option><option>조합(A+B 등)</option></select></td></tr>
+        <tr><td><b>도서관·커뮤니티</b></td><td><input class="idea" data-k="lb" placeholder="예) 가장 넓게, 조용한 쪽, 여러 반이 함께 이용"></td><td><select class="idea-mod" data-k="lb"><option value="">선택</option><option>A타입</option><option>B타입</option><option>C타입</option><option>조합(A+B 등)</option></select></td></tr>
+        <tr><td><b>특별실</b> (3개)</td><td><input class="idea" data-k="sp" placeholder="예) 과학실·음악실·미술실, 소음이 나는 방은 교실과 떨어뜨리기"></td><td><select class="idea-mod" data-k="sp"><option value="">선택</option><option>A타입</option><option>B타입</option><option>C타입</option><option>조합(A+B 등)</option></select></td></tr>
+        <tr><td><b>기타</b> (화장실 등)</td><td><input class="idea" data-k="wc" placeholder="예) 화장실은 층마다, 교실 가까이"></td><td><select class="idea-mod" data-k="wc"><option value="">선택</option><option>A타입</option><option>B타입</option><option>C타입</option><option>조합(A+B 등)</option></select></td></tr>
+      </tbody>
+    </table>
+    <div style="display:flex;gap:8px;align-items:center;margin-top:10px"><button class="btn-sub" id="ideaSave">💾 표 저장</button><span class="iq-saved" id="ideaSaved" style="font-size:.78rem;color:#a78bfa"></span></div>
+    <div class="hook" style="margin-top:12px">💡 <b>힌트</b> — 5차시에서 배운 <b>평면 계획</b>(동선·배치)과 <b>규모 계획</b>(개수·크기)을 떠올리세요. "화장실은 교실에서 몇 걸음?", "시끄러운 음악실 옆에 도서관?" 같은 질문이 좋은 설계를 만듭니다.</div>
+  </div>
+
+  <!-- STEP 4 : 구체화 — 배치 시뮬레이터 -->
+  <div class="step-title"><span class="step-num">4</span> ③ 아이디어 구체화 — 🧩 모듈 배치 시뮬레이터 <span class="step-time">15분 · 🎮 설계</span></div>
+  <p class="step-desc">종이 모형을 만들기 전에 <b>설계도</b>를 먼저 그려요(5차시: 계획 설계 → 기본 설계!). 왼쪽에서 <b>공간 종류와 모듈 타입</b>을 고르고, 대지(12×8칸) 위에 클릭해 놓으세요. 층 탭으로 <b>2층</b>도 만들 수 있어요. 오른쪽 조건이 모두 ✅가 되도록!</p>
+  <div class="panel">
+    <div class="sim-wrap">
+      <div class="board-wrap">
+        <div class="floor-tabs"><button class="ftab on" data-f="0">1층</button><button class="ftab" data-f="1">2층</button><span style="font-size:.76rem;color:#94a3b8;align-self:center;margin-left:6px">※ 2층은 1층 모듈 위에만 놓을 수 있어요 (구조 계획!)</span></div>
+        <div class="board-tools" id="spaceTools"></div>
+        <div class="board-tools" id="modTools"></div>
+        <div class="board" id="board"></div>
+        <div class="board-note">🖱️ 클릭 = 놓기 · 🖱️ 우클릭(또는 지우개 선택 후 클릭) = 지우기 · <b>R</b>키 또는 회전 버튼 = 가로/세로 회전 · 노란 테두리 칸 = 출입구(운동장 쪽)</div>
+        <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+          <button class="btn-main" id="evalBtn">📊 설계 평가하기</button>
+          <button class="btn-sub" id="rotBtn">🔄 회전 (R)</button>
+          <button class="btn-sub" id="clearFloorBtn">🧹 이 층 비우기</button>
+          <button class="btn-sub" id="clearAllBtn">↺ 전체 초기화</button>
+          <button class="btn-sub" id="sampleBtn">💡 예시 설계 보기</button>
+        </div>
+        <div class="eval-report" id="evalReport" style="display:none"></div>
+      </div>
+      <div class="side">
+        <div class="req-box"><h4>✅ 조건 체크</h4><div id="reqList"></div></div>
+        <div class="stat-box" id="statBox"></div>
+      </div>
+    </div>
+    <div class="inquiry">
+      <h4>🤔 설계 성찰 (메타인지)</h4>
+      <p>처음 계획(3단계 표)과 실제 배치가 <b>달라진 점</b>이 있나요? 왜 바꿨는지 적어 보세요. 계획을 수정하는 것은 실패가 아니라 <b>설계의 정상적인 과정</b>입니다.</p>
+      <textarea id="iqDesign" placeholder="예) 교실을 전부 C타입으로 하려 했는데 대지가 부족해서 A타입 2개를 붙여 만들었다. 도서관은 조용하도록 음악실과 반대쪽 끝에 두었다."></textarea>
+      <div class="iq-row"><button class="btn-sub" onclick="saveIq('iqDesign')">💾 저장</button><span class="iq-saved" id="iqDesign-saved"></span></div>
+    </div>
+  </div>
+
+  <!-- STEP 5 : 실행·평가 -->
+  <div class="step-title"><span class="step-num">5</span> ④ 실행하기 · ⑤ 평가하기 <span class="step-time">8분 · 모형 제작 + 모둠 평가</span></div>
+  <div class="panel">
+    <p style="font-size:.9rem;line-height:1.75;margin-bottom:12px">
+      <b style="color:#fde68a">④ 실행하기</b> — 위 설계도를 바탕으로 종이 상자로 세 가지 크기(A·B·C)의 모듈을 제작하고, 다양한 모듈을 결합해 새로운 모듈(예: A+B=C)을 만들어 보며, 교실과 복도 등 <b>공용 공간을 중심으로</b> 모듈러 모형을 배치해 봅시다.
+      <span style="display:block;margin-top:6px;font-size:.82rem;color:#94a3b8">🧰 준비물: 두꺼운 종이(또는 우드락), 자, 칼, 풀/테이프, A3 용지(대지). 모듈 하나 = 6차시의 "공장 생산" 단계, 배치 = "현장 조립" 단계!</span>
+    </p>
+    <p style="font-size:.9rem;line-height:1.75;margin-bottom:6px"><b style="color:#fde68a">⑤ 평가하기</b> — 각 모둠별로 완성한 모듈러 학교 모형을 평가한 후 활동 후 느낀 점을 써 봅시다. (잘함 / 보통 / 미흡)</p>
+    <table class="rubric">
+      <thead><tr><th style="width:60px">항목</th><th>평가 내용</th><th style="width:90px">우리 모둠</th><th style="width:90px">다른 모둠</th></tr></thead>
+      <tbody>
+        <tr><td><b>과정</b></td><td class="crit">학교의 특성에 대해 조사·분석한 내용을 반영하여 모듈러 학교를 구상하였는가?</td><td><select class="rub" data-k="p1"><option value="">선택</option><option>잘함</option><option>보통</option><option>미흡</option></select></td><td><select class="rub" data-k="p2"><option value="">선택</option><option>잘함</option><option>보통</option><option>미흡</option></select></td></tr>
+        <tr><td><b>결과</b></td><td class="crit">주어진 조건에 맞는 공간의 구성과 구성 이유를 구체적으로 제시하였는가?</td><td><select class="rub" data-k="r1"><option value="">선택</option><option>잘함</option><option>보통</option><option>미흡</option></select></td><td><select class="rub" data-k="r2"><option value="">선택</option><option>잘함</option><option>보통</option><option>미흡</option></select></td></tr>
+      </tbody>
+    </table>
+    <div class="inquiry">
+      <h4>✍️ 활동 후 느낀 점</h4>
+      <p>가장 어려웠던 점, 다시 한다면 바꾸고 싶은 점, 모듈러 건축의 장점을 <b>직접 느낀 순간</b>을 적어 보세요.</p>
+      <textarea id="iqFeel" placeholder="예) 모듈을 같은 크기로 만드니 조립이 정말 빨랐다(모듈러의 장점). 하지만 복도를 생각 안 해서 교실에 못 들어가는 설계가 나왔다 — 평면 계획(동선)이 왜 중요한지 알았다."></textarea>
+      <div class="iq-row"><button class="btn-sub" onclick="saveIq('iqFeel')">💾 저장</button><span class="iq-saved" id="iqFeel-saved"></span></div>
+    </div>
+  </div>
+
+  <!-- STEP 6 : 미니 퀴즈 -->
+  <div class="step-title"><span class="step-num">6</span> 적용 미니 퀴즈 <span class="step-time">2분</span></div>
+  <div class="mini-quiz" id="miniQuiz">
+    <div class="mqz-item" data-answer="공장">
+      <div class="mqz-q"><span class="qn">Q1.</span> 모듈러 하우스에서 구조체·내장재·설비가 설치된 모듈을 <b>미리 제작하는 곳</b>은?</div>
+      <div class="mqz-opts" data-opts="건축 현장,공장,설계 사무소"></div><div class="mqz-fb"></div>
+    </div>
+    <div class="mqz-item" data-answer="공사 기간이 단축된다">
+      <div class="mqz-q"><span class="qn">Q2.</span> 모듈 생산과 현장의 기초 공사가 <b>동시에</b> 진행되기 때문에 생기는 장점은?</div>
+      <div class="mqz-opts" data-opts="공사 기간이 단축된다,건물이 더 무거워진다,설계가 필요 없어진다"></div><div class="mqz-fb"></div>
+    </div>
+    <div class="mqz-item" data-answer="문제 확인 → 아이디어 → 구체화 → 실행 → 평가">
+      <div class="mqz-q"><span class="qn">Q3.</span> 이번 활동에서 따른 <b>문제 해결 과정</b>의 순서는?</div>
+      <div class="mqz-opts" data-opts="문제 확인 → 아이디어 → 구체화 → 실행 → 평가,실행 → 문제 확인 → 평가 → 아이디어 → 구체화,아이디어 → 실행 → 문제 확인 → 평가 → 구체화"></div><div class="mqz-fb"></div>
+    </div>
+    <div style="text-align:center;margin-top:6px;font-size:.9rem" id="mqzScore"></div>
+  </div>
+
+  <!-- STEP ✓ -->
+  <div class="step-title"><span class="step-num">✓</span> 정리 · 학습 후 자기점검 <span class="step-time">2분 · 🧠 메타인지</span></div>
+  <div class="kwl">
+    <h3>📈 학습 후 — 지금은 얼마나 알고 있을까?</h3>
+    <div class="kwl-row" id="postRow"></div>
+    <div class="kwl-compare" id="kwlCompare">
+      <table><thead><tr><th>항목</th><th>학습 전</th><th>학습 후</th><th>변화</th></tr></thead><tbody id="kwlBody"></tbody></table>
+      <div class="kwl-summary" id="kwlSummary"></div>
+    </div>
+  </div>
+  <div class="self-check" style="margin-top:16px">
+    <h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>모듈러 하우스가 무엇인지, 일반 건설과 어떻게 다른지 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>모듈러 하우스의 장점을 3가지 이상 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>문제 해결 조건을 "정해진 것 / 내가 정할 것"으로 분석할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>동선·소음·규모를 고려하여 공간을 배치한 이유를 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>설계 활동에서 기획 → 설계 → 시공(제작) → 평가의 과정을 연결해 말할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress">체크: 0 / 5</div>
+  </div>
+
+  <div class="next-link"><a href="activity_quiz2.html">다음 → 8차시: 형성평가 (건설 과정 15문제)</a></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const PAGE = 'p7';
+const store = {
+  get(k) { try { return localStorage.getItem('construction-' + PAGE + '-' + k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem('construction-' + PAGE + '-' + k, v); } catch (e) {} },
+};
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, text) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text !== undefined) e.textContent = text; return e; }
+
+/* ===== 자기점검 ===== */
+const KWL_ITEMS = ['<b>모듈러 하우스</b>가 무엇인지 안다', '모듈러 하우스의 <b>장점</b>을 안다', '<b>문제 해결 과정</b> 5단계를 안다', '공간을 배치할 때 <b>동선·소음·규모</b>를 고려해야 하는 이유를 안다'];
+const LEVELS = ['전혀 모름', '들어봤음', '설명 가능'];
+function buildKwl(rowId, cls) {
+  KWL_ITEMS.forEach((t, i) => {
+    const d = document.createElement('div'); d.className = 'kwl-item';
+    d.innerHTML = '<span>' + t + '</span><select class="' + cls + '"><option value="">선택</option>' + LEVELS.map(l => '<option>' + l + '</option>').join('') + '</select>';
+    const sel = d.querySelector('select'); const saved = store.get(cls + i); if (saved) sel.value = saved;
+    sel.addEventListener('change', () => { store.set(cls + i, sel.value); renderKwlCompare(); });
+    $(rowId).appendChild(d);
+  });
+}
+function renderKwlCompare() {
+  const pres = document.querySelectorAll('.pre-check'), posts = document.querySelectorAll('.post-check');
+  const anyPost = [...posts].some(s => s.value);
+  $('kwlCompare').style.display = anyPost ? 'block' : 'none'; if (!anyPost) return;
+  let up = 0, down = 0, low = 0;
+  $('kwlBody').innerHTML = KWL_ITEMS.map((t, i) => {
+    const pre = pres[i].value, post = posts[i].value, a = LEVELS.indexOf(pre), b = LEVELS.indexOf(post);
+    let mark = '<span class="same">—</span>';
+    if (a >= 0 && b >= 0) { if (b > a) { mark = '<span class="up">⬆ 향상</span>'; up++; } else if (b === a) mark = '<span class="same">유지</span>'; else { mark = '<span class="down">⬇ 낮아짐</span>'; down++; } }
+    if (b >= 0 && b < 2) low++;
+    return '<tr><td>' + t + '</td><td>' + (pre || '-') + '</td><td>' + (post || '-') + '</td><td>' + mark + '</td></tr>';
+  }).join('');
+  let msg = '';
+  if (up) msg += '📈 <b style="color:#4ade80">' + up + '개 항목</b>이 좋아졌어요! ';
+  if (down) msg += '🤔 <b style="color:#f87171">' + down + '개 항목</b>은 "생각보다 몰랐다"고 느꼈네요 — 훌륭한 메타인지입니다. ';
+  if (low) msg += '📚 아직 "설명 가능"이 아닌 항목이 <b>' + low + '개</b>. 해당 단계로 돌아가 친구에게 설명해 보세요. ';
+  if (!low && [...posts].every(s => s.value)) msg += '🌟 모두 설명할 수 있어요! 8차시 형성평가로 출발!';
+  $('kwlSummary').innerHTML = msg || '학습 후 상태를 모두 선택하면 요약이 나타납니다.';
+}
+buildKwl('preRow', 'pre-check'); buildKwl('postRow', 'post-check'); renderKwlCompare();
+
+/* ===================================================== */
+/* STEP 1 : 일반 vs 모듈러 — 속도 대결                     */
+/* ===================================================== */
+const T_STEPS = ['착공', '가설', '토공사', '기초', '골조', '설비', '마감'];
+const M_SITE = ['착공', '가설', '토공사', '기초', '조립'], M_FACT = ['모듈 골조', '모듈 설비', '모듈 마감', '운반'];
+function drawCmp(tp, mp) { // tp: 0~1 진행률
+  const t = $('tradSvg'); t.innerHTML = '';
+  t.appendChild(el('text', { x:150, y:16, 'font-size':11, fill:'#cbd5e1', 'text-anchor':'middle' }, '현장 (한 줄로 차례차례)'));
+  T_STEPS.forEach((s, i) => { const done = tp * T_STEPS.length > i + .999, cur = !done && tp * T_STEPS.length > i; t.appendChild(el('rect', { x:8 + i * 41, y:30, width:38, height:28, rx:4, fill:done ? '#94a3b8' : cur ? '#e2e8f0' : '#1e293b', stroke:'#64748b' })); t.appendChild(el('text', { x:27 + i * 41, y:48, 'font-size':9, fill:done || cur ? '#0f172a' : '#94a3b8', 'text-anchor':'middle' }, s)); });
+  const h = Math.min(1, tp) * 70; t.appendChild(el('rect', { x:110, y:140 - h, width:80, height:h, fill:'#94a3b8' })); t.appendChild(el('line', { x1:0, y1:140, x2:300, y2:140, stroke:'#65a30d', 'stroke-width':4 }));
+  t.appendChild(el('text', { x:150, y:130 - h, 'font-size':10, fill:'#e2e8f0', 'text-anchor':'middle' }, Math.round(tp * 100) + '%'));
+  const m = $('modSvg'); m.innerHTML = '';
+  m.appendChild(el('text', { x:80, y:16, 'font-size':11, fill:'#86efac', 'text-anchor':'middle' }, '현장'));
+  m.appendChild(el('text', { x:225, y:16, 'font-size':11, fill:'#86efac', 'text-anchor':'middle' }, '공장 (동시에!)'));
+  M_SITE.forEach((s, i) => { const p = i === 4 ? mp * 5 > 4 : mp * 5 > i; m.appendChild(el('rect', { x:8 + i * 30, y:30, width:28, height:28, rx:4, fill:p ? '#4ade80' : '#1e293b', stroke:'#166534' })); m.appendChild(el('text', { x:22 + i * 30, y:48, 'font-size':8, fill:p ? '#052e16' : '#94a3b8', 'text-anchor':'middle' }, s)); });
+  M_FACT.forEach((s, i) => { const p = mp * 5 > i; m.appendChild(el('rect', { x:168 + i * 32, y:30, width:30, height:28, rx:4, fill:p ? '#86efac' : '#1e293b', stroke:'#166534' })); m.appendChild(el('text', { x:183 + i * 32, y:48, 'font-size':8, fill:p ? '#052e16' : '#94a3b8', 'text-anchor':'middle' }, s)); });
+  const fh = Math.min(1, mp * 5 / 4) * 40; m.appendChild(el('rect', { x:190, y:120 - fh, width:70, height:fh, fill:'#86efac' })); m.appendChild(el('text', { x:225, y:135, 'font-size':9, fill:'#bbf7d0', 'text-anchor':'middle' }, '공장에서 모듈 생산'));
+  const site = mp * 5 > 4 ? (mp * 5 - 4) : 0; const fnd = Math.min(1, mp * 5 / 4) * 14;
+  m.appendChild(el('rect', { x:40, y:140 - fnd, width:80, height:fnd, fill:'#9ca3af' }));
+  for (let k = 0; k < 4; k++) if (site * 4 > k) m.appendChild(el('rect', { x:42 + (k % 2) * 40, y:140 - fnd - 28 * (Math.floor(k / 2) + 1), width:36, height:26, fill:'#4ade80', stroke:'#166534' }));
+  m.appendChild(el('line', { x1:0, y1:140, x2:300, y2:140, stroke:'#65a30d', 'stroke-width':4 }));
+  m.appendChild(el('text', { x:80, y:80, 'font-size':10, fill:'#e2e8f0', 'text-anchor':'middle' }, Math.round(mp * 100) + '%'));
+}
+drawCmp(0, 0);
+let raceTimer = null;
+$('raceBtn').onclick = () => {
+  if (raceTimer) return;
+  let tp = 0, mp = 0; $('raceMsg').textContent = '';
+  raceTimer = setInterval(() => {
+    tp = Math.min(1, tp + 0.01); mp = Math.min(1, mp + 0.0185);
+    drawCmp(tp, mp); $('raceTf').style.width = tp * 100 + '%'; $('raceMf').style.width = mp * 100 + '%'; $('raceT').textContent = Math.round(tp * 100) + '%'; $('raceM').textContent = Math.round(mp * 100) + '%';
+    if (mp >= 1 && !$('raceMsg').textContent) $('raceMsg').innerHTML = '🏁 <b>모듈러 완공!</b> 일반 건설은 아직 ' + Math.round(tp * 100) + '%… 공장 생산과 현장 기초 공사가 <b>동시에</b> 진행되어 공사 기간이 크게 단축됩니다.';
+    if (tp >= 1) { clearInterval(raceTimer); raceTimer = null; $('raceBtn').textContent = '🔁 다시 대결'; }
+  }, 60);
+};
+/* OX */
+const OX = [
+  { t:'모듈러 하우스는 벽·바닥·창문·전기 배선까지 갖춘 방 한 칸을 <b>공장에서</b> 미리 만든다.', a:true, why:'구조체·내장재·설비가 설치된 모듈을 공장에서 제작합니다.' },
+  { t:'모듈러 건설은 현장에서 <b>기초 공사가 필요 없다.</b>', a:false, why:'현장에서 기초·토목 공사는 그대로 필요합니다. 다만 모듈 생산과 동시에 진행되어 기간이 줄어들 뿐이에요.' },
+  { t:'모듈은 조립·해체가 쉬워 나중에 <b>공간을 늘리거나 줄이기</b> 좋다.', a:true, why:'사용 목적에 따라 공간을 늘리거나 불필요한 공간을 줄일 수 있습니다.' },
+  { t:'모듈러 건설은 현장 작업이 많아서 <b>소음과 폐기물이 더 많이</b> 생긴다.', a:false, why:'반대! 현장 작업이 줄어 건축 소음과 현장 공사 폐기물이 감소합니다.' },
+  { t:'모듈러 건설에서는 <b>설계 단계</b>가 덜 중요하다. 조립만 잘하면 되니까.', a:false, why:'공장에서 만든 뒤에는 고치기 어려우므로 모듈의 크기·조합을 정하는 설계가 오히려 더 중요합니다.' },
+];
+let oxDone = 0, oxOk = 0;
+OX.forEach((it, i) => {
+  const d = document.createElement('div'); d.className = 'ox-item';
+  d.innerHTML = '<span class="t">' + (i + 1) + '. ' + it.t + '</span><button class="ox-btn" data-v="1">O</button><button class="ox-btn" data-v="0">X</button><div class="ox-fb"></div>';
+  d.querySelectorAll('.ox-btn').forEach(b => b.onclick = () => {
+    if (d.dataset.done) return; d.dataset.done = '1'; oxDone++;
+    const ok = (b.dataset.v === '1') === it.a; if (ok) oxOk++;
+    d.querySelectorAll('.ox-btn').forEach(x => { x.disabled = true; if ((x.dataset.v === '1') === it.a) x.classList.add('correct'); });
+    if (!ok) b.classList.add('wrong');
+    const fb = d.querySelector('.ox-fb'); fb.className = 'ox-fb ' + (ok ? 'ok' : 'no'); fb.innerHTML = (ok ? '⭕ ' : '❌ ') + it.why;
+    if (oxDone === OX.length) $('oxScore').innerHTML = '🎯 OX 결과: <b style="color:#fbbf24">' + oxOk + ' / ' + OX.length + '</b>' + (oxOk === OX.length ? ' — 완벽!' : ' — 틀린 문장의 이유를 다시 읽어 보세요.');
+  });
+  $('oxList').appendChild(d);
+});
+
+/* ===== 문제 해결 5단계 표시 ===== */
+const PS = [['①', '문제 확인', '조건 분석'], ['②', '아이디어', '창출·선정'], ['③', '구체화', '설계도'], ['④', '실행', '모형 제작'], ['⑤', '평가', '모둠 평가']];
+PS.forEach((p, i) => { const d = document.createElement('div'); d.className = 'ps-step' + (i === 0 ? ' on' : ''); d.innerHTML = '<b>' + p[0] + ' ' + p[1] + '</b><small>' + p[2] + '</small>'; d.onclick = () => { const ids = ['iqProblem', 'ideaTable', 'board', 'iqFeel', 'iqFeel']; $(ids[i]).scrollIntoView({ behavior:'smooth', block:'center' }); }; $('psSteps').appendChild(d); });
+
+/* ===== 아이디어 표 저장 ===== */
+document.querySelectorAll('.idea, .idea-mod').forEach(e => { const k = (e.classList.contains('idea') ? 'idea-' : 'mod-') + e.dataset.k; const v = store.get(k); if (v) e.value = v; e.addEventListener('change', () => store.set(k, e.value)); });
+$('ideaSave').onclick = () => { document.querySelectorAll('.idea, .idea-mod').forEach(e => store.set((e.classList.contains('idea') ? 'idea-' : 'mod-') + e.dataset.k, e.value)); $('ideaSaved').textContent = '✔ 저장됨 ' + new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit' }); };
+
+/* ===================================================== */
+/* STEP 4 : 모듈 배치 시뮬레이터                            */
+/* ===================================================== */
+const COLS = 12, ROWS = 8;
+const SPACES = [
+  { k:'rk', n:'교실', need:8, cls:'rk', minCells:6, color:'#fde68a' },
+  { k:'of', n:'교무실', need:1, cls:'of', minCells:3, color:'#f9a8d4' },
+  { k:'lb', n:'도서관·커뮤니티', need:1, cls:'lb', minCells:8, color:'#a5b4fc' },
+  { k:'sp', n:'특별실', need:3, cls:'sp', minCells:5, color:'#86efac' },
+  { k:'wc', n:'화장실', need:1, cls:'wc', minCells:2, color:'#7dd3fc' },
+  { k:'hall', n:'복도·계단', need:0, cls:'hall', minCells:1, color:'#e7e5e4' },
+];
+const MODS = [{ k:'A', w:2, n:'A타입 (2칸)' }, { k:'B', w:3, n:'B타입 (3칸)' }, { k:'C', w:5, n:'C타입 (5칸)' }];
+// 상태: floors[f][r][c] = { id, sp } | null ; 모듈 단위 id
+let floors = [[], []], floor = 0, curSpace = 'rk', curMod = 'A', vertical = false, eraser = false, nextId = 1;
+const ENTRY = [ [7, 5], [7, 6] ]; // 출입구 칸 (1층 아래쪽 가운데)
+function emptyFloor() { return Array.from({ length:ROWS }, () => Array(COLS).fill(null)); }
+function resetAll() { floors = [emptyFloor(), emptyFloor()]; nextId = 1; }
+resetAll();
+// 도구
+SPACES.forEach(s => { const b = document.createElement('button'); b.className = 'tool' + (s.k === 'rk' ? ' on' : ''); b.dataset.sp = s.k; b.innerHTML = '<span class="sw" style="background:' + s.color + '"></span>' + s.n; b.onclick = () => { curSpace = s.k; eraser = false; refreshTools(); }; $('spaceTools').appendChild(b); });
+const er = document.createElement('button'); er.className = 'tool'; er.dataset.sp = 'erase'; er.textContent = '🧽 지우개'; er.onclick = () => { eraser = !eraser; refreshTools(); }; $('spaceTools').appendChild(er);
+MODS.forEach(m => { const b = document.createElement('button'); b.className = 'tool' + (m.k === 'A' ? ' on' : ''); b.dataset.mod = m.k; b.textContent = '🧱 ' + m.n; b.onclick = () => { curMod = m.k; refreshTools(); }; $('modTools').appendChild(b); });
+const rotLbl = document.createElement('span'); rotLbl.id = 'rotLbl'; rotLbl.style.cssText = 'font-size:.78rem;color:#94a3b8;margin-left:4px'; $('modTools').appendChild(rotLbl);
+function refreshTools() {
+  document.querySelectorAll('#spaceTools .tool').forEach(b => b.classList.toggle('on', eraser ? b.dataset.sp === 'erase' : b.dataset.sp === curSpace));
+  document.querySelectorAll('#modTools .tool').forEach(b => b.classList.toggle('on', b.dataset.mod === curMod));
+  rotLbl.textContent = vertical ? '↕ 세로 놓기' : '↔ 가로 놓기';
+}
+refreshTools();
+// 보드
+const cells = [];
+for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+  const d = document.createElement('div'); d.className = 'cell'; d.dataset.r = r; d.dataset.c = c;
+  if (ENTRY.some(([er, ec]) => er === r && ec === c)) d.classList.add('entry');
+  d.addEventListener('mouseenter', () => preview(r, c)); d.addEventListener('mouseleave', clearPreview);
+  d.addEventListener('click', () => { if (eraser) erase(r, c); else place(r, c); });
+  d.addEventListener('contextmenu', e => { e.preventDefault(); erase(r, c); });
+  $('board').appendChild(d); cells.push(d);
+}
+document.addEventListener('keydown', e => { if (e.key === 'r' || e.key === 'R') { if (document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return; vertical = !vertical; refreshTools(); } });
+$('rotBtn').onclick = () => { vertical = !vertical; refreshTools(); };
+function footprint(r, c) { const w = MODS.find(m => m.k === curMod).w; const pts = []; for (let i = 0; i < w; i++) pts.push(vertical ? [r + i, c] : [r, c + i]); return pts; }
+function canPlace(pts) {
+  for (const [r, c] of pts) { if (r >= ROWS || c >= COLS) return false; if (floors[floor][r][c]) return false; if (floor === 1 && !floors[0][r][c]) return false; if (floor === 0 && curSpace !== 'hall' && ENTRY.some(([er, ec]) => er === r && ec === c)) return false; }
+  return true;
+}
+function preview(r, c) { clearPreview(); if (eraser) return; const pts = footprint(r, c), ok = canPlace(pts); pts.forEach(([pr, pc]) => { if (pr < ROWS && pc < COLS) cells[pr * COLS + pc].classList.add(ok ? 'ok-preview' : 'bad-preview'); }); }
+function clearPreview() { cells.forEach(d => d.classList.remove('ok-preview', 'bad-preview')); }
+function place(r, c) { const pts = footprint(r, c); if (!canPlace(pts)) return; const id = nextId++; pts.forEach(([pr, pc]) => floors[floor][pr][pc] = { id, sp:curSpace, mod:curMod }); render(); }
+function erase(r, c) { const cell = floors[floor][r][c]; if (!cell) return; const id = cell.id; for (let rr = 0; rr < ROWS; rr++) for (let cc = 0; cc < COLS; cc++) { if (floors[floor][rr][cc] && floors[floor][rr][cc].id === id) floors[floor][rr][cc] = null; if (floor === 0 && floors[1][rr][cc] && !floors[0][rr][cc]) floors[1][rr][cc] = null; } render(); }
+function render() {
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+    const d = cells[r * COLS + c], cell = floors[floor][r][c];
+    d.className = 'cell' + (ENTRY.some(([er, ec]) => er === r && ec === c) && floor === 0 ? ' entry' : '');
+    d.textContent = '';
+    if (cell) { d.classList.add(cell.sp); d.textContent = cell.mod; }
+    else if (floor === 1 && floors[0][r][c]) d.style.background = '#334155'; else d.style.background = '';
+    if (cell) d.style.background = '';
+  }
+  updateSide(); $('evalReport').style.display = 'none';
+}
+function modulesOf(f) { const map = {}; for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) { const x = floors[f][r][c]; if (x) { if (!map[x.id]) map[x.id] = { id:x.id, sp:x.sp, mod:x.mod, cells:[] }; map[x.id].cells.push([r, c]); } } return Object.values(map); }
+function rooms() {
+  // 같은 종류의 모듈이 붙어 있으면 한 공간(방)으로 묶음 (층별)
+  const out = [];
+  for (let f = 0; f < 2; f++) {
+    const seen = Array.from({ length:ROWS }, () => Array(COLS).fill(false));
+    for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+      const x = floors[f][r][c]; if (!x || seen[r][c] || x.sp === 'hall') continue;
+      const q = [[r, c]], cellsR = []; seen[r][c] = true;
+      while (q.length) { const [cr, cc] = q.pop(); cellsR.push([cr, cc]); [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dr, dc]) => { const nr = cr + dr, nc = cc + dc; if (nr < 0 || nc < 0 || nr >= ROWS || nc >= COLS || seen[nr][nc]) return; const y = floors[f][nr][nc]; if (y && y.sp === x.sp) { seen[nr][nc] = true; q.push([nr, nc]); } }); }
+      out.push({ f, sp:x.sp, cells:cellsR });
+    }
+  }
+  return out;
+}
+// 붙어 있는 같은 종류 공간은 '최소 칸 수'마다 1개로 계산 (예: 교실 12칸 = 교실 2개)
+function roomCounts(rs) { const counts = {}; SPACES.forEach(s => counts[s.k] = rs.filter(r => r.sp === s.k).reduce((a, r) => a + Math.floor(r.cells.length / s.minCells), 0)); return counts; }
+function updateSide() {
+  const rs = rooms(); const counts = roomCounts(rs);
+  $('reqList').innerHTML = SPACES.filter(s => s.need).map(s => { const met = counts[s.k] >= s.need; return '<div class="req ' + (met ? 'met' : 'unmet') + '"><span>' + s.n + ' (' + s.minCells + '칸 = 1개)</span><span class="cnt">' + counts[s.k] + ' / ' + s.need + (met ? ' ✅' : '') + '</span></div>'; }).join('');
+  const m0 = modulesOf(0).filter(m => m.sp !== 'hall'), m1 = modulesOf(1).filter(m => m.sp !== 'hall'); const cnt = { A:0, B:0, C:0 }; [...m0, ...m1].forEach(m => cnt[m.mod]++);
+  const used = modulesOf(0).reduce((a, m) => a + m.cells.length, 0);
+  $('statBox').innerHTML = '<b>📦 모듈 수</b> A ' + cnt.A + ' · B ' + cnt.B + ' · C ' + cnt.C + ' (총 ' + (m0.length + m1.length) + '개)<br><b>🗺️ 대지 사용</b> ' + used + ' / ' + (ROWS * COLS) + '칸 (' + Math.round(used / (ROWS * COLS) * 100) + '%)<br><b>🏢 층수</b> ' + (modulesOf(1).length ? '2층' : '1층') + ' · 2층 모듈 ' + m1.length + '개 <span style="color:#94a3b8;font-size:.78rem">(복도 제외)</span><br><span style="color:#94a3b8;font-size:.78rem">작은 모듈이 너무 많으면 조립 횟수↑, 큰 모듈만 쓰면 배치 유연성↓ — 균형이 설계의 핵심!</span>';
+}
+function hasHallAccess(room) { // 방이 복도/출입구/대지 밖(운동장) 과 접하는가
+  return room.cells.some(([r, c]) => [[1, 0], [-1, 0], [0, 1], [0, -1]].some(([dr, dc]) => { const nr = r + dr, nc = c + dc; if (nr < 0 || nc < 0 || nr >= ROWS || nc >= COLS) return room.f === 0; const y = floors[room.f][nr][nc]; return y && y.sp === 'hall'; }));
+}
+function evaluate() {
+  const rs = rooms(); const ev = []; let score = 0;
+  // 1. 조건 충족
+  const counts = roomCounts(rs);
+  const unmet = SPACES.filter(s => s.need && counts[s.k] < s.need);
+  if (!unmet.length) { score += 40; ev.push(['good', '✅ <b>조건 충족</b> — 교실 8·교무실·도서관·특별실 3·화장실이 모두 갖추어졌어요. (40점)']); }
+  else ev.push(['bad', '❌ <b>조건 미충족</b> — ' + unmet.map(s => s.n + ' ' + counts[s.k] + '/' + s.need).join(', ') + '. 붙어 있는 같은 종류 공간은 최소 칸 수마다 1개로 계산돼요(교실 6칸 = 1개). (0/40점)']);
+  // 2. 동선: 복도/출입구 접근
+  const noAccess = rs.filter(r => !hasHallAccess(r));
+  const hallCells = [0, 1].reduce((a, f) => a + modulesOf(f).filter(m => m.sp === 'hall').reduce((b, m) => b + m.cells.length, 0), 0);
+  if (rs.length && !noAccess.length && hallCells) { score += 20; ev.push(['good', '✅ <b>동선(평면 계획)</b> — 모든 공간이 복도나 바깥과 연결돼 있어요. (20점)']); }
+  else if (rs.length && noAccess.length) ev.push(['bad', '❌ <b>동선 문제</b> — 다른 방에 둘러싸여 들어갈 수 없는 공간이 ' + noAccess.length + '개! 복도·계단 모듈로 연결하세요. 5차시 평면 계획 = 동선! (0/20점)']);
+  else ev.push(['meh', '⚠️ <b>복도가 없어요</b> — 복도·계단 모듈을 넣어 공간을 이어 주세요. (0/20점)']);
+  // 3. 소음: 특별실과 도서관 인접
+  let noisy = false; rs.filter(r => r.sp === 'lb').forEach(lb => { lb.cells.forEach(([r, c]) => { [[1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dr, dc]) => { const y = (floors[lb.f][r + dr] || [])[c + dc]; if (y && y.sp === 'sp') noisy = true; }); }); });
+  if (counts.lb && counts.sp) { if (!noisy) { score += 15; ev.push(['good', '✅ <b>환경(소음)</b> — 도서관이 특별실(음악실·과학실 등)과 떨어져 있어요. (15점)']); } else ev.push(['meh', '⚠️ <b>소음</b> — 도서관이 특별실과 바로 붙어 있어요. 조용해야 할 공간은 떨어뜨리는 것이 환경 계획! (0/15점)']); }
+  // 4. 2층 구조: 2층 모듈이 1층 위에 (canPlace가 보장) → 2층 사용 시 가산, 화장실 층별
+  const m1 = modulesOf(1);
+  if (m1.length) { score += 10; ev.push(['good', '✅ <b>구조 계획</b> — 2층을 1층 모듈 위에 올려 대지를 아껴 썼어요. (10점)']); } else ev.push(['meh', '💡 <b>대지 활용</b> — 모두 1층에 펼치면 운동장이 좁아져요. 2층을 시도해 보세요. (0/10점)']);
+  // 5. 모듈 효율: 총 모듈 수 대비 C타입 비율
+  const all = [...modulesOf(0), ...m1].filter(m => m.sp !== 'hall'); const big = all.filter(m => m.mod === 'C').length;
+  if (all.length && big / all.length >= 0.3) { score += 15; ev.push(['good', '✅ <b>시공 효율(공정)</b> — 큰 모듈(C)을 적절히 써서 조립 횟수가 적어요. 모듈러의 장점을 살렸어요! (15점)']); }
+  else if (all.length) ev.push(['meh', '⚠️ <b>시공 효율</b> — 작은 모듈이 너무 많아요(C타입 ' + Math.round(big / all.length * 100) + '%). 조립 횟수가 늘면 공사 기간과 비용이 늘어요. (0/15점)']);
+  const msg = score >= 90 ? '🏆 훌륭한 설계! 종이 모형으로 만들 준비 완료.' : score >= 60 ? '👍 좋은 출발! ⚠️·❌ 항목을 고쳐 다시 평가해 보세요.' : '🤔 설계도를 고쳐 봅시다. 실제 건설은 한 번 지으면 되돌리기 어려워요(일회성) — 지금 고치는 게 가장 쌉니다!';
+  $('evalReport').style.display = 'block';
+  $('evalReport').innerHTML = '<h4>📊 설계 평가 <span class="score-big">' + score + '</span><span style="color:#94a3b8;font-size:.85rem"> / 100</span></h4>' + ev.map(e => '<div class="ev ' + e[0] + '">' + e[1] + '</div>').join('') + '<div style="margin-top:8px">' + msg + '</div>';
+  store.set('bestScore', Math.max(score, +(store.get('bestScore') || 0)));
+}
+$('evalBtn').onclick = evaluate;
+$('clearFloorBtn').onclick = () => { floors[floor] = emptyFloor(); if (floor === 0) floors[1] = emptyFloor(); render(); };
+$('clearAllBtn').onclick = () => { resetAll(); render(); };
+document.querySelectorAll('.ftab').forEach(b => b.onclick = () => { floor = +b.dataset.f; document.querySelectorAll('.ftab').forEach(x => x.classList.toggle('on', x === b)); render(); });
+$('sampleBtn').onclick = () => {
+  resetAll();
+  const put = (f, r, c, w, vert, sp, mod) => { const id = nextId++; for (let i = 0; i < w; i++) floors[f][vert ? r + i : r][vert ? c : c + i] = { id, sp, mod }; };
+  // 1층: 아래 복도(행4) + 출입구, 위쪽 교실 4개(C+A = 7칸? → C 5칸 + A 2칸 나란히), 아래쪽 특별실·화장실·교무실
+  for (let c = 0; c < 12; c++) put(0, 4, c, 1, false, 'hall', 'A'); // 복도 (1칸씩 표현)
+  put(0, 5, 5, 2, false, 'hall', 'A'); put(0, 6, 5, 2, false, 'hall', 'A'); put(0, 7, 5, 2, false, 'hall', 'A'); // 출입구 통로
+  [0, 3, 6, 9].forEach(c => { put(0, 0, c, 3, false, 'rk', 'B'); put(0, 1, c, 3, false, 'rk', 'B'); }); // 교실 4개 (B+B = 6칸)
+  [0, 3, 6, 9].forEach(c => { put(0, 2, c, 3, false, 'rk', 'B'); put(0, 3, c, 3, false, 'rk', 'B'); }); // 교실 4개
+  put(0, 5, 0, 5, false, 'sp', 'C'); put(0, 6, 0, 5, false, 'sp', 'C'); // 특별실 1 (10칸)
+  put(0, 7, 0, 5, false, 'wc', 'C'); // 화장실
+  put(0, 5, 7, 5, false, 'sp', 'C'); put(0, 6, 7, 5, false, 'sp', 'C'); // 특별실 2
+  put(0, 7, 7, 3, false, 'of', 'B'); put(0, 7, 10, 2, false, 'of', 'A'); // 교무실
+  // 2층: 도서관 + 특별실 3 + 복도
+  for (let c = 0; c < 12; c++) put(1, 4, c, 1, false, 'hall', 'A');
+  put(1, 0, 0, 5, false, 'lb', 'C'); put(1, 1, 0, 5, false, 'lb', 'C'); put(1, 2, 0, 5, false, 'lb', 'C'); put(1, 3, 0, 5, false, 'lb', 'C'); // 도서관 20칸
+  put(1, 0, 5, 5, false, 'sp', 'C'); put(1, 1, 5, 5, false, 'sp', 'C'); // 특별실 3 (일부러 도서관 옆에!)
+  put(1, 2, 7, 5, false, 'hall', 'C'); put(1, 3, 7, 5, false, 'hall', 'C'); // 커뮤니티 통로
+  render();
+  $('evalReport').style.display = 'block'; $('evalReport').innerHTML = '<h4>💡 예시 설계</h4>1층: 교실 8개(위쪽, B+B), 특별실 2·화장실·교무실(아래쪽), 가운데 복도와 출입구 통로. 2층: 도서관(조용한 왼쪽)·특별실 1·복도. <b>「설계 평가하기」</b>를 눌러 점수를 확인하고, 더 좋은 설계로 바꿔 보세요! (예시는 일부러 만점이 아니에요 — 무엇을 고치면 좋을까요?)';
+};
+render();
+
+/* ===== 평가표 저장 ===== */
+document.querySelectorAll('.rub').forEach(s => { const v = store.get('rub-' + s.dataset.k); if (v) s.value = v; s.addEventListener('change', () => store.set('rub-' + s.dataset.k, s.value)); });
+
+/* ===== 미니 퀴즈 ===== */
+let mqzCorrect = 0, mqzDone = 0;
+const mqzItems = document.querySelectorAll('#miniQuiz .mqz-item');
+mqzItems.forEach(item => {
+  const ans = item.dataset.answer, optsEl = item.querySelector('.mqz-opts'), fb = item.querySelector('.mqz-fb');
+  optsEl.dataset.opts.split(',').forEach(o => {
+    const b = document.createElement('button'); b.className = 'mqz-btn'; b.textContent = o;
+    b.onclick = () => {
+      if (item.dataset.done) return; item.dataset.done = '1'; mqzDone++;
+      optsEl.querySelectorAll('.mqz-btn').forEach(x => x.disabled = true);
+      if (o === ans) { b.classList.add('correct'); mqzCorrect++; fb.textContent = '⭕ 정답!'; fb.className = 'mqz-fb ok'; }
+      else { b.classList.add('wrong'); optsEl.querySelectorAll('.mqz-btn').forEach(x => { if (x.textContent === ans) x.classList.add('correct'); }); fb.textContent = '❌ 정답은 「' + ans + '」.'; fb.className = 'mqz-fb no'; }
+      if (mqzDone === mqzItems.length) $('mqzScore').innerHTML = '🎯 미니 퀴즈: <b style="color:#fbbf24">' + mqzCorrect + ' / ' + mqzItems.length + '</b>' + (mqzCorrect === mqzItems.length ? ' — 완벽!' : ' — 틀린 부분은 1단계로 복습!');
+    };
+    optsEl.appendChild(b);
+  });
+});
+
+/* ===== 탐구 입력 저장 ===== */
+function saveIq(id) { const e = $(id); store.set(id, e.value); const s = $(id + '-saved'); if (s) s.textContent = '✔ 저장됨 ' + new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit' }); }
+['iqProblem', 'iqDesign', 'iqFeel'].forEach(id => { const v = store.get(id); if (v) $(id).value = v; });
+
+/* ===== 체크리스트 ===== */
+const SC_TOTAL = document.querySelectorAll('.sc').length;
+document.querySelectorAll('.sc').forEach(c => c.addEventListener('change', () => {
+  const n = document.querySelectorAll('.sc:checked').length, p = $('scProgress');
+  p.textContent = '체크: ' + n + ' / ' + SC_TOTAL;
+  if (n === SC_TOTAL) p.textContent += ' — 🌟 완벽! 형성평가 도전!';
+  else if (n >= Math.ceil(SC_TOTAL * .6)) p.textContent += ' — 좋아요! 나머지도 복습하세요.';
+}));
+</script>
+</body>
+</html>
