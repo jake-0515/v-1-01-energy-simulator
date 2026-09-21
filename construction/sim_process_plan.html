@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5차시 — 건설 기획·계획과 설계</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Segoe UI','Malgun Gothic',sans-serif;
+  background:linear-gradient(160deg,#0f172a,#1e293b);
+  color:#e2e8f0; min-height:100vh;
+}
+.container { max-width:1050px; margin:0 auto; padding:20px 18px 80px; }
+.top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.top-nav a { color:#7dd3fc; text-decoration:none; font-size:.9rem; }
+.top-nav a:hover { text-decoration:underline; }
+h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
+.lesson-tag { display:inline-block; background:#fbbf24; color:#1e293b; font-weight:800; border-radius:8px; padding:3px 12px; font-size:.8rem; margin-bottom:10px; }
+.unit-tag { display:inline-block; background:#334155; color:#94a3b8; border-radius:8px; padding:3px 10px; font-size:.75rem; margin-left:6px; }
+.goal-box {
+  background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0;
+  padding:14px 18px; margin:14px 0 30px; font-size:.92rem; line-height:1.7;
+}
+.goal-box b { color:#7dd3fc; }
+.step-title { font-size:1.25rem; color:#fbbf24; margin:40px 0 6px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.step-num { background:#f59e0b; color:#1e293b; width:30px; height:30px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:.95rem; flex-shrink:0; }
+.step-time { font-size:.7rem; background:#334155; color:#94a3b8; border-radius:999px; padding:3px 10px; font-weight:600; }
+.step-desc { color:#94a3b8; font-size:.9rem; margin-bottom:16px; line-height:1.6; }
+.flow-bar {
+  display:flex; gap:6px; flex-wrap:wrap; background:rgba(15,23,42,.6);
+  border:1px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:30px;
+  font-size:.76rem; color:#94a3b8;
+}
+.flow-bar span { background:#1e293b; border:1px solid #475569; border-radius:999px; padding:4px 11px; white-space:nowrap; }
+.flow-bar span b { color:#fbbf24; }
+.panel { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.hook { margin-top:16px; background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0; padding:14px 16px; font-size:.9rem; line-height:1.75; }
+.hook b { color:#7dd3fc; }
+.btn-main {
+  background:linear-gradient(135deg,#f59e0b,#d97706); color:#1e293b; font-weight:800;
+  border:none; border-radius:10px; padding:11px 26px; font-size:.95rem; cursor:pointer; font-family:inherit; transition:.2s;
+}
+.btn-main:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 16px rgba(245,158,11,.35); }
+.btn-main:disabled { opacity:.45; cursor:default; }
+.btn-sub { background:#334155; color:#cbd5e1; border:1px solid #64748b; border-radius:10px; padding:9px 18px; font-size:.86rem; cursor:pointer; font-family:inherit; }
+.btn-sub:hover { border-color:#94a3b8; }
+
+/* ===== 자기점검 (학습 전/후) ===== */
+.kwl { background:rgba(167,139,250,.08); border:1px solid rgba(167,139,250,.35); border-radius:14px; padding:20px; }
+.kwl h3 { color:#c4b5fd; font-size:1rem; margin-bottom:10px; }
+.kwl-row { display:flex; flex-direction:column; gap:10px; }
+.kwl-item { display:flex; align-items:center; gap:10px; font-size:.9rem; flex-wrap:wrap; }
+.kwl-item span { flex:1; min-width:220px; }
+.kwl-item select { background:#1e293b; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:5px 10px; font-size:.85rem; cursor:pointer; font-family:inherit; }
+.kwl-note { font-size:.78rem; color:#a78bfa; margin-top:10px; }
+.kwl-compare { margin-top:14px; display:none; }
+.kwl-compare table { width:100%; border-collapse:collapse; font-size:.85rem; }
+.kwl-compare th, .kwl-compare td { padding:7px 8px; border-bottom:1px solid #334155; text-align:left; }
+.kwl-compare th { color:#c4b5fd; font-weight:600; font-size:.8rem; }
+.kwl-compare .up { color:#4ade80; font-weight:700; }
+.kwl-compare .same { color:#94a3b8; }
+.kwl-compare .down { color:#f87171; font-weight:700; }
+.kwl-summary { margin-top:10px; background:rgba(15,23,42,.6); border-radius:10px; padding:10px 14px; font-size:.88rem; line-height:1.7; }
+
+/* ===== 예측 vs 실제 ===== */
+.predict { display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:rgba(251,191,36,.07); border:1px dashed rgba(251,191,36,.45); border-radius:10px; padding:10px 14px; margin-bottom:14px; font-size:.86rem; }
+.predict select { background:#1e293b; color:#fde68a; border:1px solid #64748b; border-radius:8px; padding:4px 10px; font-family:inherit; font-size:.86rem; }
+.predict .pr-result { width:100%; font-size:.85rem; line-height:1.6; color:#cbd5e1; }
+.predict .pr-result b { color:#fbbf24; }
+
+/* ===== 건설 과정 흐름 ===== */
+.proc-flow { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; justify-content:center; }
+.proc-node { flex:1; min-width:150px; max-width:220px; background:rgba(15,23,42,.6); border:2px solid #475569; border-radius:14px; padding:14px 12px; text-align:center; cursor:pointer; transition:.2s; }
+.proc-node:hover { border-color:#94a3b8; }
+.proc-node.on { border-color:#fbbf24; background:rgba(251,191,36,.1); }
+.proc-node .pe { font-size:1.7rem; display:block; }
+.proc-node b { display:block; color:#fde68a; margin:4px 0 2px; font-size:.95rem; }
+.proc-node small { color:#94a3b8; font-size:.76rem; line-height:1.4; display:block; }
+.proc-arrow { display:flex; align-items:center; color:#fbbf24; font-size:1.4rem; }
+.proc-detail { margin-top:14px; background:rgba(15,23,42,.7); border:1px solid #475569; border-radius:12px; padding:15px; font-size:.88rem; line-height:1.75; min-height:90px; }
+.proc-detail h4 { color:#fbbf24; font-size:1rem; margin-bottom:6px; }
+.term-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:10px; margin-top:14px; }
+.term { background:rgba(15,23,42,.6); border:1px solid #475569; border-radius:12px; padding:12px; font-size:.82rem; line-height:1.55; }
+.term b { color:#7dd3fc; display:block; margin-bottom:4px; font-size:.9rem; }
+.chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.chip { background:#1e293b; border:1px solid #475569; border-radius:999px; padding:6px 13px; font-size:.82rem; color:#cbd5e1; cursor:pointer; transition:.18s; }
+.chip:hover { border-color:#fbbf24; color:#fbbf24; }
+.chip.on { border-color:#fbbf24; background:rgba(251,191,36,.12); color:#fbbf24; }
+@media(max-width:640px){ .proc-arrow{ display:none; } }
+
+/* ===== 기획 vs 계획 ===== */
+.vs-box { display:grid; grid-template-columns:1fr auto 1fr; gap:14px; align-items:stretch; margin-bottom:18px; }
+.vs-card { border-radius:14px; padding:16px; border:2px solid; background:rgba(15,23,42,.5); }
+.vs-card.a { border-color:#f59e0b; } .vs-card.b { border-color:#38bdf8; }
+.vs-card h4 { font-size:1.05rem; margin-bottom:6px; }
+.vs-card.a h4 { color:#fde68a; } .vs-card.b h4 { color:#7dd3fc; }
+.vs-card p { font-size:.86rem; line-height:1.65; color:#cbd5e1; }
+.vs-card .q { display:inline-block; margin-top:8px; font-size:1rem; font-weight:800; }
+.vs-card.a .q { color:#fbbf24; } .vs-card.b .q { color:#38bdf8; }
+.vs-mid { display:flex; align-items:center; font-size:1.3rem; color:#94a3b8; font-weight:800; }
+@media(max-width:640px){ .vs-box{grid-template-columns:1fr} .vs-mid{justify-content:center} }
+.sort-list { display:flex; flex-direction:column; gap:10px; }
+.sort-item { display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:rgba(15,23,42,.6); border:1px solid #475569; border-radius:12px; padding:11px 14px; }
+.sort-item .st { flex:1; min-width:220px; font-size:.9rem; line-height:1.55; }
+.sort-btn { border-radius:999px; padding:7px 15px; font-size:.84rem; cursor:pointer; font-family:inherit; border:2px solid; transition:.18s; }
+.sort-btn.a { background:rgba(245,158,11,.1); border-color:#f59e0b; color:#fde68a; }
+.sort-btn.b { background:rgba(56,189,248,.1); border-color:#38bdf8; color:#7dd3fc; }
+.sort-btn:hover:not(:disabled) { transform:translateY(-1px); }
+.sort-btn:disabled { cursor:default; opacity:.55; }
+.sort-btn.correct { background:#14532d !important; border-color:#4ade80 !important; color:#bbf7d0 !important; opacity:1; }
+.sort-btn.wrong { background:#7f1d1d !important; border-color:#f87171 !important; color:#fecaca !important; opacity:1; }
+.sort-fb { width:100%; font-size:.8rem; color:#94a3b8; line-height:1.5; }
+.sort-fb.ok { color:#86efac; } .sort-fb.no { color:#fca5a5; }
+.game-score { text-align:center; margin-top:12px; font-size:.95rem; }
+
+/* ===== 기획 시뮬레이터 ===== */
+.plan-sim { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:760px){ .plan-sim{grid-template-columns:1fr} }
+.decision { background:rgba(15,23,42,.6); border:1px solid #475569; border-radius:12px; padding:13px; margin-bottom:10px; }
+.decision h4 { font-size:.92rem; color:#fde68a; margin-bottom:4px; display:flex; align-items:center; gap:8px; }
+.decision h4 .dn { background:#f59e0b; color:#1e293b; border-radius:6px; padding:1px 7px; font-size:.75rem; font-weight:800; }
+.decision .dq { font-size:.8rem; color:#94a3b8; margin-bottom:8px; line-height:1.5; }
+.decision .opts { display:flex; flex-direction:column; gap:6px; }
+.dopt { background:#1e293b; border:2px solid #475569; border-radius:9px; padding:8px 11px; font-size:.83rem; cursor:pointer; text-align:left; font-family:inherit; color:#e2e8f0; line-height:1.45; transition:.18s; }
+.dopt:hover { border-color:#94a3b8; }
+.dopt.on { border-color:#fbbf24; background:rgba(251,191,36,.12); }
+.dopt.good { border-color:#4ade80; background:rgba(74,222,128,.12); }
+.dopt.bad { border-color:#f87171; background:rgba(248,113,113,.12); }
+.dopt.meh { border-color:#fbbf24; background:rgba(251,191,36,.12); }
+.plan-stage { background:linear-gradient(180deg,#0c4a6e,#082f49); border-radius:12px; overflow:hidden; }
+.plan-stage svg { display:block; width:100%; height:auto; }
+.plan-report { margin-top:12px; font-size:.86rem; line-height:1.7; }
+.plan-report .pr-item { padding:8px 11px; border-radius:8px; margin-bottom:6px; border-left:4px solid; background:rgba(15,23,42,.6); }
+.plan-report .pr-item.good { border-color:#4ade80; } .plan-report .pr-item.bad { border-color:#f87171; } .plan-report .pr-item.meh { border-color:#fbbf24; }
+.plan-report .pr-item b { color:#fde68a; }
+.score-ring { display:flex; align-items:center; gap:14px; margin-top:10px; background:rgba(15,23,42,.6); border-radius:12px; padding:12px 14px; }
+.score-ring .big { font-size:2rem; font-weight:800; color:#fbbf24; }
+.score-ring .msg { font-size:.88rem; line-height:1.6; }
+
+/* ===== 계획 종류 매칭 ===== */
+.match-chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.mchip { background:#1e293b; border:2px solid #64748b; border-radius:999px; padding:7px 15px; font-size:.86rem; cursor:pointer; font-family:inherit; color:#e2e8f0; transition:.18s; }
+.mchip:hover { border-color:#fbbf24; }
+.mchip.on { border-color:#fbbf24; background:rgba(251,191,36,.15); color:#fbbf24; }
+.mchip.used { opacity:.45; }
+.match-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px; }
+.mcard { background:rgba(15,23,42,.6); border:2px solid #475569; border-radius:12px; padding:12px; cursor:pointer; font-size:.84rem; line-height:1.6; transition:.18s; min-height:110px; }
+.mcard:hover { border-color:#94a3b8; }
+.mcard .slot { display:inline-block; min-width:90px; background:#1e293b; border:1px dashed #64748b; border-radius:999px; padding:3px 12px; font-size:.82rem; color:#94a3b8; margin-bottom:8px; }
+.mcard .slot.filled { border-style:solid; border-color:#fbbf24; color:#fbbf24; }
+.mcard.correct { border-color:#4ade80; } .mcard.correct .slot { border-color:#4ade80; color:#86efac; }
+.mcard.wrong { border-color:#f87171; } .mcard.wrong .slot { border-color:#f87171; color:#fca5a5; }
+.mcard .ex { display:block; margin-top:6px; font-size:.78rem; color:#94a3b8; }
+
+/* ===== 설계 3단계 ===== */
+.dtabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+.dtab { background:#334155; color:#cbd5e1; border:1px solid #64748b; border-radius:999px; padding:8px 18px; font-size:.88rem; cursor:pointer; font-family:inherit; transition:.2s; }
+.dtab.active { background:linear-gradient(135deg,#f59e0b,#d97706); color:#1e293b; font-weight:800; border-color:#f59e0b; }
+.dstage { display:grid; grid-template-columns:1.1fr 1fr; gap:14px; align-items:start; }
+@media(max-width:760px){ .dstage{grid-template-columns:1fr} }
+.dsvg { background:#f8fafc; border-radius:12px; padding:8px; }
+.dsvg svg { width:100%; height:auto; display:block; }
+.dinfo { background:rgba(15,23,42,.7); border:1px solid #475569; border-radius:12px; padding:15px; font-size:.88rem; line-height:1.75; }
+.dinfo h4 { color:#fbbf24; font-size:1rem; margin-bottom:6px; }
+.dinfo .out { margin-top:8px; background:rgba(251,191,36,.07); border-radius:8px; padding:8px 11px; font-size:.82rem; }
+.dinfo .out b { color:#fde68a; }
+.spec-box { margin-top:12px; background:rgba(56,189,248,.08); border:1px dashed rgba(56,189,248,.5); border-radius:10px; padding:11px 13px; font-size:.83rem; line-height:1.65; }
+.spec-box b { color:#7dd3fc; }
+.order-game { margin-top:16px; }
+.order-pool { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+.obtn { background:#1e293b; border:2px solid #64748b; border-radius:10px; padding:9px 14px; font-size:.86rem; cursor:pointer; font-family:inherit; color:#e2e8f0; transition:.18s; text-align:left; line-height:1.45; }
+.obtn:hover:not(:disabled) { border-color:#fbbf24; }
+.obtn:disabled { opacity:.35; cursor:default; }
+.obtn.shake { animation:shake .35s; border-color:#f87171; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+.order-line { display:flex; gap:6px; flex-wrap:wrap; align-items:center; min-height:40px; background:rgba(15,23,42,.6); border-radius:10px; padding:8px 10px; font-size:.86rem; }
+.order-line span.o { background:#14532d; border:1px solid #4ade80; color:#bbf7d0; border-radius:8px; padding:5px 11px; }
+.order-line span.arr { color:#fbbf24; }
+.order-line .ph { color:#64748b; font-size:.82rem; }
+
+/* ===== 도면 4종 ===== */
+.dw-wrap { display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:start; }
+@media(max-width:760px){ .dw-wrap{grid-template-columns:1fr} }
+.dw-btns { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+.dw-btn { background:#1e293b; border:2px solid #475569; border-radius:999px; padding:8px 16px; cursor:pointer; font-family:inherit; color:#e2e8f0; font-size:.86rem; transition:.18s; }
+.dw-btn:hover { border-color:#94a3b8; }
+.dw-btn.on { border-color:#38bdf8; background:rgba(56,189,248,.12); color:#7dd3fc; }
+.dw-view { background:#f8fafc; border-radius:12px; padding:8px; }
+.dw-view svg { width:100%; height:auto; display:block; }
+.dw-detail { background:rgba(15,23,42,.7); border:1px solid #475569; border-radius:12px; padding:15px; font-size:.88rem; line-height:1.75; }
+.dw-detail h4 { color:#7dd3fc; font-size:1rem; margin-bottom:6px; }
+.dw-detail .how { margin-top:8px; font-size:.82rem; color:#94a3b8; }
+.dw-detail .how b { color:#fde68a; }
+.dw-game { margin-top:16px; background:rgba(15,23,42,.6); border:1px solid #475569; border-radius:14px; padding:16px; }
+.dw-game .gq { display:grid; grid-template-columns:260px 1fr; gap:14px; align-items:center; }
+@media(max-width:640px){ .dw-game .gq{grid-template-columns:1fr} }
+.dw-game .gq .dw-view { padding:5px; }
+.dw-game .gopts { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.gopt { background:#1e293b; border:2px solid #64748b; border-radius:10px; padding:10px; font-size:.9rem; cursor:pointer; font-family:inherit; color:#e2e8f0; transition:.18s; }
+.gopt:hover:not(:disabled) { border-color:#38bdf8; }
+.gopt:disabled { cursor:default; }
+.gopt.correct { background:#14532d; border-color:#4ade80; color:#bbf7d0; }
+.gopt.wrong { background:#7f1d1d; border-color:#f87171; color:#fecaca; }
+.g-status { display:flex; justify-content:space-between; align-items:center; font-size:.85rem; color:#94a3b8; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+.g-fb { margin-top:10px; font-size:.85rem; min-height:1.4em; line-height:1.6; }
+.g-fb.ok { color:#86efac; } .g-fb.no { color:#fca5a5; }
+
+/* ===== 미니 퀴즈 ===== */
+.mini-quiz { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.mqz-item { margin-bottom:16px; }
+.mqz-q { font-size:.95rem; margin-bottom:10px; line-height:1.6; }
+.mqz-q .qn { color:#fbbf24; font-weight:700; }
+.mqz-opts { display:flex; gap:8px; flex-wrap:wrap; }
+.mqz-btn { background:#334155; color:#e2e8f0; border:1px solid #64748b; border-radius:999px; padding:7px 16px; font-size:.85rem; cursor:pointer; transition:.2s; font-family:inherit; }
+.mqz-btn:hover:not(:disabled) { border-color:#fbbf24; color:#fbbf24; }
+.mqz-btn.correct { background:#14532d; border-color:#4ade80; color:#bbf7d0; }
+.mqz-btn.wrong { background:#7f1d1d; border-color:#f87171; color:#fecaca; }
+.mqz-btn:disabled { cursor:default; opacity:.85; }
+.mqz-fb { font-size:.82rem; margin-top:8px; min-height:1.2em; line-height:1.5; }
+.mqz-fb.ok { color:#4ade80; } .mqz-fb.no { color:#f87171; }
+
+/* ===== 탐구 입력 / 정리 ===== */
+.inquiry { margin-top:16px; background:rgba(167,139,250,.08); border:1px dashed rgba(167,139,250,.5); border-radius:12px; padding:14px 16px; }
+.inquiry h4 { color:#c4b5fd; font-size:.95rem; margin-bottom:8px; }
+.inquiry p { font-size:.85rem; color:#cbd5e1; line-height:1.6; margin-bottom:8px; }
+.inquiry textarea { width:100%; min-height:64px; background:#0f172a; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:9px 11px; font-family:inherit; font-size:.86rem; resize:vertical; }
+.inquiry .iq-row { display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+.inquiry .iq-saved { font-size:.78rem; color:#a78bfa; }
+.self-check { background:rgba(74,222,128,.07); border:1px solid rgba(74,222,128,.35); border-radius:14px; padding:20px; }
+.self-check h3 { color:#86efac; font-size:1rem; margin-bottom:12px; }
+.sc-item { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:.9rem; line-height:1.55; }
+.sc-item input { margin-top:3px; width:16px; height:16px; accent-color:#4ade80; cursor:pointer; }
+.sc-progress { margin-top:12px; font-size:.85rem; color:#86efac; }
+.next-link { display:block; text-align:center; margin-top:34px; }
+.next-link a { display:inline-block; background:linear-gradient(135deg,#a78bfa,#7c3aed); color:#f8fafc; font-weight:800; text-decoration:none; border-radius:12px; padding:14px 34px; font-size:1rem; transition:.2s; }
+.next-link a:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(167,139,250,.35); }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-nav">
+    <a href="activity_quiz.html">← 4차시: 형성평가</a>
+    <a href="sim_process_build.html">6차시: 건설 시공·관리 →</a>
+  </div>
+
+  <span class="lesson-tag">5차시</span><span class="unit-tag">단원 2 · 건설 과정의 이해 (교과서 196~197쪽)</span>
+  <h1>📝 건설 기획·계획과 설계</h1>
+  <div class="goal-box">
+    <b>학습 목표</b><br>
+    ① 건설 구조물이 만들어지는 과정(<b>기획·계획 → 설계 → 시공 → 관리</b>)을 순서대로 말할 수 있다.<br>
+    ② <b>건설 기획</b>(방향성)과 <b>건설 계획</b>(구체화)의 차이를 설명할 수 있다.<br>
+    ③ 건설 기획 시 <b>고려 사항 5가지</b>와 건설 계획의 <b>종류 5가지</b>를 구분할 수 있다.<br>
+    ④ 건설 설계의 <b>3단계</b>(계획·기본·실시 설계)와 <b>시방서</b>의 역할을 설명할 수 있다.<br>
+    ⑤ <b>설계도 4종류</b>(배치도·평면도·단면도·입면도)를 보고 구별할 수 있다.
+  </div>
+
+  <div class="flow-bar">
+    <span><b>0</b> 자기점검 3분</span>
+    <span><b>1</b> 건설 과정 한눈에 4분</span>
+    <span><b>2</b> 기획 vs 계획 6분</span>
+    <span><b>3</b> 기획 시뮬레이터 8분</span>
+    <span><b>4</b> 계획의 종류 5분</span>
+    <span><b>5</b> 설계 3단계 6분</span>
+    <span><b>6</b> 설계도 4종 8분</span>
+    <span><b>7</b> 미니 퀴즈 3분</span>
+    <span><b>✓</b> 정리·자기점검 3분</span>
+  </div>
+
+  <!-- STEP 0 : 학습 전 자기점검 -->
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">3분 · 🧠 메타인지</span></div>
+  <p class="step-desc">지금 나의 상태를 솔직하게 체크해 보세요. 마지막 단계에서 <b>학습 후 상태와 자동으로 비교</b>합니다.</p>
+  <div class="kwl">
+    <h3>📋 나는 지금 얼마나 알고 있을까?</h3>
+    <div class="kwl-row" id="preRow"></div>
+    <div class="kwl-note">💡 "모른다"고 체크해도 괜찮아요. 자신의 상태를 아는 것이 메타인지의 시작입니다!</div>
+  </div>
+
+  <!-- STEP 1 : 건설 과정 한눈에 -->
+  <div class="step-title"><span class="step-num">1</span> 건설 과정 한눈에 보기 <span class="step-time">4분 · 개념</span></div>
+  <p class="step-desc">건설 구조물은 <b>기획 및 계획 → 설계 → 시공</b>의 과정을 거쳐 만들어지고, 완성 후에도 <b>지속적인 관리</b>가 필요합니다. 각 단계를 눌러 보세요. (1차시 8단계에서 본 흐름을 이번 단원에서 자세히 배웁니다.)</p>
+  <div class="panel">
+    <div class="proc-flow" id="procFlow"></div>
+    <div class="proc-detail" id="procDetail"></div>
+    <div class="hook">
+      🔑 <b>설계할 때 꼭 따지는 4가지</b> — 기획한 내용을 바탕으로
+      <span class="chip" data-t="기능성">기능성</span> <span class="chip" data-t="안전성">안전성</span> <span class="chip" data-t="내구성">내구성</span> <span class="chip" data-t="경제성">경제성</span>
+      등을 고려하여 도면을 만들고, 그 도면에 따라 시공합니다. (칩을 눌러 뜻 확인)
+      <div id="chipDetail" style="margin-top:8px;font-size:.84rem;color:#bae6fd"></div>
+    </div>
+    <div class="term-grid">
+      <div class="term"><b>📝 건설 기획</b>사용자 요구를 바탕으로 구조물의 <u>목표와 방법</u>을 세우는 활동</div>
+      <div class="term"><b>📐 건설 설계</b>계획에서 결정된 내용을 <u>설계도</u>로 그리고 구체적으로 명시하는 일</div>
+      <div class="term"><b>👷 건설 시공</b>설계 도면과 시방서대로 정해진 장소·시간 안에 <u>실제로 만드는</u> 활동</div>
+      <div class="term"><b>🔧 건설 관리</b>공사 중과 완공 후에 구조물이 <u>제 기능과 품질을 유지</u>하도록 관리하는 일</div>
+    </div>
+  </div>
+
+  <!-- STEP 2 : 기획 vs 계획 -->
+  <div class="step-title"><span class="step-num">2</span> 건설 기획 vs 건설 계획 <span class="step-time">6분 · 개념 + 🎮 분류 게임</span></div>
+  <p class="step-desc">둘 다 "짓기 전에 생각하는 일"이지만 역할이 다릅니다. 핵심 질문으로 구분해 보세요.</p>
+  <div class="panel">
+    <div class="vs-box">
+      <div class="vs-card a">
+        <h4>📝 건설 기획 — 방향성</h4>
+        <p>사용자의 요구를 바탕으로 구조물의 <b>용도와 목적, 대지 조건, 규모와 예산, 공사 시기와 기간</b> 등을 고려하여 <b>목표와 방법을 수립</b>하는 활동</p>
+        <span class="q">❓ 무엇을 만들 것인가?</span>
+      </div>
+      <div class="vs-mid">VS</div>
+      <div class="vs-card b">
+        <h4>📋 건설 계획 — 구체화</h4>
+        <p>기획 단계에서 제시된 목표를 이해하고, 구체적인 <b>도면 작성을 위해 주어진 조건과 정보를 파악·분석</b>하는 과정</p>
+        <span class="q">❓ 그것을 어떻게 만들 것인가?</span>
+      </div>
+    </div>
+    <div class="predict" id="sortPredict">
+      🎯 <b>도전 전 예측</b> — 아래 8문장 중 몇 개나 맞힐 것 같나요?
+      <select id="sortPred"><option value="">선택</option><option>0~3개</option><option>4~5개</option><option>6~7개</option><option>8개 전부</option></select>
+      <span class="pr-result" id="sortPredResult"></span>
+    </div>
+    <p class="step-desc" style="margin-bottom:10px">🎮 <b>분류 게임</b> — 각 문장이 <b>기획</b>(무엇을)인지 <b>계획</b>(어떻게)인지 고르세요.</p>
+    <div class="sort-list" id="sortList"></div>
+    <div class="game-score" id="sortScore"></div>
+    <div class="inquiry" id="sortReflect" style="display:none">
+      <h4>🤔 틀린 문장 다시 보기 (메타인지)</h4>
+      <p>틀린 문장이 있다면, 무엇이 헷갈렸는지 한 줄로 적어 보세요. "예산·기간 목표는 기획인데 계획으로 착각했다"처럼 구체적으로!</p>
+      <textarea id="iqSort" placeholder="예) '벽돌 색'은 구체적인 방법이라 계획인데, 기획으로 골랐다."></textarea>
+      <div class="iq-row"><button class="btn-sub" onclick="saveIq('iqSort')">💾 저장</button><span class="iq-saved" id="iqSort-saved"></span></div>
+    </div>
+  </div>
+
+  <!-- STEP 3 : 기획 시뮬레이터 -->
+  <div class="step-title"><span class="step-num">3</span> 🏫 우리 학교 체육관 기획 시뮬레이터 <span class="step-time">8분 · 🎮 시뮬레이션</span></div>
+  <p class="step-desc">건설 기획 시 고려할 5가지 — <b>사용자 요구 · 용도와 목적 · 대지 조건 · 규모와 예산 · 공사 시기와 기간</b>. 여러분이 기획자가 되어 결정해 보세요. 결정에 따라 결과가 달라집니다!</p>
+  <div class="panel">
+    <div class="plan-sim">
+      <div id="decisions"></div>
+      <div>
+        <div class="plan-stage"><svg id="planSvg" viewBox="0 0 420 300"></svg></div>
+        <div style="text-align:center;margin-top:10px"><button class="btn-main" id="planReportBtn" disabled>📊 기획 결과 보기 (5가지 모두 결정하면 활성화)</button></div>
+        <div class="plan-report" id="planReport"></div>
+      </div>
+    </div>
+    <div class="inquiry">
+      <h4>💭 생각해 보기</h4>
+      <p>다섯 가지 고려 사항 중 실제 학교 공사에서 <b>가장 결정하기 어려운 것</b>은 무엇일까요? 그 이유는?</p>
+      <textarea id="iqPlan" placeholder="예) 사용자 요구 — 학생·교사·주민의 의견이 서로 달라서 하나로 모으기 어렵다."></textarea>
+      <div class="iq-row"><button class="btn-sub" onclick="saveIq('iqPlan')">💾 저장</button><span class="iq-saved" id="iqPlan-saved"></span></div>
+    </div>
+  </div>
+
+  <!-- STEP 4 : 계획의 종류 -->
+  <div class="step-title"><span class="step-num">4</span> 건설 계획의 종류 5가지 <span class="step-time">5분 · 🎮 매칭 게임</span></div>
+  <p class="step-desc">교과서 「더 알아보기」 — 건설 계획은 무엇을 정하느냐에 따라 5가지로 나뉩니다. 위의 <b>이름 칩</b>을 누른 뒤, 알맞은 <b>설명 카드</b>를 눌러 붙이세요.</p>
+  <div class="panel">
+    <div class="match-chips" id="matchChips"></div>
+    <div class="match-cards" id="matchCards"></div>
+    <div style="display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap">
+      <button class="btn-main" id="matchCheck">✅ 채점하기</button>
+      <button class="btn-sub" id="matchReset">↺ 다시 하기</button>
+      <span id="matchScore" style="font-size:.9rem"></span>
+    </div>
+  </div>
+
+  <!-- STEP 5 : 설계 3단계 -->
+  <div class="step-title"><span class="step-num">5</span> 건설 설계의 3단계 <span class="step-time">6분 · 개념 + 🎮 순서 게임</span></div>
+  <p class="step-desc">건설 계획에서 결정된 내용을 바탕으로 <b>설계도를 작성하고 구체적으로 내용을 명시</b>하는 일이 건설 설계입니다. 일반적으로 <b>계획 설계 → 기본 설계 → 실시 설계</b> 순으로 점점 자세해집니다. 탭을 눌러 도면이 어떻게 변하는지 보세요.</p>
+  <div class="panel">
+    <div class="dtabs">
+      <button class="dtab active" data-d="0">① 계획 설계</button>
+      <button class="dtab" data-d="1">② 기본 설계</button>
+      <button class="dtab" data-d="2">③ 실시 설계</button>
+    </div>
+    <div class="dstage">
+      <div class="dsvg"><svg id="designSvg" viewBox="0 0 360 250"></svg></div>
+      <div class="dinfo" id="designInfo"></div>
+    </div>
+    <div class="spec-box">
+      📄 <b>시방서란?</b> 도면에서 표현하지 못한 각종 내용을 <b>글로 써서</b> 나타낸 문서.
+      예) "외벽 벽돌은 KS 규격 1급을 사용한다", "콘크리트는 28일 강도 24 MPa 이상", "페인트는 2회 이상 칠한다" — 그림으로는 그릴 수 없는 <b>재료의 종류·품질·시공 방법</b>을 적습니다. <b>실시 설계</b> 단계에서 작성해요.
+    </div>
+    <div class="order-game">
+      <p class="step-desc" style="margin-bottom:8px">🎮 <b>순서 게임</b> — 설계가 진행되는 순서대로 카드를 누르세요. (설명을 읽고 어느 단계인지 판단!)</p>
+      <div class="order-pool" id="orderPool"></div>
+      <div class="order-line" id="orderLine"><span class="ph">여기에 순서대로 쌓입니다…</span></div>
+      <div class="g-fb" id="orderFb"></div>
+    </div>
+  </div>
+
+  <!-- STEP 6 : 설계도 4종 -->
+  <div class="step-title"><span class="step-num">6</span> 설계도의 종류 4가지 <span class="step-time">8분 · 탐색 + 🎮 판별 게임</span></div>
+  <p class="step-desc">같은 집이라도 <b>어디서, 어떻게 잘라서</b> 보느냐에 따라 도면이 달라집니다. 버튼을 눌러 네 가지 도면을 비교해 보세요.</p>
+  <div class="panel">
+    <div class="dw-wrap">
+      <div>
+        <div class="dw-btns" id="dwBtns"></div>
+        <div class="dw-view"><svg id="dwSvg" viewBox="0 0 320 220"></svg></div>
+      </div>
+      <div class="dw-detail" id="dwDetail"></div>
+    </div>
+    <div class="dw-game">
+      <div class="predict" id="dwPredictBox">
+        🎯 <b>도전 전 예측</b> — 8라운드 중 몇 개나 맞힐 것 같나요?
+        <select id="dwPred"><option value="">선택</option><option>0~3개</option><option>4~5개</option><option>6~7개</option><option>8개 전부</option></select>
+        <span class="pr-result" id="dwPredResult"></span>
+      </div>
+      <div class="g-status"><span>🎮 <b>도면 판별 게임</b> — 이 도면의 종류는?</span><span id="dwStatus">라운드 1 / 8 · 점수 0</span></div>
+      <div class="gq">
+        <div class="dw-view"><svg id="dwGameSvg" viewBox="0 0 320 220"></svg></div>
+        <div>
+          <div class="gopts" id="dwOpts"></div>
+          <div class="g-fb" id="dwFb"></div>
+          <div style="margin-top:10px"><button class="btn-main" id="dwNext" style="display:none">다음 라운드 →</button><button class="btn-sub" id="dwRestart" style="display:none">↺ 다시 도전</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 7 : 미니 퀴즈 -->
+  <div class="step-title"><span class="step-num">7</span> 적용 미니 퀴즈 <span class="step-time">3분</span></div>
+  <p class="step-desc">오늘 배운 내용을 바로 적용해 보세요.</p>
+  <div class="mini-quiz" id="miniQuiz">
+    <div class="mqz-item" data-answer="건설 기획">
+      <div class="mqz-q"><span class="qn">Q1.</span> "우리 마을에 홍수를 막을 제방이 필요하다. 3년 안에, 50억 원 예산으로 만들자." — 이 결정은 어느 단계?</div>
+      <div class="mqz-opts" data-opts="건설 기획,건설 계획,건설 설계,건설 시공"></div><div class="mqz-fb"></div>
+    </div>
+    <div class="mqz-item" data-answer="평면 계획">
+      <div class="mqz-q"><span class="qn">Q2.</span> 사용자의 동선과 각 층의 방 배치를 종합적으로 고려하는 계획은?</div>
+      <div class="mqz-opts" data-opts="규모 계획,조형 계획,평면 계획,환경 계획"></div><div class="mqz-fb"></div>
+    </div>
+    <div class="mqz-item" data-answer="실시 설계">
+      <div class="mqz-q"><span class="qn">Q3.</span> 시공에 필요한 내용을 상세히 그리고, 도면으로 나타내기 어려운 것은 시방서로 작성하는 설계 단계는?</div>
+      <div class="mqz-opts" data-opts="계획 설계,기본 설계,실시 설계"></div><div class="mqz-fb"></div>
+    </div>
+    <div class="mqz-item" data-answer="단면도">
+      <div class="mqz-q"><span class="qn">Q4.</span> 건물을 <b>수직으로 잘라</b> 내부 구조(층높이·지붕·기초)를 보여 주는 도면은?</div>
+      <div class="mqz-opts" data-opts="배치도,평면도,단면도,입면도"></div><div class="mqz-fb"></div>
+    </div>
+    <div style="text-align:center;margin-top:6px;font-size:.9rem" id="mqzScore"></div>
+  </div>
+
+  <!-- STEP ✓ : 정리 · 학습 후 자기점검 -->
+  <div class="step-title"><span class="step-num">✓</span> 정리 · 학습 후 자기점검 <span class="step-time">3분 · 🧠 메타인지</span></div>
+  <div class="kwl">
+    <h3>📈 학습 후 — 지금은 얼마나 알고 있을까?</h3>
+    <div class="kwl-row" id="postRow"></div>
+    <div class="kwl-compare" id="kwlCompare">
+      <table><thead><tr><th>항목</th><th>학습 전</th><th>학습 후</th><th>변화</th></tr></thead><tbody id="kwlBody"></tbody></table>
+      <div class="kwl-summary" id="kwlSummary"></div>
+    </div>
+  </div>
+  <div class="inquiry">
+    <h4>✍️ 한 줄 정리</h4>
+    <p>"건설 구조물은 ______ → ______ → ______ 과정을 거쳐 만들어지고, 완성 후에도 ______가 필요하다." 빈칸을 채워 나만의 문장으로 정리해 보세요.</p>
+    <textarea id="iqSum" placeholder="예) 건설 구조물은 기획·계획 → 설계 → 시공 과정을 거쳐 만들어지고, 완성 후에도 지속적인 관리가 필요하다. 기획은 '무엇을', 계획은 '어떻게'!"></textarea>
+    <div class="iq-row"><button class="btn-sub" onclick="saveIq('iqSum')">💾 저장</button><span class="iq-saved" id="iqSum-saved"></span></div>
+  </div>
+  <div class="self-check" style="margin-top:16px">
+    <h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>건설 구조물이 만들어지는 과정(기획·계획 → 설계 → 시공 → 관리)을 순서대로 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>건설 기획(무엇을)과 건설 계획(어떻게)의 차이를 예를 들어 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>건설 기획 시 고려 사항 5가지를 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>건설 계획의 종류 5가지(규모·조형·구조·환경·평면)를 설명과 짝지을 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>계획 설계 → 기본 설계 → 실시 설계에서 각각 무엇을 하는지 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>시방서가 무엇이고 왜 필요한지 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>배치도·평면도·단면도·입면도를 보고 구별할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress">체크: 0 / 7</div>
+  </div>
+
+  <div class="next-link"><a href="sim_process_build.html">다음 → 6차시: 건설 시공과 건설 관리</a></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const PAGE = 'p5';
+const store = {
+  get(k) { try { return localStorage.getItem('construction-' + PAGE + '-' + k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem('construction-' + PAGE + '-' + k, v); } catch (e) {} },
+};
+
+/* ===================================================== */
+/* 학습 전/후 자기점검 (메타인지)                          */
+/* ===================================================== */
+const KWL_ITEMS = [
+  '건설 구조물이 만들어지는 <b>과정의 순서</b>를 안다',
+  '<b>건설 기획</b>과 <b>건설 계획</b>의 차이를 안다',
+  '건설 기획 시 <b>고려할 사항</b>이 무엇인지 안다',
+  '<b>계획 설계·기본 설계·실시 설계</b>가 무엇인지 안다',
+  '<b>시방서</b>가 무엇인지 안다',
+  '<b>평면도·단면도·입면도·배치도</b>를 구별할 수 있다',
+];
+const LEVELS = ['전혀 모름', '들어봤음', '설명 가능'];
+function buildKwl(rowId, cls) {
+  const row = $(rowId);
+  KWL_ITEMS.forEach((t, i) => {
+    const d = document.createElement('div');
+    d.className = 'kwl-item';
+    d.innerHTML = '<span>' + t + '</span><select class="' + cls + '" data-i="' + i + '"><option value="">선택</option>' +
+      LEVELS.map(l => '<option>' + l + '</option>').join('') + '</select>';
+    const sel = d.querySelector('select');
+    const saved = store.get(cls + i);
+    if (saved) sel.value = saved;
+    sel.addEventListener('change', () => { store.set(cls + i, sel.value); renderKwlCompare(); });
+    row.appendChild(d);
+  });
+}
+function renderKwlCompare() {
+  const posts = document.querySelectorAll('.post-check');
+  const anyPost = [...posts].some(s => s.value);
+  $('kwlCompare').style.display = anyPost ? 'block' : 'none';
+  if (!anyPost) return;
+  let up = 0, same = 0, down = 0, low = 0;
+  const pres = document.querySelectorAll('.pre-check');
+  $('kwlBody').innerHTML = KWL_ITEMS.map((t, i) => {
+    const pre = pres[i].value || '', post = posts[i].value || '';
+    const a = LEVELS.indexOf(pre), b = LEVELS.indexOf(post);
+    let mark = '<span class="same">—</span>';
+    if (a >= 0 && b >= 0) {
+      if (b > a) { mark = '<span class="up">⬆ 향상</span>'; up++; }
+      else if (b === a) { mark = '<span class="same">유지</span>'; same++; }
+      else { mark = '<span class="down">⬇ 낮아짐</span>'; down++; }
+    }
+    if (b >= 0 && b < 2) low++;
+    return '<tr><td>' + t + '</td><td>' + (pre || '-') + '</td><td>' + (post || '-') + '</td><td>' + mark + '</td></tr>';
+  }).join('');
+  let msg = '';
+  if (up) msg += '📈 <b style="color:#4ade80">' + up + '개 항목</b>이 학습 전보다 좋아졌어요! ';
+  if (down) msg += '🤔 <b style="color:#f87171">' + down + '개 항목</b>은 배우고 나니 오히려 "생각보다 몰랐다"고 느꼈네요 — 이것도 훌륭한 메타인지입니다. ';
+  if (low) msg += '📚 아직 "설명 가능"이 아닌 항목이 <b>' + low + '개</b> 있어요. 해당 단계로 돌아가 다시 보고, 친구에게 설명해 보세요. ';
+  if (!low && !down && up + same === KWL_ITEMS.length && [...posts].every(s => s.value)) msg += '🌟 모든 항목을 설명할 수 있어요! 6차시로 넘어가도 좋습니다.';
+  $('kwlSummary').innerHTML = msg || '학습 후 상태를 모두 선택하면 요약이 나타납니다.';
+}
+buildKwl('preRow', 'pre-check');
+buildKwl('postRow', 'post-check');
+renderKwlCompare();
+
+/* ===================================================== */
+/* 예측 vs 실제 (메타인지 모니터링)                        */
+/* ===================================================== */
+const PRED_RANGE = { '0~3개':[0,3], '4~5개':[4,5], '6~7개':[6,7], '8개 전부':[8,8] };
+function predictResult(selId, outId, actual, total) {
+  const v = $(selId).value, out = $(outId);
+  if (!v) { out.innerHTML = '예측을 선택하지 않았어요. 다음 게임에서는 먼저 예측해 보세요 — <b>예측하는 습관</b>이 메타인지를 키웁니다.'; return; }
+  const [lo, hi] = PRED_RANGE[v];
+  let msg;
+  if (actual >= lo && actual <= hi) msg = '🎯 <b>예측 적중!</b> 예측 ' + v + ' → 실제 ' + actual + '/' + total + '. 자신의 이해 수준을 정확히 알고 있어요.';
+  else if (actual > hi) msg = '😮 <b>예측보다 잘했어요.</b> 예측 ' + v + ' → 실제 ' + actual + '/' + total + '. 스스로를 과소평가했네요 — 조금 더 자신감을 가져도 좋아요.';
+  else msg = '⚠️ <b>예측보다 낮았어요.</b> 예측 ' + v + ' → 실제 ' + actual + '/' + total + '. "안다고 생각했지만 아직 아닌" 부분이 있어요. 틀린 항목을 꼭 다시 보세요.';
+  out.innerHTML = msg;
+}
+
+/* ===================================================== */
+/* STEP 1 : 건설 과정 흐름                                */
+/* ===================================================== */
+const PROC = [
+  { e:'📝', name:'기획 및 계획', sub:'무엇을, 어떻게 만들까?',
+    body:'사용자 요구를 바탕으로 구조물의 <b>용도·목적, 대지 조건, 규모·예산, 공사 시기·기간</b>을 고려해 목표와 방법을 세우고(기획), 도면을 그리기 위해 조건과 정보를 파악·분석합니다(계획).',
+    tip:'이 단원의 <b>2~4단계</b>에서 자세히 배웁니다.' },
+  { e:'📐', name:'설계', sub:'도면으로 그리기',
+    body:'계획에서 결정된 내용을 바탕으로 <b>설계도를 작성</b>하고 구체적으로 내용을 명시합니다. <b>계획 설계 → 기본 설계 → 실시 설계</b> 순으로 진행하며, 기능성·안전성·내구성·경제성을 따집니다.',
+    tip:'이 단원의 <b>5~6단계</b>에서 자세히 배웁니다.' },
+  { e:'👷', name:'시공', sub:'실제로 만들기',
+    body:'설계 도면과 시방서를 바탕으로 <b>정해진 장소에서 정해진 시간 내에</b> 구조물을 만듭니다. 착공 준비 → 가설 공사 → 토공사 → 기초 공사 → 골조 공사 → 설비·마감 공사 순서로 진행합니다.',
+    tip:'<b>6차시</b>에서 공사 현장 시뮬레이터로 배웁니다.' },
+  { e:'🔧', name:'관리', sub:'공사 중 + 완공 후',
+    body:'공사 중에는 <b>공정·안전·품질·원가·자재·환경</b>을 관리하고, 완공 후에도 <b>사후 관리·유지 관리</b>로 원래의 품질을 유지합니다. 건설은 장기성이 있어 관리가 안전을 좌우합니다.',
+    tip:'<b>6차시</b> 후반에서 "현장 소장 되기" 게임으로 배웁니다.' },
+];
+PROC.forEach((p, i) => {
+  if (i) { const a = document.createElement('div'); a.className = 'proc-arrow'; a.textContent = '➜'; $('procFlow').appendChild(a); }
+  const d = document.createElement('div');
+  d.className = 'proc-node' + (i === 0 ? ' on' : ''); d.dataset.i = i;
+  d.innerHTML = '<span class="pe">' + p.e + '</span><b>' + (i + 1) + '. ' + p.name + '</b><small>' + p.sub + '</small>';
+  d.onclick = () => showProc(i);
+  $('procFlow').appendChild(d);
+});
+function showProc(i) {
+  document.querySelectorAll('.proc-node').forEach(n => n.classList.toggle('on', +n.dataset.i === i));
+  const p = PROC[i];
+  $('procDetail').innerHTML = '<h4>' + p.e + ' ' + p.name + '</h4><div>' + p.body + '</div><div style="margin-top:6px;font-size:.82rem;color:#94a3b8">' + p.tip + '</div>';
+}
+showProc(0);
+const CHIP_DEF = {
+  '기능성':'구조물이 <b>목적에 맞게 쓸모 있게</b> 작동하는가? (예: 교실은 30명이 수업하기 편한가)',
+  '안전성':'하중·지진·바람에 <b>무너지지 않고 사람을 보호</b>하는가? (2·3차시의 힘과 내진 설계)',
+  '내구성':'<b>오래 사용해도</b> 품질이 유지되는가? (건설의 장기성 — 수십 년 사용)',
+  '경제성':'<b>적절한 비용</b>으로 짓고 유지할 수 있는가? (예산 안에서 최대의 효과)',
+};
+document.querySelectorAll('.hook .chip').forEach(c => c.addEventListener('click', () => {
+  document.querySelectorAll('.hook .chip').forEach(x => x.classList.toggle('on', x === c));
+  $('chipDetail').innerHTML = '<b style="color:#fde68a">' + c.dataset.t + '</b> — ' + CHIP_DEF[c.dataset.t];
+}));
+
+/* ===================================================== */
+/* STEP 2 : 기획 vs 계획 분류 게임                          */
+/* ===================================================== */
+const SORT_ITEMS = [
+  { t:'우리 학교에 학생들이 쉬며 책을 읽을 <b>새 도서관을 짓자.</b>', a:'기획', why:'"무엇을 만들 것인가"를 정한 방향성 → 기획' },
+  { t:'열람실은 조용한 <b>북쪽</b>에, 카페는 <b>입구 쪽</b>에 배치하자.', a:'계획', why:'공간 배치·동선을 정하는 구체화(평면 계획) → 계획' },
+  { t:'마을 주민이 안전하게 강을 건널 <b>다리가 필요</b>하다.', a:'기획', why:'사용자 요구를 바탕으로 목표를 세움 → 기획' },
+  { t:'외벽은 주변 산과 어울리는 <b>갈색 벽돌</b>로 마감하자.', a:'계획', why:'형태·색채·질감을 정하는 조형 계획 → 계획' },
+  { t:'<b>예산 20억 원, 2년 안에</b> 완공하는 것을 목표로 한다.', a:'기획', why:'규모·예산·공사 기간은 기획 단계의 고려 사항 → 기획' },
+  { t:'지진에 견디도록 기둥을 <b>철근 콘크리트</b>로 굵게 만든다.', a:'계획', why:'하중·외부 힘을 고려하는 구조 계획 → 계획' },
+  { t:'체육관은 <b>학생 수업과 지역 주민 이용</b>을 위해 짓는다.', a:'기획', why:'용도와 목적을 정함 → 기획' },
+  { t:'<b>빗물을 모아</b> 정원에 재이용하는 설비를 넣자.', a:'계획', why:'주변 환경·생태를 고려하는 환경 계획 → 계획' },
+];
+let sortDone = 0, sortOk = 0;
+SORT_ITEMS.forEach((it, i) => {
+  const d = document.createElement('div'); d.className = 'sort-item';
+  d.innerHTML = '<span class="st">' + (i + 1) + '. ' + it.t + '</span>' +
+    '<button class="sort-btn a" data-v="기획">📝 기획</button><button class="sort-btn b" data-v="계획">📋 계획</button><div class="sort-fb"></div>';
+  d.querySelectorAll('.sort-btn').forEach(b => b.onclick = () => {
+    if (d.dataset.done) return; d.dataset.done = '1'; sortDone++;
+    const ok = b.dataset.v === it.a; if (ok) sortOk++;
+    d.querySelectorAll('.sort-btn').forEach(x => { x.disabled = true; if (x.dataset.v === it.a) x.classList.add('correct'); });
+    if (!ok) b.classList.add('wrong');
+    const fb = d.querySelector('.sort-fb');
+    fb.className = 'sort-fb ' + (ok ? 'ok' : 'no');
+    fb.innerHTML = (ok ? '⭕ ' : '❌ ') + it.why;
+    if (sortDone === SORT_ITEMS.length) {
+      $('sortScore').innerHTML = '🎯 결과: <b style="color:#fbbf24">' + sortOk + ' / ' + SORT_ITEMS.length + '</b>' + (sortOk === SORT_ITEMS.length ? ' — 완벽! 기획과 계획을 정확히 구분하네요.' : ' — 틀린 문장의 이유를 읽고 아래에 정리해 보세요.');
+      predictResult('sortPred', 'sortPredResult', sortOk, SORT_ITEMS.length);
+      $('sortReflect').style.display = 'block';
+    }
+  });
+  $('sortList').appendChild(d);
+});
+
+/* ===================================================== */
+/* STEP 3 : 체육관 기획 시뮬레이터                          */
+/* ===================================================== */
+const DECISIONS = [
+  { key:'user', name:'사용자 요구', q:'체육관을 어떻게 만들지, 누구의 의견을 들을까요?',
+    opts:[
+      { t:'학생·교사·학부모·지역 주민에게 설문 조사와 간담회로 의견을 모은다', g:'good', why:'구조물을 이용하는 사람들의 다양한 의견을 수렴해 정확히 파악 → 기획의 출발점!' },
+      { t:'교장 선생님 혼자 빠르게 결정한다', g:'meh', why:'빠르지만, 실제 사용자(학생·교사)의 요구가 빠지면 나중에 불편한 체육관이 될 수 있어요.' },
+      { t:'요즘 유행하는 디자인을 인터넷에서 골라 그대로 짓는다', g:'bad', why:'사용자 요구를 전혀 파악하지 않음 → 예쁘지만 쓸모없는 공간이 될 위험.' },
+    ] },
+  { key:'purpose', name:'용도와 목적', q:'이 체육관은 누구를 위해, 어떤 목적으로 지을까요?',
+    opts:[
+      { t:'학생 체육 수업 + 방과 후 지역 주민 개방 (다목적)', g:'good', why:'누구를 위해 어떤 목적인지 명확 → 공공성까지 살린 기획.' },
+      { t:'학생 체육 수업 전용', g:'good', why:'목적이 명확해요. 규모는 그에 맞게 조금 작아도 됩니다.' },
+      { t:'일단 짓고 나서 용도는 나중에 정한다', g:'bad', why:'용도와 목적이 없으면 규모·예산·구조를 정할 수 없어요. 기획의 기본!' },
+    ] },
+  { key:'site', name:'대지 조건', q:'학교 부지 중 어디에 지을까요? (남쪽은 주택가, 북쪽은 경사진 언덕, 동쪽은 평평한 운동장 끝)',
+    opts:[
+      { t:'동쪽 — 평평한 운동장 끝, 진입로와 가까움', g:'good', why:'평평하고 접근이 쉬운 대지의 자연적·사회적 조건을 잘 고려했어요.' },
+      { t:'북쪽 — 경사진 언덕 위 (전망이 좋음)', g:'bad', why:'경사지는 토공사·기초 공사 비용이 크게 늘고 안전 위험도 커요.' },
+      { t:'남쪽 — 주택가 바로 옆 (학교 정문과 가까움)', g:'meh', why:'가깝지만 공사 소음과 이용 소음으로 주민 민원이 생길 수 있어요(사회적 조건).' },
+    ] },
+  { key:'scale', name:'규모와 예산', q:'규모와 예산은 어떻게 정할까요? (확보된 예산: 30억 원)',
+    opts:[
+      { t:'목적에 맞는 규모(농구 코트 1면 + 관람석)로, 예산 30억 원 안에서 균형 있게', g:'good', why:'규모는 목적에 맞는 기능을 최대한 발휘하는 범위에서, 예산은 합리적·균형 있게!' },
+      { t:'최대한 크게! 수영장까지 넣어 60억 원 규모로', g:'bad', why:'예산의 2배 → 공사가 중단되거나 빚이 남아요. 규모는 예산 범위 안에서.' },
+      { t:'예산을 아끼려 아주 작게, 배드민턴 코트 1면만 10억 원', g:'meh', why:'돈은 남지만 체육 수업이라는 목적에 맞는 기능을 못 해요(기능성 부족).' },
+    ] },
+  { key:'time', name:'공사 시기와 기간', q:'언제 공사를 시작하고 얼마나 걸리게 할까요?',
+    opts:[
+      { t:'여름 방학에 시작해 8개월 — 시끄러운 기초·골조 공사는 방학 중에', g:'good', why:'공사 완성도와 효율을 높이도록 시기와 기간을 미리 정함. 수업 방해도 최소!' },
+      { t:'2학기 시험 기간에 시작해 6개월', g:'bad', why:'가장 시끄러운 공사가 시험 기간과 겹쳐요 → 학생 피해, 민원.' },
+      { t:'장마철에 시작해 3개월 만에 끝내기', g:'bad', why:'비로 공사가 지연되고, 너무 짧은 기간은 부실 공사의 원인이 돼요.' },
+    ] },
+];
+const planChoice = {};
+DECISIONS.forEach((d, i) => {
+  const box = document.createElement('div'); box.className = 'decision';
+  box.innerHTML = '<h4><span class="dn">' + (i + 1) + '</span>' + d.name + '</h4><div class="dq">' + d.q + '</div><div class="opts"></div>';
+  d.opts.forEach((o, j) => {
+    const b = document.createElement('button'); b.className = 'dopt'; b.textContent = o.t;
+    b.onclick = () => {
+      planChoice[d.key] = j;
+      box.querySelectorAll('.dopt').forEach((x, k) => { x.className = 'dopt' + (k === j ? ' on' : ''); });
+      $('planReportBtn').disabled = Object.keys(planChoice).length < DECISIONS.length;
+      if ($('planReportBtn').disabled) $('planReportBtn').textContent = '📊 기획 결과 보기 (' + Object.keys(planChoice).length + '/5 결정)';
+      else $('planReportBtn').textContent = '📊 기획 결과 보기';
+      $('planReport').innerHTML = '';
+      drawPlan(false);
+    };
+    box.querySelector('.opts').appendChild(b);
+  });
+  $('decisions').appendChild(box);
+});
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, text) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text !== undefined) e.textContent = text; return e; }
+function drawPlan(final) {
+  const s = $('planSvg'); s.innerHTML = '';
+  // 배경: 하늘·땅
+  s.appendChild(el('rect', { x:0, y:0, width:420, height:300, fill:'#0c4a6e' }));
+  s.appendChild(el('rect', { x:0, y:200, width:420, height:100, fill:'#365314' }));   // 운동장(잔디)
+  s.appendChild(el('rect', { x:0, y:120, width:420, height:80, fill:'#3f3f2e' }));    // 지면
+  // 북쪽 언덕
+  s.appendChild(el('path', { d:'M250 120 Q330 40 420 120 Z', fill:'#4d7c0f' }));
+  s.appendChild(el('text', { x:335, y:100, 'font-size':11, fill:'#ecfccb', 'text-anchor':'middle' }, '북쪽 언덕(경사)'));
+  // 학교 본관
+  s.appendChild(el('rect', { x:30, y:70, width:150, height:60, fill:'#94a3b8', rx:3 }));
+  for (let i = 0; i < 6; i++) s.appendChild(el('rect', { x:40 + i * 23, y:82, width:12, height:14, fill:'#fde68a' }));
+  s.appendChild(el('text', { x:105, y:118, 'font-size':11, fill:'#1e293b', 'text-anchor':'middle', 'font-weight':'bold' }, '학교 본관'));
+  // 남쪽 주택가
+  for (let i = 0; i < 5; i++) {
+    const hx = 20 + i * 45;
+    s.appendChild(el('rect', { x:hx, y:255, width:30, height:25, fill:'#a16207' }));
+    s.appendChild(el('polygon', { points:`${hx - 4},255 ${hx + 15},240 ${hx + 34},255`, fill:'#b45309' }));
+  }
+  s.appendChild(el('text', { x:130, y:296, 'font-size':10, fill:'#fef3c7' }, '남쪽 주택가'));
+  s.appendChild(el('text', { x:300, y:290, 'font-size':10, fill:'#d9f99d' }, '동쪽 운동장 (평평)'));
+  s.appendChild(el('text', { x:300, y:150, 'font-size':10, fill:'#e7e5e4' }, '진입로'));
+  s.appendChild(el('line', { x1:300, y1:120, x2:420, y2:120, stroke:'#d6d3d1', 'stroke-width':6 }));
+  if (!final) {
+    s.appendChild(el('text', { x:210, y:180, 'font-size':13, fill:'#fde68a', 'text-anchor':'middle', 'font-weight':'bold' }, '5가지를 모두 결정하면 체육관이 지어집니다'));
+    return;
+  }
+  // 체육관 위치·크기
+  const site = planChoice.site, scale = planChoice.scale, time = planChoice.time;
+  const w = scale === 1 ? 180 : scale === 2 ? 60 : 110, h = scale === 1 ? 70 : scale === 2 ? 30 : 50;
+  let gx = 300, gy = 210, tilt = 0;
+  if (site === 1) { gx = 320; gy = 60; tilt = -12; }
+  if (site === 2) { gx = 140; gy = 215; }
+  const g = el('g', { transform:`translate(${gx},${gy}) rotate(${tilt})` });
+  g.appendChild(el('rect', { x:-w / 2, y:-h, width:w, height:h, fill:'#f59e0b', rx:4 }));
+  g.appendChild(el('path', { d:`M${-w / 2} ${-h} Q0 ${-h - h * .5} ${w / 2} ${-h}`, fill:'#d97706' }));
+  g.appendChild(el('text', { x:0, y:-h / 2 + 4, 'font-size':11, fill:'#1e293b', 'text-anchor':'middle', 'font-weight':'bold' }, scale === 1 ? '초대형 체육관(+수영장)' : scale === 2 ? '미니 체육관' : '체육관'));
+  if (scale === 1) g.appendChild(el('text', { x:0, y:-h - h * .5 - 6, 'font-size':11, fill:'#fca5a5', 'text-anchor':'middle', 'font-weight':'bold' }, '💸 예산 초과!'));
+  s.appendChild(g);
+  if (site === 1) s.appendChild(el('text', { x:320, y:110, 'font-size':11, fill:'#fca5a5', 'text-anchor':'middle', 'font-weight':'bold' }, '⚠️ 경사지 — 기초 공사 비용↑'));
+  if (site === 2) s.appendChild(el('text', { x:140, y:235, 'font-size':11, fill:'#fde68a', 'text-anchor':'middle', 'font-weight':'bold' }, '📢 소음 민원 주의'));
+  if (time === 1) s.appendChild(el('text', { x:105, y:60, 'font-size':11, fill:'#fca5a5', 'text-anchor':'middle', 'font-weight':'bold' }, '🔨🔊 시험 기간에 공사 소음!'));
+  if (time === 2) { for (let i = 0; i < 12; i++) s.appendChild(el('line', { x1:20 + i * 34, y1:10, x2:14 + i * 34, y2:30, stroke:'#bae6fd', 'stroke-width':2 })); s.appendChild(el('text', { x:210, y:48, 'font-size':11, fill:'#bae6fd', 'text-anchor':'middle', 'font-weight':'bold' }, '🌧️ 장마 — 공사 지연'));
+  }
+  if (planChoice.user === 0 && planChoice.purpose !== 2 && site === 0 && scale === 0 && time === 0) s.appendChild(el('text', { x:210, y:30, 'font-size':14, fill:'#86efac', 'text-anchor':'middle', 'font-weight':'bold' }, '🎉 모두가 만족하는 체육관 완성!'));
+}
+drawPlan(false);
+$('planReportBtn').onclick = () => {
+  const SCORE = { good:2, meh:1, bad:0 };
+  let total = 0;
+  const rows = DECISIONS.map(d => {
+    const o = d.opts[planChoice[d.key]]; total += SCORE[o.g];
+    const icon = o.g === 'good' ? '✅' : o.g === 'meh' ? '⚠️' : '❌';
+    return '<div class="pr-item ' + o.g + '">' + icon + ' <b>' + d.name + '</b> — ' + o.why + '</div>';
+  }).join('');
+  const pct = Math.round(total / (DECISIONS.length * 2) * 100);
+  const msg = pct === 100 ? '🏆 완벽한 기획! 다섯 가지 고려 사항을 모두 균형 있게 반영했어요.' :
+    pct >= 70 ? '👍 좋은 기획이에요. ⚠️·❌ 항목을 다시 골라 100%에 도전해 보세요.' :
+    '🤔 기획이 흔들리면 설계·시공 모두 흔들려요. 한 번 지으면 되돌리기 어렵다(일회성)는 점을 떠올리며 다시 결정해 보세요.';
+  $('planReport').innerHTML = rows + '<div class="score-ring"><span class="big">' + pct + '%</span><span class="msg"><b style="color:#fde68a">기획 완성도</b><br>' + msg + '</span></div>';
+  drawPlan(true);
+  document.querySelectorAll('.decision').forEach((box, i) => {
+    const d = DECISIONS[i];
+    box.querySelectorAll('.dopt').forEach((x, k) => { if (k === planChoice[d.key]) x.classList.add(d.opts[k].g); });
+  });
+};
+
+/* ===================================================== */
+/* STEP 4 : 계획의 종류 매칭                                */
+/* ===================================================== */
+const PLANS = [
+  { n:'규모 계획', d:'일정한 공사비의 범위 내에서 토지, 시설, 설비 등의 <b>규모, 개수, 치수</b> 등에 대한 적정 값을 결정하는 계획', ex:'예) 교실을 몇 개, 얼마나 크게 만들까?' },
+  { n:'조형 계획', d:'건설 구조물의 <b>형태, 색채, 질감</b> 등의 요소가 서로 조화를 이루어 <b>미적 효과</b>를 높이도록 하는 계획', ex:'예) 외벽 색과 재질, 지붕 모양' },
+  { n:'구조 계획', d:'건설 구조물에 작용하는 <b>하중, 외부의 힘, 균열</b> 등을 고려하여 구조물이 정상적인 기능을 유지할 수 있도록 하는 계획', ex:'예) 기둥 굵기, 철근 배치, 내진 설계' },
+  { n:'환경 계획', d:'쾌적한 환경을 조성하기 위해 <b>주변 환경과 구조물 사이의 상호 관련성, 생태계에 미치는 영향</b> 등을 고려한 계획', ex:'예) 일조·바람길, 빗물 재이용, 녹지' },
+  { n:'평면 계획', d:'사용자의 <b>동선</b>과 구조물의 방향, 구조물의 <b>각 층별 구성과 공간 배치</b> 등을 종합적으로 고려한 계획', ex:'예) 현관에서 교실까지 이동 경로, 방 배치' },
+];
+let matchSel = null, matchAssign = {};
+function buildMatch() {
+  matchSel = null; matchAssign = {};
+  $('matchChips').innerHTML = ''; $('matchCards').innerHTML = ''; $('matchScore').textContent = '';
+  PLANS.forEach((p, i) => {
+    const c = document.createElement('button'); c.className = 'mchip'; c.textContent = p.n; c.dataset.i = i;
+    c.onclick = () => { matchSel = i; document.querySelectorAll('.mchip').forEach(x => x.classList.toggle('on', +x.dataset.i === i)); };
+    $('matchChips').appendChild(c);
+  });
+  const order = PLANS.map((_, i) => i).sort(() => Math.random() - .5);
+  order.forEach(i => {
+    const p = PLANS[i];
+    const card = document.createElement('div'); card.className = 'mcard'; card.dataset.i = i;
+    card.innerHTML = '<span class="slot">붙일 이름 선택</span><div>' + p.d + '</div><span class="ex">' + p.ex + '</span>';
+    card.onclick = () => {
+      if (matchSel === null || card.dataset.locked) return;
+      matchAssign[i] = matchSel;
+      const slot = card.querySelector('.slot'); slot.textContent = PLANS[matchSel].n; slot.classList.add('filled');
+      card.classList.remove('correct', 'wrong');
+      const used = new Set(Object.values(matchAssign));
+      document.querySelectorAll('.mchip').forEach(x => x.classList.toggle('used', used.has(+x.dataset.i)));
+    };
+    $('matchCards').appendChild(card);
+  });
+}
+buildMatch();
+$('matchReset').onclick = buildMatch;
+$('matchCheck').onclick = () => {
+  let ok = 0, n = 0;
+  document.querySelectorAll('.mcard').forEach(card => {
+    const i = +card.dataset.i;
+    if (matchAssign[i] === undefined) return;
+    n++;
+    const good = matchAssign[i] === i;
+    card.classList.toggle('correct', good); card.classList.toggle('wrong', !good);
+    if (good) { ok++; card.dataset.locked = '1'; }
+  });
+  if (n < PLANS.length) { $('matchScore').innerHTML = '⚠️ 아직 ' + (PLANS.length - n) + '장의 카드에 이름을 붙이지 않았어요.'; return; }
+  $('matchScore').innerHTML = '🎯 <b style="color:#fbbf24">' + ok + ' / ' + PLANS.length + '</b>' + (ok === PLANS.length ? ' — 완벽!' : ' — 빨간 카드는 이름을 다시 골라 붙이고 채점하세요. (힌트: 카드 아래 "예)"를 보세요)');
+};
+
+/* ===================================================== */
+/* STEP 5 : 설계 3단계                                     */
+/* ===================================================== */
+const DESIGN = [
+  { name:'계획 설계', sub:'추상적인 요구 → 구체적인 형태',
+    body:'사용자의 <b>추상적인 요구</b>("밝고 넓은 집이면 좋겠어요")를 반영하여 <b>구체적인 형태</b>를 만들어 내는 과정입니다. 계획한 건설 구조물의 <b>개략적인 형태</b>를 정합니다.',
+    out:'<b>결과물:</b> 스케치, 모형, 보고서' },
+  { name:'기본 설계', sub:'구상을 도면으로',
+    body:'설계자의 구상을 구체적으로 표현하기 위해 <b>도면으로 작성</b>하는 단계입니다. 기본 설계도를 보면 구조물의 <b>특징을 이해</b>할 수 있고, <b>공사 기간과 공사비</b>를 예측할 수 있습니다.',
+    out:'<b>결과물:</b> 기본 설계도 (평면도·입면도 등) → 공사비·기간 예측' },
+  { name:'실시 설계', sub:'시공에 필요한 상세 도면',
+    body:'기본 설계를 바탕으로 <b>시공에 필요한 도면</b>을 그리는 과정입니다. 시공에 필요한 내용을 <b>상세히</b> 작성하고, 도면으로 나타내기 어려운 것은 <b>시방서</b>로 작성합니다.',
+    out:'<b>결과물:</b> 실시 설계도(치수·재료·상세) + 시방서 → 이걸 들고 공사 시작!' },
+];
+function drawDesign(stage) {
+  const s = $('designSvg'); s.innerHTML = '';
+  const line = (x1, y1, x2, y2, o = {}) => s.appendChild(el('line', Object.assign({ x1, y1, x2, y2, stroke:'#1e293b', 'stroke-width':2 }, o)));
+  const txt = (x, y, t, o = {}) => s.appendChild(el('text', Object.assign({ x, y, 'font-size':11, fill:'#1e293b', 'text-anchor':'middle' }, o), t));
+  if (stage === 0) {
+    // 손 스케치 느낌: 흔들리는 선, 점선
+    s.appendChild(el('path', { d:'M60 190 Q62 120 58 110 L150 62 Q160 58 168 64 L262 112 Q266 150 260 190 Z', fill:'#fef9c3', stroke:'#92400e', 'stroke-width':2.5, 'stroke-linejoin':'round', 'stroke-dasharray':'6 4' }));
+    s.appendChild(el('path', { d:'M100 190 Q102 150 98 148 L98 190', fill:'none', stroke:'#92400e', 'stroke-width':2, 'stroke-dasharray':'5 4' }));
+    s.appendChild(el('path', { d:'M170 128 q30 -3 60 2 l-2 30 q-28 3 -58 -1 z', fill:'none', stroke:'#92400e', 'stroke-width':2, 'stroke-dasharray':'5 4' }));
+    txt(200, 148, '큰 창?', { fill:'#92400e', 'font-size':12 });
+    s.appendChild(el('path', { d:'M290 70 q20 -20 40 5', fill:'none', stroke:'#b91c1c', 'stroke-width':2 }));
+    txt(300, 55, '남향으로!', { fill:'#b91c1c', 'font-size':12 });
+    txt(60, 230, '"밝고 넓은 집"', { fill:'#92400e', 'font-size':13, 'text-anchor':'start' });
+    txt(190, 232, '→ 개략적인 형태를 스케치·모형·보고서로', { fill:'#334155', 'text-anchor':'start' });
+    txt(180, 30, '✏️ 계획 설계 — 스케치', { 'font-size':14, 'font-weight':'bold' });
+  } else {
+    // 평면도 (기본 설계 / 실시 설계 공통)
+    s.appendChild(el('rect', { x:50, y:50, width:250, height:150, fill:'#fff', stroke:'#1e293b', 'stroke-width':stage === 2 ? 6 : 3 }));
+    line(170, 50, 170, 200, { 'stroke-width':stage === 2 ? 4 : 2 });
+    line(170, 125, 300, 125, { 'stroke-width':stage === 2 ? 4 : 2 });
+    line(50, 140, 170, 140, { 'stroke-width':stage === 2 ? 4 : 2 });
+    txt(110, 100, '거실'); txt(110, 175, '주방'); txt(235, 92, '방 1'); txt(235, 168, '방 2');
+    // 문 (호)
+    s.appendChild(el('path', { d:'M170 85 A20 20 0 0 1 150 105', fill:'none', stroke:'#1e293b', 'stroke-width':1.5 }));
+    s.appendChild(el('path', { d:'M235 125 A18 18 0 0 1 217 143', fill:'none', stroke:'#1e293b', 'stroke-width':1.5 }));
+    s.appendChild(el('path', { d:'M90 200 A18 18 0 0 1 72 182', fill:'none', stroke:'#1e293b', 'stroke-width':1.5 }));
+    // 창 (이중선)
+    [[60, 50, 100, 50], [190, 50, 280, 50], [300, 70, 300, 110], [300, 140, 300, 185]].forEach(([a, b, c, d]) => { line(a, b, c, d, { stroke:'#0284c7', 'stroke-width':3 }); });
+    txt(72, 212, '현관', { 'font-size':10 });
+    if (stage === 1) {
+      txt(180, 30, '📐 기본 설계 — 도면 작성', { 'font-size':14, 'font-weight':'bold' });
+      txt(180, 232, '구조물의 특징 이해 · 공사 기간과 공사비 예측 가능', { fill:'#334155' });
+    } else {
+      // 치수선·재료 표기
+      line(50, 220, 300, 220, { stroke:'#dc2626', 'stroke-width':1 }); line(50, 214, 50, 226, { stroke:'#dc2626', 'stroke-width':1 }); line(300, 214, 300, 226, { stroke:'#dc2626', 'stroke-width':1 });
+      txt(175, 216, '12,000', { fill:'#dc2626', 'font-size':10 });
+      line(320, 50, 320, 200, { stroke:'#dc2626', 'stroke-width':1 }); line(314, 50, 326, 50, { stroke:'#dc2626', 'stroke-width':1 }); line(314, 200, 326, 200, { stroke:'#dc2626', 'stroke-width':1 });
+      s.appendChild(el('text', { x:332, y:128, 'font-size':10, fill:'#dc2626', transform:'rotate(90 332 128)', 'text-anchor':'middle' }, '7,200'));
+      txt(110, 118, 'RC 벽 t=200', { fill:'#dc2626', 'font-size':9 }); txt(235, 108, '창 W1500×H1200', { fill:'#0284c7', 'font-size':9 });
+      txt(110, 190, '타일 마감', { fill:'#dc2626', 'font-size':9 });
+      // 시방서 문서
+      s.appendChild(el('rect', { x:8, y:60, width:34, height:44, fill:'#fff', stroke:'#0284c7', 'stroke-width':1.5 }));
+      [70, 78, 86, 94].forEach(y => line(13, y, 37, y, { stroke:'#0284c7', 'stroke-width':1.5 }));
+      txt(25, 116, '시방서', { fill:'#0284c7', 'font-size':9 });
+      txt(180, 30, '📏 실시 설계 — 시공용 상세 도면 + 시방서', { 'font-size':14, 'font-weight':'bold' });
+      txt(180, 244, '치수·재료·마감까지 상세히 → 이 도면대로 시공', { fill:'#334155' });
+    }
+  }
+  const d = DESIGN[stage];
+  $('designInfo').innerHTML = '<h4>' + (stage + 1) + '. ' + d.name + ' <span style="font-size:.8rem;color:#94a3b8">— ' + d.sub + '</span></h4><div>' + d.body + '</div><div class="out">' + d.out + '</div>';
+}
+document.querySelectorAll('.dtab').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.dtab').forEach(x => x.classList.toggle('active', x === b));
+  drawDesign(+b.dataset.d);
+});
+drawDesign(0);
+/* 순서 게임 */
+const ORDER_CARDS = [
+  { i:0, t:'스케치·모형·보고서로 개략적인 형태 만들기' },
+  { i:1, t:'도면을 작성해 특징 파악, 공사비·기간 예측' },
+  { i:2, t:'시공용 상세 도면 + 시방서 작성' },
+];
+let orderNext = 0;
+function buildOrder() {
+  orderNext = 0; $('orderPool').innerHTML = ''; $('orderLine').innerHTML = '<span class="ph">여기에 순서대로 쌓입니다…</span>'; $('orderFb').textContent = '';
+  ORDER_CARDS.slice().sort(() => Math.random() - .5).forEach(c => {
+    const b = document.createElement('button'); b.className = 'obtn'; b.textContent = c.t;
+    b.onclick = () => {
+      if (c.i !== orderNext) { b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); $('orderFb').className = 'g-fb no'; $('orderFb').textContent = '❌ 아직 순서가 아니에요. 힌트: 먼저 대략적인 형태 → 도면 → 시공용 상세 도면 순!'; return; }
+      b.disabled = true;
+      const line = $('orderLine'); if (orderNext === 0) line.innerHTML = '';
+      if (orderNext) { const a = document.createElement('span'); a.className = 'arr'; a.textContent = '→'; line.appendChild(a); }
+      const s = document.createElement('span'); s.className = 'o'; s.textContent = DESIGN[c.i].name; line.appendChild(s);
+      orderNext++;
+      if (orderNext === ORDER_CARDS.length) { $('orderFb').className = 'g-fb ok'; $('orderFb').innerHTML = '⭕ 완성! <b>계획 설계 → 기본 설계 → 실시 설계</b> — 점점 자세해지는 순서입니다. <button class="btn-sub" onclick="buildOrder()" style="margin-left:8px">↺ 다시</button>'; }
+      else { $('orderFb').className = 'g-fb ok'; $('orderFb').textContent = '⭕ 맞아요! 다음 단계는?'; }
+    };
+    $('orderPool').appendChild(b);
+  });
+}
+buildOrder();
+
+/* ===================================================== */
+/* STEP 6 : 설계도 4종                                     */
+/* ===================================================== */
+const DRAWINGS = [
+  { key:'site', name:'배치도', icon:'🗺️',
+    body:'건축물의 <b>배치</b>를 나타내는 도면. 건물의 <b>위치와 방향</b>, 건물과 <b>도로의 관계</b>, 도로의 너비, <b>출입구와 진입 방향</b> 등을 표시합니다.',
+    how:'<b>보는 방법:</b> 하늘에서 대지 전체를 내려다본 그림. 방위 표시(N)와 도로가 있으면 배치도!' },
+  { key:'plan', name:'평면도', icon:'📐',
+    body:'건물을 <b>수평 상태로 잘라서 위에서 본</b> 모양을 그대로 그린 도면. 건물의 <b>각 층, 방, 출입구</b> 등을 알 수 있습니다.',
+    how:'<b>보는 방법:</b> 건물을 허리 높이에서 수평으로 자른 뒤 위에서 본 그림. 방 이름과 문(호 모양)이 보이면 평면도!' },
+  { key:'section', name:'단면도', icon:'🔪',
+    body:'평면도에 표시할 수 없는 건물의 <b>내부 구조</b>를 명료하게 나타내기 위해 건물을 <b>수직으로 잘라서 본</b> 단면을 표현한 도면.',
+    how:'<b>보는 방법:</b> 건물을 세로로 뚝 잘라 옆에서 본 그림. 층높이, 지붕 속, 기초, 계단이 보이면 단면도!' },
+  { key:'elev', name:'입면도', icon:'🏠',
+    body:'건물의 <b>외부를 표현</b>하기 위한 도면. 건축물의 <b>외면 각부의 형상</b>, 창이나 출입구의 위치, 치수, <b>마감 방법</b> 등을 알 수 있습니다.',
+    how:'<b>보는 방법:</b> 건물 바깥에서 정면(또는 측면)을 바라본 그림. 자르지 않은 겉모습 — 창문·지붕·외벽 재료가 보이면 입면도!' },
+];
+function drawDrawing(svg, key) {
+  svg.innerHTML = '';
+  const add = (tag, attrs, text) => svg.appendChild(el(tag, attrs, text));
+  const line = (x1, y1, x2, y2, o = {}) => add('line', Object.assign({ x1, y1, x2, y2, stroke:'#1e293b', 'stroke-width':2 }, o));
+  const txt = (x, y, t, o = {}) => add('text', Object.assign({ x, y, 'font-size':10, fill:'#1e293b', 'text-anchor':'middle' }, o), t);
+  if (key === 'site') {
+    add('rect', { x:30, y:20, width:230, height:150, fill:'#f0fdf4', stroke:'#1e293b', 'stroke-width':1.5, 'stroke-dasharray':'6 3' });
+    add('rect', { x:0, y:180, width:320, height:30, fill:'#e5e7eb' }); line(0, 195, 320, 195, { stroke:'#9ca3af', 'stroke-dasharray':'8 6', 'stroke-width':1.5 });
+    txt(160, 205, '도로 (너비 8 m)', { fill:'#374151' });
+    add('rect', { x:80, y:50, width:120, height:80, fill:'#fde68a', stroke:'#1e293b', 'stroke-width':2 });
+    for (let i = 0; i < 6; i++) line(85 + i * 20, 130, 105 + i * 20, 50, { stroke:'#92400e', 'stroke-width':.7 });
+    txt(140, 95, '주택', { 'font-size':12, 'font-weight':'bold' });
+    add('path', { d:'M140 180 L140 135', fill:'none', stroke:'#dc2626', 'stroke-width':2 }); add('polygon', { points:'140,130 135,140 145,140', fill:'#dc2626' }); txt(158, 160, '진입', { fill:'#dc2626' });
+    [50, 225].forEach(x => { add('circle', { cx:x, cy:145, r:9, fill:'#86efac', stroke:'#166534' }); add('circle', { cx:x + 14, cy:40 + (x > 100 ? 0 : 0), r:0 }); });
+    add('circle', { cx:240, cy:45, r:9, fill:'#86efac', stroke:'#166534' }); add('circle', { cx:52, cy:42, r:9, fill:'#86efac', stroke:'#166534' });
+    add('circle', { cx:290, cy:35, r:14, fill:'#fff', stroke:'#1e293b', 'stroke-width':1.5 }); add('polygon', { points:'290,24 285,38 290,34 295,38', fill:'#1e293b' }); txt(290, 62, 'N', { 'font-weight':'bold', 'font-size':12 });
+    line(30, 12, 260, 12, { stroke:'#dc2626', 'stroke-width':1 }); txt(145, 9, '대지 20 m', { fill:'#dc2626', 'font-size':9 });
+  } else if (key === 'plan') {
+    add('rect', { x:40, y:30, width:240, height:160, fill:'#fff', stroke:'#1e293b', 'stroke-width':4 });
+    line(160, 30, 160, 190, { 'stroke-width':3 }); line(160, 110, 280, 110, { 'stroke-width':3 }); line(40, 130, 160, 130, { 'stroke-width':3 }); line(100, 130, 100, 190, { 'stroke-width':3 });
+    txt(100, 85, '거실', { 'font-size':12 }); txt(70, 165, '화장실'); txt(130, 165, '주방'); txt(220, 75, '방 1', { 'font-size':12 }); txt(220, 155, '방 2', { 'font-size':12 });
+    add('path', { d:'M160 70 A20 20 0 0 1 140 90', fill:'none', stroke:'#1e293b', 'stroke-width':1.5 }); add('path', { d:'M220 110 A18 18 0 0 1 202 128', fill:'none', stroke:'#1e293b', 'stroke-width':1.5 }); add('path', { d:'M80 130 A16 16 0 0 1 64 146', fill:'none', stroke:'#1e293b', 'stroke-width':1.5 }); add('path', { d:'M130 190 A18 18 0 0 1 112 172', fill:'none', stroke:'#1e293b', 'stroke-width':1.5 });
+    [[55, 30, 95, 30], [180, 30, 260, 30], [280, 50, 280, 95], [280, 125, 280, 175], [40, 60, 40, 100]].forEach(([a, b, c, d]) => line(a, b, c, d, { stroke:'#0284c7', 'stroke-width':4 }));
+    txt(120, 205, '현관', { 'font-size':9 });
+    txt(160, 18, '1층 평면도', { 'font-size':11, 'font-weight':'bold' });
+  } else if (key === 'section') {
+    add('rect', { x:0, y:175, width:320, height:45, fill:'#d6d3d1' });
+    for (let i = 0; i < 16; i++) line(i * 20, 220, i * 20 + 20, 175, { stroke:'#a8a29e', 'stroke-width':1 });
+    add('rect', { x:60, y:165, width:200, height:14, fill:'#9ca3af', stroke:'#1e293b', 'stroke-width':1.5 });
+    add('rect', { x:50, y:179, width:40, height:22, fill:'#6b7280', stroke:'#1e293b' }); add('rect', { x:230, y:179, width:40, height:22, fill:'#6b7280', stroke:'#1e293b' });
+    add('rect', { x:66, y:100, width:8, height:65, fill:'#9ca3af', stroke:'#1e293b' }); add('rect', { x:246, y:100, width:8, height:65, fill:'#9ca3af', stroke:'#1e293b' });
+    add('rect', { x:60, y:96, width:200, height:10, fill:'#9ca3af', stroke:'#1e293b', 'stroke-width':1.5 });
+    add('rect', { x:66, y:40, width:8, height:56, fill:'#9ca3af', stroke:'#1e293b' }); add('rect', { x:246, y:40, width:8, height:56, fill:'#9ca3af', stroke:'#1e293b' });
+    add('polygon', { points:'50,42 160,8 270,42', fill:'none', stroke:'#1e293b', 'stroke-width':3 }); line(60, 40, 260, 40, { 'stroke-width':1.5 });
+    [[150, 165], [140, 155], [130, 145], [120, 135], [110, 125], [100, 115]].forEach(([x, y]) => add('rect', { x, y, width:12, height:10, fill:'#e5e7eb', stroke:'#1e293b', 'stroke-width':1 }));
+    txt(200, 140, '1층', { 'font-size':12 }); txt(200, 75, '2층', { 'font-size':12 }); txt(160, 30, '지붕 속(다락)', { 'font-size':9 }); txt(70, 215, '기초', { 'font-size':10, fill:'#fff' }); txt(160, 215, '지반', { 'font-size':10, fill:'#44403c' });
+    line(275, 106, 275, 165, { stroke:'#dc2626', 'stroke-width':1 }); line(270, 106, 280, 106, { stroke:'#dc2626', 'stroke-width':1 }); line(270, 165, 280, 165, { stroke:'#dc2626', 'stroke-width':1 });
+    add('text', { x:288, y:138, 'font-size':9, fill:'#dc2626', transform:'rotate(90 288 138)', 'text-anchor':'middle' }, '층높이 2.4 m');
+    txt(30, 130, '계단', { 'font-size':9 });
+  } else if (key === 'elev') {
+    line(0, 185, 320, 185, { 'stroke-width':3 });
+    add('rect', { x:60, y:80, width:200, height:105, fill:'#fed7aa', stroke:'#1e293b', 'stroke-width':2 });
+    for (let y = 92; y < 185; y += 12) line(60, y, 260, y, { stroke:'#c2410c', 'stroke-width':.5 });
+    add('polygon', { points:'50,82 160,22 270,82', fill:'#b91c1c', stroke:'#1e293b', 'stroke-width':2 });
+    add('rect', { x:200, y:34, width:14, height:30, fill:'#78716c', stroke:'#1e293b' });
+    [[80, 100], [140, 100], [200, 100]].forEach(([x, y]) => { add('rect', { x, y, width:36, height:34, fill:'#bae6fd', stroke:'#1e293b', 'stroke-width':1.5 }); line(x + 18, y, x + 18, y + 34, { 'stroke-width':1 }); line(x, y + 17, x + 36, y + 17, { 'stroke-width':1 }); });
+    add('rect', { x:100, y:145, width:30, height:40, fill:'#92400e', stroke:'#1e293b', 'stroke-width':1.5 }); add('circle', { cx:124, cy:166, r:2, fill:'#fde68a' });
+    add('rect', { x:180, y:150, width:50, height:20, fill:'#bae6fd', stroke:'#1e293b', 'stroke-width':1.5 });
+    txt(160, 205, '정면 입면도 — 외벽: 붉은 벽돌 마감', { 'font-size':10 });
+    line(280, 80, 280, 185, { stroke:'#dc2626', 'stroke-width':1 }); add('text', { x:292, y:132, 'font-size':9, fill:'#dc2626', transform:'rotate(90 292 132)', 'text-anchor':'middle' }, '처마 높이 3.5 m');
+  }
+}
+DRAWINGS.forEach((d, i) => {
+  const b = document.createElement('button'); b.className = 'dw-btn' + (i === 0 ? ' on' : ''); b.textContent = d.icon + ' ' + d.name; b.dataset.k = d.key;
+  b.onclick = () => showDrawing(d.key);
+  $('dwBtns').appendChild(b);
+});
+function showDrawing(key) {
+  document.querySelectorAll('.dw-btn').forEach(b => b.classList.toggle('on', b.dataset.k === key));
+  drawDrawing($('dwSvg'), key);
+  const d = DRAWINGS.find(x => x.key === key);
+  $('dwDetail').innerHTML = '<h4>' + d.icon + ' ' + d.name + '</h4><div>' + d.body + '</div><div class="how">' + d.how + '</div>';
+}
+showDrawing('site');
+/* 판별 게임 */
+const DW_ROUNDS = 8;
+let dwSeq = [], dwIdx = 0, dwScore = 0, dwAnswered = false;
+function dwStart() {
+  dwSeq = []; while (dwSeq.length < DW_ROUNDS) { const pick = DRAWINGS.map(d => d.key).sort(() => Math.random() - .5); dwSeq.push(...pick); }
+  dwSeq = dwSeq.slice(0, DW_ROUNDS); dwIdx = 0; dwScore = 0;
+  $('dwRestart').style.display = 'none'; $('dwPredResult').innerHTML = '';
+  dwRound();
+}
+function dwRound() {
+  dwAnswered = false;
+  const key = dwSeq[dwIdx];
+  drawDrawing($('dwGameSvg'), key);
+  $('dwStatus').textContent = '라운드 ' + (dwIdx + 1) + ' / ' + DW_ROUNDS + ' · 점수 ' + dwScore;
+  $('dwFb').textContent = ''; $('dwFb').className = 'g-fb'; $('dwNext').style.display = 'none';
+  $('dwOpts').innerHTML = '';
+  DRAWINGS.forEach(d => {
+    const b = document.createElement('button'); b.className = 'gopt'; b.textContent = d.icon + ' ' + d.name;
+    b.onclick = () => {
+      if (dwAnswered) return; dwAnswered = true;
+      const ok = d.key === key; if (ok) dwScore++;
+      document.querySelectorAll('.gopt').forEach(x => { x.disabled = true; if (x.textContent.includes(DRAWINGS.find(z => z.key === key).name)) x.classList.add('correct'); });
+      if (!ok) b.classList.add('wrong');
+      const ans = DRAWINGS.find(z => z.key === key);
+      $('dwFb').className = 'g-fb ' + (ok ? 'ok' : 'no');
+      $('dwFb').innerHTML = (ok ? '⭕ 정답! ' : '❌ 정답은 「' + ans.name + '」. ') + ans.how;
+      $('dwStatus').textContent = '라운드 ' + (dwIdx + 1) + ' / ' + DW_ROUNDS + ' · 점수 ' + dwScore;
+      if (dwIdx + 1 < DW_ROUNDS) $('dwNext').style.display = 'inline-block';
+      else {
+        $('dwFb').innerHTML += '<br>🏁 <b>최종 ' + dwScore + ' / ' + DW_ROUNDS + '</b>' + (dwScore === DW_ROUNDS ? ' — 도면 박사!' : ' — 헷갈린 도면은 위 버튼으로 다시 비교해 보세요.');
+        predictResult('dwPred', 'dwPredResult', dwScore, DW_ROUNDS);
+        $('dwRestart').style.display = 'inline-block';
+      }
+    };
+    $('dwOpts').appendChild(b);
+  });
+}
+$('dwNext').onclick = () => { dwIdx++; dwRound(); };
+$('dwRestart').onclick = dwStart;
+dwStart();
+
+/* ===================================================== */
+/* 미니 퀴즈                                              */
+/* ===================================================== */
+let mqzCorrect = 0, mqzDone = 0;
+const mqzItems = document.querySelectorAll('#miniQuiz .mqz-item');
+mqzItems.forEach(item => {
+  const ans = item.dataset.answer, optsEl = item.querySelector('.mqz-opts'), fb = item.querySelector('.mqz-fb');
+  optsEl.dataset.opts.split(',').forEach(o => {
+    const b = document.createElement('button'); b.className = 'mqz-btn'; b.textContent = o;
+    b.onclick = () => {
+      if (item.dataset.done) return; item.dataset.done = '1'; mqzDone++;
+      optsEl.querySelectorAll('.mqz-btn').forEach(x => x.disabled = true);
+      if (o === ans) { b.classList.add('correct'); mqzCorrect++; fb.textContent = '⭕ 정답!'; fb.className = 'mqz-fb ok'; }
+      else { b.classList.add('wrong'); optsEl.querySelectorAll('.mqz-btn').forEach(x => { if (x.textContent === ans) x.classList.add('correct'); }); fb.textContent = '❌ 정답은 「' + ans + '」. 해당 단계로 돌아가 다시 확인해 보세요.'; fb.className = 'mqz-fb no'; }
+      if (mqzDone === mqzItems.length) $('mqzScore').innerHTML = '🎯 미니 퀴즈: <b style="color:#fbbf24">' + mqzCorrect + ' / ' + mqzItems.length + '</b>' + (mqzCorrect === mqzItems.length ? ' — 완벽!' : ' — 틀린 부분은 위 단계로 복습!');
+    };
+    optsEl.appendChild(b);
+  });
+});
+
+/* ===== 탐구 입력 저장 ===== */
+function saveIq(id) {
+  const e = $(id); try { localStorage.setItem('construction-' + id, e.value); } catch (x) {}
+  const s = $(id + '-saved'); if (s) s.textContent = '✔ 저장됨 ' + new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit' });
+}
+['iqSort', 'iqPlan', 'iqSum'].forEach(id => { try { const v = localStorage.getItem('construction-' + id); if (v) $(id).value = v; } catch (e) {} });
+
+/* ===== 체크리스트 ===== */
+const SC_TOTAL = document.querySelectorAll('.sc').length;
+document.querySelectorAll('.sc').forEach(c => c.addEventListener('change', () => {
+  const n = document.querySelectorAll('.sc:checked').length, p = $('scProgress');
+  p.textContent = '체크: ' + n + ' / ' + SC_TOTAL;
+  if (n === SC_TOTAL) p.textContent += ' — 🌟 완벽! 6차시로 출발!';
+  else if (n >= Math.ceil(SC_TOTAL * .6)) p.textContent += ' — 좋아요! 나머지도 복습하세요.';
+}));
+</script>
+</body>
+</html>

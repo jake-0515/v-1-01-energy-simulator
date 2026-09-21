@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6차시 — 건설 시공과 건설 관리</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Segoe UI','Malgun Gothic',sans-serif;
+  background:linear-gradient(160deg,#0f172a,#1e293b);
+  color:#e2e8f0; min-height:100vh;
+}
+.container { max-width:1050px; margin:0 auto; padding:20px 18px 80px; }
+.top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.top-nav a { color:#7dd3fc; text-decoration:none; font-size:.9rem; }
+.top-nav a:hover { text-decoration:underline; }
+h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
+.lesson-tag { display:inline-block; background:#fbbf24; color:#1e293b; font-weight:800; border-radius:8px; padding:3px 12px; font-size:.8rem; margin-bottom:10px; }
+.unit-tag { display:inline-block; background:#334155; color:#94a3b8; border-radius:8px; padding:3px 10px; font-size:.75rem; margin-left:6px; }
+.goal-box { background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0; padding:14px 18px; margin:14px 0 30px; font-size:.92rem; line-height:1.7; }
+.goal-box b { color:#7dd3fc; }
+.step-title { font-size:1.25rem; color:#fbbf24; margin:40px 0 6px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.step-num { background:#f59e0b; color:#1e293b; width:30px; height:30px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:.95rem; flex-shrink:0; }
+.step-time { font-size:.7rem; background:#334155; color:#94a3b8; border-radius:999px; padding:3px 10px; font-weight:600; }
+.step-desc { color:#94a3b8; font-size:.9rem; margin-bottom:16px; line-height:1.6; }
+.flow-bar { display:flex; gap:6px; flex-wrap:wrap; background:rgba(15,23,42,.6); border:1px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:30px; font-size:.76rem; color:#94a3b8; }
+.flow-bar span { background:#1e293b; border:1px solid #475569; border-radius:999px; padding:4px 11px; white-space:nowrap; }
+.flow-bar span b { color:#fbbf24; }
+.panel { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.hook { margin-top:16px; background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0; padding:14px 16px; font-size:.9rem; line-height:1.75; }
+.hook b { color:#7dd3fc; }
+.btn-main { background:linear-gradient(135deg,#f59e0b,#d97706); color:#1e293b; font-weight:800; border:none; border-radius:10px; padding:11px 26px; font-size:.95rem; cursor:pointer; font-family:inherit; transition:.2s; }
+.btn-main:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 16px rgba(245,158,11,.35); }
+.btn-main:disabled { opacity:.45; cursor:default; }
+.btn-sub { background:#334155; color:#cbd5e1; border:1px solid #64748b; border-radius:10px; padding:9px 18px; font-size:.86rem; cursor:pointer; font-family:inherit; }
+.btn-sub:hover { border-color:#94a3b8; }
+
+/* ===== 자기점검 ===== */
+.kwl { background:rgba(167,139,250,.08); border:1px solid rgba(167,139,250,.35); border-radius:14px; padding:20px; }
+.kwl h3 { color:#c4b5fd; font-size:1rem; margin-bottom:10px; }
+.kwl-row { display:flex; flex-direction:column; gap:10px; }
+.kwl-item { display:flex; align-items:center; gap:10px; font-size:.9rem; flex-wrap:wrap; }
+.kwl-item span { flex:1; min-width:220px; }
+.kwl-item select { background:#1e293b; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:5px 10px; font-size:.85rem; cursor:pointer; font-family:inherit; }
+.kwl-note { font-size:.78rem; color:#a78bfa; margin-top:10px; }
+.kwl-compare { margin-top:14px; display:none; }
+.kwl-compare table { width:100%; border-collapse:collapse; font-size:.85rem; }
+.kwl-compare th, .kwl-compare td { padding:7px 8px; border-bottom:1px solid #334155; text-align:left; }
+.kwl-compare th { color:#c4b5fd; font-weight:600; font-size:.8rem; }
+.kwl-compare .up { color:#4ade80; font-weight:700; } .kwl-compare .same { color:#94a3b8; } .kwl-compare .down { color:#f87171; font-weight:700; }
+.kwl-summary { margin-top:10px; background:rgba(15,23,42,.6); border-radius:10px; padding:10px 14px; font-size:.88rem; line-height:1.7; }
+.predict { display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:rgba(251,191,36,.07); border:1px dashed rgba(251,191,36,.45); border-radius:10px; padding:10px 14px; margin-bottom:14px; font-size:.86rem; }
+.predict select { background:#1e293b; color:#fde68a; border:1px solid #64748b; border-radius:8px; padding:4px 10px; font-family:inherit; font-size:.86rem; }
+.predict .pr-result { width:100%; font-size:.85rem; line-height:1.6; color:#cbd5e1; }
+.predict .pr-result b { color:#fbbf24; }
+
+/* ===== 공사 현장 시뮬레이터 ===== */
+.site-sim { display:grid; grid-template-columns:1.2fr 1fr; gap:16px; align-items:start; }
+@media(max-width:800px){ .site-sim{grid-template-columns:1fr} }
+.site-stage { background:linear-gradient(180deg,#7dd3fc 0%,#bae6fd 55%,#a3e635 55.5%,#65a30d 100%); border-radius:12px; overflow:hidden; }
+.site-stage svg { display:block; width:100%; height:auto; }
+.stage-btns { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+.stg-btn { background:#1e293b; border:2px solid #475569; border-radius:10px; padding:7px 11px; cursor:pointer; font-family:inherit; color:#e2e8f0; font-size:.8rem; transition:.18s; }
+.stg-btn:hover { border-color:#94a3b8; }
+.stg-btn.on { border-color:#fbbf24; background:rgba(251,191,36,.12); color:#fbbf24; }
+.stg-btn.done { border-color:#4ade80; }
+.stage-info { background:rgba(15,23,42,.7); border:1px solid #475569; border-radius:12px; padding:15px; font-size:.88rem; line-height:1.75; min-height:200px; }
+.stage-info h4 { color:#fbbf24; font-size:1.05rem; margin-bottom:6px; }
+.stage-info .who { margin-top:8px; font-size:.82rem; color:#94a3b8; }
+.stage-info .why { margin-top:8px; background:rgba(56,189,248,.08); border-left:3px solid #38bdf8; padding:8px 11px; border-radius:0 8px 8px 0; color:#bae6fd; font-size:.84rem; }
+.stage-info .why b { color:#7dd3fc; }
+.play-row { display:flex; gap:8px; align-items:center; margin-top:10px; flex-wrap:wrap; }
+.frame-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px; }
+@media(max-width:640px){ .frame-grid{grid-template-columns:1fr} }
+.frame-card { background:rgba(15,23,42,.6); border:2px solid #475569; border-radius:12px; padding:12px; font-size:.82rem; line-height:1.55; cursor:pointer; transition:.18s; }
+.frame-card:hover { border-color:#fbbf24; }
+.frame-card.on { border-color:#fbbf24; background:rgba(251,191,36,.08); }
+.frame-card b { display:block; color:#fde68a; font-size:.92rem; margin-bottom:4px; }
+.frame-card svg { width:100%; height:auto; background:rgba(15,23,42,.6); border-radius:8px; margin-bottom:8px; }
+.frame-card span { color:#94a3b8; }
+
+/* ===== 순서 게임 ===== */
+.seq-pool { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px; }
+.sbtn { background:#1e293b; border:2px solid #64748b; border-radius:10px; padding:9px 13px; font-size:.86rem; cursor:pointer; font-family:inherit; color:#e2e8f0; transition:.18s; line-height:1.4; }
+.sbtn:hover:not(:disabled) { border-color:#fbbf24; }
+.sbtn:disabled { opacity:.3; cursor:default; }
+.sbtn.shake { animation:shake .35s; border-color:#f87171; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+.seq-line { display:flex; gap:6px; flex-wrap:wrap; align-items:center; min-height:44px; background:rgba(15,23,42,.6); border-radius:10px; padding:8px 10px; font-size:.86rem; }
+.seq-line span.o { background:#14532d; border:1px solid #4ade80; color:#bbf7d0; border-radius:8px; padding:5px 11px; }
+.seq-line span.arr { color:#fbbf24; }
+.seq-line .ph { color:#64748b; font-size:.82rem; }
+.g-fb { margin-top:10px; font-size:.85rem; min-height:1.4em; line-height:1.6; }
+.g-fb.ok { color:#86efac; } .g-fb.no { color:#fca5a5; }
+.timer { font-size:.85rem; color:#fde68a; font-weight:700; }
+
+/* ===== 골조 공사 판별 게임 ===== */
+.pick-game { margin-top:14px; background:rgba(15,23,42,.6); border:1px solid #475569; border-radius:14px; padding:16px; }
+.g-status { display:flex; justify-content:space-between; align-items:center; font-size:.85rem; color:#94a3b8; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+.pick-q { font-size:.95rem; line-height:1.65; margin-bottom:10px; background:rgba(30,41,59,.8); border-radius:10px; padding:12px 14px; }
+.pick-q b { color:#fde68a; }
+.gopts { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+@media(max-width:600px){ .gopts{grid-template-columns:1fr} }
+.gopt { background:#1e293b; border:2px solid #64748b; border-radius:10px; padding:10px; font-size:.88rem; cursor:pointer; font-family:inherit; color:#e2e8f0; transition:.18s; }
+.gopt:hover:not(:disabled) { border-color:#38bdf8; }
+.gopt:disabled { cursor:default; }
+.gopt.correct { background:#14532d; border-color:#4ade80; color:#bbf7d0; }
+.gopt.wrong { background:#7f1d1d; border-color:#f87171; color:#fecaca; }
+
+/* ===== 건설 관리 ===== */
+.mgmt-wrap { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media(max-width:720px){ .mgmt-wrap{grid-template-columns:1fr} }
+.mgmt-col { background:rgba(15,23,42,.55); border-radius:12px; padding:14px; border:1px solid; }
+.mgmt-col.during { border-color:rgba(245,158,11,.5); } .mgmt-col.after { border-color:rgba(56,189,248,.5); }
+.mgmt-col h4 { font-size:.95rem; margin-bottom:10px; }
+.mgmt-col.during h4 { color:#fde68a; } .mgmt-col.after h4 { color:#7dd3fc; }
+.mg-chips { display:flex; gap:7px; flex-wrap:wrap; }
+.mg-chip { background:#1e293b; border:2px solid #475569; border-radius:999px; padding:7px 14px; font-size:.84rem; cursor:pointer; font-family:inherit; color:#e2e8f0; transition:.18s; }
+.mg-chip:hover { border-color:#94a3b8; }
+.mg-chip.on { border-color:#fbbf24; background:rgba(251,191,36,.12); color:#fbbf24; }
+.mg-detail { margin-top:12px; background:rgba(15,23,42,.7); border:1px solid #475569; border-radius:12px; padding:14px; font-size:.87rem; line-height:1.72; min-height:80px; }
+.mg-detail h4 { color:#fbbf24; font-size:.98rem; margin-bottom:5px; }
+.mg-detail .ex { margin-top:6px; font-size:.82rem; color:#94a3b8; }
+/* 현장 소장 게임 */
+.boss-game { margin-top:16px; }
+.boss-card { background:rgba(15,23,42,.6); border:1px solid #475569; border-radius:14px; padding:16px; }
+.boss-card .scene { font-size:.95rem; line-height:1.7; margin-bottom:12px; background:rgba(30,41,59,.8); border-radius:10px; padding:12px 14px; }
+.boss-card .scene b { color:#fde68a; }
+.boss-opts { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; }
+.boss-meter { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; font-size:.82rem; }
+.meter { flex:1; min-width:150px; background:rgba(30,41,59,.8); border-radius:10px; padding:8px 10px; }
+.meter b { display:block; margin-bottom:4px; }
+.meter .bar { height:10px; background:#0f172a; border-radius:999px; overflow:hidden; border:1px solid #475569; }
+.meter .fill { height:100%; border-radius:999px; transition:width .5s; }
+.meter.safe b { color:#fca5a5; } .meter.safe .fill { background:#f87171; }
+.meter.qual b { color:#86efac; } .meter.qual .fill { background:#4ade80; }
+.meter.cost b { color:#fde68a; } .meter.cost .fill { background:#fbbf24; }
+.meter.time b { color:#7dd3fc; } .meter.time .fill { background:#38bdf8; }
+.boss-end { margin-top:12px; background:rgba(251,191,36,.08); border:1px solid rgba(251,191,36,.4); border-radius:12px; padding:14px; font-size:.9rem; line-height:1.7; }
+.boss-end b { color:#fbbf24; }
+
+/* ===== 미니 퀴즈 / 정리 ===== */
+.mini-quiz { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.mqz-item { margin-bottom:16px; }
+.mqz-q { font-size:.95rem; margin-bottom:10px; line-height:1.6; }
+.mqz-q .qn { color:#fbbf24; font-weight:700; }
+.mqz-opts { display:flex; gap:8px; flex-wrap:wrap; }
+.mqz-btn { background:#334155; color:#e2e8f0; border:1px solid #64748b; border-radius:999px; padding:7px 16px; font-size:.85rem; cursor:pointer; transition:.2s; font-family:inherit; }
+.mqz-btn:hover:not(:disabled) { border-color:#fbbf24; color:#fbbf24; }
+.mqz-btn.correct { background:#14532d; border-color:#4ade80; color:#bbf7d0; }
+.mqz-btn.wrong { background:#7f1d1d; border-color:#f87171; color:#fecaca; }
+.mqz-btn:disabled { cursor:default; opacity:.85; }
+.mqz-fb { font-size:.82rem; margin-top:8px; min-height:1.2em; line-height:1.5; }
+.mqz-fb.ok { color:#4ade80; } .mqz-fb.no { color:#f87171; }
+.inquiry { margin-top:16px; background:rgba(167,139,250,.08); border:1px dashed rgba(167,139,250,.5); border-radius:12px; padding:14px 16px; }
+.inquiry h4 { color:#c4b5fd; font-size:.95rem; margin-bottom:8px; }
+.inquiry p { font-size:.85rem; color:#cbd5e1; line-height:1.6; margin-bottom:8px; }
+.inquiry textarea { width:100%; min-height:64px; background:#0f172a; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:9px 11px; font-family:inherit; font-size:.86rem; resize:vertical; }
+.inquiry .iq-row { display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+.inquiry .iq-saved { font-size:.78rem; color:#a78bfa; }
+.self-check { background:rgba(74,222,128,.07); border:1px solid rgba(74,222,128,.35); border-radius:14px; padding:20px; }
+.self-check h3 { color:#86efac; font-size:1rem; margin-bottom:12px; }
+.sc-item { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:.9rem; line-height:1.55; }
+.sc-item input { margin-top:3px; width:16px; height:16px; accent-color:#4ade80; cursor:pointer; }
+.sc-progress { margin-top:12px; font-size:.85rem; color:#86efac; }
+.next-link { display:block; text-align:center; margin-top:34px; }
+.next-link a { display:inline-block; background:linear-gradient(135deg,#a78bfa,#7c3aed); color:#f8fafc; font-weight:800; text-decoration:none; border-radius:12px; padding:14px 34px; font-size:1rem; transition:.2s; }
+.next-link a:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(167,139,250,.35); }
+@keyframes craneSwing { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(3deg)} }
+.crane-arm { transform-origin:var(--ox) var(--oy); animation:craneSwing 8s ease-in-out infinite; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-nav">
+    <a href="sim_process_plan.html">← 5차시: 기획·설계</a>
+    <a href="index.html">7차시: 모듈러 학교 설계 (준비 중) → 홈으로</a>
+  </div>
+
+  <span class="lesson-tag">6차시</span><span class="unit-tag">단원 2 · 건설 과정의 이해 (교과서 198~199쪽)</span>
+  <h1>👷 건설 시공과 건설 관리</h1>
+  <div class="goal-box">
+    <b>학습 목표</b><br>
+    ① 건설 시공이 무엇인지 설명하고, <b>시공의 7단계</b>(착공 준비 → 가설 → 토공사 → 기초 → 골조 → 설비·마감 → 완공)를 순서대로 말할 수 있다.<br>
+    ② 골조 공사의 세 종류(<b>조적·철근 콘크리트·철골</b>)를 구분할 수 있다.<br>
+    ③ 시공 중 <b>6가지 관리</b>와 시공 후 <b>2가지 관리</b>가 왜 필요한지 설명할 수 있다.
+  </div>
+
+  <div class="flow-bar">
+    <span><b>0</b> 자기점검 2분</span>
+    <span><b>1</b> 시공이란? 3분</span>
+    <span><b>2</b> 공사 현장 시뮬레이터 12분</span>
+    <span><b>3</b> 골조 공사 3종 6분</span>
+    <span><b>4</b> 순서 게임 5분</span>
+    <span><b>5</b> 건설 관리 6분</span>
+    <span><b>6</b> 현장 소장 게임 8분</span>
+    <span><b>7</b> 미니 퀴즈 3분</span>
+    <span><b>✓</b> 정리 3분</span>
+  </div>
+
+  <!-- STEP 0 -->
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">2분 · 🧠 메타인지</span></div>
+  <p class="step-desc">지금 나의 상태를 솔직하게 체크하세요. 마지막에 학습 후 상태와 비교합니다.</p>
+  <div class="kwl">
+    <h3>📋 나는 지금 얼마나 알고 있을까?</h3>
+    <div class="kwl-row" id="preRow"></div>
+    <div class="kwl-note">💡 "모른다"고 체크해도 괜찮아요. 자신의 상태를 아는 것이 메타인지의 시작입니다!</div>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="step-title"><span class="step-num">1</span> 건설 시공이란? <span class="step-time">3분 · 개념</span></div>
+  <div class="panel">
+    <p style="font-size:.95rem;line-height:1.8">
+      설계가 끝나면 <b style="color:#fde68a">설계 도면과 시방서</b>에 따라 건설 구조물을 만들어야 합니다.
+      <b style="color:#fde68a">건설 시공</b>은 설계 도면과 시방서를 바탕으로 <b>정해진 장소</b>에서 <b>정해진 시간 내</b>에 건설 구조물을 생산하는 활동입니다.<br>
+      건설 시공은 <b>공사비를 절약</b>하면서 공사를 마감할 때까지 <b>안전하고 합리적으로</b> 진행해야 합니다.
+    </p>
+    <div class="hook">
+      🔑 <b>왜 순서가 중요할까?</b> 집을 지을 때 지붕부터 얹을 수는 없죠. 시공은 일반적으로
+      <b>착공 준비 → 가설 공사 → 토공사 → 기초 공사 → 골조 공사 → 설비 공사 → 마감 공사</b>의 순서로 진행됩니다.
+      아래 시뮬레이터에서 한 단계씩 직접 지어 보세요!
+    </div>
+  </div>
+
+  <!-- STEP 2 : 공사 현장 시뮬레이터 -->
+  <div class="step-title"><span class="step-num">2</span> 🏗️ 공사 현장 시뮬레이터 <span class="step-time">12분 · 🎮 시뮬레이션</span></div>
+  <p class="step-desc">버튼을 눌러 단계를 하나씩 진행하거나, <b>▶ 자동 재생</b>으로 집이 지어지는 전 과정을 관찰하세요. 각 단계에서 <b>무엇을, 왜</b> 하는지 읽어 보세요.</p>
+  <div class="panel">
+    <div class="site-sim">
+      <div>
+        <div class="site-stage"><svg id="siteSvg" viewBox="0 0 520 320"></svg></div>
+        <div class="stage-btns" id="stageBtns"></div>
+        <div class="play-row">
+          <button class="btn-main" id="playBtn">▶ 자동 재생</button>
+          <button class="btn-sub" id="prevBtn">◀ 이전</button>
+          <button class="btn-sub" id="nextBtn">다음 ▶</button>
+          <button class="btn-sub" id="resetBtn">↺ 처음부터</button>
+        </div>
+      </div>
+      <div class="stage-info" id="stageInfo"></div>
+    </div>
+  </div>
+
+  <!-- STEP 3 : 골조 공사 3종 -->
+  <div class="step-title"><span class="step-num">3</span> 골조 공사의 세 종류 <span class="step-time">6분 · 개념 + 🎮 판별 게임</span></div>
+  <p class="step-desc">골조 공사는 구조물의 <b>뼈대(골조)</b>를 만드는 작업으로, 뼈대를 구성하는 <b>재료</b>에 따라 나뉩니다. 2차시에서 배운 <b>조적식·일체식·가구식 구조</b>와 연결해 보세요!</p>
+  <div class="panel">
+    <div class="frame-grid" id="frameGrid"></div>
+    <div class="mg-detail" id="frameDetail"></div>
+    <div class="pick-game">
+      <div class="g-status"><span>🎮 <b>골조 공사 판별 게임</b> — 현장 상황을 읽고 어떤 골조 공사인지 고르세요</span><span id="pickStatus"></span></div>
+      <div class="pick-q" id="pickQ"></div>
+      <div class="gopts" id="pickOpts"></div>
+      <div class="g-fb" id="pickFb"></div>
+      <div style="margin-top:10px"><button class="btn-main" id="pickNext" style="display:none">다음 →</button><button class="btn-sub" id="pickRestart" style="display:none">↺ 다시 도전</button></div>
+    </div>
+  </div>
+
+  <!-- STEP 4 : 순서 게임 -->
+  <div class="step-title"><span class="step-num">4</span> 시공 순서 게임 <span class="step-time">5분 · 🎮 타임어택</span></div>
+  <p class="step-desc">시공 7단계를 <b>순서대로</b> 빠르게 눌러 보세요. 틀리면 흔들립니다! 시간을 재며 두 번 도전해 기록을 줄여 보세요.</p>
+  <div class="panel">
+    <div class="predict" id="seqPredict">
+      🎯 <b>도전 전 예측</b> — 한 번도 틀리지 않고 완성할 수 있을까요?
+      <select id="seqPred"><option value="">선택</option><option value="0">한 번도 안 틀릴 것</option><option value="1">1~2번 틀릴 것</option><option value="3">3번 이상 틀릴 것</option></select>
+      <span class="pr-result" id="seqPredResult"></span>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+      <span class="timer" id="seqTimer">⏱️ 0.0초</span>
+      <span style="font-size:.82rem;color:#94a3b8">틀린 횟수: <b id="seqMiss" style="color:#fca5a5">0</b> · 최고 기록: <b id="seqBest" style="color:#86efac">-</b></span>
+    </div>
+    <div class="seq-pool" id="seqPool"></div>
+    <div class="seq-line" id="seqLine"><span class="ph">여기에 순서대로 쌓입니다…</span></div>
+    <div class="g-fb" id="seqFb"></div>
+  </div>
+
+  <!-- STEP 5 : 건설 관리 -->
+  <div class="step-title"><span class="step-num">5</span> 건설 관리 — 시공 중 6가지, 시공 후 2가지 <span class="step-time">6분 · 개념</span></div>
+  <p class="step-desc">건설 구조물이 <b>정해진 공사 기간 안에 설계 의도에 맞게 안전하고 튼튼하게 완공</b>되려면 체계적인 건설 관리가 필요합니다. 완공된 후에도 <b>철저한 사후 관리</b>로 제 기능을 다하여 원래의 품질을 유지할 수 있도록 지속적인 관리가 필요합니다. 칩을 눌러 보세요.</p>
+  <div class="panel">
+    <div class="mgmt-wrap">
+      <div class="mgmt-col during"><h4>🔨 시공 중</h4><div class="mg-chips" id="mgDuring"></div></div>
+      <div class="mgmt-col after"><h4>🏠 시공 후</h4><div class="mg-chips" id="mgAfter"></div></div>
+    </div>
+    <div class="mg-detail" id="mgDetail"></div>
+  </div>
+
+  <!-- STEP 6 : 현장 소장 게임 -->
+  <div class="step-title"><span class="step-num">6</span> 🎮 내가 현장 소장이라면? <span class="step-time">8분 · 의사결정 게임</span></div>
+  <p class="step-desc">공사 현장에서 실제로 벌어지는 상황 6가지! 어떤 <b>관리</b>가 필요한지 판단해 결정하세요. 결정에 따라 <b>안전·품질·비용·기간</b> 4개 지표가 변합니다. 네 가지를 모두 지켜 완공하세요.</p>
+  <div class="panel">
+    <div class="boss-meter">
+      <div class="meter safe"><b>🦺 안전</b><div class="bar"><div class="fill" id="mSafe" style="width:70%"></div></div></div>
+      <div class="meter qual"><b>🏆 품질</b><div class="bar"><div class="fill" id="mQual" style="width:70%"></div></div></div>
+      <div class="meter cost"><b>💰 예산 여유</b><div class="bar"><div class="fill" id="mCost" style="width:70%"></div></div></div>
+      <div class="meter time"><b>📅 공기 여유</b><div class="bar"><div class="fill" id="mTime" style="width:70%"></div></div></div>
+    </div>
+    <div class="boss-game">
+      <div class="boss-card">
+        <div class="g-status"><span id="bossStatus">상황 1 / 6</span><span id="bossTag"></span></div>
+        <div class="scene" id="bossScene"></div>
+        <div class="boss-opts" id="bossOpts"></div>
+        <div class="g-fb" id="bossFb"></div>
+        <div style="margin-top:10px"><button class="btn-main" id="bossNext" style="display:none">다음 상황 →</button></div>
+      </div>
+      <div class="boss-end" id="bossEnd" style="display:none"></div>
+    </div>
+    <div class="inquiry">
+      <h4>💭 생각해 보기 (메타인지)</h4>
+      <p>게임에서 <b>가장 고민됐던 상황</b>은 무엇이었나요? 어떤 관리(공정·안전·품질·원가·자재·환경)가 서로 부딪혔는지 적어 보세요.</p>
+      <textarea id="iqBoss" placeholder="예) 장마 상황 — 공정 관리(기간을 지키기)와 안전 관리(비 오는 날 작업 중지)가 부딪혔다. 나는 안전을 골랐다. 왜냐하면…"></textarea>
+      <div class="iq-row"><button class="btn-sub" onclick="saveIq('iqBoss')">💾 저장</button><span class="iq-saved" id="iqBoss-saved"></span></div>
+    </div>
+  </div>
+
+  <!-- STEP 7 : 미니 퀴즈 -->
+  <div class="step-title"><span class="step-num">7</span> 적용 미니 퀴즈 <span class="step-time">3분</span></div>
+  <div class="mini-quiz" id="miniQuiz">
+    <div class="mqz-item" data-answer="가설 공사">
+      <div class="mqz-q"><span class="qn">Q1.</span> 건축 공사를 하기 위해 필요한 <b>임시 시설물이나 설비</b>(가림막, 현장 사무소, 비계 등)를 설치하는 공사는?</div>
+      <div class="mqz-opts" data-opts="착공 준비,가설 공사,토공사,기초 공사"></div><div class="mqz-fb"></div>
+    </div>
+    <div class="mqz-item" data-answer="기초 공사">
+      <div class="mqz-q"><span class="qn">Q2.</span> 구조물의 하중을 지반에 잘 전달하고, 자체 무게를 안전하게 지지하도록 <b>지면 아래에</b> 구조물을 만드는 공사는?</div>
+      <div class="mqz-opts" data-opts="토공사,기초 공사,골조 공사,마감 공사"></div><div class="mqz-fb"></div>
+    </div>
+    <div class="mqz-item" data-answer="철근 콘크리트 공사">
+      <div class="mqz-q"><span class="qn">Q3.</span> 인장력이 우수한 철근과 압축력이 우수한 콘크리트를 견고하게 부착하는 골조 공사는?</div>
+      <div class="mqz-opts" data-opts="조적 공사,철근 콘크리트 공사,철골 공사"></div><div class="mqz-fb"></div>
+    </div>
+    <div class="mqz-item" data-answer="시공 후">
+      <div class="mqz-q"><span class="qn">Q4.</span> "사후 관리"와 "유지 관리"는 시공 중과 시공 후 중 언제 하는 관리?</div>
+      <div class="mqz-opts" data-opts="시공 중,시공 후"></div><div class="mqz-fb"></div>
+    </div>
+    <div style="text-align:center;margin-top:6px;font-size:.9rem" id="mqzScore"></div>
+  </div>
+
+  <!-- STEP ✓ -->
+  <div class="step-title"><span class="step-num">✓</span> 정리 · 학습 후 자기점검 <span class="step-time">3분 · 🧠 메타인지</span></div>
+  <div class="kwl">
+    <h3>📈 학습 후 — 지금은 얼마나 알고 있을까?</h3>
+    <div class="kwl-row" id="postRow"></div>
+    <div class="kwl-compare" id="kwlCompare">
+      <table><thead><tr><th>항목</th><th>학습 전</th><th>학습 후</th><th>변화</th></tr></thead><tbody id="kwlBody"></tbody></table>
+      <div class="kwl-summary" id="kwlSummary"></div>
+    </div>
+  </div>
+  <div class="inquiry">
+    <h4>✍️ 한 줄 정리 — 친구에게 설명하기</h4>
+    <p>7단계 시공 순서를 <b>"왜 그 순서여야 하는지"</b> 이유와 함께 한두 문장으로 설명해 보세요. (설명할 수 있어야 진짜 아는 것!)</p>
+    <textarea id="iqSum" placeholder="예) 땅을 파서(토공사) 기초를 만들어야 그 위에 뼈대(골조)를 세울 수 있고, 뼈대가 있어야 배관·전기(설비)와 마감을 할 수 있다. 그래서 순서를 바꿀 수 없다."></textarea>
+    <div class="iq-row"><button class="btn-sub" onclick="saveIq('iqSum')">💾 저장</button><span class="iq-saved" id="iqSum-saved"></span></div>
+  </div>
+  <div class="self-check" style="margin-top:16px">
+    <h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>건설 시공의 뜻(설계 도면·시방서대로 정해진 장소·시간 안에 생산)을 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>시공 7단계를 순서대로 말하고 각 단계에서 무엇을 하는지 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>착공 준비에서 지반 조사를 하는 이유를 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>조적 공사·철근 콘크리트 공사·철골 공사를 재료로 구분할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>시공 중 6가지 관리(공정·안전·품질·원가·자재·환경)를 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>완공 후에도 사후 관리·유지 관리가 필요한 이유를 설명할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress">체크: 0 / 6</div>
+  </div>
+
+  <div class="next-link"><a href="index.html">7차시 모듈러 학교 설계 활동은 준비 중 → 홈으로</a></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const PAGE = 'p6';
+const store = {
+  get(k) { try { return localStorage.getItem('construction-' + PAGE + '-' + k); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem('construction-' + PAGE + '-' + k, v); } catch (e) {} },
+};
+const NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, text) { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text !== undefined) e.textContent = text; return e; }
+
+/* ===== 학습 전/후 자기점검 ===== */
+const KWL_ITEMS = [
+  '<b>건설 시공</b>이 무엇인지 안다',
+  '건설 시공의 <b>7단계 순서</b>를 안다',
+  '<b>가설 공사</b>와 <b>토공사</b>가 무엇인지 안다',
+  '골조 공사의 <b>세 종류</b>를 안다',
+  '시공 중에 하는 <b>관리의 종류</b>를 안다',
+  '완공 후에도 <b>관리가 필요한 이유</b>를 안다',
+];
+const LEVELS = ['전혀 모름', '들어봤음', '설명 가능'];
+function buildKwl(rowId, cls) {
+  KWL_ITEMS.forEach((t, i) => {
+    const d = document.createElement('div'); d.className = 'kwl-item';
+    d.innerHTML = '<span>' + t + '</span><select class="' + cls + '"><option value="">선택</option>' + LEVELS.map(l => '<option>' + l + '</option>').join('') + '</select>';
+    const sel = d.querySelector('select'); const saved = store.get(cls + i); if (saved) sel.value = saved;
+    sel.addEventListener('change', () => { store.set(cls + i, sel.value); renderKwlCompare(); });
+    $(rowId).appendChild(d);
+  });
+}
+function renderKwlCompare() {
+  const pres = document.querySelectorAll('.pre-check'), posts = document.querySelectorAll('.post-check');
+  const anyPost = [...posts].some(s => s.value);
+  $('kwlCompare').style.display = anyPost ? 'block' : 'none';
+  if (!anyPost) return;
+  let up = 0, down = 0, low = 0;
+  $('kwlBody').innerHTML = KWL_ITEMS.map((t, i) => {
+    const pre = pres[i].value, post = posts[i].value, a = LEVELS.indexOf(pre), b = LEVELS.indexOf(post);
+    let mark = '<span class="same">—</span>';
+    if (a >= 0 && b >= 0) { if (b > a) { mark = '<span class="up">⬆ 향상</span>'; up++; } else if (b === a) mark = '<span class="same">유지</span>'; else { mark = '<span class="down">⬇ 낮아짐</span>'; down++; } }
+    if (b >= 0 && b < 2) low++;
+    return '<tr><td>' + t + '</td><td>' + (pre || '-') + '</td><td>' + (post || '-') + '</td><td>' + mark + '</td></tr>';
+  }).join('');
+  let msg = '';
+  if (up) msg += '📈 <b style="color:#4ade80">' + up + '개 항목</b>이 학습 전보다 좋아졌어요! ';
+  if (down) msg += '🤔 <b style="color:#f87171">' + down + '개 항목</b>은 배우고 나니 "생각보다 몰랐다"고 느꼈네요 — 이것도 훌륭한 메타인지입니다. ';
+  if (low) msg += '📚 아직 "설명 가능"이 아닌 항목이 <b>' + low + '개</b> 있어요. 시뮬레이터로 돌아가 다시 관찰하고, 친구에게 설명해 보세요. ';
+  if (!low && [...posts].every(s => s.value)) msg += '🌟 모든 항목을 설명할 수 있어요! 7차시 설계 활동으로 출발!';
+  $('kwlSummary').innerHTML = msg || '학습 후 상태를 모두 선택하면 요약이 나타납니다.';
+}
+buildKwl('preRow', 'pre-check'); buildKwl('postRow', 'post-check'); renderKwlCompare();
+
+/* ===================================================== */
+/* STEP 2 : 공사 현장 시뮬레이터                            */
+/* ===================================================== */
+const STAGES = [
+  { n:'착공 준비', e:'📋', body:'공사에 앞서 <b>주변 환경 및 지반 상태</b> 등을 상세히 조사하여 지반 조사, 기초의 설계, 지정 및 기초의 시공에 필요한 자료를 얻습니다.',
+    who:'👤 측량 기술자, 지질 조사원', why:'<b>왜?</b> 땅속이 무른지 단단한지 모르고 지으면 건물이 기울어요(피사의 사탑!). 지반을 알아야 기초를 얼마나 깊게 할지 정할 수 있습니다.' },
+  { n:'가설 공사', e:'🚧', body:'건축 공사를 하기 위해 필요한 <b>임시 시설물이나 설비</b>를 설치하는 공사입니다. 가림막(펜스), 현장 사무소, 비계(작업 발판), 임시 전기·수도 등을 설치합니다.',
+    who:'👤 현장 소장, 가설 기능공', why:'<b>왜?</b> "가설(假設)" = 임시로 설치. 공사가 끝나면 모두 철거합니다. 안전(추락·낙하물 방지)과 소음·먼지 차단을 위해 꼭 필요해요.' },
+  { n:'토공사', e:'🚜', body:'기초나 지하 구조물을 구축하기 위해 <b>흙을 파서 쌓거나 운반</b>하는 공사입니다. 굴착기로 땅을 파고(터파기), 흙막이를 세우고, 남는 흙은 덤프트럭으로 실어 냅니다.',
+    who:'👤 굴착기·덤프트럭 기사, 토목 기술자', why:'<b>왜?</b> 기초와 지하층은 땅속에 만들어야 하므로 먼저 땅을 파야 합니다. 판 벽이 무너지지 않도록 <b>흙막이</b>를 세우는 것이 안전의 핵심!' },
+  { n:'기초 공사', e:'🧱', body:'구조물의 <b>하중을 지반에 잘 전달</b>하고, 구조물의 자체 무게 등을 안전하게 지지할 수 있도록 <b>지면 아래에</b> 구조물을 만드는 공사입니다. 거푸집을 짜고 철근을 넣고 콘크리트를 붓습니다.',
+    who:'👤 철근공, 콘크리트공, 구조 기술자', why:'<b>왜?</b> 2·3차시에서 배운 "기초" — 모든 하중이 마지막에 도착하는 곳. 기초가 약하면 아무리 튼튼한 건물도 가라앉거나 기울어요.' },
+  { n:'골조 공사', e:'🏗️', body:'구조물의 <b>뼈대(골조)</b>를 만드는 작업으로, 뼈대를 구성하는 재료에 따라 <b>조적 공사, 철근 콘크리트 공사, 철골 공사</b>로 구분합니다. 타워 크레인으로 자재를 올려 기둥·보·벽·바닥을 층층이 세웁니다.',
+    who:'👤 철근공, 형틀 목공, 철골 조립공, 크레인 기사', why:'<b>왜?</b> 뼈대가 있어야 그 안에 배관·전기를 넣고 벽을 마감할 수 있습니다. 하중을 견디는 구조(2차시)가 바로 이 단계에서 만들어져요.' },
+  { n:'설비 및 마감 공사', e:'🔧', body:'<b>설비 공사</b>는 전기·수도·냉난방·통신 등 생활의 편리성과 쾌적성을 높이는 공사, <b>마감 공사</b>는 건축물의 내·외부를 보호하거나 미관을 돋보이게 하는 공사(창호, 타일, 도장, 바닥재)입니다.',
+    who:'👤 전기공, 배관공, 미장공, 도장공, 창호공', why:'<b>왜?</b> 마감 전에 설비를 먼저! 벽을 다 칠한 뒤에 배관을 넣으려면 다시 뜯어야 하니까요. 순서가 비용을 좌우합니다.' },
+  { n:'완공', e:'🏠', body:'건설 구조물이 완성되었습니다! 하지만 끝이 아닙니다. 완성 후에도 <b>지속적인 사후 관리</b>를 통해 건설 구조물의 품질을 유지하는 것이 필요합니다.',
+    who:'👤 시설 관리자, 안전 진단 전문가', why:'<b>왜?</b> 건설 기술의 <b>장기성</b>(1차시) — 수십 년 사용하므로 점검·보수를 계속해야 처음 품질이 유지됩니다. 5단계 "건설 관리"에서 자세히!' },
+];
+let stage = 0, playing = null;
+function drawSite(s) {
+  const svg = $('siteSvg'); svg.innerHTML = '';
+  const add = (t, a, x) => svg.appendChild(el(t, a, x));
+  const G = 176; // 지표면 y
+  // 땅
+  add('rect', { x:0, y:G, width:520, height:144, fill:'#78350f' });
+  for (let i = 0; i < 26; i++) add('circle', { cx:10 + i * 20, cy:G + 40 + (i % 3) * 30, r:2, fill:'#92400e' });
+  add('rect', { x:0, y:G, width:520, height:6, fill:'#65a30d' });
+  // 구름·해
+  add('circle', { cx:460, cy:40, r:18, fill:'#fde68a' });
+  [[60, 50], [180, 30], [330, 55]].forEach(([x, y]) => { add('ellipse', { cx:x, cy:y, rx:28, ry:11, fill:'#fff', opacity:.85 }); add('ellipse', { cx:x + 18, cy:y - 6, rx:18, ry:10, fill:'#fff', opacity:.85 }); });
+  const BX = 170, BW = 200; // 건물 위치·폭
+  if (s === 0) {
+    // 착공 준비: 측량 기사, 지반 조사 시추
+    add('line', { x1:120, y1:G, x2:120, y2:G - 50, stroke:'#fbbf24', 'stroke-width':4 }); add('rect', { x:108, y:G - 62, width:24, height:14, fill:'#f59e0b', rx:3 });
+    add('circle', { cx:120, cy:G - 74, r:7, fill:'#fcd34d' }); add('rect', { x:112, y:G - 81, width:16, height:7, fill:'#fbbf24' });
+    add('rect', { x:116, y:G - 68, width:8, height:20, fill:'#0ea5e9' }); add('line', { x1:124, y1:G - 60, x2:140, y2:G - 66, stroke:'#0ea5e9', 'stroke-width':3 });
+    add('line', { x1:150, y1:G - 66, x2:190, y2:G - 66, stroke:'#334155', 'stroke-width':2 }); add('line', { x1:190, y1:G - 66, x2:190, y2:G, stroke:'#334155', 'stroke-width':2, 'stroke-dasharray':'4 3' });
+    add('text', { x:150, y:G - 92, 'font-size':11, fill:'#1e293b', 'font-weight':'bold' }, '📐 측량');
+    // 시추 장비
+    add('rect', { x:330, y:G - 90, width:8, height:90, fill:'#64748b' }); add('rect', { x:310, y:G - 96, width:48, height:8, fill:'#475569' });
+    add('rect', { x:332, y:G, width:4, height:80, fill:'#cbd5e1' }); add('text', { x:346, y:G + 60, 'font-size':11, fill:'#fde68a', 'font-weight':'bold' }, '지반 조사(시추)');
+    add('text', { x:352, y:G + 100, 'font-size':10, fill:'#fed7aa' }, '단단한 지반? 무른 지반?');
+    add('rect', { x:BX, y:G - 4, width:BW, height:4, fill:'#fbbf24', opacity:.6, 'stroke-dasharray':'6 4' });
+    add('text', { x:BX + BW / 2, y:G - 12, 'font-size':11, fill:'#b45309', 'text-anchor':'middle' }, '건물이 들어설 자리');
+  }
+  if (s >= 1) {
+    // 가설 공사: 펜스, 현장 사무소
+    for (let x = 60; x < 470; x += 34) add('rect', { x, y:G - 46, width:30, height:46, fill:'#e2e8f0', stroke:'#94a3b8' });
+    add('rect', { x:60, y:G - 46, width:406, height:5, fill:'#0ea5e9' });
+    add('text', { x:263, y:G - 20, 'font-size':10, fill:'#0369a1', 'text-anchor':'middle', 'font-weight':'bold' }, s === 1 ? '🚧 ○○ 건축 현장 — 가림막(펜스)' : '○○ 건축 현장');
+    add('rect', { x:20, y:G - 60, width:70, height:60, fill:'#94a3b8', stroke:'#475569' }); add('rect', { x:30, y:G - 48, width:16, height:14, fill:'#bae6fd' }); add('rect', { x:60, y:G - 30, width:14, height:30, fill:'#475569' });
+    add('text', { x:55, y:G - 66, 'font-size':10, fill:'#1e293b', 'text-anchor':'middle', 'font-weight':'bold' }, '현장 사무소');
+    add('rect', { x:470, y:G - 60, width:8, height:60, fill:'#78716c' }); add('rect', { x:478, y:G - 60, width:30, height:10, fill:'#f97316' }); add('text', { x:478, y:G - 66, 'font-size':9, fill:'#1e293b' }, '임시 전기');
+  }
+  if (s >= 2) {
+    // 토공사: 구덩이
+    const D = s >= 3 ? 40 : 60;
+    add('rect', { x:BX - 16, y:G, width:BW + 32, height:D, fill:'#451a03' });
+    add('rect', { x:BX - 20, y:G, width:6, height:D, fill:'#a8a29e' }); add('rect', { x:BX + BW + 14, y:G, width:6, height:D, fill:'#a8a29e' }); // 흙막이
+    if (s === 2) {
+      add('text', { x:BX + BW / 2, y:G + 36, 'font-size':11, fill:'#fde68a', 'text-anchor':'middle', 'font-weight':'bold' }, '터파기 (흙을 파서 운반)');
+      add('text', { x:BX - 60, y:G + 30, 'font-size':9, fill:'#fed7aa' }, '흙막이');
+      // 굴착기
+      add('rect', { x:BX + 30, y:G + 30, width:50, height:22, fill:'#f97316', rx:4 }); add('rect', { x:BX + 40, y:G + 14, width:26, height:18, fill:'#fdba74', rx:3 });
+      add('rect', { x:BX + 24, y:G + 52, width:62, height:8, fill:'#1e293b', rx:3 });
+      add('line', { x1:BX + 80, y1:G + 36, x2:BX + 120, y2:G + 4, stroke:'#f97316', 'stroke-width':6 }); add('line', { x1:BX + 120, y1:G + 4, x2:BX + 150, y2:G + 30, stroke:'#f97316', 'stroke-width':6 });
+      add('path', { d:`M${BX + 146} ${G + 28} l14 6 l-4 14 l-16 -6 z`, fill:'#475569' });
+      // 덤프트럭
+      add('rect', { x:400, y:G - 30, width:60, height:22, fill:'#eab308', rx:3 }); add('rect', { x:456, y:G - 24, width:22, height:16, fill:'#facc15', rx:2 });
+      add('circle', { cx:412, cy:G - 6, r:7, fill:'#1e293b' }); add('circle', { cx:448, cy:G - 6, r:7, fill:'#1e293b' }); add('circle', { cx:468, cy:G - 6, r:7, fill:'#1e293b' });
+      add('path', { d:`M405 ${G - 30} q25 -16 50 0 z`, fill:'#78350f' });
+      add('text', { x:430, y:G - 38, 'font-size':9, fill:'#1e293b', 'text-anchor':'middle' }, '흙 운반');
+    }
+  }
+  if (s >= 3) {
+    // 기초 공사: 지면 아래 콘크리트 기초
+    add('rect', { x:BX - 10, y:G + 22, width:BW + 20, height:18, fill:'#9ca3af', stroke:'#4b5563' });
+    [BX + 10, BX + BW / 2 - 5, BX + BW - 20].forEach(x => add('rect', { x, y:G + 4, width:10, height:20, fill:'#9ca3af', stroke:'#4b5563' }));
+    if (s === 3) {
+      for (let i = 0; i < 9; i++) add('line', { x1:BX + i * 24, y1:G + 24, x2:BX + i * 24, y2:G + 38, stroke:'#b91c1c', 'stroke-width':1.5 });
+      add('line', { x1:BX - 6, y1:G + 30, x2:BX + BW + 6, y2:G + 30, stroke:'#b91c1c', 'stroke-width':1.5 });
+      add('text', { x:BX + BW / 2, y:G + 58, 'font-size':11, fill:'#fde68a', 'text-anchor':'middle', 'font-weight':'bold' }, '철근 + 콘크리트 기초 (하중 → 지반)');
+      // 레미콘
+      add('rect', { x:40, y:G - 30, width:50, height:22, fill:'#e5e7eb', rx:3 }); add('ellipse', { cx:70, cy:G - 32, rx:22, ry:12, fill:'#9ca3af', transform:'rotate(-20 70 ' + (G - 32) + ')' });
+      add('circle', { cx:50, cy:G - 6, r:7, fill:'#1e293b' }); add('circle', { cx:82, cy:G - 6, r:7, fill:'#1e293b' }); add('text', { x:66, y:G - 50, 'font-size':9, fill:'#1e293b', 'text-anchor':'middle' }, '레미콘');
+    } else add('rect', { x:BX - 16, y:G, width:BW + 32, height:22, fill:'#78350f' }); // 되메우기
+  }
+  if (s >= 4) {
+    // 골조: 기둥·보·슬래브 3층
+    const floors = 3, FH = 40, top = G - floors * FH;
+    for (let f = 0; f < floors; f++) {
+      const y = G - (f + 1) * FH;
+      [BX, BX + BW / 2 - 6, BX + BW - 12].forEach(x => add('rect', { x, y, width:12, height:FH, fill:s === 4 ? '#9ca3af' : '#d6d3d1', stroke:'#4b5563' }));
+      add('rect', { x:BX - 4, y, width:BW + 8, height:8, fill:s === 4 ? '#9ca3af' : '#d6d3d1', stroke:'#4b5563' });
+    }
+    if (s === 4) {
+      add('text', { x:BX + BW / 2, y:top - 30, 'font-size':11, fill:'#1e293b', 'text-anchor':'middle', 'font-weight':'bold' }, '뼈대(골조): 기둥 · 보 · 바닥');
+      // 타워 크레인
+      const cx = 410;
+      add('rect', { x:cx - 5, y:30, width:10, height:G - 30, fill:'#eab308' });
+      for (let y = 40; y < G; y += 16) add('line', { x1:cx - 5, y1:y, x2:cx + 5, y2:y + 12, stroke:'#a16207', 'stroke-width':1.5 });
+      const arm = el('g', { class:'crane-arm', style:`--ox:${cx}px;--oy:32px` });
+      arm.appendChild(el('rect', { x:cx - 150, y:28, width:200, height:7, fill:'#eab308' }));
+      arm.appendChild(el('rect', { x:cx + 20, y:35, width:30, height:14, fill:'#78350f' }));
+      arm.appendChild(el('line', { x1:cx - 110, y1:35, x2:cx - 110, y2:95, stroke:'#475569', 'stroke-width':2 }));
+      arm.appendChild(el('rect', { x:cx - 124, y:95, width:28, height:16, fill:'#9ca3af', stroke:'#4b5563' }));
+      svg.appendChild(arm);
+      add('text', { x:cx + 10, y:20, 'font-size':10, fill:'#1e293b', 'font-weight':'bold' }, '타워 크레인');
+    }
+  }
+  if (s >= 5) {
+    // 설비·마감: 벽·창·지붕·배관
+    const floors = 3, FH = 40, top = G - floors * FH;
+    add('rect', { x:BX - 4, y:top, width:BW + 8, height:floors * FH, fill:s === 5 ? '#fde68a' : '#fef3c7', stroke:'#4b5563', opacity:.95 });
+    for (let f = 0; f < floors; f++) for (let i = 0; i < 4; i++) add('rect', { x:BX + 14 + i * 48, y:G - (f + 1) * FH + 10, width:22, height:18, fill:'#bae6fd', stroke:'#1e293b' });
+    add('rect', { x:BX + BW / 2 - 14, y:G - 30, width:28, height:30, fill:'#92400e' });
+    add('polygon', { points:`${BX - 14},${top} ${BX + BW / 2},${top - 34} ${BX + BW + 14},${top}`, fill:'#b91c1c' });
+    if (s === 5) {
+      add('line', { x1:BX + 4, y1:G - 6, x2:BX + 4, y2:top + 6, stroke:'#0ea5e9', 'stroke-width':3, 'stroke-dasharray':'6 3' });
+      add('line', { x1:BX + BW - 6, y1:G - 6, x2:BX + BW - 6, y2:top + 6, stroke:'#f97316', 'stroke-width':3, 'stroke-dasharray':'6 3' });
+      add('text', { x:BX - 30, y:top + 60, 'font-size':9, fill:'#0369a1', 'font-weight':'bold' }, '수도 배관');
+      add('text', { x:BX + BW + 12, y:top + 60, 'font-size':9, fill:'#c2410c', 'font-weight':'bold' }, '전기 배선');
+      add('text', { x:BX + BW / 2, y:top - 42, 'font-size':11, fill:'#1e293b', 'text-anchor':'middle', 'font-weight':'bold' }, '🎨 창호 · 도장 · 타일 마감');
+      // 페인트공
+      add('rect', { x:BX - 40, y:G - 70, width:6, height:70, fill:'#64748b' }); add('rect', { x:BX - 52, y:G - 72, width:30, height:4, fill:'#94a3b8' });
+      add('circle', { cx:BX - 37, cy:G - 84, r:6, fill:'#fcd34d' }); add('rect', { x:BX - 43, y:G - 90, width:12, height:5, fill:'#f59e0b' });
+    }
+  }
+  if (s === 6) {
+    // 완공: 펜스 제거된 상태 (펜스는 s>=1에서 그렸으므로 위에 덮기)
+    add('rect', { x:0, y:G - 80, width:150, height:80, fill:'#bae6fd' }); add('rect', { x:0, y:G - 0.5, width:150, height:6, fill:'#65a30d' });
+    add('rect', { x:390, y:G - 80, width:130, height:80, fill:'#bae6fd' }); add('rect', { x:390, y:G - 0.5, width:130, height:6, fill:'#65a30d' });
+    [[60, 0], [100, 12], [430, 6], [480, 0]].forEach(([x, d]) => { add('rect', { x:x - 3, y:G - 30 + d, width:6, height:30 - d, fill:'#78350f' }); add('circle', { cx:x, cy:G - 40 + d, r:16, fill:'#16a34a' }); });
+    add('text', { x:BX + BW / 2, y:G - 170, 'font-size':13, fill:'#166534', 'text-anchor':'middle', 'font-weight':'bold' }, '🎉 완공! — 이제부터 사후 관리 시작');
+    add('rect', { x:50, y:G + 30, width:420, height:1, fill:'none' });
+  }
+  const p = STAGES[s];
+  $('stageInfo').innerHTML = '<h4>' + p.e + ' ' + (s + 1) + '단계 · ' + p.n + '</h4><div>' + p.body + '</div><div class="who">' + p.who + '</div><div class="why">' + p.why + '</div>';
+  document.querySelectorAll('.stg-btn').forEach((b, i) => { b.classList.toggle('on', i === s); b.classList.toggle('done', i < s); });
+}
+STAGES.forEach((p, i) => { const b = document.createElement('button'); b.className = 'stg-btn'; b.textContent = p.e + ' ' + (i + 1) + '. ' + p.n; b.onclick = () => { stopPlay(); stage = i; drawSite(stage); }; $('stageBtns').appendChild(b); });
+function stopPlay() { if (playing) { clearInterval(playing); playing = null; $('playBtn').textContent = '▶ 자동 재생'; } }
+$('playBtn').onclick = () => {
+  if (playing) { stopPlay(); return; }
+  if (stage >= STAGES.length - 1) stage = -1;
+  $('playBtn').textContent = '⏸ 멈춤';
+  const step = () => { stage++; drawSite(stage); if (stage >= STAGES.length - 1) stopPlay(); };
+  step(); playing = setInterval(step, 3200);
+};
+$('nextBtn').onclick = () => { stopPlay(); if (stage < STAGES.length - 1) { stage++; drawSite(stage); } };
+$('prevBtn').onclick = () => { stopPlay(); if (stage > 0) { stage--; drawSite(stage); } };
+$('resetBtn').onclick = () => { stopPlay(); stage = 0; drawSite(0); };
+drawSite(0);
+
+/* ===================================================== */
+/* STEP 3 : 골조 공사 3종                                  */
+/* ===================================================== */
+const FRAMES = [
+  { n:'조적 공사', e:'🧱', link:'2차시 조적식 구조', sub:'주로 소규모 건물에 이용되며 벽돌, 블록 등을 쌓아 올리는 공사',
+    body:'<b>벽돌·블록·돌</b>을 모르타르로 붙여 가며 한 장씩 <b>쌓아 올려</b> 벽을 만듭니다. 재료가 규격화되어 있어 시공이 비교적 쉽지만, 높이 쌓는 데 한계가 있어 <b>주로 소규모·저층 건물</b>에 사용합니다.',
+    ex:'예) 단독주택 담장·외벽, 창고, 저층 상가', color:'#f97316',
+    draw(s) { for (let r = 0; r < 5; r++) for (let c = 0; c < 6; c++) s.appendChild(el('rect', { x:14 + c * 24 + (r % 2 ? 12 : 0), y:20 + r * 14, width:22, height:12, fill:'#c2410c', stroke:'#7c2d12' })); s.appendChild(el('rect', { x:120, y:60, width:14, height:8, fill:'#d6d3d1' })); } },
+  { n:'철근 콘크리트 공사', e:'🏢', link:'2차시 일체식 구조', sub:'인장력이 우수한 철근과 압축력이 우수한 콘크리트를 견고하게 부착하는 공사',
+    body:'거푸집 안에 <b>철근</b>을 배치하고 <b>콘크리트</b>를 부어 굳힙니다. 철근은 <b>당기는 힘(인장력)</b>에, 콘크리트는 <b>누르는 힘(압축력)</b>에 강해 서로의 약점을 보완합니다(3차시 "보 아래쪽에 철근을 넣는 이유"). 기둥·보·벽·바닥이 <b>한 덩어리</b>가 됩니다.',
+    ex:'예) 아파트, 학교, 주차장, 교량 교각', color:'#94a3b8',
+    draw(s) { s.appendChild(el('rect', { x:20, y:20, width:120, height:60, fill:'#9ca3af', stroke:'#4b5563' })); for (let i = 0; i < 5; i++) s.appendChild(el('line', { x1:30 + i * 25, y1:24, x2:30 + i * 25, y2:76, stroke:'#b91c1c', 'stroke-width':2 })); [32, 50, 68].forEach(y => s.appendChild(el('line', { x1:24, y1:y, x2:136, y2:y, stroke:'#b91c1c', 'stroke-width':2 }))); s.appendChild(el('text', { x:80, y:95, 'font-size':9, fill:'#cbd5e1', 'text-anchor':'middle' }, '철근(빨강) + 콘크리트(회색)')); } },
+  { n:'철골 공사', e:'🏗️', link:'2차시 가구식 구조', sub:'형강이나 강판으로 조립하여 주요부를 만드는 공사',
+    body:'공장에서 만든 <b>H형강·강판</b> 등 철 부재를 현장에서 <b>볼트·용접으로 조립</b>해 뼈대를 만듭니다. 가볍고 강해서 <b>고층 건물과 넓은 공간</b>(체육관·공장)에 유리하고, 공사 기간이 짧습니다. 불에 약해 내화 피복이 필요합니다.',
+    ex:'예) 초고층 빌딩, 체육관, 공장, 철골 다리', color:'#38bdf8',
+    draw(s) { [30, 80, 130].forEach(x => { s.appendChild(el('rect', { x:x - 4, y:16, width:8, height:70, fill:'#64748b', stroke:'#1e293b' })); }); [24, 52].forEach(y => s.appendChild(el('rect', { x:26, y, width:108, height:7, fill:'#94a3b8', stroke:'#1e293b' }))); s.appendChild(el('line', { x1:30, y1:31, x2:80, y2:52, stroke:'#38bdf8', 'stroke-width':2 })); s.appendChild(el('line', { x1:80, y1:31, x2:130, y2:52, stroke:'#38bdf8', 'stroke-width':2 })); s.appendChild(el('text', { x:80, y:98, 'font-size':9, fill:'#cbd5e1', 'text-anchor':'middle' }, 'H형강을 볼트·용접으로 조립')); } },
+];
+FRAMES.forEach((f, i) => {
+  const c = document.createElement('div'); c.className = 'frame-card' + (i === 0 ? ' on' : ''); c.dataset.i = i;
+  const s = el('svg', { viewBox:'0 0 160 104' }); f.draw(s);
+  c.appendChild(s);
+  c.insertAdjacentHTML('beforeend', '<b>' + f.e + ' ' + f.n + '</b><span>' + f.sub + '</span>');
+  c.onclick = () => showFrame(i);
+  $('frameGrid').appendChild(c);
+});
+function showFrame(i) {
+  document.querySelectorAll('.frame-card').forEach(c => c.classList.toggle('on', +c.dataset.i === i));
+  const f = FRAMES[i];
+  $('frameDetail').innerHTML = '<h4>' + f.e + ' ' + f.n + ' <span style="font-size:.78rem;color:#94a3b8">— 연결: ' + f.link + '</span></h4><div>' + f.body + '</div><div class="ex">' + f.ex + '</div>';
+}
+showFrame(0);
+/* 판별 게임 */
+const PICK_Q = [
+  { q:'현장에 <b>H형강</b>이 트럭으로 실려 오고, 작업자들이 높은 곳에서 <b>볼트를 조이고 용접</b>하고 있다. 30층 건물이 빠르게 올라간다.', a:2 },
+  { q:'작업자가 <b>모르타르</b>를 바르고 <b>벽돌을 한 장씩 어긋나게 쌓고</b> 있다. 2층짜리 작은 상가 공사 현장이다.', a:0 },
+  { q:'나무판(거푸집)으로 기둥 모양 틀을 짜고, 그 안에 <b>빨간 녹 방지 철근</b>을 격자로 묶은 뒤 <b>레미콘 차가 회색 반죽</b>을 붓고 있다.', a:1 },
+  { q:'완성된 뼈대를 보니 기둥·보·바닥이 이음새 없이 <b>한 덩어리로 굳어</b> 있다. 15층 아파트 현장이다.', a:1 },
+  { q:'체육관처럼 <b>기둥 없이 넓은 공간</b>이 필요해서, 가볍고 강한 부재를 공장에서 만들어 와 <b>조립</b>하기로 했다.', a:2 },
+  { q:'주택 담장 공사. <b>블록</b>을 쌓아 올리는데, 너무 <b>높게 쌓으면 위험</b>하다고 해서 2 m 이하로 만든다.', a:0 },
+];
+let pickIdx = 0, pickScore = 0, pickAns = false, pickOrder = [];
+function pickStart() { pickOrder = PICK_Q.map((_, i) => i).sort(() => Math.random() - .5); pickIdx = 0; pickScore = 0; $('pickRestart').style.display = 'none'; pickRound(); }
+function pickRound() {
+  pickAns = false; const q = PICK_Q[pickOrder[pickIdx]];
+  $('pickStatus').textContent = '문제 ' + (pickIdx + 1) + ' / ' + PICK_Q.length + ' · 점수 ' + pickScore;
+  $('pickQ').innerHTML = '🏗️ ' + q.q; $('pickFb').textContent = ''; $('pickFb').className = 'g-fb'; $('pickNext').style.display = 'none'; $('pickOpts').innerHTML = '';
+  FRAMES.forEach((f, i) => {
+    const b = document.createElement('button'); b.className = 'gopt'; b.textContent = f.e + ' ' + f.n;
+    b.onclick = () => {
+      if (pickAns) return; pickAns = true; const ok = i === q.a; if (ok) pickScore++;
+      document.querySelectorAll('#pickOpts .gopt').forEach((x, k) => { x.disabled = true; if (k === q.a) x.classList.add('correct'); });
+      if (!ok) b.classList.add('wrong');
+      $('pickFb').className = 'g-fb ' + (ok ? 'ok' : 'no');
+      $('pickFb').innerHTML = (ok ? '⭕ 정답! ' : '❌ 정답은 「' + FRAMES[q.a].n + '」. ') + FRAMES[q.a].sub + '.';
+      $('pickStatus').textContent = '문제 ' + (pickIdx + 1) + ' / ' + PICK_Q.length + ' · 점수 ' + pickScore;
+      if (pickIdx + 1 < PICK_Q.length) $('pickNext').style.display = 'inline-block';
+      else { $('pickFb').innerHTML += '<br>🏁 <b>최종 ' + pickScore + ' / ' + PICK_Q.length + '</b>' + (pickScore === PICK_Q.length ? ' — 골조 박사!' : ' — 카드를 다시 읽고 재도전!'); $('pickRestart').style.display = 'inline-block'; }
+    };
+    $('pickOpts').appendChild(b);
+  });
+}
+$('pickNext').onclick = () => { pickIdx++; pickRound(); }; $('pickRestart').onclick = pickStart; pickStart();
+
+/* ===================================================== */
+/* STEP 4 : 시공 순서 타임어택                              */
+/* ===================================================== */
+let seqNext = 0, seqMiss = 0, seqStart = null, seqTick = null, seqBest = +(store.get('seqBest') || 0);
+if (seqBest) $('seqBest').textContent = seqBest.toFixed(1) + '초';
+function buildSeq() {
+  seqNext = 0; seqMiss = 0; seqStart = null; clearInterval(seqTick); $('seqTimer').textContent = '⏱️ 0.0초'; $('seqMiss').textContent = '0';
+  $('seqPool').innerHTML = ''; $('seqLine').innerHTML = '<span class="ph">여기에 순서대로 쌓입니다…</span>'; $('seqFb').textContent = ''; $('seqPredResult').innerHTML = '';
+  STAGES.slice(0, 6).map((s, i) => ({ i, n:s.n, e:s.e })).sort(() => Math.random() - .5).forEach(c => {
+    const b = document.createElement('button'); b.className = 'sbtn'; b.textContent = c.e + ' ' + c.n;
+    b.onclick = () => {
+      if (!seqStart) { seqStart = performance.now(); seqTick = setInterval(() => $('seqTimer').textContent = '⏱️ ' + ((performance.now() - seqStart) / 1000).toFixed(1) + '초', 100); }
+      if (c.i !== seqNext) { seqMiss++; $('seqMiss').textContent = seqMiss; b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake'); $('seqFb').className = 'g-fb no'; $('seqFb').textContent = '❌ 그 단계는 아직! 지금 ' + (seqNext + 1) + '번째 단계는 무엇일까요?'; return; }
+      b.disabled = true; const line = $('seqLine'); if (seqNext === 0) line.innerHTML = '';
+      if (seqNext) { const a = document.createElement('span'); a.className = 'arr'; a.textContent = '→'; line.appendChild(a); }
+      const sp = document.createElement('span'); sp.className = 'o'; sp.textContent = c.n; line.appendChild(sp);
+      seqNext++;
+      if (seqNext === 6) {
+        clearInterval(seqTick); const t = (performance.now() - seqStart) / 1000; $('seqTimer').textContent = '⏱️ ' + t.toFixed(1) + '초';
+        if (!seqBest || t < seqBest) { seqBest = t; store.set('seqBest', t); $('seqBest').textContent = t.toFixed(1) + '초 🆕'; }
+        $('seqFb').className = 'g-fb ok';
+        $('seqFb').innerHTML = '🏁 완성! ' + t.toFixed(1) + '초, 틀린 횟수 ' + seqMiss + '회. ' + (seqMiss === 0 ? '한 번도 안 틀렸어요 — 순서가 머릿속에 완전히 들어갔네요!' : '틀린 단계가 어디였는지 떠올려 보세요. 앞뒤 단계와 "왜 그 순서인지" 연결하면 안 틀려요.') + ' <button class="btn-sub" onclick="buildSeq()" style="margin-left:8px">↺ 다시 (기록 단축 도전)</button>';
+        const pv = $('seqPred').value;
+        if (pv !== '') { const p = +pv; const hit = (p === 0 && seqMiss === 0) || (p === 1 && seqMiss >= 1 && seqMiss <= 2) || (p === 3 && seqMiss >= 3); $('seqPredResult').innerHTML = hit ? '🎯 <b>예측 적중!</b> 자신의 상태를 정확히 알고 있어요.' : (seqMiss < (p === 3 ? 3 : p === 1 ? 1 : 0) ? '😮 <b>예측보다 잘했어요.</b> 스스로를 과소평가했네요!' : '⚠️ <b>예측보다 많이 틀렸어요.</b> "안다고 생각한 것"과 "실제로 아는 것"의 차이 — 시뮬레이터를 한 번 더 자동 재생해 보세요.'); }
+        else $('seqPredResult').innerHTML = '예측을 선택하지 않았어요. 다음엔 먼저 예측해 보세요 — 예측 습관이 메타인지를 키웁니다.';
+      } else { $('seqFb').className = 'g-fb ok'; $('seqFb').textContent = '⭕ ' + seqNext + '단계 통과! 다음은?'; }
+    };
+    $('seqPool').appendChild(b);
+  });
+}
+buildSeq();
+
+/* ===================================================== */
+/* STEP 5 : 건설 관리                                      */
+/* ===================================================== */
+const MGMT = [
+  { k:'공정', when:'during', e:'📅', body:'공사가 <b>정해진 기간 안에</b> 끝나도록 작업 순서와 일정을 계획하고 진행 상황을 점검합니다.', ex:'예) 공정표 작성, 비 오는 날을 대비한 여유 일정, 늦어진 작업 따라잡기' },
+  { k:'안전', when:'during', e:'🦺', body:'작업자와 주변 사람들이 <b>다치지 않도록</b> 위험 요소를 미리 없애고 규칙을 지키게 합니다. 건설 현장 사고의 대부분은 추락·낙하물·장비 사고입니다.', ex:'예) 안전모·안전대 착용, 안전 난간과 추락 방지망, 작업 전 안전 교육(TBM)' },
+  { k:'품질', when:'during', e:'🏆', body:'설계 도면과 시방서에 정해진 <b>품질 기준대로</b> 만들어지는지 검사합니다.', ex:'예) 콘크리트 강도 시험, 철근 간격 검사, 방수 시험' },
+  { k:'원가', when:'during', e:'💰', body:'정해진 <b>예산 안에서</b> 공사가 끝나도록 비용을 계획하고 낭비를 줄입니다.', ex:'예) 자재 단가 비교, 불필요한 재작업 방지, 공사비 집행 점검' },
+  { k:'자재', when:'during', e:'📦', body:'필요한 재료가 <b>제때, 알맞은 양과 품질로</b> 현장에 들어오고 잘 보관되도록 관리합니다.', ex:'예) 자재 반입 일정 조정, 시멘트가 젖지 않게 보관, 재고 확인' },
+  { k:'환경', when:'during', e:'🌱', body:'공사로 생기는 <b>소음·먼지·폐기물·오염</b>이 주변 환경과 주민에게 피해를 주지 않도록 관리합니다.', ex:'예) 방음벽·살수(물 뿌리기), 폐기물 분리 배출, 작업 시간 제한' },
+  { k:'사후', when:'after', e:'🔍', body:'완공 직후 <b>설계대로 잘 되었는지 확인</b>하고, 문제(하자)가 있으면 고쳐 줍니다. 사용 설명·인수인계도 여기에 포함됩니다.', ex:'예) 준공 검사, 하자 보수(누수·균열), 시설 사용법 안내' },
+  { k:'유지', when:'after', e:'🔧', body:'사용하는 동안 <b>정기 점검·청소·보수</b>를 하여 구조물이 <b>원래의 품질과 기능을 유지</b>하도록 합니다. 건설의 장기성 때문에 매우 중요합니다.', ex:'예) 교량 정기 안전 진단, 엘리베이터 점검, 외벽 도장 보수, 스마트 센서 감시(3차시)' },
+];
+MGMT.forEach((m, i) => {
+  const b = document.createElement('button'); b.className = 'mg-chip' + (i === 0 ? ' on' : ''); b.textContent = m.e + ' ' + m.k + ' 관리'; b.dataset.i = i;
+  b.onclick = () => showMg(i);
+  $(m.when === 'during' ? 'mgDuring' : 'mgAfter').appendChild(b);
+});
+function showMg(i) {
+  document.querySelectorAll('.mg-chip').forEach(b => b.classList.toggle('on', +b.dataset.i === i));
+  const m = MGMT[i];
+  $('mgDetail').innerHTML = '<h4>' + m.e + ' ' + m.k + ' 관리 <span style="font-size:.78rem;color:#94a3b8">— ' + (m.when === 'during' ? '시공 중' : '시공 후') + '</span></h4><div>' + m.body + '</div><div class="ex">' + m.ex + '</div>';
+}
+showMg(0);
+
+/* ===================================================== */
+/* STEP 6 : 현장 소장 게임                                  */
+/* ===================================================== */
+const BOSS = [
+  { tag:'🦺 안전 관리', scene:'골조 공사 5층에서 작업 중. 한 작업자가 <b>"안전대가 불편하다"며 벗고</b> 일하고 있다. 오늘 안에 이 층을 끝내야 공정에 맞다.',
+    opts:[ { t:'즉시 작업을 멈추고 안전대를 착용시킨 뒤 재개', d:{ safe:+20, time:-5 }, fb:'✅ 옳은 판단! 추락은 건설 사고 1위 원인. 몇 분의 지연이 생명을 지킵니다.' },
+           { t:'오늘만 눈감아 주고 공정을 맞춘다', d:{ safe:-35, time:+5 }, fb:'❌ 안전 관리 실패. 사고가 나면 공사가 몇 달 중단되고 사람이 다칩니다 — 공정도 지킬 수 없어요.' },
+           { t:'말로만 주의를 주고 계속 일하게 한다', d:{ safe:-15 }, fb:'⚠️ 부족해요. 위험한 행동은 "즉시 중지"가 원칙입니다.' } ] },
+  { tag:'🏆 품질 관리', scene:'기초 콘크리트를 붓는 날. 레미콘 회사가 <b>시방서보다 낮은 강도의 콘크리트</b>를 싸게 공급하겠다고 제안한다. 예산이 빠듯하다.',
+    opts:[ { t:'거절하고 시방서대로 정해진 강도의 콘크리트를 쓴다', d:{ qual:+20, cost:-5 }, fb:'✅ 옳은 판단! 기초는 모든 하중이 모이는 곳. 시방서의 기준은 안전을 위한 최소 조건입니다.' },
+           { t:'예산이 급하니 낮은 강도로 바꾼다', d:{ qual:-35, cost:+10, safe:-15 }, fb:'❌ 품질 관리 실패. 기초가 약하면 건물 전체가 위험. 나중에 보강 비용이 훨씬 커요.' },
+           { t:'절반만 낮은 강도로 섞어 쓴다', d:{ qual:-20, cost:+5 }, fb:'❌ 품질은 타협의 대상이 아닙니다. 일부라도 기준 미달이면 그곳이 약점이 돼요.' } ] },
+  { tag:'📅 공정 관리 vs 🦺 안전', scene:'<b>장마철</b>, 열흘째 비. 공정이 2주 늦어졌다. 오늘도 비가 오는데, 젖은 철골 위에서 조립 작업을 강행하면 하루를 벌 수 있다.',
+    opts:[ { t:'작업을 중지하고, 실내 작업(설비 준비·자재 정리)으로 일정을 조정한다', d:{ safe:+10, time:-5, qual:+5 }, fb:'✅ 공정 관리의 핵심은 "무리하게 밀어붙이기"가 아니라 "순서를 바꿔 낭비를 줄이기"입니다.' },
+           { t:'비를 맞으며 철골 작업을 강행한다', d:{ safe:-30, time:+8 }, fb:'❌ 젖은 철골 위 작업은 미끄러짐·감전 위험. 안전 관리 실패.' },
+           { t:'모두 집으로 보내고 비가 그칠 때까지 기다린다', d:{ time:-15 }, fb:'⚠️ 안전하지만 공정 관리가 아쉬워요. 실내에서 할 수 있는 일을 찾아 시간을 살릴 수 있었어요.' } ] },
+  { tag:'📦 자재 관리', scene:'다음 주 골조 공사에 쓸 <b>시멘트 200포대</b>가 도착했다. 창고가 꽉 차서 <b>야외에 그냥 쌓아 두자</b>는 의견이 나온다. 비 예보가 있다.',
+    opts:[ { t:'방수포로 덮고 받침대 위에 올려 보관한다', d:{ qual:+10, cost:+5 }, fb:'✅ 자재 관리 성공. 시멘트는 습기를 먹으면 굳어서 못 씁니다.' },
+           { t:'그냥 야외에 쌓아 둔다', d:{ qual:-15, cost:-20, time:-5 }, fb:'❌ 비에 젖은 시멘트는 폐기 → 다시 사야 하고(원가↑) 공사도 늦어져요(공정↓).' },
+           { t:'창고를 새로 임대한다', d:{ cost:-15, qual:+5 }, fb:'⚠️ 안전하게 보관하지만 비용이 커요. 방수포와 받침대로 충분했어요.' } ] },
+  { tag:'🌱 환경 관리', scene:'토공사 중 덤프트럭이 오갈 때마다 <b>흙먼지</b>가 날려 옆 초등학교에서 민원이 들어왔다.',
+    opts:[ { t:'살수차로 물을 뿌리고, 트럭 바퀴를 씻는 세륜기를 설치하고, 등하교 시간엔 운행을 피한다', d:{ cost:-8, safe:+5, qual:+5 }, fb:'✅ 환경 관리 성공. 주변에 피해를 주지 않는 것도 시공의 책임입니다.' },
+           { t:'공사니까 어쩔 수 없다고 답한다', d:{ time:-15, cost:-10 }, fb:'❌ 민원이 커지면 공사 중지 명령 → 공정·원가 모두 손해. 환경 관리는 선택이 아닌 의무.' },
+           { t:'덤프트럭 운행을 절반으로 줄인다', d:{ time:-12, cost:+2 }, fb:'⚠️ 먼지는 줄지만 토공사가 두 배로 늦어져요. 살수·세륜 같은 직접 대책이 더 좋아요.' } ] },
+  { tag:'💰 원가 관리', scene:'마감 공사 단계. 남은 예산이 빠듯한데 건축주가 <b>"로비 바닥을 더 비싼 대리석으로 바꿔 달라"</b>고 요청한다.',
+    opts:[ { t:'추가 비용과 기간을 계산해 건축주에게 알리고, 설계 변경 승인을 받은 뒤 진행한다', d:{ cost:+5, qual:+10 }, fb:'✅ 원가 관리 성공. 변경은 반드시 비용·기간 영향을 계산하고 합의한 뒤에!' },
+           { t:'일단 바꿔 주고 나중에 비용을 청구한다', d:{ cost:-25, time:-8 }, fb:'❌ 예산 초과 → 다른 마감 공사를 줄이거나 분쟁이 생깁니다.' },
+           { t:'예산이 없다며 거절한다', d:{ qual:-5 }, fb:'⚠️ 원가는 지켰지만 사용자 요구(5차시)를 무시했어요. 비용을 계산해 선택권을 주는 것이 좋아요.' } ] },
+];
+const meters = { safe:70, qual:70, cost:70, time:70 };
+let bossIdx = 0, bossAns = false;
+function renderMeters() { for (const k in meters) $('m' + k[0].toUpperCase() + k.slice(1)).style.width = Math.max(0, Math.min(100, meters[k])) + '%'; }
+function bossRound() {
+  bossAns = false; const b = BOSS[bossIdx];
+  $('bossStatus').textContent = '상황 ' + (bossIdx + 1) + ' / ' + BOSS.length; $('bossTag').textContent = b.tag;
+  $('bossScene').innerHTML = b.scene; $('bossFb').textContent = ''; $('bossFb').className = 'g-fb'; $('bossNext').style.display = 'none'; $('bossOpts').innerHTML = '';
+  b.opts.slice().sort(() => Math.random() - .5).forEach(o => {
+    const btn = document.createElement('button'); btn.className = 'gopt'; btn.textContent = o.t;
+    btn.onclick = () => {
+      if (bossAns) return; bossAns = true;
+      for (const k in o.d) meters[k] = Math.max(0, Math.min(100, meters[k] + o.d[k])); renderMeters();
+      const good = o.fb.startsWith('✅');
+      document.querySelectorAll('#bossOpts .gopt').forEach(x => { x.disabled = true; if (x === btn) x.classList.add(good ? 'correct' : 'wrong'); });
+      $('bossFb').className = 'g-fb ' + (good ? 'ok' : 'no');
+      $('bossFb').innerHTML = o.fb + ' <span style="color:#94a3b8;font-size:.8rem">(' + Object.entries(o.d).map(([k, v]) => ({ safe:'안전', qual:'품질', cost:'예산', time:'공기' })[k] + (v > 0 ? ' +' : ' ') + v).join(', ') + ')</span>';
+      if (bossIdx + 1 < BOSS.length) $('bossNext').style.display = 'inline-block'; else bossEnd();
+    };
+    $('bossOpts').appendChild(btn);
+  });
+}
+function bossEnd() {
+  const min = Math.min(...Object.values(meters)); const avg = Object.values(meters).reduce((a, b) => a + b, 0) / 4;
+  const names = { safe:'안전', qual:'품질', cost:'예산', time:'공기' };
+  const weak = Object.keys(meters).sort((a, b) => meters[a] - meters[b])[0];
+  let msg;
+  if (min >= 60) msg = '🏆 <b>완공 성공!</b> 안전·품질·예산·공기를 모두 지켰어요. 훌륭한 현장 소장!';
+  else if (min >= 35) msg = '🏠 <b>완공은 했지만…</b> 「' + names[weak] + '」 지표가 위험했어요. 어떤 결정이 원인이었는지 위로 올라가 다시 읽어 보세요.';
+  else msg = '🚨 <b>공사 중단!</b> 「' + names[weak] + '」 지표가 바닥났어요. 한 가지 관리를 소홀히 하면 다른 관리도 무너집니다 — 6가지 관리는 서로 연결돼 있어요.';
+  $('bossEnd').style.display = 'block';
+  $('bossEnd').innerHTML = msg + '<br><span style="font-size:.84rem;color:#94a3b8">평균 ' + Math.round(avg) + '점 · 최저 「' + names[weak] + '」 ' + Math.round(meters[weak]) + '점</span> <button class="btn-sub" id="bossRetry" style="margin-left:10px">↺ 다시 도전</button>';
+  $('bossRetry').onclick = () => { for (const k in meters) meters[k] = 70; renderMeters(); bossIdx = 0; $('bossEnd').style.display = 'none'; bossRound(); };
+}
+$('bossNext').onclick = () => { bossIdx++; bossRound(); };
+renderMeters(); bossRound();
+
+/* ===== 미니 퀴즈 ===== */
+let mqzCorrect = 0, mqzDone = 0;
+const mqzItems = document.querySelectorAll('#miniQuiz .mqz-item');
+mqzItems.forEach(item => {
+  const ans = item.dataset.answer, optsEl = item.querySelector('.mqz-opts'), fb = item.querySelector('.mqz-fb');
+  optsEl.dataset.opts.split(',').forEach(o => {
+    const b = document.createElement('button'); b.className = 'mqz-btn'; b.textContent = o;
+    b.onclick = () => {
+      if (item.dataset.done) return; item.dataset.done = '1'; mqzDone++;
+      optsEl.querySelectorAll('.mqz-btn').forEach(x => x.disabled = true);
+      if (o === ans) { b.classList.add('correct'); mqzCorrect++; fb.textContent = '⭕ 정답!'; fb.className = 'mqz-fb ok'; }
+      else { b.classList.add('wrong'); optsEl.querySelectorAll('.mqz-btn').forEach(x => { if (x.textContent === ans) x.classList.add('correct'); }); fb.textContent = '❌ 정답은 「' + ans + '」. 시뮬레이터에서 다시 확인해 보세요.'; fb.className = 'mqz-fb no'; }
+      if (mqzDone === mqzItems.length) $('mqzScore').innerHTML = '🎯 미니 퀴즈: <b style="color:#fbbf24">' + mqzCorrect + ' / ' + mqzItems.length + '</b>' + (mqzCorrect === mqzItems.length ? ' — 완벽!' : ' — 틀린 부분은 위 단계로 복습!');
+    };
+    optsEl.appendChild(b);
+  });
+});
+
+/* ===== 탐구 입력 저장 ===== */
+function saveIq(id) {
+  const e = $(id); try { localStorage.setItem('construction-' + PAGE + '-' + id, e.value); } catch (x) {}
+  const s = $(id + '-saved'); if (s) s.textContent = '✔ 저장됨 ' + new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit' });
+}
+['iqBoss', 'iqSum'].forEach(id => { const v = store.get(id); if (v) $(id).value = v; });
+
+/* ===== 체크리스트 ===== */
+const SC_TOTAL = document.querySelectorAll('.sc').length;
+document.querySelectorAll('.sc').forEach(c => c.addEventListener('change', () => {
+  const n = document.querySelectorAll('.sc:checked').length, p = $('scProgress');
+  p.textContent = '체크: ' + n + ' / ' + SC_TOTAL;
+  if (n === SC_TOTAL) p.textContent += ' — 🌟 완벽! 7차시 설계 활동으로!';
+  else if (n >= Math.ceil(SC_TOTAL * .6)) p.textContent += ' — 좋아요! 나머지도 복습하세요.';
+}));
+</script>
+</body>
+</html>
