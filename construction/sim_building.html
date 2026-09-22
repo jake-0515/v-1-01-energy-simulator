@@ -228,6 +228,7 @@ h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
 <div class="container">
   <div class="top-nav">
     <a href="sim_intro.html">← 1차시: 건설 기술의 이해</a>
+    <a href="index.html">🏠 홈</a>
     <a href="sim_bridge.html">3차시: 토목·교량 →</a>
   </div>
 
@@ -982,5 +983,7 @@ document.querySelectorAll('.sc').forEach(c => c.addEventListener('change', () =>
   else if (n >= Math.ceil(SC_TOTAL * .6)) p.textContent += ' — 좋아요! 나머지도 복습해 보세요.';
 }));
 </script>
+<!-- 어디서든 홈으로 : 화면 우하단 고정 버튼 -->
+<a href="index.html" title="처음 화면으로" style="position:fixed;right:18px;bottom:18px;z-index:9999;display:inline-flex;align-items:center;gap:6px;background:#fbbf24;color:#1e293b;font-weight:800;font-size:.9rem;text-decoration:none;border-radius:999px;padding:10px 16px;box-shadow:0 6px 18px rgba(0,0,0,.35);font-family:'Segoe UI','Malgun Gothic',sans-serif">🏠 홈</a>
 </body>
 </html>
