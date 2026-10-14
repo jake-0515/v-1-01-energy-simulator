@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10차시 — 단원 종합 평가 (건설 기술과 지속 가능)</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI','Malgun Gothic',sans-serif; background:linear-gradient(160deg,#0f172a,#1e293b); color:#e2e8f0; min-height:100vh; }
+.container { max-width:820px; margin:0 auto; padding:20px 18px 80px; }
+.top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:8px; }
+.top-nav a { color:#7dd3fc; text-decoration:none; font-size:.9rem; }
+h1 { color:#c4b5fd; font-size:1.5rem; margin-bottom:6px; }
+.lesson-tag { display:inline-block; background:#a78bfa; color:#1e293b; font-weight:800; border-radius:8px; padding:3px 12px; font-size:.8rem; margin-bottom:10px; }
+.unit-tag { display:inline-block; background:#334155; color:#94a3b8; border-radius:8px; padding:3px 10px; font-size:.75rem; margin-left:6px; }
+.progress-wrap { background:#1e293b; border-radius:999px; height:12px; margin:18px 0 6px; overflow:hidden; border:1px solid #475569; }
+.progress-bar { height:100%; background:linear-gradient(90deg,#a78bfa,#7c3aed); width:0; transition:width .4s; }
+.progress-label { font-size:.8rem; color:#94a3b8; text-align:right; margin-bottom:16px; }
+.panel { background:rgba(30,41,59,.8); border:1px solid #475569; border-radius:18px; padding:28px; }
+.start-panel { text-align:center; }
+.start-panel h2 { color:#fbbf24; margin-bottom:14px; }
+.start-panel p { color:#cbd5e1; line-height:1.8; font-size:.93rem; margin-bottom:8px; }
+.hint-box { background:rgba(167,139,250,.08); border:1px solid rgba(167,139,250,.3); border-radius:12px; padding:14px 18px; margin:18px auto; max-width:560px; font-size:.85rem; line-height:1.7; text-align:left; }
+.hint-box b { color:#c4b5fd; }
+.scope { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:8px; margin:16px 0; text-align:left; }
+.scope div { background:rgba(15,23,42,.6); border:1px solid #475569; border-radius:10px; padding:9px 11px; font-size:.8rem; line-height:1.5; }
+.scope b { display:block; font-size:.84rem; }
+.pre-est { display:flex; align-items:center; gap:10px; justify-content:center; flex-wrap:wrap; margin:14px 0; font-size:.9rem; }
+.pre-est select { background:#1e293b; color:#fde68a; border:1px solid #64748b; border-radius:8px; padding:6px 12px; font-family:inherit; font-size:.9rem; }
+.q-domain { display:inline-block; font-size:.75rem; padding:3px 12px; border-radius:999px; margin-bottom:12px; font-weight:700; }
+.q-domain.d1 { background:rgba(251,191,36,.15); color:#fbbf24; }
+.q-domain.d2 { background:rgba(249,115,22,.15); color:#fdba74; }
+.q-domain.d3 { background:rgba(56,189,248,.15); color:#7dd3fc; }
+.q-domain.d4 { background:rgba(74,222,128,.15); color:#86efac; }
+.q-domain.d5 { background:rgba(167,139,250,.15); color:#c4b5fd; }
+.q-domain.d6 { background:rgba(244,114,182,.15); color:#f9a8d4; }
+.q-text { font-size:1.08rem; line-height:1.7; margin-bottom:20px; font-weight:600; }
+.q-text .qnum { color:#a78bfa; }
+.opts { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+.opt { background:#334155; border:2px solid #64748b; border-radius:12px; padding:13px 16px; cursor:pointer; font-size:.95rem; transition:.2s; display:flex; align-items:center; gap:12px; font-family:inherit; color:#e2e8f0; text-align:left; width:100%; line-height:1.5; }
+.opt:hover:not(:disabled) { border-color:#a78bfa; }
+.opt .onum { background:#1e293b; width:26px; height:26px; border-radius:8px; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:.85rem; flex-shrink:0; color:#94a3b8; }
+.opt.selected { border-color:#a78bfa; background:#3b3663; }
+.opt.selected .onum { background:#a78bfa; color:#1e293b; }
+.opt.correct { border-color:#4ade80; background:#14532d; }
+.opt.correct .onum { background:#4ade80; color:#1e293b; }
+.opt.wrong { border-color:#f87171; background:#7f1d1d; }
+.opt.wrong .onum { background:#f87171; color:#1e293b; }
+.opt:disabled { cursor:default; }
+.conf-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:20px; }
+.conf-label { font-size:.88rem; color:#c4b5fd; font-weight:600; }
+.conf-btn { background:#334155; color:#cbd5e1; border:2px solid #64748b; border-radius:999px; padding:8px 18px; font-size:.85rem; cursor:pointer; font-family:inherit; transition:.2s; }
+.conf-btn:hover:not(:disabled) { border-color:#c4b5fd; }
+.conf-btn.sel { background:#4c1d95; border-color:#a78bfa; color:#e9d5ff; font-weight:700; }
+.conf-btn:disabled { cursor:default; opacity:.8; }
+.conf-hint { font-size:.75rem; color:#64748b; width:100%; }
+.action-row { display:flex; gap:10px; align-items:center; }
+.btn-check { background:linear-gradient(135deg,#a78bfa,#7c3aed); color:#f8fafc; font-weight:800; border:none; border-radius:12px; padding:13px 30px; font-size:1rem; cursor:pointer; font-family:inherit; transition:.2s; }
+.btn-check:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 16px rgba(167,139,250,.35); }
+.btn-check:disabled { opacity:.4; cursor:default; }
+.key-hint { font-size:.78rem; color:#64748b; }
+.feedback { margin-top:18px; border-radius:12px; padding:14px 18px; font-size:.9rem; line-height:1.7; display:none; }
+.feedback.show { display:block; animation:fadeIn .3s; }
+.feedback.ok { background:rgba(74,222,128,.1); border:1px solid rgba(74,222,128,.4); }
+.feedback.no { background:rgba(248,113,113,.1); border:1px solid rgba(248,113,113,.4); }
+.feedback b.head { display:block; margin-bottom:6px; font-size:1rem; }
+.feedback.ok b.head { color:#4ade80; } .feedback.no b.head { color:#f87171; }
+.feedback .meta { margin-top:8px; font-size:.82rem; color:#c4b5fd; border-top:1px dashed #475569; padding-top:6px; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+.result-score { text-align:center; margin-bottom:24px; }
+.result-score .big { font-size:3rem; font-weight:800; color:#fbbf24; }
+.result-score .msg { color:#cbd5e1; font-size:1rem; margin-top:6px; }
+.r-sec-title { color:#c4b5fd; font-size:1.05rem; margin:26px 0 12px; }
+.domain-bars { display:flex; flex-direction:column; gap:12px; }
+.dbar-row { display:flex; align-items:center; gap:12px; font-size:.88rem; }
+.dbar-name { width:190px; flex-shrink:0; }
+.dbar-track { flex:1; background:#1e293b; height:16px; border-radius:999px; overflow:hidden; border:1px solid #475569; }
+.dbar-fill { height:100%; border-radius:999px; transition:width .8s; }
+.dbar-pct { width:60px; text-align:right; font-weight:700; }
+.cal-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.cal-cell { border-radius:12px; padding:14px; font-size:.85rem; line-height:1.6; border:1px solid; }
+.cal-cell h5 { font-size:.92rem; margin-bottom:6px; }
+.cal-cell .cnt { font-size:1.6rem; font-weight:800; }
+.cal-cell.good { background:rgba(74,222,128,.08); border-color:rgba(74,222,128,.4); } .cal-cell.good h5,.cal-cell.good .cnt { color:#4ade80; }
+.cal-cell.danger { background:rgba(248,113,113,.1); border-color:rgba(248,113,113,.5); } .cal-cell.danger h5,.cal-cell.danger .cnt { color:#f87171; }
+.cal-cell.lucky { background:rgba(251,191,36,.08); border-color:rgba(251,191,36,.4); } .cal-cell.lucky h5,.cal-cell.lucky .cnt { color:#fbbf24; }
+.cal-cell.aware { background:rgba(56,189,248,.08); border-color:rgba(56,189,248,.4); } .cal-cell.aware h5,.cal-cell.aware .cnt { color:#38bdf8; }
+.cal-note { margin-top:12px; font-size:.83rem; color:#94a3b8; line-height:1.65; background:rgba(15,23,42,.5); border-radius:10px; padding:12px 14px; }
+.cal-note b { color:#c4b5fd; }
+.est-box { margin-top:12px; background:rgba(251,191,36,.07); border:1px dashed rgba(251,191,36,.45); border-radius:10px; padding:12px 14px; font-size:.86rem; line-height:1.65; }
+.est-box b { color:#fbbf24; }
+.wrong-list { display:flex; flex-direction:column; gap:10px; }
+.wrong-item { background:rgba(248,113,113,.06); border:1px solid rgba(248,113,113,.3); border-radius:12px; padding:14px; font-size:.87rem; line-height:1.65; }
+.wrong-item b { color:#fca5a5; }
+.wrong-item .ans { color:#4ade80; }
+.review-reco { margin-top:16px; background:rgba(56,189,248,.08); border:1px solid rgba(56,189,248,.35); border-radius:12px; padding:14px 18px; font-size:.9rem; line-height:1.7; }
+.review-reco a { color:#7dd3fc; font-weight:700; }
+.reflect { margin-top:16px; background:rgba(167,139,250,.08); border:1px dashed rgba(167,139,250,.5); border-radius:12px; padding:14px 16px; }
+.reflect h4 { color:#c4b5fd; font-size:.95rem; margin-bottom:8px; }
+.reflect p { font-size:.85rem; color:#cbd5e1; line-height:1.6; margin-bottom:8px; }
+.reflect textarea { width:100%; min-height:70px; background:#0f172a; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:9px 11px; font-family:inherit; font-size:.86rem; resize:vertical; }
+.result-actions { text-align:center; margin-top:26px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.btn-sub { background:#334155; color:#cbd5e1; border:1px solid #64748b; border-radius:10px; padding:11px 22px; font-size:.9rem; cursor:pointer; font-family:inherit; text-decoration:none; display:inline-block; }
+.hidden { display:none !important; }
+@media(max-width:560px){ .cal-grid{grid-template-columns:1fr} .dbar-name{width:120px;font-size:.78rem} }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-nav">
+    <a href="sim_zero_energy.html">← 9차시: 제로 에너지 하우스</a>
+    <a href="index.html">🏠 홈</a>
+  </div>
+
+  <span class="lesson-tag">10차시</span><span class="unit-tag">단원 종합 · 건설 기술과 지속 가능 전체</span>
+  <h1>🏁 단원 종합 평가 — 건설 기술과 지속 가능</h1>
+
+  <div class="progress-wrap"><div class="progress-bar" id="pbar"></div></div>
+  <div class="progress-label" id="plabel">시작 전</div>
+
+  <div class="panel start-panel" id="startPanel">
+    <h2>🎯 20문제 종합 도전!</h2>
+    <p>1차시부터 9차시까지 <b style="color:#c4b5fd">단원 전체</b>를 확인합니다.<br>각 문제마다 <b style="color:#c4b5fd">답</b>과 <b style="color:#c4b5fd">확신도</b>를 함께 선택해요.</p>
+    <div class="scope">
+      <div><b style="color:#fbbf24">① 건설 기술 기초</b>개념·특징·발달 (1차시) · 2문항</div>
+      <div><b style="color:#fdba74">② 건축 구조·하중</b>구성 요소·4구조·하중 (2차시) · 3문항</div>
+      <div><b style="color:#7dd3fc">③ 힘·교량·내진</b>4가지 힘·트러스·교량 (3차시) · 3문항</div>
+      <div><b style="color:#86efac">④ 지속 가능·제로 에너지</b>3영역·패시브/액티브·BIPV (3·9차시) · 4문항</div>
+      <div><b style="color:#c4b5fd">⑤ 기획·설계·도면</b>기획 vs 계획·설계 3단계·도면 (5차시) · 4문항</div>
+      <div><b style="color:#f9a8d4">⑥ 시공·관리·문제 해결</b>시공 순서·관리·모듈러 (6·7차시) · 4문항</div>
+    </div>
+    <div class="pre-est">🔮 <b>시작 전 예측</b> — 20문제 중 몇 개나 맞힐 것 같나요?
+      <select id="preEst"><option value="">선택</option><option value="7">7개 이하</option><option value="12">8~12개</option><option value="16">13~16개</option><option value="20">17~20개</option></select>
+    </div>
+    <div class="hint-box">
+      <b>🧠 종합 평가에서 확신도가 더 중요한 이유</b><br>
+      열 차시 동안 배운 내용이 섞여 나오면 "분명히 배웠는데…" 하는 문제가 생깁니다. 그 문제를 <b>확신하고 틀렸는지, 모른다고 알고 틀렸는지</b>가 복습 순서를 정해 줍니다.<br><br>
+      <b>⌨️ 키보드:</b> 숫자키 <b>1~4</b> = 보기 선택 · <b>Q/W/E</b> = 확신도 · <b>Enter</b> = 확인/다음
+    </div>
+    <button class="btn-check" id="startBtn">평가 시작 (Enter)</button>
+  </div>
+
+  <div class="panel hidden" id="quizPanel">
+    <span class="q-domain" id="qDomain"></span>
+    <div class="q-text" id="qText"></div>
+    <div class="opts" id="qOpts"></div>
+    <div class="conf-row" id="confRow">
+      <span class="conf-label">🧠 확신도:</span>
+      <button class="conf-btn" data-c="high">😎 확실해요 (Q)</button>
+      <button class="conf-btn" data-c="mid">🤔 아마도? (W)</button>
+      <button class="conf-btn" data-c="low">🎲 찍었어요 (E)</button>
+      <span class="conf-hint">답과 확신도를 모두 선택해야 확인할 수 있어요</span>
+    </div>
+    <div class="action-row">
+      <button class="btn-check" id="checkBtn" disabled>정답 확인</button>
+      <span class="key-hint">Enter ⏎</span>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <div class="panel hidden" id="resultPanel">
+    <div class="result-score"><div class="big" id="scoreBig"></div><div class="msg" id="scoreMsg"></div></div>
+    <div class="est-box" id="estBox"></div>
+    <h3 class="r-sec-title">📊 영역별 성취도</h3>
+    <div class="domain-bars" id="domainBars"></div>
+    <h3 class="r-sec-title">🧠 메타인지 분석 — 나는 나를 얼마나 알까?</h3>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-note" id="calNote"></div>
+    <h3 class="r-sec-title" id="wrongTitle">📖 오답노트</h3>
+    <div class="wrong-list" id="wrongList"></div>
+    <div class="review-reco" id="reviewReco"></div>
+    <div class="reflect">
+      <h4>✍️ 단원을 마치며 — 나의 한 문장</h4>
+      <p>이 단원에서 가장 기억에 남는 개념 하나와, 그것이 <b>내 생활이나 미래</b>와 어떻게 연결되는지 적어 보세요.</p>
+      <textarea id="reflectTxt" placeholder="예) 패시브가 먼저, 액티브는 그다음. 우리 집 창문에 차양만 달아도 여름 냉방비가 줄어든다는 걸 알게 됐다."></textarea>
+      <div style="margin-top:8px;display:flex;gap:8px;align-items:center"><button class="btn-sub" id="reflectSave">💾 저장</button><span id="reflectSaved" style="font-size:.78rem;color:#a78bfa"></span></div>
+    </div>
+    <div class="result-actions">
+      <button class="btn-check" id="retryBtn">다시 도전하기</button>
+      <a class="btn-sub" href="index.html">🏠 홈으로</a>
+    </div>
+  </div>
+</div>
+
+<script>
+/* domain: 1=건설기술 기초 2=건축구조·하중 3=힘·교량·내진 4=지속가능·제로에너지 5=기획·설계·도면 6=시공·관리·문제해결 */
+const QUESTIONS = [
+  { d:1, q:'인간이 쾌적하고 안락한 삶을 위해 공간에 자원을 효과적으로 이용하여 구조물을 만드는 기술을 무엇이라 하며, 이 기술은 크게 어떻게 나뉘는가?',
+    opts:['제조 기술 — 생산 기술과 가공 기술', '건설 기술 — 건축 기술과 토목 기술', '수송 기술 — 육상·해상·항공 기술', '정보 통신 기술 — 처리 기술과 전송 기술'], a:1,
+    exp:'건설 기술은 건축 기술(사람이 생활하는 공간: 주택·학교)과 토목 기술(기반 시설: 도로·교량·댐)로 나뉩니다. 구분 요령 — "사람이 들어가서 지내는가?"면 건축, "여러 사람이 지나가거나 이용하는 시설인가?"면 토목.' },
+  { d:1, q:'"아파트는 잘못 지었다고 헐고 다시 짓기 어려우므로 설계 단계부터 꼼꼼히 검토해야 한다." 이 설명과 가장 관련 깊은 건설 기술의 특징은?',
+    opts:['공공성', '지역성', '일회성', '대형성'], a:2,
+    exp:'일회성 — 한 번 시공하면 다시 짓거나 옮기기 어렵다. 공장 제품처럼 시제품을 만들어 볼 수 없어 설계 단계가 매우 중요합니다. 9차시에서 건축주의 의뢰서를 꼼꼼히 읽어야 했던 이유이기도 해요.' },
+  { d:2, q:'건축물에서 힘이 전달되는 순서로 옳은 것은?',
+    opts:['기초 → 기둥 → 보 → 지반', '보 → 기둥 → 기초 → 지반', '기둥 → 보 → 지반 → 기초', '지반 → 기초 → 보 → 기둥'], a:1,
+    exp:'지붕·바닥의 무게 → 보 → 기둥 → 기초 → 지반. 위에서 누르는 힘을 이 순서로 땅까지 안전하게 흘려보내기 때문에 건물이 서 있을 수 있습니다. 교량의 상부 구조 → 교각·교대 → 기초도 같은 원리입니다.' },
+  { d:2, q:'태풍이 오자 63층 건물의 꼭대기가 좌우로 미세하게 흔들렸다. 이때 건물에 작용한 하중은?',
+    opts:['고정하중', '활하중', '풍하중', '적설하중'], a:2,
+    exp:'풍하중 — 바람이 건물 옆면을 미는 힘으로, 건물이 높을수록 커집니다. 고정·활·적설하중은 아래로 누르는 힘이지만 풍하중과 지진하중은 옆에서 미는 힘이라 건물을 넘어뜨리거나 비틀려고 합니다.' },
+  { d:2, q:'거푸집에 철근을 배치하고 콘크리트를 부어 기둥·벽·바닥이 한 덩어리로 굳도록 만드는 건축 구조는?',
+    opts:['가구식 구조', '일체식 구조', '조적식 구조', '특수식 구조'], a:1,
+    exp:'일체식 구조 — 철근 콘크리트로 한 덩어리를 만들어 튼튼하고 내화성이 좋으며 고층에 유리합니다. 가구식은 조립, 조적식은 쌓기, 특수식은 기둥 없는 넓은 공간이 키워드예요.' },
+  { d:3, q:'보가 휨을 받을 때 아래쪽에 철근을 넣는 이유로 가장 알맞은 것은?',
+    opts:['아래쪽은 압축력을 받는데 철근이 압축에 강하기 때문', '아래쪽은 인장력을 받는데 콘크리트는 인장에 약하기 때문', '철근이 무거워서 아래에 두어야 안정적이기 때문', '아래쪽에 전단력이 가장 크게 작용하기 때문'], a:1,
+    exp:'휨을 받는 보는 위쪽이 눌리고(압축) 아래쪽이 늘어납니다(인장). 콘크리트는 압축에 강하지만 인장에 약하므로, 인장이 걸리는 아래쪽에 인장에 강한 철근을 넣어 보완합니다.' },
+  { d:3, q:'다리나 철탑에 삼각형 구조(트러스)를 많이 쓰는 이유는?',
+    opts:['삼각형이 가장 넓은 면적을 만들기 때문', '세 변의 길이가 정해지면 모양이 하나로 결정되어 찌그러지지 않기 때문', '삼각형이 사각형보다 재료가 많이 들어 튼튼하기 때문', '삼각형은 인장력을 전혀 받지 않기 때문'], a:1,
+    exp:'사각형은 변의 길이가 그대로여도 각도가 변해 찌그러지지만, 삼각형은 세 변이 정해지면 모양이 유일하게 결정됩니다. 그래서 적은 재료로 튼튼하고 가벼운 구조를 만들 수 있습니다.' },
+  { d:3, q:'주탑에서 상판으로 케이블을 직접 비스듬히 연결하는 교량은?',
+    opts:['현수교', '사장교', '트러스교', '아치교'], a:1,
+    exp:'사장교 — 주탑에서 케이블을 상판에 직접 비스듬히 매답니다(인천대교·올림픽대교). 현수교는 주탑 사이에 굵은 케이블을 늘어뜨리고 거기서 내린 줄로 상판을 매다는 방식(광안대교·이순신대교)입니다.' },
+  { d:4, q:'"미래 세대가 자신들의 필요를 충족시킬 능력을 해치지 않으면서 현재 세대의 필요를 충족시키는 발전"으로 정의되는 것은?',
+    opts:['경제 성장', '지속 가능한 발전', '산업 혁명', '도시화'], a:1,
+    exp:'지속 가능한 발전 — 1987년 유엔 브룬틀란 보고서에서 정립된 정의입니다. 경제 성장·환경 보호·사회 발전 세 영역이 동시에 만족될 때 이루어집니다.' },
+  { d:4, q:'제로 에너지 구조물을 만드는 두 가지 기술에 대한 설명으로 옳은 것은?',
+    opts:['패시브 기술은 설비로 에너지를 생산하고, 액티브 기술은 구조로 에너지를 아낀다', '패시브 기술은 구조·재료·배치로 새는 에너지를 막고, 액티브 기술은 설비로 에너지를 생산·관리한다', '패시브와 액티브는 같은 뜻으로 둘 다 태양광 발전을 가리킨다', '패시브 기술은 비용이 많이 들어 액티브 기술보다 나중에 적용한다'], a:1,
+    exp:'패시브 = 고단열·고기밀·3중창·남향·외부 차양처럼 기계 없이 에너지를 아끼는 기술, 액티브 = 태양광·지열·열회수 환기처럼 설비로 에너지를 만들고 관리하는 기술. "패시브가 먼저, 액티브는 그다음"입니다.' },
+  { d:4, q:'건축주가 "디자인이 아름다웠으면 하니 태양광 패널은 지붕 위에 덧붙이지 말고 건물 자체로 만들어 달라"고 요구했다. 이에 알맞은 방식은?',
+    opts:['건물 부착형 태양 전지판(BAPV)', '건물 일체형 태양 전지판(BIPV)', '독립형 태양광 발전소', '소형 풍력 발전기'], a:1,
+    exp:'BIPV(Building Integrated Photovoltaic) — 태양 전지판을 지붕재·외장재·창호 자체로 사용하는 방식. 미관이 아름답고 다양한 디자인이 가능하지만 시공 단계부터 적용해야 합니다. BAPV는 기존 건물 위에 덧붙이는 방식이에요.' },
+  { d:4, q:'남쪽 창문 위에 태양 전지판을 비스듬히 설치해 여름 햇빛을 가리면서 동시에 전기를 만드는 BIPV의 유형은?',
+    opts:['경사 지붕형', '평지붕형', '커튼월형', '수직 차양형'], a:3,
+    exp:'수직 차양형 — 벽면 통합형의 하나로, 외부 차양(패시브)과 발전(액티브)을 한 번에 하는 방식입니다. 지붕 통합형에는 경사 지붕형·평지붕형·아트리움형, 벽면 통합형에는 커튼월형·수직 차양형·아트리움형이 있습니다.' },
+  { d:5, q:'"우리 마을에 홍수를 막을 제방을 3년 안에 50억 원으로 만들자"처럼 무엇을 만들 것인가(방향)를 정하는 단계는?',
+    opts:['건설 기획', '건설 계획', '건설 설계', '건설 시공'], a:0,
+    exp:'건설 기획 — 사용자 요구, 용도·목적, 대지 조건, 규모·예산, 공사 시기·기간을 고려해 목표를 세우는 "무엇을" 단계. 건설 계획은 그것을 "어떻게" 이룰지 구체화하는 단계입니다.' },
+  { d:5, q:'건설 설계의 3단계를 순서대로 나열한 것은?',
+    opts:['기본 설계 → 계획 설계 → 실시 설계', '계획 설계 → 기본 설계 → 실시 설계', '실시 설계 → 기본 설계 → 계획 설계', '계획 설계 → 실시 설계 → 기본 설계'], a:1,
+    exp:'계획 설계(개략적 형태) → 기본 설계(도면 작성, 공사비·기간 예측) → 실시 설계(시공용 상세 도면 + 시방서). 뒤로 갈수록 점점 자세해집니다.' },
+  { d:5, q:'도면으로 표현하지 못한 재료의 종류·품질·시공 방법을 글로 써서 나타낸 문서는?',
+    opts:['배치도', '시방서', '평면도', '공정표'], a:1,
+    exp:'시방서 — 실시 설계 단계에서 작성하며, 시공은 설계 도면과 시방서를 바탕으로 이루어집니다.' },
+  { d:5, q:'건물의 위치와 방향, 도로와의 관계, 출입구와 진입 방향을 나타내며 방위(N) 표시가 있는 도면은?',
+    opts:['평면도', '입면도', '단면도', '배치도'], a:3,
+    exp:'배치도 — 대지 안에서 건물이 어디에 어떤 방향으로 놓이는지 보여 줍니다. 평면도는 수평으로 잘라 위에서 본 모양, 단면도는 수직으로 자른 내부 구조, 입면도는 밖에서 본 겉모습입니다.' },
+  { d:6, q:'건설 시공의 순서로 옳은 것은?',
+    opts:['착공 준비 → 가설 공사 → 토공사 → 기초 공사 → 골조 공사 → 설비 공사 → 마감 공사', '착공 준비 → 토공사 → 골조 공사 → 기초 공사 → 가설 공사 → 설비 공사 → 마감 공사', '가설 공사 → 착공 준비 → 골조 공사 → 토공사 → 기초 공사 → 마감 공사 → 설비 공사', '착공 준비 → 가설 공사 → 기초 공사 → 토공사 → 마감 공사 → 골조 공사 → 설비 공사'], a:0,
+    exp:'착공 준비(지반 조사) → 가설 공사(임시 시설) → 토공사(흙 파기) → 기초 공사 → 골조 공사(뼈대) → 설비 공사 → 마감 공사. 땅을 파야 기초를 만들고, 뼈대가 있어야 설비와 마감을 할 수 있습니다.' },
+  { d:6, q:'시공 중에 이루어지는 건설 관리 6가지에 해당하지 <u>않는</u> 것은?',
+    opts:['공정 관리', '안전 관리', '유지 관리', '품질 관리'], a:2,
+    exp:'시공 중 관리 6가지 — 공정·안전·품질·원가·자재·환경 관리. 유지 관리와 사후 관리는 시공 후에 이루어지는 2가지입니다. 1차시 건설 공사 4단계의 마지막 "유지·관리"와 연결됩니다.' },
+  { d:6, q:'기술적 문제 해결 과정에서 "조건을 정리하고 모듈 개수를 계산해 배치도를 그렸다"는 어느 단계인가?',
+    opts:['문제 확인하기', '아이디어 창출 및 선정하기', '아이디어 구체화하기', '평가하기'], a:2,
+    exp:'아이디어 구체화하기 — 고른 아이디어를 구체적인 형태(배치도·기술 요소 표·스케치)로 만드는 단계입니다. 9차시에서 기술 요소 표를 쓰고 하우스 빌더로 스케치한 것도 같은 단계예요.' },
+  { d:6, q:'모듈러 건축이 지속 가능한 건설과 관련이 깊은 이유로 알맞지 <u>않은</u> 것은?',
+    opts:['모듈을 해체해 다른 곳에서 다시 쓸 수 있어 자원 낭비가 줄어든다', '공장에서 정밀하게 만들어 현장 폐기물과 소음이 줄어든다', '공사 기간이 짧아 에너지와 비용을 아낄 수 있다', '한 번 설치하면 절대 옮기거나 바꿀 수 없어 오래 사용하게 된다'], a:3,
+    exp:'모듈러 건축의 강점은 조립·해체·이동이 쉬워 재사용할 수 있다는 점입니다. "절대 옮길 수 없다"는 반대 설명이에요.' },
+];
+const DOMAIN_NAMES = { 1:'건설 기술 기초', 2:'건축 구조·하중', 3:'힘·교량·내진', 4:'지속 가능·제로 에너지', 5:'기획·설계·도면', 6:'시공·관리·문제 해결' };
+const DOMAIN_CLASS = { 1:'d1', 2:'d2', 3:'d3', 4:'d4', 5:'d5', 6:'d6' };
+const DOMAIN_LINK = { 1:'sim_intro.html', 2:'sim_building.html', 3:'sim_bridge.html', 4:'sim_zero_energy.html', 5:'sim_process_plan.html', 6:'sim_process_build.html' };
+const DOMAIN_COLOR = { 1:'#fbbf24', 2:'#fdba74', 3:'#7dd3fc', 4:'#86efac', 5:'#c4b5fd', 6:'#f9a8d4' };
+const DOMAINS = [1, 2, 3, 4, 5, 6];
+const N = QUESTIONS.length;
+
+let order = [], idx = 0, answered = false, selOpt = null, selConf = null, records = [], preEst = '';
+const $ = id => document.getElementById(id);
+
+function startQuiz() {
+  preEst = $('preEst').value;
+  order = QUESTIONS.map((_, i) => i).sort(() => Math.random() - .5);
+  idx = 0; records = [];
+  $('startPanel').classList.add('hidden'); $('resultPanel').classList.add('hidden'); $('quizPanel').classList.remove('hidden');
+  showQuestion();
+}
+function showQuestion() {
+  const q = QUESTIONS[order[idx]];
+  answered = false; selOpt = null; selConf = null;
+  $('pbar').style.width = (idx / N * 100) + '%';
+  $('plabel').textContent = '문제 ' + (idx + 1) + ' / ' + N;
+  $('qDomain').textContent = '📚 ' + DOMAIN_NAMES[q.d]; $('qDomain').className = 'q-domain ' + DOMAIN_CLASS[q.d];
+  $('qText').innerHTML = '<span class="qnum">Q' + (idx + 1) + '.</span> ' + q.q;
+  const optsEl = $('qOpts'); optsEl.innerHTML = '';
+  q.opts.forEach((o, i) => { const b = document.createElement('button'); b.className = 'opt'; b.innerHTML = '<span class="onum">' + (i + 1) + '</span><span>' + o + '</span>'; b.onclick = () => selectOpt(i); optsEl.appendChild(b); });
+  document.querySelectorAll('.conf-btn').forEach(b => { b.classList.remove('sel'); b.disabled = false; });
+  $('checkBtn').disabled = true; $('checkBtn').textContent = '정답 확인';
+  $('feedback').className = 'feedback'; $('feedback').innerHTML = '';
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+function selectOpt(i) { if (answered) return; selOpt = i; document.querySelectorAll('#qOpts .opt').forEach((b, j) => b.classList.toggle('selected', j === i)); updateCheckBtn(); }
+function selectConf(c) { if (answered) return; selConf = c; document.querySelectorAll('.conf-btn').forEach(b => b.classList.toggle('sel', b.dataset.c === c)); updateCheckBtn(); }
+function updateCheckBtn() { $('checkBtn').disabled = !(selOpt !== null && selConf !== null); }
+function checkAnswer() {
+  if (answered || selOpt === null || selConf === null) return;
+  answered = true;
+  const q = QUESTIONS[order[idx]]; const correct = selOpt === q.a;
+  records.push({ d:q.d, correct, conf:selConf, qIdx:order[idx], picked:selOpt });
+  document.querySelectorAll('#qOpts .opt').forEach((b, j) => { b.disabled = true; if (j === q.a) b.classList.add('correct'); else if (j === selOpt && !correct) b.classList.add('wrong'); });
+  document.querySelectorAll('.conf-btn').forEach(b => b.disabled = true);
+  const fb = $('feedback'); fb.className = 'feedback show ' + (correct ? 'ok' : 'no');
+  let meta = '';
+  if (correct && selConf === 'high') meta = '🧠 확신 + 정답 — 진짜 실력이에요.';
+  else if (correct && selConf !== 'high') meta = '🧠 정답이지만 확신이 없었죠? 해설을 읽고 "왜" 맞는지 확실히 해 두세요.';
+  else if (!correct && selConf === 'high') meta = '🧠 <b>착각 주의!</b> 확신했는데 틀렸어요. 이런 문제가 가장 위험합니다 — 해설을 꼭 두 번 읽으세요.';
+  else meta = '🧠 모른다는 걸 알고 있었네요. 그것도 메타인지! 이제 해설로 채우면 됩니다.';
+  fb.innerHTML = '<b class="head">' + (correct ? '⭕ 정답입니다!' : '❌ 아쉬워요!') + '</b>' + q.exp + '<div class="meta">' + meta + '</div>';
+  $('checkBtn').disabled = false; $('checkBtn').textContent = idx + 1 < N ? '다음 문제 →' : '결과 보기 🎉';
+}
+function nextStep() { if (!answered) { checkAnswer(); return; } idx++; if (idx < N) showQuestion(); else showResult(); }
+
+function showResult() {
+  $('quizPanel').classList.add('hidden'); $('resultPanel').classList.remove('hidden');
+  $('pbar').style.width = '100%'; $('plabel').textContent = '완료!';
+  const total = records.length, score = records.filter(r => r.correct).length;
+  $('scoreBig').textContent = score + ' / ' + total;
+  $('scoreMsg').textContent = score === total ? '🏆 만점! 건설 기술과 지속 가능 단원 마스터!' : score >= 16 ? '🌟 훌륭해요! 단원을 거의 완벽히 이해했어요.' : score >= 11 ? '💪 좋아요! 약한 영역만 복습하면 완성.' : '📚 아직 기초가 필요해요. 1차시부터 차근차근 다시!';
+  const RANGE = { '7':[0, 7], '12':[8, 12], '16':[13, 16], '20':[17, 20] };
+  if (preEst && RANGE[preEst]) {
+    const [lo, hi] = RANGE[preEst]; const lbl = { '7':'7개 이하', '12':'8~12개', '16':'13~16개', '20':'17~20개' }[preEst];
+    $('estBox').innerHTML = score >= lo && score <= hi ? '🎯 <b>예측 적중!</b> 시작 전 예측 「' + lbl + '」 → 실제 ' + score + '개. 자신의 이해 수준을 정확히 알고 있어요.'
+      : score > hi ? '😮 <b>예측보다 잘했어요.</b> 예측 「' + lbl + '」 → 실제 ' + score + '개. 스스로를 과소평가했네요.'
+      : '⚠️ <b>예측보다 낮았어요.</b> 예측 「' + lbl + '」 → 실제 ' + score + '개. "안다고 생각했지만 아직 아닌" 부분이 있어요. 아래 오답노트가 그 지도입니다.';
+  } else $('estBox').innerHTML = '🔮 시작 전 예측을 선택하지 않았어요. 다음엔 먼저 예측해 보세요 — 예측하고 비교하는 습관이 메타인지를 키웁니다.';
+  const bars = $('domainBars'); bars.innerHTML = ''; const domainScores = {};
+  DOMAINS.forEach(d => {
+    const rs = records.filter(r => r.d === d), ok = rs.filter(r => r.correct).length, pct = rs.length ? Math.round(ok / rs.length * 100) : 0; domainScores[d] = pct;
+    const row = document.createElement('div'); row.className = 'dbar-row';
+    row.innerHTML = '<span class="dbar-name">' + DOMAIN_NAMES[d] + '</span><div class="dbar-track"><div class="dbar-fill" style="width:0;background:' + DOMAIN_COLOR[d] + '"></div></div><span class="dbar-pct" style="color:' + DOMAIN_COLOR[d] + '">' + ok + '/' + rs.length + '</span>';
+    bars.appendChild(row); requestAnimationFrame(() => setTimeout(() => row.querySelector('.dbar-fill').style.width = pct + '%', 60));
+  });
+  const hi = r => r.conf === 'high';
+  const cells = { good:records.filter(r => hi(r) && r.correct).length, danger:records.filter(r => hi(r) && !r.correct).length, lucky:records.filter(r => !hi(r) && r.correct).length, aware:records.filter(r => !hi(r) && !r.correct).length };
+  $('calGrid').innerHTML =
+    '<div class="cal-cell good"><h5>✅ 알고 있음</h5><span class="cnt">' + cells.good + '문제</span><br>확신 + 정답 — 진짜 실력!</div>' +
+    '<div class="cal-cell danger"><h5>⚠️ 착각 주의!</h5><span class="cnt">' + cells.danger + '문제</span><br>확신 + 오답 — 잘못 알고 있던 개념. 가장 먼저 복습!</div>' +
+    '<div class="cal-cell lucky"><h5>🍀 감으로 맞힘</h5><span class="cnt">' + cells.lucky + '문제</span><br>불확신 + 정답 — 개념을 확실히 다지면 진짜 실력이 돼요.</div>' +
+    '<div class="cal-cell aware"><h5>🧭 모름을 앎</h5><span class="cnt">' + cells.aware + '문제</span><br>불확신 + 오답 — 모른다는 걸 정확히 알고 있어요. 복습하면 OK!</div>';
+  const acc = Math.round((cells.good + cells.aware) / total * 100);
+  $('calNote').innerHTML = (cells.danger === 0 ? '👍 <b>착각이 없어요!</b> 자신이 아는 것과 모르는 것을 정확히 구분하고 있습니다. ' : '🔍 <b>「착각 주의」 ' + cells.danger + '문제</b>가 가장 위험해요. 틀렸는데 확신했던 문제부터 아래 오답노트로 다시 확인하세요. ') +
+    '<br><b>메타인지 정확도 ' + acc + '%</b> — (확신+정답) + (불확신+오답)이 전체에서 차지하는 비율. 높을수록 "나를 잘 아는" 학습자입니다.';
+  const wrongs = records.filter(r => !r.correct); const wl = $('wrongList'); wl.innerHTML = '';
+  if (!wrongs.length) { $('wrongTitle').textContent = '📖 오답노트 — 없음! 🎉'; wl.innerHTML = '<div style="color:#4ade80;font-size:.9rem">모든 문제를 맞혔습니다. 완벽해요!</div>'; }
+  else {
+    $('wrongTitle').textContent = '📖 오답노트 (' + wrongs.length + '문제)';
+    wrongs.sort((a, b) => (b.conf === 'high') - (a.conf === 'high')).forEach(r => {
+      const q = QUESTIONS[r.qIdx]; const div = document.createElement('div'); div.className = 'wrong-item';
+      div.innerHTML = '<b>Q. ' + q.q.replace(/<[^>]+>/g, '') + '</b><br>내 답: ' + q.opts[r.picked] + (r.conf === 'high' ? ' <span style="color:#f87171">(확신했음 ⚠️)</span>' : '') + '<br><span class="ans">정답: ' + q.opts[q.a] + '</span><br>' + q.exp +
+        '<br><a href="' + DOMAIN_LINK[q.d] + '" style="color:#7dd3fc;font-size:.82rem">↗ ' + DOMAIN_NAMES[q.d] + ' 차시로 복습</a>';
+      wl.appendChild(div);
+    });
+  }
+  const weakest = [...DOMAINS].sort((a, b) => domainScores[a] - domainScores[b])[0];
+  $('reviewReco').innerHTML = domainScores[weakest] === 100 ? '🎓 모든 영역을 완벽히 이해했어요! 축하합니다!' : '💡 <b>복습 추천:</b> 「' + DOMAIN_NAMES[weakest] + '」 영역이 가장 약해요 (' + domainScores[weakest] + '%). <a href="' + DOMAIN_LINK[weakest] + '">여기를 눌러 해당 차시로 이동</a>해 복습한 뒤 다시 도전해 보세요!';
+  try { const v = localStorage.getItem('construction-final-reflect'); if (v) $('reflectTxt').value = v; } catch (e) {}
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+$('reflectSave').onclick = () => { try { localStorage.setItem('construction-final-reflect', $('reflectTxt').value); } catch (e) {} $('reflectSaved').textContent = '✔ 저장됨 ' + new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit' }); };
+$('startBtn').onclick = startQuiz; $('checkBtn').onclick = nextStep; $('retryBtn').onclick = startQuiz;
+document.querySelectorAll('.conf-btn').forEach(b => b.onclick = () => selectConf(b.dataset.c));
+document.addEventListener('keydown', e => {
+  if (document.activeElement && ['TEXTAREA', 'SELECT', 'INPUT'].includes(document.activeElement.tagName)) return;
+  if (!$('startPanel').classList.contains('hidden')) { if (e.key === 'Enter') { e.preventDefault(); startQuiz(); } return; }
+  if (!$('quizPanel').classList.contains('hidden')) {
+    if (['1', '2', '3', '4'].includes(e.key) && !answered) { selectOpt(parseInt(e.key) - 1); return; }
+    const confMap = { q:'high', w:'mid', e:'low' };
+    if (confMap[e.key.toLowerCase()] && !answered) { selectConf(confMap[e.key.toLowerCase()]); return; }
+    if (e.key === 'Enter') { e.preventDefault(); if (!$('checkBtn').disabled) nextStep(); }
+    return;
+  }
+  if (!$('resultPanel').classList.contains('hidden') && e.key === 'Enter') { e.preventDefault(); startQuiz(); }
+});
+</script>
+<!-- 어디서든 홈으로 : 화면 우하단 고정 버튼 -->
+<a href="index.html" title="처음 화면으로" style="position:fixed;right:18px;bottom:18px;z-index:9999;display:inline-flex;align-items:center;gap:6px;background:#fbbf24;color:#1e293b;font-weight:800;font-size:.9rem;text-decoration:none;border-radius:999px;padding:10px 16px;box-shadow:0 6px 18px rgba(0,0,0,.35);font-family:'Segoe UI','Malgun Gothic',sans-serif">🏠 홈</a>
+</body>
+</html>

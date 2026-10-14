@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9차시 — 제로 에너지 하우스 모형 제작하기</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI','Malgun Gothic',sans-serif; background:linear-gradient(160deg,#0f172a,#1e293b); color:#e2e8f0; min-height:100vh; }
+.container { max-width:1050px; margin:0 auto; padding:20px 18px 80px; }
+.top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:8px; }
+.top-nav a { color:#7dd3fc; text-decoration:none; font-size:.9rem; }
+.top-nav a:hover { text-decoration:underline; }
+h1 { color:#fbbf24; font-size:1.6rem; margin-bottom:6px; }
+.lesson-tag { display:inline-block; background:#fbbf24; color:#1e293b; font-weight:800; border-radius:8px; padding:3px 12px; font-size:.8rem; margin-bottom:10px; }
+.unit-tag { display:inline-block; background:#334155; color:#94a3b8; border-radius:8px; padding:3px 10px; font-size:.75rem; margin-left:6px; }
+.goal-box { background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0; padding:14px 18px; margin:14px 0 18px; font-size:.92rem; line-height:1.7; }
+.goal-box b { color:#7dd3fc; }
+.flow-bar { display:flex; gap:6px; flex-wrap:wrap; background:rgba(15,23,42,.6); border:1px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:30px; font-size:.76rem; color:#94a3b8; }
+.flow-bar span { background:#1e293b; border:1px solid #475569; border-radius:999px; padding:4px 11px; white-space:nowrap; }
+.flow-bar span b { color:#fbbf24; }
+.step-title { font-size:1.25rem; color:#fbbf24; margin:44px 0 6px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.step-num { background:#f59e0b; color:#1e293b; width:30px; height:30px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:.95rem; flex-shrink:0; }
+.step-time { font-size:.7rem; background:#334155; color:#94a3b8; border-radius:999px; padding:3px 10px; font-weight:600; }
+.step-desc { color:#94a3b8; font-size:.9rem; margin-bottom:16px; line-height:1.6; }
+.panel { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.hook { margin-top:16px; background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0; padding:14px 16px; font-size:.9rem; line-height:1.75; }
+.hook b { color:#7dd3fc; }
+.btn-main { background:linear-gradient(135deg,#f59e0b,#d97706); color:#1e293b; font-weight:800; border:none; border-radius:10px; padding:11px 26px; font-size:.95rem; cursor:pointer; font-family:inherit; transition:.2s; }
+.btn-main:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 16px rgba(245,158,11,.35); }
+.btn-main:disabled { opacity:.45; cursor:default; }
+.btn-sub { background:#334155; color:#cbd5e1; border:1px solid #64748b; border-radius:10px; padding:10px 18px; font-size:.88rem; cursor:pointer; font-family:inherit; }
+.kwl { background:rgba(167,139,250,.08); border:1px solid rgba(167,139,250,.35); border-radius:14px; padding:20px; }
+.kwl h3 { color:#c4b5fd; font-size:1rem; margin-bottom:10px; }
+.kwl-row { display:flex; flex-direction:column; gap:10px; }
+.kwl-item { display:flex; align-items:center; gap:10px; font-size:.9rem; flex-wrap:wrap; }
+.kwl-item span { flex:1; min-width:220px; }
+.kwl-item select { background:#1e293b; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:5px 10px; font-size:.85rem; cursor:pointer; }
+.kwl-note { font-size:.78rem; color:#a78bfa; margin-top:10px; }
+
+/* 의뢰서 */
+.brief { background:#fef3c7; color:#1c1917; border-radius:14px; padding:22px 24px; border:3px solid #f59e0b; font-size:.95rem; line-height:1.85; position:relative; }
+.brief h4 { color:#92400e; font-size:1.05rem; margin-bottom:8px; }
+.brief .stamp { position:absolute; right:18px; top:14px; border:3px solid #b91c1c; color:#b91c1c; font-weight:900; border-radius:8px; padding:4px 10px; transform:rotate(8deg); font-size:.85rem; }
+.req-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:10px; margin-top:16px; }
+.req { background:#1e293b; border:2px solid #475569; border-radius:12px; padding:12px 14px; cursor:pointer; font-size:.88rem; line-height:1.55; transition:.15s; display:flex; gap:10px; align-items:flex-start; }
+.req:hover { border-color:#94a3b8; }
+.req.on { border-color:#fbbf24; background:rgba(251,191,36,.12); }
+.req.ok { border-color:#4ade80; background:rgba(74,222,128,.12); }
+.req.bad { border-color:#f87171; background:rgba(248,113,113,.12); }
+.req .chk { width:20px; height:20px; border-radius:6px; border:2px solid #64748b; flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; font-size:.8rem; }
+.req.on .chk, .req.ok .chk { background:#fbbf24; color:#1e293b; border-color:#fbbf24; }
+.req.ok .chk { background:#4ade80; border-color:#4ade80; }
+.req-fb { margin-top:14px; font-size:.9rem; line-height:1.7; min-height:1.4em; }
+
+/* BAPV vs BIPV */
+.cmp2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:720px){ .cmp2{grid-template-columns:1fr} }
+.cmp-card { border-radius:14px; padding:16px; border:2px solid; background:rgba(15,23,42,.5); }
+.cmp-card.a { border-color:#94a3b8; } .cmp-card.b { border-color:#4ade80; }
+.cmp-card h4 { font-size:1.02rem; margin-bottom:8px; }
+.cmp-card.a h4 { color:#cbd5e1; } .cmp-card.b h4 { color:#86efac; }
+.cmp-card svg { width:100%; height:auto; background:#e0f2fe; border-radius:10px; margin-bottom:10px; }
+.cmp-card p { font-size:.86rem; line-height:1.65; color:#cbd5e1; }
+.cmp-card ul { margin:8px 0 0 18px; font-size:.83rem; line-height:1.6; color:#cbd5e1; }
+.type-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-top:14px; }
+.type-card { background:#1e293b; border:2px solid #475569; border-radius:12px; padding:12px; text-align:center; cursor:pointer; transition:.15s; }
+.type-card:hover { border-color:#94a3b8; }
+.type-card.on { border-color:#4ade80; background:rgba(74,222,128,.1); }
+.type-card svg { width:100%; height:auto; background:#e0f2fe; border-radius:8px; margin-bottom:6px; }
+.type-card b { display:block; font-size:.88rem; color:#e2e8f0; }
+.type-card small { color:#94a3b8; font-size:.72rem; }
+.type-card.roof b { color:#fde68a; } .type-card.wall b { color:#7dd3fc; }
+.type-detail { margin-top:12px; background:rgba(15,23,42,.7); border:1px solid #475569; border-radius:12px; padding:14px; font-size:.88rem; line-height:1.7; min-height:70px; }
+.type-detail h5 { color:#86efac; font-size:.98rem; margin-bottom:5px; }
+.mq-item { margin-top:16px; padding-top:14px; border-top:1px solid #334155; }
+.mq-q { font-size:.93rem; line-height:1.6; margin-bottom:10px; }
+.mq-q b { color:#fbbf24; }
+.mq-opts { display:flex; gap:8px; flex-wrap:wrap; }
+.mq-btn { background:#334155; color:#e2e8f0; border:1px solid #64748b; border-radius:999px; padding:7px 15px; font-size:.84rem; cursor:pointer; font-family:inherit; transition:.2s; }
+.mq-btn:hover:not(:disabled) { border-color:#fbbf24; color:#fbbf24; }
+.mq-btn.correct { background:#14532d; border-color:#4ade80; color:#bbf7d0; }
+.mq-btn.wrong { background:#7f1d1d; border-color:#f87171; color:#fecaca; }
+.mq-btn:disabled { cursor:default; opacity:.85; }
+.mq-fb { font-size:.82rem; margin-top:8px; min-height:1.2em; line-height:1.6; }
+.mq-fb.ok { color:#4ade80; } .mq-fb.no { color:#f87171; }
+
+/* 아이디어 카드 */
+.idea-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; }
+.idea { background:#1e293b; border:2px solid #475569; border-radius:12px; padding:12px; cursor:pointer; transition:.15s; font-size:.84rem; line-height:1.5; }
+.idea:hover { border-color:#94a3b8; }
+.idea.on { border-color:#fbbf24; background:rgba(251,191,36,.12); }
+.idea .ie { font-size:1.6rem; display:block; margin-bottom:4px; }
+.idea b { display:block; color:#e2e8f0; font-size:.9rem; margin-bottom:4px; }
+.idea .tags { display:flex; gap:4px; flex-wrap:wrap; margin-top:6px; }
+.idea .tags span { font-size:.68rem; padding:2px 7px; border-radius:999px; background:#334155; color:#cbd5e1; }
+.idea .tags span.e { background:rgba(251,191,36,.18); color:#fde68a; }
+.idea .tags span.c { background:rgba(248,113,113,.18); color:#fca5a5; }
+.idea .tags span.g { background:rgba(74,222,128,.18); color:#86efac; }
+.idea .tags span.s { background:rgba(56,189,248,.18); color:#7dd3fc; }
+.idea-sum { margin-top:14px; display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+.stat { background:rgba(15,23,42,.6); border-radius:12px; padding:12px; text-align:center; }
+.stat .lbl { font-size:.75rem; color:#94a3b8; }
+.stat .val { font-size:1.4rem; font-weight:800; color:#fbbf24; }
+.stat .val.g { color:#4ade80; } .stat .val.r { color:#f87171; } .stat .val.b { color:#7dd3fc; }
+
+/* 기술 요소 표 */
+.tech-table { width:100%; border-collapse:collapse; font-size:.86rem; }
+.tech-table th, .tech-table td { border:1px solid #475569; padding:9px 10px; vertical-align:top; }
+.tech-table th { background:rgba(251,191,36,.12); color:#fbbf24; font-weight:800; text-align:left; }
+.tech-table td.ex { background:rgba(167,139,250,.08); color:#c4b5fd; font-style:italic; }
+.tech-table select, .tech-table input, .tech-table textarea { width:100%; background:#0f172a; color:#e2e8f0; border:1px solid #64748b; border-radius:6px; padding:7px 9px; font-family:inherit; font-size:.85rem; }
+.tech-table textarea { min-height:52px; resize:vertical; }
+.tech-table .del { background:none; border:none; color:#f87171; cursor:pointer; font-size:1rem; }
+.tbl-wrap { overflow-x:auto; }
+.tbl-tools { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; align-items:center; }
+.iq-saved { font-size:.78rem; color:#a78bfa; }
+
+/* 하우스 빌더 */
+.builder { display:grid; grid-template-columns:1.25fr 1fr; gap:18px; }
+@media(max-width:820px){ .builder{grid-template-columns:1fr} }
+.stage { background:#e0f2fe; border-radius:14px; padding:6px; border:3px solid #475569; }
+.stage svg { width:100%; height:auto; display:block; }
+.parts { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:8px; }
+.part { background:#1e293b; border:2px solid #475569; border-radius:10px; padding:9px 8px; cursor:pointer; font-size:.78rem; line-height:1.4; text-align:center; transition:.15s; }
+.part:hover { border-color:#94a3b8; }
+.part.on { border-color:#4ade80; background:rgba(74,222,128,.12); }
+.part.warn.on { border-color:#f87171; background:rgba(248,113,113,.12); }
+.part .pe { font-size:1.4rem; display:block; }
+.part b { display:block; color:#e2e8f0; font-size:.82rem; }
+.part small { color:#94a3b8; display:block; font-size:.68rem; }
+.meter { margin-top:14px; }
+.meter .row { display:flex; justify-content:space-between; font-size:.82rem; margin-bottom:4px; }
+.meter .row b { color:#fbbf24; }
+.bar { height:16px; background:#0f172a; border-radius:999px; overflow:hidden; border:1px solid #475569; position:relative; }
+.bar i { display:block; height:100%; border-radius:999px; transition:width .4s; }
+.bar i.prod { background:linear-gradient(90deg,#4ade80,#16a34a); }
+.bar i.cons { background:linear-gradient(90deg,#f87171,#dc2626); }
+.bar i.cost { background:linear-gradient(90deg,#fbbf24,#d97706); }
+.bar i.over { background:#dc2626 !important; }
+.verdict { margin-top:12px; border-radius:12px; padding:12px 14px; font-size:.88rem; line-height:1.65; border:1px solid #475569; background:rgba(15,23,42,.7); }
+.verdict.zero { border-color:#4ade80; background:rgba(74,222,128,.1); }
+.verdict h5 { font-size:1rem; margin-bottom:4px; }
+.reqs { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+.reqs span { font-size:.74rem; padding:3px 9px; border-radius:999px; background:#334155; color:#94a3b8; }
+.reqs span.met { background:rgba(74,222,128,.18); color:#86efac; }
+.grade { font-size:2.2rem; font-weight:900; text-align:center; margin:6px 0; }
+
+/* 실행·평가 */
+.mat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }
+.mat { background:rgba(15,23,42,.6); border:1px solid #475569; border-radius:12px; padding:12px; font-size:.82rem; line-height:1.5; }
+.mat .me { font-size:1.5rem; display:block; margin-bottom:4px; }
+.mat b { display:block; color:#fde68a; margin-bottom:3px; }
+.mat span { color:#94a3b8; }
+.rubric { width:100%; border-collapse:collapse; font-size:.85rem; margin-top:14px; }
+.rubric th, .rubric td { border:1px solid #475569; padding:9px 10px; text-align:left; vertical-align:top; line-height:1.55; }
+.rubric th { background:rgba(74,222,128,.12); color:#86efac; }
+.rubric td:first-child { font-weight:700; white-space:nowrap; }
+.rubric .sc { display:flex; gap:6px; }
+.rubric .sc button { width:34px; height:30px; border-radius:7px; border:1px solid #64748b; background:#1e293b; color:#cbd5e1; cursor:pointer; font-family:inherit; font-weight:700; }
+.rubric .sc button.on { background:#4ade80; color:#1e293b; border-color:#4ade80; }
+.inquiry { margin-top:16px; background:rgba(167,139,250,.08); border:1px dashed rgba(167,139,250,.5); border-radius:12px; padding:14px 16px; }
+.inquiry h4 { color:#c4b5fd; font-size:.95rem; margin-bottom:8px; }
+.inquiry p { font-size:.85rem; color:#cbd5e1; line-height:1.6; margin-bottom:8px; }
+.inquiry textarea { width:100%; min-height:64px; background:#0f172a; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:9px 11px; font-family:inherit; font-size:.86rem; resize:vertical; }
+.inquiry .iq-row { display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+
+.self-check { background:rgba(74,222,128,.07); border:1px solid rgba(74,222,128,.35); border-radius:14px; padding:20px; }
+.self-check h3 { color:#86efac; font-size:1rem; margin-bottom:12px; }
+.sc-item { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:.9rem; line-height:1.55; }
+.sc-item input { margin-top:3px; width:16px; height:16px; accent-color:#4ade80; cursor:pointer; flex-shrink:0; }
+.sc-progress { margin-top:12px; font-size:.85rem; color:#86efac; }
+.next-link { display:block; text-align:center; margin-top:34px; }
+.next-link a { display:inline-block; background:linear-gradient(135deg,#a78bfa,#7c3aed); color:#f8fafc; font-weight:800; text-decoration:none; border-radius:12px; padding:14px 34px; font-size:1rem; transition:.2s; }
+.next-link a:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(167,139,250,.35); }
+@media print { .top-nav, .next-link, .btn-main, .btn-sub, .flow-bar { display:none !important; } body { background:#fff; color:#000; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="top-nav">
+    <a href="activity_quiz2.html">← 8차시: 형성평가</a>
+    <a href="index.html">🏠 홈</a>
+    <a href="activity_final.html">10차시: 단원 종합 평가 →</a>
+  </div>
+
+  <span class="lesson-tag">9차시</span><span class="unit-tag">교과서 04 · 203~204쪽 · 창의 융합 활동</span>
+  <h1>🏡 제로 에너지 하우스 모형 제작하기</h1>
+  <div class="goal-box">
+    <b>학습 목표</b><br>
+    ① 지속 가능한 발전을 위해 건설 분야에서 주목받는 <b>제로 에너지 하우스</b>를 설명할 수 있다.<br>
+    ② <b>건물 부착형(BAPV)</b>과 <b>건물 일체형(BIPV)</b> 태양 전지판의 차이와 BIPV의 종류를 구분할 수 있다.<br>
+    ③ 건축주의 요구를 분석하고, 문제 해결 과정에 따라 <b>제로 에너지 하우스를 설계·시각화</b>할 수 있다.<br>
+    ④ 설계 결과를 바탕으로 <b>모형을 제작</b>하고 평가 기준에 따라 평가할 수 있다.
+  </div>
+
+  <div class="flow-bar">
+    <span><b>0</b> 자기점검 2분</span>
+    <span><b>1</b> 문제 확인 6분</span>
+    <span><b>2</b> 정보 수집 8분</span>
+    <span><b>3</b> 아이디어 구상·선정 7분</span>
+    <span><b>4</b> 기술 요소 표 7분</span>
+    <span><b>5</b> 스케치 시뮬레이터 10분</span>
+    <span><b>6</b> 실행·평가 5분</span>
+  </div>
+  <p style="font-size:.8rem;color:#94a3b8;margin:-22px 0 28px 4px">※ 교과서 활동은 2차시(설계 1차시 + 모형 제작 1차시)로 운영하기를 권합니다. 이 페이지는 1차시 설계 활동이며, 6단계는 2차시 모형 제작 안내입니다.</p>
+
+  <!-- STEP 0 -->
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">2분 · 🧠 메타인지</span></div>
+  <div class="kwl">
+    <h3>📋 나는 지금 얼마나 알고 있을까?</h3>
+    <div class="kwl-row">
+      <div class="kwl-item"><span><b>제로 에너지 하우스</b>가 무엇인지 설명할 수 있다</span><select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+      <div class="kwl-item"><span>태양 전지판을 건물에 <b>붙이는 것</b>과 <b>건물의 일부로 만드는 것</b>의 차이를 안다</span><select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+      <div class="kwl-item"><span>문제 해결 과정 5단계를 순서대로 말할 수 있다</span><select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+      <div class="kwl-item"><span>집에서 에너지를 <b>만드는 방법</b>과 <b>아끼는 방법</b>을 각각 2가지 이상 안다</span><select class="pre-check"><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+    </div>
+    <div class="kwl-note">💡 "모른다"고 체크해도 괜찮아요. 자신의 상태를 아는 것이 메타인지의 시작입니다!</div>
+  </div>
+
+  <!-- STEP 1 문제 확인 -->
+  <div class="step-title"><span class="step-num">1</span> 문제 확인하기 — 건축주의 의뢰서 <span class="step-time">6분 · 🎮 요구 조건 찾기</span></div>
+  <p class="step-desc">여러분은 건축 설계 사무소의 <b>신입 설계사</b>입니다. 건축주가 보낸 의뢰서를 읽고, <b>꼭 지켜야 할 요구 조건</b>을 모두 찾아 체크하세요. (교과서 203쪽 상황)</p>
+  <div class="panel">
+    <div class="brief">
+      <span class="stamp">의뢰서</span>
+      <h4>📜 새 주택 설계 의뢰</h4>
+      안녕하세요. 저희 가족의 <b>새로운 집</b>을 설계해 주세요.<br>
+      첫째, 집은 <b>제로 에너지 하우스</b>로 만들어 주세요. 쓰는 에너지만큼 스스로 만드는 집이면 좋겠습니다.<br>
+      둘째, 주택의 <b>디자인이 아름다웠으면</b> 합니다. 그래서 태양광 패널은 지붕 위에 덧붙이는 <b>건물 부착형이 아니라, 건물 일체형 패널</b>로 시공해 주세요.<br>
+      셋째, 주변 환경과 조화를 이루는 <b>생태 건축</b>의 개념을 담아 주세요.<br>
+      넷째, <b>스마트 홈 기술</b>도 함께 적용해 주시면 좋겠습니다.<br>
+      <span style="font-size:.85rem;color:#78350f">— 건축주 드림</span>
+    </div>
+    <p style="margin-top:14px;font-size:.88rem;color:#94a3b8">아래 8개 중 <b>의뢰서에 실제로 있는 요구 조건</b>만 골라 체크한 뒤 「확인」을 누르세요.</p>
+    <div class="req-grid" id="reqGrid"></div>
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn-main" id="reqCheck">확인</button><button class="btn-sub" id="reqReset">↺ 다시</button></div>
+    <div class="req-fb" id="reqFb"></div>
+    <div class="hook">
+      🔑 <b>문제 확인하기</b>는 "무엇을 만들어야 하는가"를 정확히 정하는 단계입니다.
+      요구 조건을 잘못 읽으면 아무리 멋지게 만들어도 <b>건축주가 원하는 집이 아닙니다.</b> 1차시에서 배운 건설 기술의 <b>일회성</b> — 한 번 지으면 되돌리기 어렵기 때문에 이 단계가 중요합니다.
+    </div>
+  </div>
+
+  <!-- STEP 2 정보 수집 -->
+  <div class="step-title"><span class="step-num">2</span> 아이디어 탐색 ① 정보 수집하기 — 건물 부착형 vs 건물 일체형 <span class="step-time">8분 · 개념 + 🎮 판별</span></div>
+  <p class="step-desc">건축주가 콕 집어 말한 <b>"건물 일체형 패널"</b>이 무엇인지 알아야 설계를 시작할 수 있습니다. 두 방식을 비교해 보세요.</p>
+  <div class="panel">
+    <div class="cmp2">
+      <div class="cmp-card a">
+        <h4>📌 건물 부착형 태양 전지판 (BAPV)</h4>
+        <svg viewBox="0 0 300 170">
+          <rect x="0" y="140" width="300" height="30" fill="#86efac"/>
+          <rect x="70" y="80" width="160" height="60" fill="#fde68a" stroke="#78350f" stroke-width="2"/>
+          <polygon points="60,82 150,30 240,82" fill="#b45309" stroke="#78350f" stroke-width="2"/>
+          <rect x="125" y="100" width="22" height="40" fill="#78350f"/>
+          <g stroke="#1e293b" stroke-width="1.5">
+            <line x1="112" y1="66" x2="118" y2="50"/><line x1="130" y1="56" x2="136" y2="40"/><line x1="160" y1="40" x2="166" y2="56"/><line x1="180" y1="50" x2="186" y2="66"/>
+          </g>
+          <polygon points="104,66 172,30 200,46 132,82" fill="#1e3a8a" stroke="#60a5fa" stroke-width="2"/>
+          <g stroke="#60a5fa" stroke-width="1"><line x1="120" y1="58" x2="150" y2="42"/><line x1="138" y1="68" x2="168" y2="52"/><line x1="152" y1="38" x2="175" y2="52"/></g>
+          <text x="150" y="160" font-size="11" fill="#1e293b" text-anchor="middle">지붕 위에 <tspan font-weight="bold">덧붙임</tspan> — 받침대와 틈이 보임</text>
+        </svg>
+        <p>이미 지어진 건물의 <b>지붕이나 옥상 위에 패널을 덧붙이는</b> 방식입니다. 현재 대부분의 태양광이 이 방식이에요.</p>
+        <ul><li>장점 — 기존 건물에도 쉽게 설치, 비용이 비교적 저렴</li><li>단점 — 건물과 따로 놀아 <b>미관을 해치기 쉽고</b>, 받침대·배선이 드러남</li></ul>
+      </div>
+      <div class="cmp-card b">
+        <h4>🏠 건물 일체형 태양 전지판 (BIPV)</h4>
+        <svg viewBox="0 0 300 170">
+          <rect x="0" y="140" width="300" height="30" fill="#86efac"/>
+          <rect x="70" y="80" width="160" height="60" fill="#fde68a" stroke="#78350f" stroke-width="2"/>
+          <polygon points="60,82 150,30 240,82" fill="#1e3a8a" stroke="#60a5fa" stroke-width="2"/>
+          <g stroke="#60a5fa" stroke-width="1"><line x1="82" y1="70" x2="150" y2="30"/><line x1="105" y1="82" x2="173" y2="43"/><line x1="128" y1="82" x2="196" y2="56"/><line x1="151" y1="82" x2="219" y2="69"/><line x1="100" y1="58" x2="200" y2="58"/></g>
+          <rect x="125" y="100" width="22" height="40" fill="#78350f"/>
+          <rect x="190" y="92" width="30" height="30" fill="#1e3a8a" stroke="#60a5fa" stroke-width="1.5"/>
+          <text x="150" y="160" font-size="11" fill="#1e293b" text-anchor="middle">지붕·벽 <tspan font-weight="bold">자체가</tspan> 태양 전지판</text>
+        </svg>
+        <p>태양 전지판을 건물의 <b>지붕재·외장재·창호 자체로</b> 사용합니다. 그래서 <b>시공 단계부터</b> 적용해야 합니다.</p>
+        <ul><li>장점 — <b>미관이 아름답고</b> 다양한 형태로 디자인 가능, 외장재 비용을 겸함</li><li>단점 — 설계 초기부터 계획해야 하고 비용이 더 듦</li></ul>
+      </div>
+    </div>
+    <div class="hook">
+      💡 BIPV는 <b>B</b>uilding <b>I</b>ntegrated <b>P</b>hoto<b>v</b>oltaic — "건물에 통합된 태양광". 태양광 발전 모듈을 활용해 건물 외벽을 디자인하고, 해당 건물에 필요한 전기를 <b>직접 생산해 내는</b> 구축 방식입니다. 건축주가 "디자인이 아름다웠으면" 하면서 BIPV를 요구한 이유가 여기 있습니다.
+    </div>
+
+    <p style="margin-top:20px;font-size:.92rem"><b>BIPV의 종류</b> — 설치 위치에 따라 <b style="color:#fde68a">지붕 통합형</b>과 <b style="color:#7dd3fc">벽면 통합형</b>으로 나뉩니다. (교과서 203쪽 그림 Ⅳ-16) 카드를 <b>클릭</b>해 보세요.</p>
+    <div class="type-grid" id="typeGrid"></div>
+    <div class="type-detail" id="typeDetail"></div>
+
+    <div class="mq-item" data-answer="수직 차양형" data-why="창문 위에 비스듬히 설치해 햇빛을 가리면서 발전하는 것은 벽면 통합형 중 수직 차양형입니다. 3차시 패시브 하우스의 외부 차양과 BIPV가 결합된 형태예요.">
+      <div class="mq-q"><b>판별 1.</b> 남쪽 창문 위에 태양 전지판을 비스듬히 달아 <b>여름 햇빛을 가리면서</b> 동시에 전기를 만든다. 어떤 유형일까?</div>
+      <div class="mq-opts"></div><div class="mq-fb"></div>
+    </div>
+    <div class="mq-item" data-answer="커튼월형" data-why="고층 건물의 유리 외벽 전체를 태양 전지판으로 대신하는 것은 벽면 통합형 중 커튼월형입니다.">
+      <div class="mq-q"><b>판별 2.</b> 도심의 고층 사무용 건물. <b>유리로 된 외벽 전체</b>를 태양 전지판으로 바꿔 건물 전체가 발전소가 되었다.</div>
+      <div class="mq-opts"></div><div class="mq-fb"></div>
+    </div>
+    <div class="mq-item" data-answer="경사 지붕형" data-why="경사진 지붕 면적이 넓은 주택에 지붕재 대신 패널을 얹은 것은 지붕 통합형 중 경사 지붕형입니다. 지붕 통합형은 단독 주택·학교·공장처럼 면적 대비 지붕이 큰 건물에 유리합니다.">
+      <div class="mq-q"><b>판별 3.</b> 2층 단독 주택. 기와 대신 <b>남향 경사 지붕 전체</b>를 태양 전지판으로 덮어 자연 채광과 발전을 함께 얻는다.</div>
+      <div class="mq-opts"></div><div class="mq-fb"></div>
+    </div>
+  </div>
+
+  <!-- STEP 3 아이디어 구상·선정 -->
+  <div class="step-title"><span class="step-num">3</span> 아이디어 탐색 ② 구상 및 선정하기 <span class="step-time">7분 · 🎮 아이디어 고르기</span></div>
+  <p class="step-desc">
+    수집한 정보를 바탕으로 <b>우리 집에 넣을 아이디어</b>를 고릅니다. 카드를 클릭해 <b>5~7개</b>를 선택하세요.
+    고를 때마다 에너지·비용·요구 조건이 자동으로 집계됩니다. (교과서 204쪽 (2) 아이디어 구상 및 선정하기)
+  </p>
+  <div class="panel">
+    <div class="idea-grid" id="ideaGrid"></div>
+    <div class="idea-sum">
+      <div class="stat"><div class="lbl">선택한 아이디어</div><div class="val" id="iCount">0개</div></div>
+      <div class="stat"><div class="lbl">에너지 효과(생산+절감)</div><div class="val g" id="iEnergy">0</div></div>
+      <div class="stat"><div class="lbl">예상 비용(만 원)</div><div class="val r" id="iCost">0</div></div>
+      <div class="stat"><div class="lbl">건축주 요구 충족</div><div class="val b" id="iReq">0 / 4</div></div>
+    </div>
+    <div class="hook" id="ideaHint">💡 태그 — <span style="color:#fde68a">⚡에너지</span> 생산·절감 효과 / <span style="color:#fca5a5">💰비용</span> / <span style="color:#86efac">🌿생태</span> 건축 / <span style="color:#7dd3fc">📱스마트</span> 홈. 건축주의 4가지 요구(제로 에너지·BIPV·생태·스마트)를 모두 만족시키면서 비용을 아끼는 조합을 찾아보세요.</div>
+    <div class="inquiry">
+      <h4>✍️ 내가 고른 아이디어와 그 이유 (교과서 204쪽 빈칸)</h4>
+      <p>선택한 아이디어 중 <b>가장 핵심이 되는 것 3가지</b>와 선택한 이유를 적어 보세요.</p>
+      <textarea id="iqIdea" placeholder="예) ① 지붕 통합형 BIPV — 건축주가 요구한 일체형이면서 발전량이 가장 큼 ② 고단열 — 비용 대비 절감 효과가 큼 ③ …"></textarea>
+      <div class="iq-row"><button class="btn-sub" onclick="saveIq('iqIdea')">💾 저장</button><span class="iq-saved" id="iqIdea-saved"></span></div>
+    </div>
+  </div>
+
+  <!-- STEP 4 기술 요소 표 -->
+  <div class="step-title"><span class="step-num">4</span> 아이디어 시각화 ① 기술 요소 특징 설명하기 <span class="step-time">7분 · 표 작성</span></div>
+  <p class="step-desc">
+    교과서 204쪽의 표를 그대로 채웁니다. 첫 줄은 교과서 예시이고, <b>「선택한 아이디어 불러오기」</b>를 누르면 3단계에서 고른 카드가 행으로 들어옵니다. <b>적용 사항</b>은 여러분의 말로 고쳐 쓰세요.
+  </p>
+  <div class="panel">
+    <div class="tbl-wrap">
+      <table class="tech-table">
+        <thead><tr><th style="width:150px">기술 요소 영역</th><th style="width:190px">기술 요소 명칭</th><th>적용 사항</th><th style="width:36px"></th></tr></thead>
+        <tbody id="techBody">
+          <tr><td class="ex">🏠 스마트 홈</td><td class="ex">사물 인터넷 에너지 제어 시스템</td><td class="ex">사물 인터넷을 활용하여 원격으로 냉난방 등 에너지 이용을 제어하고 관리함으로써 불필요한 에너지의 낭비를 줄일 수 있다.</td><td class="ex" style="text-align:center">예시</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tbl-tools">
+      <button class="btn-main" id="techImport">⬇ 선택한 아이디어 불러오기</button>
+      <button class="btn-sub" id="techAdd">＋ 빈 행 추가</button>
+      <button class="btn-sub" id="techSave">💾 저장</button>
+      <span class="iq-saved" id="techSaved"></span>
+    </div>
+    <div class="hook">🔑 좋은 "적용 사항"은 <b>어떤 기술을 → 어디에 → 왜(어떤 효과)</b>의 세 가지가 들어 있습니다. 예시 문장을 다시 보세요: 사물 인터넷을(기술) → 냉난방 제어에(어디에) → 에너지 낭비를 줄이려고(왜).</div>
+  </div>
+
+  <!-- STEP 5 스케치 시뮬레이터 -->
+  <div class="step-title"><span class="step-num">5</span> 아이디어 시각화 ② 스케치하기 — 제로 에너지 하우스 빌더 <span class="step-time">10분 · 🎮 시뮬레이션</span></div>
+  <p class="step-desc">
+    오른쪽 부품을 클릭해 집에 <b>설치하거나 떼어 보세요.</b> 집이 1년 동안 <b>쓰는 에너지</b>와 <b>만드는 에너지</b>가 실시간으로 계산됩니다.
+    목표 — <b>생산 ≥ 소비(제로 달성)</b>, <b>예산 6,000만 원 이내</b>, <b>건축주 요구 4가지 모두 충족</b>.
+  </p>
+  <div class="panel">
+    <div class="builder">
+      <div>
+        <div class="stage">
+          <svg viewBox="0 0 520 330" id="house">
+            <!-- 하늘/해 -->
+            <circle cx="60" cy="52" r="22" fill="#fbbf24"/>
+            <g id="sunrays" stroke="#fbbf24" stroke-width="3" stroke-linecap="round"><line x1="60" y1="18" x2="60" y2="8"/><line x1="60" y1="86" x2="60" y2="96"/><line x1="26" y1="52" x2="16" y2="52"/><line x1="94" y1="52" x2="104" y2="52"/><line x1="36" y1="28" x2="29" y2="21"/><line x1="84" y1="76" x2="91" y2="83"/><line x1="84" y1="28" x2="91" y2="21"/><line x1="36" y1="76" x2="29" y2="83"/></g>
+            <!-- 땅 -->
+            <rect x="0" y="260" width="520" height="70" fill="#86efac"/>
+            <rect x="0" y="300" width="520" height="30" fill="#4d7c0f"/>
+            <!-- 뒷집 : 차고 -->
+            <rect x="340" y="200" width="130" height="60" fill="#e7e5e4" stroke="#78716c" stroke-width="2"/>
+            <polygon points="334,202 405,170 476,202" fill="#a8a29e" stroke="#78716c" stroke-width="2"/>
+            <rect x="370" y="220" width="60" height="40" fill="#57534e"/>
+            <!-- 본채 -->
+            <rect x="110" y="150" width="200" height="110" fill="#fde68a" stroke="#78350f" stroke-width="2.5"/>
+            <polygon id="roofBase" points="100,152 210,80 320,152" fill="#b45309" stroke="#78350f" stroke-width="2.5"/>
+            <rect x="196" y="200" width="30" height="60" fill="#78350f"/>
+            <rect x="135" y="175" width="40" height="34" fill="#bae6fd" stroke="#1e293b" stroke-width="1.5" id="winL"/>
+            <rect x="245" y="175" width="40" height="34" fill="#bae6fd" stroke="#1e293b" stroke-width="1.5" id="winR"/>
+            <!-- 부품 레이어 (처음엔 숨김) -->
+            <g id="p-roofBIPV" style="display:none">
+              <polygon points="104,150 210,82 316,150" fill="#1e3a8a" stroke="#60a5fa" stroke-width="2"/>
+              <g stroke="#60a5fa" stroke-width="1"><line x1="130" y1="134" x2="210" y2="82"/><line x1="160" y1="150" x2="240" y2="98"/><line x1="190" y1="150" x2="270" y2="110"/><line x1="220" y1="150" x2="300" y2="126"/><line x1="150" y1="120" x2="270" y2="120"/></g>
+            </g>
+            <g id="p-bapv" style="display:none">
+              <g stroke="#1e293b" stroke-width="2"><line x1="150" y1="118" x2="158" y2="100"/><line x1="200" y1="90" x2="208" y2="72"/><line x1="236" y1="96" x2="244" y2="112"/></g>
+              <polygon points="140,118 200,80 250,110 190,148" fill="#1e3a8a" stroke="#60a5fa" stroke-width="2"/>
+              <g stroke="#60a5fa" stroke-width="1"><line x1="160" y1="110" x2="210" y2="80"/><line x1="175" y1="128" x2="225" y2="98"/></g>
+            </g>
+            <g id="p-wallBIPV" style="display:none">
+              <rect x="112" y="152" width="20" height="106" fill="#1e3a8a" stroke="#60a5fa" stroke-width="1.5"/>
+              <rect x="288" y="152" width="20" height="106" fill="#1e3a8a" stroke="#60a5fa" stroke-width="1.5"/>
+              <g stroke="#60a5fa" stroke-width="1"><line x1="112" y1="180" x2="132" y2="180"/><line x1="112" y1="210" x2="132" y2="210"/><line x1="112" y1="240" x2="132" y2="240"/><line x1="288" y1="180" x2="308" y2="180"/><line x1="288" y1="210" x2="308" y2="210"/><line x1="288" y1="240" x2="308" y2="240"/></g>
+            </g>
+            <g id="p-shade" style="display:none">
+              <rect x="128" y="166" width="54" height="7" fill="#fbbf24" stroke="#92400e" stroke-width="1.2"/>
+              <rect x="238" y="166" width="54" height="7" fill="#fbbf24" stroke="#92400e" stroke-width="1.2"/>
+            </g>
+            <g id="p-window" style="display:none">
+              <g stroke="#0369a1" stroke-width="2"><line x1="148" y1="175" x2="148" y2="209"/><line x1="162" y1="175" x2="162" y2="209"/><line x1="258" y1="175" x2="258" y2="209"/><line x1="272" y1="175" x2="272" y2="209"/></g>
+            </g>
+            <g id="p-insul" style="display:none">
+              <rect x="110" y="150" width="200" height="110" fill="none" stroke="#f472b6" stroke-width="6" opacity=".8"/>
+            </g>
+            <g id="p-green" style="display:none">
+              <polygon points="104,150 210,82 316,150" fill="none" stroke="#16a34a" stroke-width="6" opacity=".9"/>
+              <g fill="#22c55e"><circle cx="150" cy="118" r="7"/><circle cx="185" cy="98" r="7"/><circle cx="235" cy="98" r="7"/><circle cx="270" cy="118" r="7"/></g>
+            </g>
+            <g id="p-wind" style="display:none">
+              <rect x="476" y="150" width="6" height="110" fill="#e2e8f0" stroke="#64748b"/>
+              <g id="windBlades" transform="translate(479,150)"><line x1="0" y1="0" x2="0" y2="-34" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round"/><line x1="0" y1="0" x2="30" y2="17" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round"/><line x1="0" y1="0" x2="-30" y2="17" stroke="#e2e8f0" stroke-width="5" stroke-linecap="round"/><circle r="5" fill="#64748b"/></g>
+            </g>
+            <g id="p-geo" style="display:none">
+              <rect x="150" y="266" width="12" height="54" fill="#0ea5e9" opacity=".8"/><rect x="250" y="266" width="12" height="54" fill="#f97316" opacity=".8"/>
+              <path d="M156 320 Q206 326 256 320" stroke="#64748b" stroke-width="4" fill="none"/>
+              <text x="206" y="298" font-size="10" fill="#1e293b" text-anchor="middle" font-weight="bold">지열</text>
+            </g>
+            <g id="p-rain" style="display:none">
+              <rect x="56" y="214" width="34" height="46" rx="5" fill="#0ea5e9" stroke="#0369a1" stroke-width="2"/>
+              <path d="M110 152 L96 160 L96 214" stroke="#0369a1" stroke-width="3" fill="none"/>
+              <text x="73" y="242" font-size="9" fill="#fff" text-anchor="middle" font-weight="bold">빗물</text>
+            </g>
+            <g id="p-ev" style="display:none">
+              <rect x="322" y="236" width="10" height="24" fill="#16a34a" stroke="#14532d"/>
+              <path d="M332 240 Q345 232 356 244" stroke="#14532d" stroke-width="2" fill="none"/>
+              <rect x="344" y="244" width="46" height="16" rx="6" fill="#e2e8f0" stroke="#475569"/>
+              <circle cx="354" cy="262" r="5" fill="#1e293b"/><circle cx="380" cy="262" r="5" fill="#1e293b"/>
+            </g>
+            <g id="p-smart" style="display:none">
+              <rect x="214" y="160" width="20" height="30" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+              <rect x="217" y="164" width="14" height="20" fill="#38bdf8" opacity=".7"/>
+              <path d="M224 150 q6 -8 12 0" stroke="#38bdf8" stroke-width="1.5" fill="none"/><path d="M220 146 q10 -14 20 0" stroke="#38bdf8" stroke-width="1.5" fill="none"/>
+            </g>
+            <g id="p-south" style="display:none">
+              <text x="210" y="300" font-size="12" fill="#92400e" text-anchor="middle" font-weight="bold">▲ 남향 배치 — 겨울 햇빛이 창으로 깊숙이</text>
+              <path d="M90 60 L135 170" stroke="#fbbf24" stroke-width="2" stroke-dasharray="5 4"/>
+            </g>
+            <g id="p-pond" style="display:none">
+              <ellipse cx="60" cy="282" rx="40" ry="12" fill="#38bdf8" stroke="#0369a1" stroke-width="2"/>
+              <g fill="#15803d"><ellipse cx="22" cy="268" rx="12" ry="8"/><ellipse cx="98" cy="266" rx="14" ry="9"/></g>
+              <text x="60" y="286" font-size="9" fill="#fff" text-anchor="middle">생태 연못</text>
+            </g>
+            <text x="210" y="24" font-size="13" fill="#1e293b" text-anchor="middle" font-weight="bold" id="houseTitle">우리 가족의 제로 에너지 하우스</text>
+          </svg>
+        </div>
+        <div class="meter">
+          <div class="row"><span>🔴 연간 에너지 소비</span><b id="mCons">10,000 kWh</b></div>
+          <div class="bar"><i class="cons" id="bCons" style="width:100%"></i></div>
+          <div class="row" style="margin-top:8px"><span>🟢 연간 에너지 생산</span><b id="mProd">0 kWh</b></div>
+          <div class="bar"><i class="prod" id="bProd" style="width:0"></i></div>
+          <div class="row" style="margin-top:8px"><span>💰 공사비 (예산 6,000만 원)</span><b id="mCost">0만 원</b></div>
+          <div class="bar"><i class="cost" id="bCost" style="width:0"></i></div>
+        </div>
+      </div>
+      <div>
+        <div class="parts" id="parts"></div>
+        <div class="verdict" id="verdict"></div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn-sub" id="builderReset">↺ 모두 떼기</button>
+          <button class="btn-sub" id="builderSave">💾 설계 저장</button>
+          <button class="btn-sub" onclick="window.print()">🖨️ 설계도 인쇄</button>
+          <span class="iq-saved" id="builderSaved"></span>
+        </div>
+      </div>
+    </div>
+    <div class="hook">
+      🔑 <b>패시브가 먼저, 액티브는 그다음.</b> 단열·창·차양·남향으로 <b>새는 에너지를 먼저 막고</b>, 그다음 BIPV·풍력·지열로 <b>필요한 만큼만 생산</b>하면 예산 안에서 제로를 달성할 수 있습니다. 부착형(BAPV)은 발전량은 좋지만 건축주가 분명히 거절했다는 점, 잊지 마세요!
+    </div>
+  </div>
+
+  <!-- STEP 6 실행·평가 -->
+  <div class="step-title"><span class="step-num">6</span> 실행하기 · 평가하기 — 모형 제작 안내 <span class="step-time">5분 · 다음 차시 준비</span></div>
+  <p class="step-desc">설계가 끝났으면 다음 차시에 <b>실제 모형</b>을 만듭니다. 5단계에서 인쇄한 설계도를 보고 재료를 준비하세요.</p>
+  <div class="panel">
+    <div class="mat-grid">
+      <div class="mat"><span class="me">📦</span><b>우드락 · 골판지</b><span>벽·지붕·바닥. 커터로 자르기 쉽고 글루건으로 붙입니다.</span></div>
+      <div class="mat"><span class="me">🔷</span><b>파란 셀로판지 · OHP 필름</b><span>BIPV 지붕·벽면 표현. 검은 선을 그어 셀 모양을 냅니다.</span></div>
+      <div class="mat"><span class="me">🪟</span><b>투명 아크릴 · 비닐</b><span>3중창은 비닐을 세 겹으로 — 실제 원리를 그대로!</span></div>
+      <div class="mat"><span class="me">🌿</span><b>이끼 · 녹색 스펀지</b><span>옥상 녹화와 생태 연못 주변 조경.</span></div>
+      <div class="mat"><span class="me">🧻</span><b>솜 · 스티로폼</b><span>벽 사이에 끼워 <b>단열재</b>를 눈에 보이게.</span></div>
+      <div class="mat"><span class="me">💡</span><b>LED · 소형 태양전지(선택)</b><span>작은 태양전지와 LED를 연결하면 실제로 불이 켜지는 모형!</span></div>
+    </div>
+    <p style="margin-top:18px;font-size:.92rem"><b>📋 평가하기 — 모둠 평가 기준</b> (자기 평가 후 모둠원과 비교해 보세요. 각 항목 1~5점)</p>
+    <table class="rubric" id="rubric">
+      <thead><tr><th style="width:140px">평가 항목</th><th>기준</th><th style="width:200px">점수</th></tr></thead>
+      <tbody>
+        <tr><td>요구 조건 반영</td><td>건축주의 4가지 요구(제로 에너지·BIPV·생태 건축·스마트 홈)를 모두 담았는가?</td><td><div class="sc" data-k="r1"></div></td></tr>
+        <tr><td>에너지 설계</td><td>패시브(아끼기)와 액티브(만들기) 기술이 균형 있게 적용되어 생산 ≥ 소비를 달성했는가?</td><td><div class="sc" data-k="r2"></div></td></tr>
+        <tr><td>경제성</td><td>예산 안에서 효과가 큰 기술을 우선 선택했는가?</td><td><div class="sc" data-k="r3"></div></td></tr>
+        <tr><td>모형 완성도</td><td>설계도와 모형이 일치하고, 각 기술 요소를 한눈에 알아볼 수 있는가?</td><td><div class="sc" data-k="r4"></div></td></tr>
+        <tr><td>발표·설명</td><td>기술 요소 표를 바탕으로 "무엇을 · 어디에 · 왜"를 설명할 수 있는가?</td><td><div class="sc" data-k="r5"></div></td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;font-size:.9rem;text-align:right">합계 <b id="rubricSum" style="color:#86efac;font-size:1.1rem">0 / 25</b></div>
+    <div class="inquiry">
+      <h4>✍️ 발표 준비 — 우리 집을 한 문장으로</h4>
+      <p>"우리 집은 ___ 로 에너지를 아끼고, ___ 로 에너지를 만들어, ___ 을 만족시키는 제로 에너지 하우스입니다."</p>
+      <textarea id="iqPresent" placeholder="예) 우리 집은 고단열과 3중창으로 에너지를 아끼고, 지붕 통합형 BIPV와 지열로 에너지를 만들어, 건축주의 일체형·생태·스마트 홈 요구를 모두 만족시키는 제로 에너지 하우스입니다."></textarea>
+      <div class="iq-row"><button class="btn-sub" onclick="saveIq('iqPresent')">💾 저장</button><span class="iq-saved" id="iqPresent-saved"></span></div>
+    </div>
+  </div>
+
+  <!-- 정리 -->
+  <div class="step-title"><span class="step-num">✓</span> 스스로 확인하기 <span class="step-time">2분 · 🧠 메타인지</span></div>
+  <div class="self-check">
+    <h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>제로 에너지 하우스</b>를 "생산 ≥ 소비"로 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>BAPV(부착형)</b>와 <b>BIPV(일체형)</b>의 차이를 미관·시공 시기로 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>BIPV의 <b>지붕 통합형 3종·벽면 통합형 3종</b>을 구분할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>의뢰서에서 <b>요구 조건을 찾아내는</b> 것이 문제 확인 단계임을 안다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>기술 요소 표에 <b>영역·명칭·적용 사항</b>을 내 말로 쓸 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>패시브(아끼기)와 액티브(만들기)를 조합해 <b>예산 안에서 제로를 달성</b>하는 방법을 설명할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress">체크: 0 / 6</div>
+  </div>
+
+  <div class="next-link"><a href="activity_final.html">다음 → 10차시: 단원 종합 평가 (20문제)</a></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+function saveIq(id) {
+  try { localStorage.setItem('construction-' + id, $(id).value); } catch (e) {}
+  const s = $(id + '-saved'); if (s) s.textContent = '✔ 저장됨 ' + new Date().toLocaleTimeString('ko-KR', {hour:'2-digit',minute:'2-digit'});
+}
+['iqIdea','iqPresent'].forEach(id => { try { const v = localStorage.getItem('construction-' + id); if (v) $(id).value = v; } catch (e) {} });
+
+/* ===== STEP 1 요구 조건 찾기 ===== */
+const REQS = [
+  { t:'쓰는 에너지만큼 스스로 만드는 제로 에너지 하우스', ok:true, why:'의뢰서 첫째 요구입니다.' },
+  { t:'가장 값싼 재료로 공사비를 최소화', ok:false, why:'의뢰서에 없는 내용입니다. 건축주는 비용보다 디자인·에너지를 말했어요.' },
+  { t:'건물 부착형이 아닌 건물 일체형(BIPV) 태양광', ok:true, why:'의뢰서 둘째 요구 — 미관을 위해 일체형을 콕 집어 요구했습니다.' },
+  { t:'지붕 위에 덧붙이는 부착형(BAPV) 태양광 패널', ok:false, why:'건축주가 "부착형이 아니라"고 분명히 거절한 방식입니다. 반대로 읽으면 안 돼요!' },
+  { t:'주변 환경과 조화를 이루는 생태 건축', ok:true, why:'의뢰서 셋째 요구입니다.' },
+  { t:'50층 초고층으로 지어 전망 확보', ok:false, why:'의뢰서에 없습니다. 가족이 사는 주택이에요.' },
+  { t:'스마트 홈 기술 적용', ok:true, why:'의뢰서 넷째 요구입니다.' },
+  { t:'지하 주차장 10대 규모', ok:false, why:'의뢰서에 없는 조건입니다. 내가 멋대로 덧붙인 요구는 건축주의 요구가 아닙니다.' },
+];
+const reqGrid = $('reqGrid');
+function reqInit() {
+  reqGrid.innerHTML = ''; $('reqFb').textContent = '';
+  [...REQS].sort(() => Math.random() - .5).forEach(r => {
+    const d = document.createElement('div'); d.className = 'req'; d.dataset.ok = r.ok; d.dataset.why = r.why;
+    d.innerHTML = '<span class="chk"></span><span>' + r.t + '</span>';
+    d.onclick = () => { if (d.classList.contains('ok') || d.classList.contains('bad')) return; d.classList.toggle('on'); d.querySelector('.chk').textContent = d.classList.contains('on') ? '✔' : ''; };
+    reqGrid.appendChild(d);
+  });
+}
+$('reqCheck').onclick = () => {
+  let right = 0, total = REQS.length, miss = [];
+  reqGrid.querySelectorAll('.req').forEach(d => {
+    const picked = d.classList.contains('on'), ok = d.dataset.ok === 'true';
+    d.classList.remove('on');
+    if (picked === ok) { right++; if (ok) { d.classList.add('ok'); d.querySelector('.chk').textContent = '✔'; } }
+    else { d.classList.add('bad'); d.querySelector('.chk').textContent = ok ? '!' : '✖'; miss.push((ok ? '빠뜨림 — ' : '잘못 고름 — ') + d.dataset.why); }
+  });
+  const fb = $('reqFb');
+  fb.innerHTML = right === total
+    ? '<span style="color:#4ade80">🎉 완벽합니다! 건축주의 4가지 요구를 정확히 찾았어요. 이 4가지가 5단계 시뮬레이터의 <b>목표</b>가 됩니다.</span>'
+    : '<span style="color:#fbbf24">' + right + ' / ' + total + ' 정확.</span><br>' + miss.map(m => '• ' + m).join('<br>');
+};
+$('reqReset').onclick = reqInit;
+reqInit();
+
+/* ===== STEP 2 BIPV 종류 ===== */
+const TYPES = [
+  { k:'경사 지붕형', g:'roof', svg:'<polygon points="10,40 50,12 90,40" fill="#1e3a8a" stroke="#60a5fa" stroke-width="1.5"/><rect x="18" y="40" width="64" height="18" fill="#fde68a"/>',
+    body:'기울어진 지붕 전체를 태양 전지판으로 덮습니다. <b>단독 주택·학교·공장</b>처럼 면적에 비해 지붕이 큰 건물에 유리하며, 지붕재 비용을 아끼고 자연 채광 효과도 얻습니다.' },
+  { k:'평지붕형', g:'roof', svg:'<rect x="12" y="20" width="76" height="8" fill="#1e3a8a" stroke="#60a5fa" stroke-width="1.5"/><rect x="18" y="28" width="64" height="30" fill="#fde68a"/>',
+    body:'평평한 옥상에 전지판을 지붕 마감재로 설치합니다. <b>아파트·상가·사무실</b>처럼 옥상이 평평한 건물에 적용하며, 옥상 녹화와 함께 계획할 수 있습니다.' },
+  { k:'아트리움형(지붕)', g:'roof', svg:'<path d="M12 40 Q50 5 88 40" fill="none" stroke="#60a5fa" stroke-width="5"/><rect x="18" y="40" width="64" height="18" fill="#fde68a"/>',
+    body:'건물 가운데 뚫린 <b>유리 천장(아트리움)</b>을 반투명 태양 전지로 만듭니다. 빛은 들어오고 전기도 만드는 일석이조 — 쇼핑몰·역사·학교 중앙 홀에 쓰입니다.' },
+  { k:'커튼월형', g:'wall', svg:'<rect x="30" y="8" width="40" height="52" fill="#1e3a8a" stroke="#60a5fa" stroke-width="1.5"/><g stroke="#60a5fa" stroke-width="1"><line x1="30" y1="22" x2="70" y2="22"/><line x1="30" y1="36" x2="70" y2="36"/><line x1="30" y1="50" x2="70" y2="50"/></g>',
+    body:'고층 건물의 <b>유리 외벽(커튼월) 자체</b>를 태양 전지판으로 바꿉니다. 건물 전체가 발전소가 되며, 외장재 역할도 함께 하므로 디자인 자유도가 높습니다.' },
+  { k:'수직 차양형', g:'wall', svg:'<rect x="30" y="8" width="40" height="52" fill="#fde68a"/><rect x="36" y="24" width="28" height="22" fill="#bae6fd"/><rect x="28" y="18" width="44" height="6" fill="#1e3a8a" stroke="#60a5fa" transform="skewX(-20)"/>',
+    body:'창 위에 비스듬히 설치해 <b>햇빛을 가리는 차양</b>이면서 동시에 발전합니다. 3차시 패시브 하우스의 외부 차양 원리에 BIPV를 더한 형태 — 여름 냉방 부담을 줄이고 전기도 만듭니다.' },
+  { k:'아트리움형(벽면)', g:'wall', svg:'<rect x="30" y="8" width="40" height="52" fill="#fde68a"/><rect x="38" y="14" width="24" height="40" fill="#60a5fa" opacity=".6" stroke="#1e3a8a" stroke-width="1.5"/>',
+    body:'벽면의 큰 유리창 부분에 <b>반투명 태양 전지</b>를 넣어 자유롭게 디자인합니다. 안에서는 창밖이 보이고 밖에서는 발전하는 벽이 됩니다.' },
+];
+const typeGrid = $('typeGrid'), typeDetail = $('typeDetail');
+TYPES.forEach((t, i) => {
+  const d = document.createElement('div'); d.className = 'type-card ' + t.g + (i === 0 ? ' on' : '');
+  d.innerHTML = '<svg viewBox="0 0 100 62">' + t.svg + '</svg><b>' + t.k + '</b><small>' + (t.g === 'roof' ? '지붕 통합형' : '벽면 통합형') + '</small>';
+  d.onclick = () => { document.querySelectorAll('.type-card').forEach(x => x.classList.remove('on')); d.classList.add('on'); showType(i); };
+  typeGrid.appendChild(d);
+});
+function showType(i) { const t = TYPES[i]; typeDetail.innerHTML = '<h5>' + (t.g === 'roof' ? '🏠 지붕 통합형 · ' : '🧱 벽면 통합형 · ') + t.k + '</h5><div>' + t.body + '</div>'; }
+showType(0);
+const TYPE_OPTS = ['경사 지붕형','평지붕형','아트리움형(지붕)','커튼월형','수직 차양형','아트리움형(벽면)'];
+document.querySelectorAll('.mq-item').forEach(item => {
+  const ans = item.dataset.answer, why = item.dataset.why, opts = item.querySelector('.mq-opts'), fb = item.querySelector('.mq-fb');
+  TYPE_OPTS.forEach(o => {
+    const b = document.createElement('button'); b.className = 'mq-btn'; b.textContent = o;
+    b.onclick = () => {
+      if (item.dataset.done) return; item.dataset.done = '1';
+      opts.querySelectorAll('.mq-btn').forEach(x => x.disabled = true);
+      if (o === ans) { b.classList.add('correct'); fb.innerHTML = '⭕ 정답! ' + why; fb.className = 'mq-fb ok'; }
+      else { b.classList.add('wrong'); opts.querySelectorAll('.mq-btn').forEach(x => { if (x.textContent === ans) x.classList.add('correct'); }); fb.innerHTML = '❌ 정답은 「' + ans + '」. ' + why; fb.className = 'mq-fb no'; }
+    };
+    opts.appendChild(b);
+  });
+});
+
+/* ===== 아이디어 / 부품 공통 데이터 =====
+   prod: 연간 생산 kWh, save: 소비 절감 비율, cost: 만 원, add: 소비 증가 kWh
+   req: 충족하는 건축주 요구 (zero는 계산으로 판정) ===== */
+const PARTS = [
+  { k:'roofBIPV', e:'🏠', n:'지붕 통합형 BIPV', area:'신재생 에너지', prod:5000, cost:2500, req:['bipv'], tags:['e','c'], desc:'지붕재 자체가 태양 전지판. 발전량이 가장 크고 건축주 요구(일체형) 충족.', apply:'남향 경사 지붕 전체를 BIPV 모듈로 시공하여 지붕재 역할과 발전을 동시에 수행한다.' },
+  { k:'wallBIPV', e:'🧱', n:'벽면 통합형 BIPV(차양형)', area:'신재생 에너지', prod:1800, save:.04, cost:1800, req:['bipv'], tags:['e','c'], desc:'창 위 차양이자 발전 패널. 여름 햇빛도 막아 준다.', apply:'남쪽 창 위에 수직 차양형 BIPV를 설치하여 여름 냉방 부담을 줄이면서 전기를 생산한다.' },
+  { k:'bapv', e:'📌', n:'부착형 태양광(BAPV)', area:'신재생 에너지', prod:4000, cost:1300, req:[], warn:true, tags:['e'], desc:'싸고 발전량도 좋지만… 건축주가 거절한 방식!', apply:'(건축주 요구 위반) 지붕 위에 패널을 덧붙임.' },
+  { k:'wind', e:'🌬️', n:'소형 풍력 발전기', area:'신재생 에너지', prod:700, cost:600, req:[], tags:['e'], desc:'바람 좋은 곳에서 보조 발전.', apply:'마당 한쪽에 소형 풍력 발전기를 세워 밤이나 흐린 날에도 전기를 보충한다.' },
+  { k:'geo', e:'🌍', n:'지열 냉난방', area:'냉난방·환기', save:.25, cost:1700, req:[], tags:['e','c'], desc:'땅속 일정한 온도 이용. 냉난방 에너지를 크게 줄인다.', apply:'땅속 파이프로 지열을 끌어와 여름엔 시원하게, 겨울엔 따뜻하게 하여 냉난방 에너지를 줄인다.' },
+  { k:'insul', e:'🧱', n:'고단열 벽·지붕', area:'단열·창호', save:.20, cost:700, req:[], tags:['e'], desc:'패시브 1원칙. 비용 대비 절감 효과 최고.', apply:'벽과 지붕에 두꺼운 단열재를 넣어 겨울엔 열이 나가지 않고 여름엔 들어오지 않게 한다.' },
+  { k:'window', e:'🪟', n:'3중 유리창', area:'단열·창호', save:.12, cost:500, req:[], tags:['e'], desc:'창으로 새는 열을 막는다.', apply:'모든 창을 3중 유리창으로 하여 창문을 통한 열 손실을 줄인다.' },
+  { k:'shade', e:'⛱️', n:'외부 차양(처마)', area:'단열·창호', save:.06, cost:150, req:[], tags:['e'], desc:'한옥 처마 원리. 싸고 효과적.', apply:'남쪽 창 위에 차양을 달아 높은 여름 햇빛은 막고 낮은 겨울 햇빛은 들인다.' },
+  { k:'south', e:'🧭', n:'남향 배치', area:'단열·창호', save:.05, cost:0, req:[], tags:['e'], desc:'공짜 패시브 기술. 설계만 잘하면 된다.', apply:'거실과 큰 창을 남쪽에 배치하여 겨울 햇빛을 최대한 받아 난방 에너지를 줄인다.' },
+  { k:'green', e:'🌳', n:'옥상·지붕 녹화', area:'생태·조경', save:.04, cost:350, req:['eco'], tags:['g','e'], desc:'단열 + 열섬 완화 + 생태 건축.', apply:'지붕 일부에 흙과 식물을 심어 단열 효과를 얻고 주변 생태계와 조화를 이룬다.' },
+  { k:'pond', e:'🐸', n:'생태 연못·텃밭', area:'생태·조경', cost:250, req:['eco'], tags:['g'], desc:'주변 환경과 조화 — 생태 건축의 핵심.', apply:'마당에 생태 연못과 텃밭을 만들어 곤충·새가 찾아오는 자연 친화적 공간을 만든다.' },
+  { k:'rain', e:'💧', n:'빗물 저장 탱크', area:'물 순환', cost:200, req:['eco'], tags:['g'], desc:'빗물을 모아 텃밭·화장실에 재이용.', apply:'지붕의 빗물을 홈통으로 모아 탱크에 저장하고 텃밭 물주기와 화장실 용수로 재이용한다.' },
+  { k:'smart', e:'📱', n:'사물 인터넷 에너지 제어', area:'스마트 홈', save:.08, cost:400, req:['smart'], tags:['s','e'], desc:'교과서 예시. 원격으로 냉난방·조명 제어.', apply:'사물 인터넷을 활용하여 원격으로 냉난방·조명을 제어하고 에너지 사용량을 실시간으로 관리한다.' },
+  { k:'ev', e:'🔌', n:'전기차 충전기', area:'스마트 홈', add:1200, cost:200, req:['smart'], tags:['s'], desc:'집에서 만든 전기로 차를 충전. 단, 소비가 늘어난다.', apply:'차고에 전기차 충전기를 설치하여 집에서 생산한 전기로 자동차를 충전한다.' },
+];
+const BASE = 10000, BUDGET = 6000;
+const selected = new Set();
+
+/* ===== STEP 3 아이디어 카드 ===== */
+const ideaGrid = $('ideaGrid');
+PARTS.forEach(p => {
+  const d = document.createElement('div'); d.className = 'idea'; d.dataset.k = p.k;
+  d.innerHTML = '<span class="ie">' + p.e + '</span><b>' + p.n + '</b>' + p.desc +
+    '<div class="tags">' + p.tags.map(t => '<span class="' + t + '">' + ({e:'⚡에너지',c:'💰고비용',g:'🌿생태',s:'📱스마트'})[t] + '</span>').join('') + '</div>';
+  d.onclick = () => toggle(p.k);
+  ideaGrid.appendChild(d);
+});
+
+/* ===== STEP 5 부품 ===== */
+const partsEl = $('parts');
+PARTS.forEach(p => {
+  const d = document.createElement('div'); d.className = 'part' + (p.warn ? ' warn' : ''); d.dataset.k = p.k;
+  const eff = p.prod ? '+' + p.prod.toLocaleString() + ' kWh' : p.save ? '−' + Math.round(p.save * 100) + '% 소비' : p.add ? '+' + p.add.toLocaleString() + ' 소비' : '생태·편의';
+  d.innerHTML = '<span class="pe">' + p.e + '</span><b>' + p.n + '</b><small>' + eff + ' · ' + p.cost.toLocaleString() + '만 원</small>';
+  d.onclick = () => toggle(p.k);
+  partsEl.appendChild(d);
+});
+
+function toggle(k) { selected.has(k) ? selected.delete(k) : selected.add(k); render(); }
+function calc() {
+  let prod = 0, saveSum = 0, add = 0, cost = 0; const req = new Set(); let bapv = false;
+  selected.forEach(k => { const p = PARTS.find(x => x.k === k); prod += p.prod || 0; saveSum += p.save || 0; add += p.add || 0; cost += p.cost; (p.req || []).forEach(r => req.add(r)); if (p.warn) bapv = true; });
+  saveSum = Math.min(saveSum, .6);
+  const cons = Math.round(BASE * (1 - saveSum)) + add;
+  if (prod >= cons && selected.size) req.add('zero');
+  return { prod, cons, cost, req, bapv, saveSum };
+}
+function render() {
+  const r = calc();
+  document.querySelectorAll('.idea, .part').forEach(d => d.classList.toggle('on', selected.has(d.dataset.k)));
+  PARTS.forEach(p => { const g = $('p-' + p.k); if (g) g.style.display = selected.has(p.k) ? '' : 'none'; });
+  /* STEP 3 집계 */
+  $('iCount').textContent = selected.size + '개';
+  $('iEnergy').textContent = '+' + r.prod.toLocaleString() + ' / −' + Math.round(r.saveSum * 100) + '%';
+  $('iCost').textContent = r.cost.toLocaleString();
+  const reqN = ['zero','bipv','eco','smart'].filter(x => r.req.has(x)).length;
+  $('iReq').textContent = reqN + ' / 4';
+  /* STEP 5 미터 */
+  const maxE = 12000;
+  $('mCons').textContent = r.cons.toLocaleString() + ' kWh'; $('bCons').style.width = Math.min(100, r.cons / maxE * 100) + '%';
+  $('mProd').textContent = r.prod.toLocaleString() + ' kWh'; $('bProd').style.width = Math.min(100, r.prod / maxE * 100) + '%';
+  $('mCost').textContent = r.cost.toLocaleString() + '만 원'; $('bCost').style.width = Math.min(100, r.cost / BUDGET * 100) + '%';
+  $('bCost').classList.toggle('over', r.cost > BUDGET);
+  /* 판정 */
+  const v = $('verdict'); const zero = r.req.has('zero'), inBudget = r.cost <= BUDGET;
+  const chips = [['zero','⚡ 제로 에너지'],['bipv','🏠 일체형(BIPV)'],['eco','🌿 생태 건축'],['smart','📱 스마트 홈']]
+    .map(([k, l]) => '<span class="' + (r.req.has(k) ? 'met' : '') + '">' + (r.req.has(k) ? '✔ ' : '') + l + '</span>').join('');
+  let grade, msg;
+  if (!selected.size) { grade = '—'; msg = '부품을 클릭해 집에 설치해 보세요.'; }
+  else if (r.bapv) { grade = '⚠️'; msg = '<b style="color:#f87171">건축주 요구 위반!</b> 부착형(BAPV)은 의뢰서에서 분명히 거절한 방식입니다. 떼어 내고 일체형(BIPV)으로 바꾸세요.'; }
+  else if (zero && inBudget && reqN === 4) { grade = 'S'; msg = '<b style="color:#4ade80">완벽한 제로 에너지 하우스!</b> 생산 ≥ 소비, 예산 이내, 건축주 요구 4가지 모두 충족. 남은 에너지 ' + (r.prod - r.cons).toLocaleString() + ' kWh는 전력 회사에 팔 수 있어요.'; }
+  else if (zero && inBudget) { grade = 'A'; msg = '제로 달성 + 예산 이내! 아직 건축주 요구 중 <b>' + (4 - reqN) + '가지</b>가 빠졌어요. 위 칩에서 ✔ 없는 항목을 채워 보세요.'; }
+  else if (zero && !inBudget) { grade = 'B'; msg = '제로는 달성했지만 <b style="color:#f87171">예산 초과 ' + (r.cost - BUDGET).toLocaleString() + '만 원</b>. 비싼 생산 설비보다 싼 패시브 기술(단열·창·차양·남향)로 소비를 먼저 줄여 보세요.'; }
+  else { grade = 'C'; msg = '아직 소비가 생산보다 <b>' + (r.cons - r.prod).toLocaleString() + ' kWh</b> 많아요. ' + (r.saveSum < .3 ? '소비를 줄이는 패시브 기술부터 추가하세요.' : '이제 BIPV·지열 같은 생산 설비를 더해 보세요.'); }
+  v.className = 'verdict' + (grade === 'S' ? ' zero' : '');
+  v.innerHTML = '<div class="grade">' + grade + '</div><h5>' + (zero ? '⚡ 제로 에너지 달성' : '🔋 생산 ' + r.prod.toLocaleString() + ' vs 소비 ' + r.cons.toLocaleString()) + '</h5><div>' + msg + '</div><div class="reqs">' + chips + '</div>';
+}
+$('builderReset').onclick = () => { selected.clear(); render(); };
+$('builderSave').onclick = () => { try { localStorage.setItem('construction-zeb-sel', JSON.stringify([...selected])); } catch (e) {} $('builderSaved').textContent = '✔ 저장됨'; };
+try { const s = JSON.parse(localStorage.getItem('construction-zeb-sel') || '[]'); s.forEach(k => selected.add(k)); } catch (e) {}
+render();
+
+/* ===== STEP 4 기술 요소 표 ===== */
+const AREAS = ['스마트 홈','신재생 에너지','단열·창호','냉난방·환기','물 순환','생태·조경','기타'];
+const techBody = $('techBody');
+function addRow(area, name, apply) {
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<td><select>' + AREAS.map(a => '<option' + (a === area ? ' selected' : '') + '>' + a + '</option>').join('') + '</select></td>' +
+    '<td><input value="' + (name || '').replace(/"/g, '&quot;') + '" placeholder="예) 지붕 통합형 BIPV"></td>' +
+    '<td><textarea placeholder="어떤 기술을 → 어디에 → 왜(효과)">' + (apply || '') + '</textarea></td>' +
+    '<td style="text-align:center"><button class="del" title="삭제">✖</button></td>';
+  tr.querySelector('.del').onclick = () => tr.remove();
+  techBody.appendChild(tr);
+}
+$('techAdd').onclick = () => addRow('기타', '', '');
+$('techImport').onclick = () => {
+  const have = [...techBody.querySelectorAll('input')].map(i => i.value.trim());
+  let n = 0;
+  selected.forEach(k => { const p = PARTS.find(x => x.k === k); if (p.warn || have.includes(p.n)) return; addRow(p.area, p.n, p.apply); n++; });
+  $('techSaved').textContent = n ? n + '개 행을 가져왔어요. 적용 사항을 내 말로 고쳐 보세요.' : (selected.size ? '이미 모두 들어 있어요.' : '먼저 3단계에서 아이디어를 선택하세요.');
+};
+$('techSave').onclick = () => {
+  const rows = [...techBody.querySelectorAll('tr')].slice(1).map(tr => ({ a: tr.querySelector('select').value, n: tr.querySelector('input').value, p: tr.querySelector('textarea').value }));
+  try { localStorage.setItem('construction-zeb-table', JSON.stringify(rows)); } catch (e) {}
+  $('techSaved').textContent = '✔ 저장됨 ' + new Date().toLocaleTimeString('ko-KR', {hour:'2-digit',minute:'2-digit'});
+};
+try { JSON.parse(localStorage.getItem('construction-zeb-table') || '[]').forEach(r => addRow(r.a, r.n, r.p)); } catch (e) {}
+
+/* ===== STEP 6 루브릭 ===== */
+const rub = {};
+document.querySelectorAll('.rubric .sc').forEach(sc => {
+  for (let i = 1; i <= 5; i++) { const b = document.createElement('button'); b.textContent = i;
+    b.onclick = () => { rub[sc.dataset.k] = i; sc.querySelectorAll('button').forEach(x => x.classList.toggle('on', +x.textContent <= i)); $('rubricSum').textContent = Object.values(rub).reduce((a, b) => a + b, 0) + ' / 25'; };
+    sc.appendChild(b); }
+});
+
+/* ===== 체크리스트 ===== */
+const SC_TOTAL = document.querySelectorAll('.sc').length;
+document.querySelectorAll('.sc').forEach(c => c.addEventListener('change', () => {
+  const n = document.querySelectorAll('.sc:checked').length; const p = $('scProgress');
+  p.textContent = '체크: ' + n + ' / ' + SC_TOTAL;
+  if (n === SC_TOTAL) p.textContent += ' — 🌟 완벽! 종합 평가로 출발!';
+  else if (n >= 4) p.textContent += ' — 좋아요! 나머지도 복습하세요.';
+}));
+</script>
+<!-- 어디서든 홈으로 : 화면 우하단 고정 버튼 -->
+<a href="index.html" title="처음 화면으로" style="position:fixed;right:18px;bottom:18px;z-index:9999;display:inline-flex;align-items:center;gap:6px;background:#fbbf24;color:#1e293b;font-weight:800;font-size:.9rem;text-decoration:none;border-radius:999px;padding:10px 16px;box-shadow:0 6px 18px rgba(0,0,0,.35);font-family:'Segoe UI','Malgun Gothic',sans-serif">🏠 홈</a>
+</body>
+</html>
