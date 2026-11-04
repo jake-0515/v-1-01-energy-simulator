@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="학습 표본을 바꾸고 실제 최근접 이웃 분류를 실행하는 중학교 인공지능 학습 실험">
+  <title>5차시 · 데이터로 배우는 인공지능</title>
+  <link rel="stylesheet" href="assets/app.css">
+  <style>
+    .ai-concepts{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
+    .ai-nesting{background:#173449;border:1px solid #4a8497;border-radius:18px;padding:18px;color:#e0f2fe}.ai-nesting>div{background:#203653;border:1px solid #557799;border-radius:13px;padding:15px;margin-top:12px}.ai-nesting>div>div{background:#303450;border:1px solid #9186bd;border-radius:10px;padding:12px;margin-top:12px}.ai-nesting b{display:block;margin-bottom:4px}.ai-nesting small{color:#b4c8d9}
+    .ai-flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:18px}.ai-flow button{min-height:90px;text-align:center;border:1px solid #425d75;background:#152c41;border-radius:13px;padding:12px;color:#ddecf5;cursor:pointer}.ai-flow button[aria-pressed="true"]{border-color:#67e8f9;background:#124052}.ai-flow b{display:block;font-size:1rem;margin-bottom:5px}.ai-flow small{color:#a7bdce}
+    .ai-pipeline-detail{margin-top:10px;padding:16px;border-radius:12px;background:#15283a;min-height:82px;line-height:1.7}
+    .ai-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:14px 0}.ai-status{display:inline-block;padding:7px 11px;border:1px solid #56607b;border-radius:99px;color:#c4b5fd;font-size:.82rem}
+    .ai-workbench{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(0,1.25fr);gap:20px;align-items:start}
+    .ai-data-table-wrap{overflow:auto;max-height:360px;border:1px solid #3c526a;border-radius:13px}
+    .ai-data-table{border-collapse:collapse;width:100%;font-size:.85rem}.ai-data-table th{position:sticky;top:0;background:#1d334a;text-align:left;z-index:1}.ai-data-table td,.ai-data-table th{padding:9px 7px;border-bottom:1px solid #344a60}.ai-data-table input{width:65px!important;padding:7px!important}.ai-data-table select{min-width:90px!important;padding:7px!important}.ai-data-table button{padding:4px 7px;min-width:35px;min-height:35px}.ai-data-table tr:last-child td{border-bottom:0}
+    .sample-water{color:#67e8f9}.sample-wait{color:#c4b5fd}
+    .ai-plot{background:#0e1c2b;border:1px solid #355169;border-radius:16px;overflow:hidden}.ai-plot svg{display:block;width:100%;height:auto;touch-action:none}.ai-plot-legend{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;padding:8px 10px 14px;font-size:.8rem;color:#b5c7d6}.legend-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+    .ai-slider-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}.ai-slider-row output{color:#fbbf24;font-weight:800;font-variant-numeric:tabular-nums}.ai-slider-row input[type="range"]{width:100%;accent-color:#67e8f9}
+    .ai-prediction{background:#152b40;border:1px solid #4a6078;border-radius:14px;padding:18px;margin-top:14px;min-height:100px;line-height:1.7}.ai-prediction h3{color:#a5f3fc;margin:0 0 7px}
+    .neighbor-pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.neighbor-pills span{font-size:.8rem;padding:4px 8px;border-radius:8px;background:#233c53}
+    .ai-eval-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}.ai-eval-stat{border:1px solid #3d5b72;border-radius:14px;padding:16px;background:#142b3e}.ai-eval-stat strong{display:block;font-size:1.5rem;color:#7dd3fc}.ai-eval-stat small{color:#a8bfce}
+    .ai-eval-table-wrap{overflow:auto}.ai-eval-table{border-collapse:collapse;width:100%;font-size:.86rem}.ai-eval-table th,.ai-eval-table td{padding:11px 9px;border-bottom:1px solid #344b61;text-align:left;white-space:nowrap}.ai-pass{color:#86efac}.ai-review{color:#fbbf24}
+    .ai-case-buttons{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}.ai-case-buttons button{padding:15px 8px;border-radius:12px;border:1px solid #425f76;background:#182c41;color:#e2e8f0;cursor:pointer}.ai-case-buttons button[aria-pressed="true"]{background:#263e55;border-color:#a5b4fc}.ai-case-buttons span{display:block;font-size:1.55rem;margin-bottom:7px}
+    .ai-case-detail{border:1px solid #435a75;border-radius:15px;background:#17283c;padding:20px}.ai-case-detail h3{margin:0 0 12px;color:#c4b5fd}.ai-case-detail dl{display:grid;grid-template-columns:92px 1fr;gap:9px 12px;margin:0}.ai-case-detail dt{font-weight:700;color:#9dcde3}.ai-case-detail dd{margin:0;line-height:1.7}
+    .ai-match-options{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.ai-match-options button{flex:1;min-width:130px}
+    @media(max-width:900px){.ai-workbench{grid-template-columns:1fr}.ai-concepts{grid-template-columns:1fr}.ai-data-table-wrap{max-height:285px}}
+    @media(max-width:600px){.ai-flow,.ai-case-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.ai-eval-summary{grid-template-columns:1fr}.ai-slider-row{grid-template-columns:1fr}.ai-case-detail dl{grid-template-columns:1fr}.ai-case-detail dd{margin-bottom:8px}.ai-data-table td,.ai-data-table th{padding:8px 5px}.ai-data-table input{width:55px!important}.ai-data-table select{min-width:82px!important;font-size:.8rem}.ai-data-table{font-size:.8rem}}
+  </style>
+  <script src="assets/app.js" defer></script>
+  <script src="assets/ai.js" defer></script>
+</head>
+<body class="lab" data-lesson="5">
+<main class="page">
+  <header class="lesson-hero">
+    <p class="eyebrow">02 정보 통신 기술과 인공지능의 활용 · 교과서 213~215쪽</p>
+    <h1>데이터로 배우는 인공지능</h1>
+    <p>표본을 바꾸면 판단도 달라질까요? 가상 스마트 화분의 데이터를 직접 학습시키고, 처음 보는 사례로 성능을 확인해 봅시다.</p>
+    <div class="lesson-meta">5차시 · 45분 권장 · 개념 8분 / 학습·예측 15분 / 테스트 10분 / 활용·성찰 12분</div>
+  </header>
+
+  <section class="panel" aria-labelledby="aiConceptTitle">
+    <div class="panel-head"><span class="step-badge">01</span><div><h2 id="aiConceptTitle">연결된 데이터가 판단에 쓰이기까지</h2><p class="muted">인공지능, 기계 학습, 딥러닝은 같은 말일까요?</p></div></div>
+    <div class="ai-concepts">
+      <div class="ai-nesting"><b>인공지능 · AI</b><small>인간의 지능적 활동을 컴퓨터로 구현하는 기술 분야</small><div><b>기계 학습 · 머신러닝</b><small>데이터에서 규칙이나 패턴을 배워 분류·예측 등에 활용</small><div><b>딥러닝</b><small>여러 층의 인공 신경망으로 데이터를 학습하는 기계 학습 방법</small></div></div></div>
+      <div class="callout"><b>오늘의 실험은 기계 학습의 한 가지 간단한 모형</b><p>이름은 <b>가까운 이웃 3개 분류(3-NN)</b>입니다. 학습 표본을 기억한 뒤, 새 사례와 가장 가까운 표본 세 개의 다수결로 판단합니다.</p><p>모든 AI가 이 방법을 쓰는 것은 아닙니다. 이미지 인식, 자연어 처리, 생성형 AI도 서로 다른 방법과 자료를 활용합니다.</p></div>
+    </div>
+    <div class="ai-flow" id="pipelineButtons"></div>
+    <div class="ai-pipeline-detail" id="pipelineDetail" aria-live="polite"></div>
+    <p class="muted">위 흐름은 스마트 농장과 같은 한 가지 융합 사례입니다. 모든 AI가 반드시 사물 인터넷이나 클라우드에 연결되어야 하는 것은 아닙니다.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="aiLabTitle">
+    <div class="panel-head"><span class="step-badge">02</span><div><h2 id="aiLabTitle">내가 가르치는 스마트 화분</h2><p class="muted">① 표본 준비 → ② 학습 → ③ 새로운 조건으로 예측. 각 단계의 차이를 확인하세요.</p></div></div>
+    <p class="callout">학습용 가상 자료입니다. 수분과 빛은 0~100으로 표현한 가상 센서 값이며, 정답은 수업을 위해 정했습니다. 실제 식물 관리 지침이나 실제 이미지 AI가 아닙니다.</p>
+    <div class="ai-actions"><button class="button secondary" id="balancedSamples">두 종류를 고르게 준비</button><button class="button secondary" id="biasedSamples">‘기다리기’에 치우친 표본</button><span class="ai-status" id="trainingStatus" role="status">학습 전</span></div>
+    <div class="ai-workbench">
+      <div>
+        <h3>가르칠 표본 <span class="muted" id="sampleCount"></span></h3>
+        <div class="ai-data-table-wrap"><table class="ai-data-table"><thead><tr><th scope="col">표본</th><th scope="col">수분</th><th scope="col">빛</th><th scope="col">정답표</th><th scope="col">삭제</th></tr></thead><tbody id="sampleRows"></tbody></table></div>
+        <div class="ai-actions"><button class="button secondary" id="addSample">+ 표본 추가</button><button class="button" id="trainModel">이 표본으로 학습하기</button></div>
+        <p class="muted" id="trainingHint" aria-live="polite">숫자와 정답표를 고칠 수 있습니다. 수정 후에는 다시 학습해야 합니다.</p>
+      </div>
+      <div>
+        <div class="ai-plot"><svg id="aiPlot" viewBox="0 0 600 360" role="img" aria-label="가로축 수분, 세로축 빛. 학습 표본과 새 사례의 위치"></svg><div class="ai-plot-legend"><span><i class="legend-dot" style="background:#67e8f9"></i>물주기</span><span><i class="legend-dot" style="background:#c4b5fd"></i>기다리기</span><span style="color:#fbbf24">◆ 새 사례</span></div></div>
+        <div class="ai-slider-row">
+          <label class="field">새 사례의 수분 <output id="testMoistureValue" for="testMoisture">30</output><input id="testMoisture" type="range" min="0" max="100" value="30"></label>
+          <label class="field">새 사례의 빛 <output id="testLightValue" for="testLight">80</output><input id="testLight" type="range" min="0" max="100" value="80"></label>
+        </div>
+        <small class="muted">슬라이더 또는 그래프 안의 위치를 눌러 새 사례의 조건을 바꿀 수 있습니다.</small>
+        <div class="ai-actions"><button class="button" id="predictSample">새 사례 예측하기</button></div>
+        <div class="ai-prediction" id="predictionResult" aria-live="polite">왼쪽 표본으로 학습한 뒤, 새 사례의 조건을 정하고 예측해 보세요.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="aiTestTitle">
+    <div class="panel-head"><span class="step-badge">03</span><div><h2 id="aiTestTitle">처음 보는 사례에도 잘 맞힐까?</h2><p class="muted">학습에 넣지 않은 별도의 가상 테스트 표본 8개로 평가합니다.</p></div></div>
+    <div class="ai-actions"><button class="button" id="evaluateModel">별도 테스트 8개 실행</button><span class="muted" id="evaluationHint" role="status">학습 자료와 평가 자료를 구분해 보세요.</span></div>
+    <div id="evaluationResults" hidden>
+      <div class="ai-eval-summary" id="evaluationStats"></div>
+      <div class="ai-eval-table-wrap"><table class="ai-eval-table"><thead><tr><th scope="col">평가 표본</th><th scope="col">수분 / 빛</th><th scope="col">정답</th><th scope="col">예측</th><th scope="col">확인</th></tr></thead><tbody id="evaluationRows"></tbody></table></div>
+    </div>
+    <p class="callout"><b>비교 실험</b> · ‘기다리기’에 치우친 표본으로 학습하고 테스트한 뒤, 두 종류를 고르게 준비하여 다시 비교하세요. 전체 정답률과 ‘물주기’ 정답률이 어떻게 달라지나요?</p>
+    <p class="muted">이 8개에서 잘 맞혔다고 모든 새로운 상황에서 정확한 것은 아닙니다. 평가 결과를 보고 계속 수정했다면, 최종 확인에는 또 다른 자료도 필요합니다.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="aiCaseTitle">
+    <div class="panel-head"><span class="step-badge">04</span><div><h2 id="aiCaseTitle">생활 문제에 연결하기</h2><p class="muted">자료·활용·사람의 역할을 함께 살펴보세요.</p></div></div>
+    <div class="ai-case-buttons" id="caseButtons"></div>
+    <div class="ai-case-detail" id="caseDetail" aria-live="polite"></div>
+    <div style="margin-top:20px">
+      <b id="caseQuestion">이 사례에서 목적에 직접 필요한 자료를 고르면?</b>
+      <div class="ai-match-options" id="caseOptions"></div>
+      <div class="feedback" id="caseFeedback" aria-live="polite">꼭 필요한 자료와 불필요한 개인정보를 구분해 보세요.</div>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="aiReflectionTitle">
+    <div class="panel-head"><span class="step-badge">05</span><div><h2 id="aiReflectionTitle">AI를 잘 가르치려면</h2><p class="muted">실험에서 바꾼 조건과 관찰한 결과를 근거로 적어 보세요.</p></div></div>
+    <label class="field">표본을 바꾸었더니 무엇이 달라졌나요?<textarea id="aiReflection" rows="4" maxlength="2000" placeholder="치우친 표본과 고른 표본을 비교한 결과 / 새로운 조건에서 틀린 이유 / 더 모아야 할 자료…"></textarea></label>
+    <div class="ai-actions"><button class="button" id="saveAI">실험 저장</button><button class="button secondary" id="exportAI">활동 기록 내려받기</button><span class="muted" id="aiSaveStatus" role="status"></span></div>
+  </section>
+</main>
+</body>
+</html>

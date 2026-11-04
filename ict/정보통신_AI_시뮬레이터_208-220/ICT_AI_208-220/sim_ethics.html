@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="편향된 학습 자료 비교, 인공지능 윤리 상황 판단과 순기능·역기능 성찰">
+  <title>6차시 · 좋은 인공지능은 누구에게 좋을까?</title>
+  <link rel="stylesheet" href="assets/app.css">
+  <style>
+    .ethics-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin:15px 0}
+    .bias-controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:18px 0}.bias-controls .button[aria-pressed="true"]{background:#14536a;border-color:#67e8f9;color:#e0faff}
+    .bias-matrix{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:15px 0}
+    .bias-cell{border:1px solid #425a71;border-radius:15px;padding:18px;background:#182b40;display:flex;align-items:center;gap:14px}
+    .bias-cell .bias-icon{font-size:2rem}.bias-cell small{display:block;color:#a3bbce}.bias-cell strong{display:block;font-size:1.2rem;margin:3px 0;color:#a5f3fc}
+    .bias-cell.empty{border-style:dashed;background:#142032}.bias-cell.empty strong{color:#fcd34d}
+    .bias-summary{border:1px solid #476f81;background:linear-gradient(100deg,#143949,#232d46);border-radius:16px;padding:20px;margin:18px 0}
+    .bias-summary .bias-total{font-size:2.1rem;font-weight:800;color:#a5f3fc;font-variant-numeric:tabular-nums}
+    .bias-slices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px}.bias-slice{border-radius:12px;background:#122a3c;border:1px solid #3d5c71;padding:13px}.bias-slice strong{display:block;font-size:1.35rem;color:#86efac;margin:5px 0}.bias-slice.needs-work strong{color:#fbbf24}.bias-slice small{display:block;color:#a9bdcb}
+    .ethics-table-wrap{overflow:auto}.ethics-table{width:100%;border-collapse:collapse;font-size:.85rem}.ethics-table th,.ethics-table td{padding:10px 8px;text-align:left;border-bottom:1px solid #354c62;white-space:nowrap}.ethics-table .success{color:#86efac}.ethics-table .needs-work{color:#fbbf24}
+    .bias-log{display:grid;gap:8px;margin-top:14px}.bias-log-item{display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap;border:1px solid #3c536c;background:#162b40;border-radius:10px;padding:12px 14px}.bias-log-item strong{color:#a5f3fc}
+    .ethics-situation{padding:24px;border:1px solid #52617d;border-radius:18px;background:linear-gradient(120deg,#23324b,#1c293e)}
+    .ethics-situation .situation-tag{font-size:.82rem;color:#c4b5fd;font-weight:700}.ethics-situation h3{font-size:1.25rem;line-height:1.7;margin:12px 0;color:#f8fafc}
+    .ethics-options{display:grid;gap:10px;margin:18px 0}.ethics-option{display:flex;gap:12px;align-items:flex-start;padding:16px;border:1px solid #53617a;background:#16263b;border-radius:12px;cursor:pointer;line-height:1.65}.ethics-option input{margin-top:6px;flex-shrink:0;accent-color:#67e8f9}.ethics-option.selected{border-color:#67e8f9;background:#123f51}.ethics-option.is-correct{border-color:#86efac}
+    .ethics-answer{border-left:4px solid #a78bfa;padding:15px 17px;background:#273149;border-radius:0 12px 12px 0;line-height:1.8;margin-top:15px}
+    .ethics-result{background:#132f3c;border:1px solid #3c7080;border-radius:16px;padding:22px;line-height:1.8}.ethics-result h3{color:#a5f3fc;margin:0 0 12px}
+    .ethics-note{margin-top:16px}.ethics-choice-summary{display:grid;gap:10px;margin-top:16px}.ethics-choice-summary>div{background:#15283a;border:1px solid #3d586f;border-radius:12px;padding:12px 14px}
+    .ethics-example{padding:15px;border-radius:12px;background:#203148;line-height:1.8;margin-top:12px}
+    .ethics-checks{display:grid;gap:10px;margin:16px 0}.ethics-checks label{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border:1px solid #435c73;border-radius:11px;background:#172b3e;line-height:1.7}.ethics-checks input{margin-top:6px;accent-color:#67e8f9}
+    @media(max-width:680px){.bias-matrix,.bias-slices{grid-template-columns:repeat(2,minmax(0,1fr))}.bias-cell{padding:13px;gap:8px}.bias-cell .bias-icon{font-size:1.45rem}.bias-cell strong{font-size:1rem}.ethics-situation{padding:17px}.ethics-option{padding:13px}.bias-summary{padding:16px}}
+    @media(max-width:390px){.bias-cell{display:block}.bias-cell .bias-icon{display:block;margin-bottom:6px}}
+  </style>
+  <script src="assets/app.js" defer></script>
+  <script src="assets/ethics.js" defer></script>
+</head>
+<body class="lab" data-lesson="6">
+<main class="page">
+  <header class="lesson-hero">
+    <p class="eyebrow">02 정보 통신 기술과 인공지능의 활용 · 교과서 216~217쪽</p>
+    <h1>좋은 인공지능은 누구에게 좋을까?</h1>
+    <p>편리함과 정확도만으로 충분할까요? 학습 자료의 편향을 실험하고, 개인정보·딥페이크·창작 책임을 함께 판단해 봅시다.</p>
+    <div class="lesson-meta">6차시 · 45분 권장 · 편향 실험 12분 / 상황 판단 15분 / 순기능·역기능 10분 / 성찰 8분</div>
+  </header>
+
+  <section class="panel" aria-labelledby="biasTitle">
+    <div class="panel-head"><span class="step-badge">01</span><div><h2 id="biasTitle">물병을 배웠을까, 배경을 배웠을까?</h2><p class="muted">물병과 책을 분류하는 가상 AI입니다. 학습 사진의 조합을 바꾸어 결과를 비교하세요.</p></div></div>
+    <div class="callout">사진을 ‘모양 단서’와 ‘배경 밝기’라는 두 숫자로 단순화한 <b>학습용 분류 모형</b>입니다. 실제 사진을 인식하지 않으며, 가까운 표본 3개의 다수결로 계산합니다.</div>
+    <div class="bias-controls"><button class="button secondary" id="biasPreset" aria-pressed="true">치우친 조합 · 12개</button><button class="button secondary" id="balancedPreset" aria-pressed="false">고른 조합 · 12개</button></div>
+    <div class="bias-matrix" id="biasMatrix"></div>
+    <label style="display:flex;gap:10px;align-items:flex-start"><input id="includeBackground" type="checkbox" checked style="margin-top:5px"> <span><b>배경 밝기도 판단 특징에 넣기</b><br><small class="muted">체크를 끄면 모양 단서만 비교합니다. 물병인지 책인지 판단하는 데 배경이 꼭 필요한가요?</small></span></label>
+    <div class="ethics-actions"><button class="button" id="runBiasTest">새로운 사진 조건 8개로 시험</button><span class="muted" id="biasStatus" role="status">테스트 자료는 학습 표본에 넣지 않습니다.</span></div>
+    <div id="biasResults" hidden>
+      <div class="bias-summary"><span class="muted">전체 정답률</span><div class="bias-total" id="biasTotal"></div><p id="biasInterpretation"></p><div class="bias-slices" id="biasSlices"></div></div>
+      <details><summary>조건별 예측 결과 자세히 보기</summary><div class="ethics-table-wrap"><table class="ethics-table"><thead><tr><th scope="col">테스트</th><th scope="col">배경</th><th scope="col">정답</th><th scope="col">예측</th><th scope="col">결과</th></tr></thead><tbody id="biasResultRows"></tbody></table></div></details>
+    </div>
+    <div class="bias-log" id="biasComparison" aria-live="polite"></div>
+    <p class="callout">전체 정답률뿐 아니라 <b>어떤 조건에서 반복해서 틀리는지</b> 살펴야 합니다. 자료를 다양하게 모으고, 목적과 관계없는 특징을 검토하며, 새로운 자료로 다시 평가합니다.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="ethicsGameTitle">
+    <div class="panel-head"><span class="step-badge">02</span><div><h2 id="ethicsGameTitle">AI 사용, 여기서 멈춰 생각하기</h2><p class="muted">8가지 상황에서 대응을 선택하고 이유를 확인하세요. 해설을 읽은 뒤 다음 상황으로 이동합니다.</p></div></div>
+    <div class="ethics-situation" id="ethicsScene">
+      <div class="situation-tag" id="ethicsScenarioTag"></div>
+      <h3 id="ethicsScenarioText"></h3>
+      <div class="ethics-options" id="ethicsOptions" role="radiogroup" aria-labelledby="ethicsScenarioText"></div>
+      <label class="field ethics-note">선택한 이유 · 선택 사항<textarea id="ethicsReason" rows="2" maxlength="600" placeholder="누구에게 어떤 영향이 생길지 생각해 보세요."></textarea></label>
+      <div class="ethics-actions"><button class="button" id="checkEthics" disabled>판단 확인</button><button class="button secondary" id="nextEthics" hidden>다음 상황 →</button><span class="muted" id="ethicsProgress"></span></div>
+      <div class="ethics-answer" id="ethicsAnswer" hidden aria-live="polite"></div>
+    </div>
+    <div class="ethics-result" id="ethicsGameResult" hidden aria-live="polite"></div>
+    <div class="ethics-actions"><button class="button ghost" id="restartEthics">8가지 상황 다시 풀기</button></div>
+  </section>
+
+  <section class="panel" aria-labelledby="cctvTitle">
+    <div class="panel-head"><span class="step-badge">03</span><div><h2 id="cctvTitle">한 기술의 두 얼굴</h2><p class="muted">교과서의 CCTV 사례를 바탕으로, 좋은 점과 생길 수 있는 문제를 함께 적어 보세요.</p></div></div>
+    <p class="callout"><b>우리의 제안</b> · 학교 복도의 위험 상황을 빨리 찾아 알려주는 AI를 만들려고 합니다. 안전을 높이면서도 학생의 사생활을 지키려면 어떤 조건이 필요할까요?</p>
+    <div class="grid2">
+      <label class="field">순기능 · 도움을 받는 사람과 상황<textarea id="ethicsBenefits" rows="4" maxlength="1400" placeholder="위험한 상황을 빠르게 알릴 수 있다. 어떤 위험을, 누구에게 알릴지 더 구체적으로 적어 보세요."></textarea></label>
+      <label class="field">역기능 · 피해를 볼 수 있는 사람과 상황<textarea id="ethicsRisks" rows="4" maxlength="1400" placeholder="위치나 행동 기록이 불필요하게 남거나, 잘못 판단할 수 있다. 누구에게 어떤 피해가 생길까요?"></textarea></label>
+    </div>
+    <details><summary>검토 관점 보기</summary><div class="ethics-example">안전한 이동을 돕는 장점과 함께, 불필요한 얼굴 수집·상시 추적·잘못된 경보를 살펴봅니다. 이름이나 얼굴을 저장하지 않고 위험 상황만 감지할 수 있는지도 비교합니다. 자료 보관 기간, 접근 권한, 잘못된 판단을 정정할 방법을 정하는 것도 중요합니다.</div></details>
+    <label class="field" style="margin-top:18px">우리의 결정<select id="ethicsDecision"><option value="">결정을 선택하세요</option><option>필요한 보호 장치를 마련한 뒤 제한적으로 사용한다</option><option>개인정보를 덜 쓰는 다른 방식으로 바꾼다</option><option>예상 피해가 커서 현재 방식의 사용을 멈춘다</option></select></label>
+    <label class="field">그 결정을 내린 이유<textarea id="ethicsDecisionReason" rows="3" maxlength="1600" placeholder="목적, 필요한 자료, 예상 피해, 대안, 사람의 감독을 근거로 설명해 보세요."></textarea></label>
+  </section>
+
+  <section class="panel" aria-labelledby="ethicsCommitmentTitle">
+    <div class="panel-head"><span class="step-badge">04</span><div><h2 id="ethicsCommitmentTitle">내가 만들 AI의 약속</h2><p class="muted">다음 소단원에서 직접 만들 도구에도 적용해 보세요.</p></div></div>
+    <div class="ethics-checks">
+      <label><input type="checkbox" id="ethicsPromise0"><span>해결할 문제와 영향을 받는 사람을 먼저 살핀다.</span></label>
+      <label><input type="checkbox" id="ethicsPromise1"><span>목적에 필요한 최소한의 자료만 적절하게 사용한다.</span></label>
+      <label><input type="checkbox" id="ethicsPromise2"><span>자료의 이용 조건과 출처, 개인정보를 확인한다.</span></label>
+      <label><input type="checkbox" id="ethicsPromise3"><span>다양한 조건에서 시험하고, 차별이나 반복 오류를 살핀다.</span></label>
+      <label><input type="checkbox" id="ethicsPromise4"><span>AI의 한계를 알리고, 중요한 결과는 사람이 검토한다.</span></label>
+    </div>
+    <label class="field">가장 먼저 지키고 싶은 약속과 그 이유<textarea id="ethicsReflection" rows="3" maxlength="1600" placeholder="내 도구를 쓰는 사람에게 어떤 영향을 줄 수 있을까요?"></textarea></label>
+    <div class="ethics-actions"><button class="button" id="saveEthics">판단과 성찰 저장</button><button class="button secondary" id="exportEthics">활동 기록 내려받기</button><span class="muted" id="ethicsSaveStatus" role="status"></span></div>
+  </section>
+</main>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>7차시 · 문제 정의와 프롬프트 설계</title>
+  <link rel="stylesheet" href="assets/app.css">
+  <style>
+    .topic-choices{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.topic-choice{border:1px solid #40516a;background:#162338;color:#e5edf8;border-radius:14px;padding:16px 12px;text-align:left;font:inherit;cursor:pointer}.topic-choice strong{display:block;margin:7px 0 4px}.topic-choice small{color:#a5b8ce}.topic-choice[aria-pressed="true"]{border-color:#65e5d1;background:#143d42;box-shadow:inset 0 0 0 1px #65e5d1}.topic-icon{font-size:1.7rem}.prompt-checks{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.prompt-check{padding:7px 11px;border:1px solid #3d4c61;border-radius:99px;font-size:.84rem;color:#a9b7c9}.prompt-check.filled{background:#124940;color:#a8f4d4;border-color:#26846e}.prompt-output{white-space:pre-wrap;word-break:break-word;line-height:1.8;font:inherit;min-height:180px;background:#0b1423;border:1px solid #35465e;border-radius:12px;padding:20px}.compare-card{border:1px solid #3c4a61;background:#142036;border-radius:14px;padding:20px}.compare-card.better{border-color:#3ba696;background:#123337}.compare-card h3{margin:0 0 10px;font-size:1.04rem}.compare-label{font-size:.75rem;letter-spacing:.08em;color:#96a9c3}.example-lines{white-space:pre-wrap;font:inherit;line-height:1.8}.small-note{font-size:.85rem;line-height:1.7;color:#a6b8ce}.save-note{min-height:22px;color:#9cc4cf;font-size:.85rem}.action-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px}.prompt-fields textarea{min-height:105px}.topic-preview{margin-top:12px;color:#b8c7d9}.worksheet-actions{display:flex;gap:10px;flex-wrap:wrap}.overview-time{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.overview-time span{font-size:.8rem;border:1px solid #35485c;border-radius:8px;padding:7px 10px;color:#b3c6dc}@media(max-width:700px){.topic-choices{grid-template-columns:repeat(2,1fr)}}@media print{.topic-choices,.action-row,.worksheet-actions{display:none}.prompt-output,.compare-card{color:#111;background:#fff;border-color:#999}.prompt-output{min-height:0}}
+  </style>
+  <script defer src="assets/app.js"></script><script defer src="assets/builder.js"></script><script defer src="assets/prompt.js"></script>
+</head>
+<body class="lab" data-lesson="7">
+<main class="page">
+  <header class="lesson-hero">
+    <p class="eyebrow">03 인공지능 툴 제작하기 · 교과서 218~219쪽</p>
+    <h1>문제를 찾고,<br>좋은 프롬프트를 설계해요</h1>
+    <p>누구의 어떤 문제를 해결할까요? 역할과 예시를 더해, 내가 원하는 결과가 드러나는 지시문을 만들어 봅시다.</p>
+    <div class="overview-time"><span>문제 정의 8분</span><span>프롬프트 설계 15분</span><span>예시 비교 12분</span><span>수정·정리 10분</span></div>
+  </header>
+  <section class="panel" aria-labelledby="problemTitle">
+    <div class="panel-head"><span class="step-badge">01</span><h2 id="problemTitle">누구의 문제를 해결할까요?</h2></div>
+    <div class="callout"><b>프롬프트</b>는 인공지능에게 지시하는 문장입니다. 목표에 맞게 지시문을 설계하고 결과를 검토·수정하는 활동을 <b>프롬프트 엔지니어링</b>이라고 합니다.</div>
+    <p class="muted">주제를 선택하고, 실제로 해결할 수 있을 만큼 문제를 작게 정하세요. 사람 이름 대신 ‘우리 반 학생’처럼 역할을 씁니다.</p>
+    <div class="topic-choices" id="topicChoices">
+      <button type="button" class="topic-choice" data-topic="energy" aria-pressed="true"><span class="topic-icon" aria-hidden="true">💡</span><strong>에너지 절약</strong><small>학교·가정의 낭비 줄이기</small></button>
+      <button type="button" class="topic-choice" data-topic="recycle" aria-pressed="false"><span class="topic-icon" aria-hidden="true">♻️</span><strong>학교 분리배출</strong><small>헷갈리는 배출 방법</small></button>
+      <button type="button" class="topic-choice" data-topic="study" aria-pressed="false"><span class="topic-icon" aria-hidden="true">📚</span><strong>학습 계획</strong><small>시간에 맞는 복습 순서</small></button>
+      <button type="button" class="topic-choice" data-topic="custom" aria-pressed="false"><span class="topic-icon" aria-hidden="true">✏️</span><strong>나만의 주제</strong><small>내가 발견한 문제</small></button>
+    </div>
+    <div class="action-row"><button class="button secondary" type="button" id="loadPromptExample">선택 주제의 예시 넣기</button><span class="small-note">아래 설계 칸을 예시로 채웁니다. 내 상황에 맞게 고쳐 쓰세요.</span></div>
+    <p id="topicDescription" class="topic-preview"></p>
+    <div class="grid3">
+      <div class="field"><label for="problemAudience">누가 사용할까요?</label><input id="problemAudience" maxlength="200" placeholder="예: 우리 반 학생"></div>
+      <div class="field"><label for="problemSituation">어떤 불편이 있나요?</label><textarea id="problemSituation" maxlength="1200" rows="3" placeholder="예: 빈 교실에 불이 켜져 있어요."></textarea></div>
+      <div class="field"><label for="problemSuccess">무엇이 달라지면 성공일까요?</label><textarea id="problemSuccess" maxlength="1200" rows="3" placeholder="예: 쉬는 시간에 바로 실천할 방법 3가지를 제안해요."></textarea></div>
+    </div>
+  </section>
+  <section class="panel" aria-labelledby="designTitle">
+    <div class="panel-head"><span class="step-badge">02</span><h2 id="designTitle">역할과 예시로 지시문을 구체화해요</h2></div>
+    <p class="muted"><b>역할 부여하기</b>는 어떤 관점에서 답할지 정하는 방법입니다. <b>예시 답안 보여주기</b>는 원하는 결과의 형식을 전달하는 방법입니다.</p>
+    <div class="grid2 prompt-fields">
+      <div class="field"><label for="partRole">역할 · 어떤 도우미인가요?</label><textarea id="partRole" rows="3" maxlength="1200" placeholder="당신은 중학생을 위한 에너지 절약 도우미입니다."></textarea></div>
+      <div class="field"><label for="partGoal">목적 · 무엇을 해 주어야 하나요?</label><textarea id="partGoal" rows="3" maxlength="1200" placeholder="사용자가 설명한 상황에서 실천할 방법을 제안해 주세요."></textarea></div>
+      <div class="field"><label for="partContext">배경 · 어떤 상황인가요?</label><textarea id="partContext" rows="3" maxlength="1600" placeholder="우리 반이 쉬는 시간에 실천할 방법을 찾습니다."></textarea></div>
+      <div class="field"><label for="partFormat">결과 형식 · 어떻게 보여 줄까요?</label><textarea id="partFormat" rows="3" maxlength="1200" placeholder="행동·이유·확인 방법을 넣어 3행 표로 써 주세요."></textarea></div>
+      <div class="field"><label for="partConstraints">조건 · 무엇을 지켜야 하나요?</label><textarea id="partConstraints" rows="3" maxlength="1600" placeholder="비용이 들지 않는 방법을 제안하고, 확인되지 않은 절약량은 만들지 마세요."></textarea></div>
+      <div class="field"><label for="partExample">예시 답안 · 좋은 결과를 하나 보여 주세요</label><textarea id="partExample" rows="3" maxlength="2000" placeholder="행동: 빈 교실의 불 끄기 / 이유: 불필요한 사용 줄이기 / 확인: 마지막에 불 상태 확인"></textarea></div>
+    </div>
+    <div class="prompt-checks" id="promptChecks" aria-live="polite"></div>
+    <p class="small-note">이 점검은 작성 요소의 유무만 보여 줍니다. 칸을 모두 채웠다고 정확하거나 좋은 답변이 보장되지는 않습니다.</p>
+    <div class="action-row"><button class="button" type="button" id="composePrompt">내 프롬프트 조합하기</button><span id="promptSaveStatus" class="save-note" role="status"></span></div>
+    <div class="field" style="margin-top:18px"><label for="assembledPrompt">완성한 프롬프트 · 직접 다듬을 수도 있어요</label><textarea id="assembledPrompt" class="prompt-output" rows="11" maxlength="18000" placeholder="문제와 지시문을 작성한 뒤 ‘내 프롬프트 조합하기’를 누르세요."></textarea></div>
+    <div class="worksheet-actions"><button class="button secondary" type="button" id="copyDesignedPrompt">프롬프트 복사</button><button class="button ghost" type="button" id="downloadPrompt">설계 기록 내려받기</button></div>
+  </section>
+  <section class="panel" aria-labelledby="compareTitle">
+    <div class="panel-head"><span class="step-badge">03</span><h2 id="compareTitle">어떤 차이가 생기는지 비교해요</h2></div>
+    <div class="callout">학습용 예시 출력입니다. 실제 생성형 AI를 호출하지 않으며, 선택한 주제와 작성 요소에 따라 준비된 예시의 구성을 바꿉니다.</div>
+    <div class="grid2" style="margin-top:18px">
+      <article class="compare-card"><p class="compare-label">A · 짧은 지시문</p><h3 id="simplePromptLabel">에너지 절약 방법을 알려 줘.</h3><div id="simplePromptOutput" class="example-lines"></div></article>
+      <article class="compare-card better"><p class="compare-label">B · 조건을 담은 지시문</p><h3>대상·배경·형식을 함께 제시한 예시</h3><div id="structuredPromptOutput" class="example-lines"></div></article>
+    </div>
+    <p id="comparisonHint" class="small-note" style="margin-top:14px"></p>
+    <div class="field"><label for="promptReflection">B에서 좋아진 점은 무엇이며, 실제로 확인해야 할 것은 무엇인가요?</label><textarea id="promptReflection" rows="3" maxlength="2000" placeholder="예: 행동과 확인 방법이 분명해졌다. 실제 절약 효과는 사용량 기록으로 확인해야 한다."></textarea></div>
+    <div class="action-row"><button class="button" type="button" id="savePromptProject">설계 저장하고 8차시로</button><span class="small-note">저장한 제목·주제·프롬프트로 나만의 도구를 제작합니다.</span></div>
+  </section>
+</main>
+</body>
+</html>

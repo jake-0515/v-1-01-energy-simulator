@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2차시 — 정보 통신 기술의 과정</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI','Malgun Gothic',sans-serif; background:linear-gradient(160deg,#0f172a,#1e293b); color:#e2e8f0; min-height:100vh; }
+.container { max-width:1050px; margin:0 auto; padding:20px 18px 80px; }
+.top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:8px; }
+.top-nav a { color:#7dd3fc; text-decoration:none; font-size:.9rem; }
+h1 { color:#7dd3fc; font-size:1.6rem; margin-bottom:6px; }
+.lesson-tag { display:inline-block; background:#38bdf8; color:#1e293b; font-weight:800; border-radius:8px; padding:3px 12px; font-size:.8rem; margin-bottom:10px; }
+.unit-tag { display:inline-block; background:#334155; color:#94a3b8; border-radius:8px; padding:3px 10px; font-size:.75rem; margin-left:6px; }
+.goal-box { background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0; padding:14px 18px; margin:14px 0 18px; font-size:.92rem; line-height:1.7; }
+.goal-box b { color:#7dd3fc; }
+.flow-bar { display:flex; gap:6px; flex-wrap:wrap; background:rgba(15,23,42,.6); border:1px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:30px; font-size:.76rem; color:#94a3b8; }
+.flow-bar span { background:#1e293b; border:1px solid #475569; border-radius:999px; padding:4px 11px; white-space:nowrap; }
+.flow-bar span b { color:#7dd3fc; }
+.step-title { font-size:1.25rem; color:#7dd3fc; margin:44px 0 6px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.step-num { background:#0ea5e9; color:#0f172a; width:30px; height:30px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:.95rem; flex-shrink:0; }
+.step-time { font-size:.7rem; background:#334155; color:#94a3b8; border-radius:999px; padding:3px 10px; font-weight:600; }
+.step-desc { color:#94a3b8; font-size:.9rem; margin-bottom:16px; line-height:1.6; }
+.panel { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.hook { margin-top:16px; background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0; padding:14px 16px; font-size:.9rem; line-height:1.75; }
+.hook b { color:#7dd3fc; }
+.btn-main { background:linear-gradient(135deg,#38bdf8,#0284c7); color:#0f172a; font-weight:800; border:none; border-radius:10px; padding:11px 26px; font-size:.95rem; cursor:pointer; font-family:inherit; transition:.2s; }
+.btn-main:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 16px rgba(56,189,248,.35); }
+.btn-main:disabled { opacity:.45; cursor:default; }
+.btn-sub { background:#334155; color:#cbd5e1; border:1px solid #64748b; border-radius:10px; padding:10px 18px; font-size:.88rem; cursor:pointer; font-family:inherit; }
+.kwl { background:rgba(167,139,250,.08); border:1px solid rgba(167,139,250,.35); border-radius:14px; padding:20px; }
+.kwl h3 { color:#c4b5fd; font-size:1rem; margin-bottom:10px; }
+.kwl-row { display:flex; flex-direction:column; gap:10px; }
+.kwl-item { display:flex; align-items:center; gap:10px; font-size:.9rem; flex-wrap:wrap; }
+.kwl-item span { flex:1; min-width:220px; }
+.kwl-item select { background:#1e293b; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:5px 10px; font-size:.85rem; cursor:pointer; }
+.kwl-note { font-size:.78rem; color:#a78bfa; margin-top:10px; }
+
+/* 4단계 플로우 */
+.proc-flow { display:flex; align-items:stretch; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+.proc-node { flex:1; min-width:130px; background:#1e293b; border:2px solid #475569; border-radius:12px; padding:14px 10px; text-align:center; cursor:pointer; transition:.2s; }
+.proc-node { font-family:inherit; color:inherit; }
+.proc-node:hover { border-color:#94a3b8; }
+.proc-node.on { border-color:#38bdf8; background:rgba(56,189,248,.12); }
+.proc-node.fb { border-style:dashed; }
+.proc-node.fb.on { border-color:#a78bfa; background:rgba(167,139,250,.12); }
+.proc-node .pn { font-size:1.7rem; display:block; margin-bottom:5px; }
+.proc-node b { font-size:.92rem; color:#e2e8f0; display:block; }
+.proc-node span { font-size:.7rem; color:#64748b; }
+.proc-arrow { display:flex; align-items:center; color:#475569; font-size:1.3rem; }
+@media(max-width:700px){ .proc-arrow{display:none} }
+.fb-line { text-align:center; color:#a78bfa; font-size:.8rem; margin:-4px 0 12px; }
+.proc-detail { background:rgba(15,23,42,.7); border:1px solid #475569; border-radius:14px; padding:18px; font-size:.9rem; line-height:1.75; min-height:130px; }
+.proc-detail h4 { color:#7dd3fc; font-size:1.05rem; margin-bottom:8px; }
+.proc-detail ul { margin:8px 0 0 18px; } .proc-detail li { margin-bottom:5px; }
+.proc-detail .ex { margin-top:10px; background:rgba(56,189,248,.08); border-left:3px solid #38bdf8; padding:8px 11px; border-radius:0 8px 8px 0; font-size:.85rem; color:#bae6fd; }
+
+/* DnD */
+.dnd-pool { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; min-height:60px; padding:12px; background:rgba(15,23,42,.6); border-radius:12px; margin-bottom:16px; }
+.dnd-chip { background:linear-gradient(135deg,#475569,#334155); color:#e2e8f0; font-family:inherit; border:2px solid #94a3b8; border-radius:10px; padding:10px 13px; min-height:44px; font-size:.82rem; cursor:grab; user-select:none; transition:.2s; }
+.dnd-chip.dragging { opacity:.4; }
+.dnd-chip.ok { border-color:#4ade80; background:linear-gradient(135deg,#14532d,#166534); }
+.dnd-chip.bad { border-color:#f87171; background:linear-gradient(135deg,#7f1d1d,#991b1b); }
+.dnd-chip.selected { outline:3px solid #fbbf24; outline-offset:2px; }
+.dnd-chip:focus-visible, .dnd-place-btn:focus-visible, .proc-node:focus-visible, .fb-item:focus-visible { outline:3px solid #38bdf8; outline-offset:3px; }
+.dnd-access { padding:12px; margin-bottom:16px; border:1px solid #475569; border-radius:12px; background:rgba(15,23,42,.45); }
+.dnd-selection { font-size:.86rem; line-height:1.6; color:#cbd5e1; margin-bottom:10px; }
+.dnd-place-buttons { display:flex; flex-wrap:wrap; gap:8px; }
+.dnd-place-btn:disabled { opacity:.45; cursor:default; }
+.dnd-zones { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; }
+.dnd-zone { border-radius:14px; border:2px dashed #64748b; padding:12px; min-height:150px; transition:.25s; }
+.dnd-zone.dragover { border-color:#38bdf8; background:rgba(56,189,248,.08); }
+.dnd-zone h4 { text-align:center; font-size:1rem; margin-bottom:4px; }
+.dnd-zone .zone-hint { text-align:center; font-size:.72rem; color:#94a3b8; margin-bottom:10px; line-height:1.5; }
+.dnd-zone .dropzone { display:flex; flex-direction:column; gap:6px; min-height:70px; }
+.dnd-controls { text-align:center; margin-top:14px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.dnd-result { text-align:center; margin-top:12px; font-size:1rem; min-height:1.4em; font-weight:600; }
+
+/* 생각 키우기 */
+.ex-pick { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+.ex-pick button { flex:1; min-width:150px; background:#1e293b; border:2px solid #475569; border-radius:12px; padding:12px; cursor:pointer; font-family:inherit; color:#e2e8f0; font-size:.9rem; transition:.15s; }
+.ex-pick button.on { border-color:#38bdf8; background:rgba(56,189,248,.12); color:#7dd3fc; }
+.think-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media(max-width:700px){ .think-grid{grid-template-columns:1fr} }
+.think-box { background:rgba(15,23,42,.6); border:2px solid #475569; border-radius:12px; padding:12px; }
+.think-box h5 { font-size:.95rem; margin-bottom:4px; color:#7dd3fc; }
+.think-box.fb h5 { color:#c4b5fd; }
+.think-box small { display:block; color:#94a3b8; font-size:.76rem; margin-bottom:8px; line-height:1.5; }
+.think-box textarea { width:100%; min-height:64px; background:#0f172a; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:9px 11px; font-family:inherit; font-size:.86rem; resize:vertical; }
+.iq-saved { font-size:.78rem; color:#a78bfa; }
+
+/* 되먹임 시뮬레이터 */
+.fbsim { display:grid; grid-template-columns:1.1fr 1fr; gap:16px; }
+@media(max-width:760px){ .fbsim{grid-template-columns:1fr} }
+.video { background:#0f172a; border:2px solid #334155; border-radius:14px; padding:14px; min-height:220px; }
+.video h4 { font-size:.9rem; color:#7dd3fc; margin-bottom:10px; }
+.frame { background:#1e293b; border-radius:10px; padding:16px; min-height:150px; position:relative; font-size:.9rem; line-height:1.8; }
+.frame .title { font-size:1.1rem; font-weight:800; color:#fde68a; }
+.frame .cap { background:#000; color:#fff; display:inline-block; padding:2px 8px; border-radius:4px; font-size:.85rem; margin-top:6px; }
+.frame .vol { position:absolute; right:12px; top:12px; font-size:1.3rem; }
+.frame .len { position:absolute; right:12px; bottom:10px; font-size:.78rem; color:#94a3b8; }
+.issue { color:#f87171; font-weight:700; }
+.fb-list { display:flex; flex-direction:column; gap:8px; }
+.fb-item { background:#1e293b; border:2px solid #475569; border-radius:10px; padding:10px 12px; cursor:pointer; font-family:inherit; color:inherit; text-align:left; font-size:.86rem; display:flex; gap:10px; align-items:center; transition:.15s; }
+.fb-item:hover { border-color:#94a3b8; }
+.fb-item.on { border-color:#a78bfa; background:rgba(167,139,250,.12); }
+.fb-item .chk { width:18px; height:18px; border-radius:5px; border:2px solid #64748b; flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; font-size:.75rem; }
+.fb-item.on .chk { background:#a78bfa; border-color:#a78bfa; color:#0f172a; }
+.gauge { margin-top:12px; }
+.gauge .row { display:flex; justify-content:space-between; font-size:.82rem; margin-bottom:4px; }
+.gauge .bar { height:16px; background:#0f172a; border-radius:999px; overflow:hidden; border:1px solid #475569; }
+.gauge .bar i { display:block; height:100%; background:linear-gradient(90deg,#38bdf8,#4ade80); width:40%; transition:width .6s; }
+.fb-log { margin-top:10px; font-size:.85rem; line-height:1.7; color:#cbd5e1; background:rgba(15,23,42,.6); border-radius:10px; padding:10px 12px; min-height:50px; }
+.fb-log b { color:#c4b5fd; }
+
+.mq-item { margin-bottom:18px; } .mq-q { font-size:.95rem; margin-bottom:10px; line-height:1.6; } .mq-q .qnum { color:#7dd3fc; font-weight:700; }
+.mq-opts { display:flex; gap:8px; flex-wrap:wrap; }
+.mq-btn { background:#334155; color:#e2e8f0; border:1px solid #64748b; border-radius:999px; padding:7px 16px; font-size:.85rem; cursor:pointer; transition:.2s; font-family:inherit; }
+.mq-btn:hover:not(:disabled) { border-color:#38bdf8; color:#7dd3fc; } .mq-btn.correct { background:#14532d; border-color:#4ade80; color:#bbf7d0; } .mq-btn.wrong { background:#7f1d1d; border-color:#f87171; color:#fecaca; } .mq-btn:disabled { cursor:default; opacity:.85; }
+.mq-fb { font-size:.82rem; margin-top:8px; min-height:1.2em; line-height:1.6; } .mq-fb.ok { color:#4ade80; } .mq-fb.no { color:#f87171; }
+.self-check { background:rgba(74,222,128,.07); border:1px solid rgba(74,222,128,.35); border-radius:14px; padding:20px; }
+.self-check h3 { color:#86efac; font-size:1rem; margin-bottom:12px; }
+.sc-item { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:.9rem; line-height:1.55; }
+.sc-item input { margin-top:3px; width:16px; height:16px; accent-color:#4ade80; cursor:pointer; flex-shrink:0; }
+.sc-progress { margin-top:12px; font-size:.85rem; color:#86efac; }
+.next-link { display:block; text-align:center; margin-top:34px; }
+.next-link a { display:inline-block; background:linear-gradient(135deg,#38bdf8,#0284c7); color:#0f172a; font-weight:800; text-decoration:none; border-radius:12px; padding:14px 34px; font-size:1rem; transition:.2s; }
+.next-link a:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(56,189,248,.35); }
+</style>
+<link rel="stylesheet" href="assets/app.css">
+<script src="assets/app.js"></script>
+</head>
+<body class="legacy" data-lesson="2">
+<div class="container">
+  <div class="top-nav">
+    <a href="sim_meaning.html">← 1차시: 자료와 정보</a>
+    <a href="index.html">🏠 홈</a>
+    <a href="sim_features.html">3차시: 특징과 안전 →</a>
+  </div>
+  <span class="lesson-tag">2차시</span><span class="unit-tag">01 정보 통신 기술의 이해 · 교과서 210쪽</span>
+  <h1>🔁 정보 통신 기술의 과정 — 투입·과정·산출·되먹임</h1>
+  <div class="goal-box">
+    <b>학습 목표</b><br>
+    ① 정보 통신 기술의 과정 <b>4단계</b>(투입·과정·산출·되먹임)를 순서대로 설명할 수 있다.<br>
+    ② 구체적인 활동을 각 단계로 <b>분류</b>할 수 있다.<br>
+    ③ <b>되먹임</b>이 왜 필요한지 산출물의 완성도 변화로 설명할 수 있다.
+  </div>
+  <div class="flow-bar"><span><b>0</b> 자기점검 2분</span><span><b>1</b> 4단계 개념 7분</span><span><b>2</b> 분류 게임 8분</span><span><b>3</b> 되먹임 시뮬레이터 10분</span><span><b>4</b> 생각 키우기 10분</span><span><b>5</b> 적용 퀴즈 4분</span><span><b>6</b> 정리 2분</span></div>
+
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">2분 · 🧠 메타인지</span></div>
+  <div class="kwl"><h3>📋 나는 지금 얼마나 알고 있을까?</h3><div class="kwl-row">
+    <div class="kwl-item"><span>"투입·과정·산출"이 무엇인지 안다</span><select><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+    <div class="kwl-item"><span>"되먹임(피드백)"이 왜 필요한지 설명할 수 있다</span><select><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+    <div class="kwl-item"><span>영상을 만들어 SNS에 올리는 과정을 단계로 나눌 수 있다</span><select><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+  </div><div class="kwl-note">💡 "모른다"고 체크해도 괜찮아요. 자신의 상태를 아는 것이 메타인지의 시작입니다!</div></div>
+
+  <!-- STEP 1 -->
+  <div class="step-title"><span class="step-num">1</span> 정보 통신 기술의 과정 4단계 <span class="step-time">7분 · 개념</span></div>
+  <p class="step-desc">정보 통신 기술은 <b>투입 → 과정 → 산출</b>로 흐르고, <b>되먹임</b>이 다시 앞 단계로 돌아갑니다. (교과서 그림 Ⅳ-19) 각 단계를 <b>클릭</b>해 보세요.</p>
+  <div class="panel">
+    <div class="proc-flow" id="procFlow"></div>
+    <div class="fb-line">↩ 되먹임은 산출 결과를 평가해 투입·과정으로 되돌려 보냅니다</div>
+    <div class="proc-detail" id="procDetail"></div>
+    <div class="hook">🔑 <b>1차시와 연결</b> — 투입은 <b>자료</b>를 모으는 단계, 과정은 자료를 <b>정보로 바꾸고 전송</b>하는 단계, 산출은 <b>정보를 받아 활용</b>하는 단계입니다. 되먹임이 있어야 오류를 찾아 산출물의 <b>완성도</b>를 높일 수 있습니다.</div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-title"><span class="step-num">2</span> 어느 단계일까? — 분류 게임 <span class="step-time">8분 · 🎮 분류</span></div>
+  <p class="step-desc">"학교 축제 홍보 영상 만들기" 활동입니다. <b>카드를 선택한 뒤 알맞은 단계의 배치 버튼</b>을 누르세요. 마우스로 드래그해도 됩니다. 키보드는 Tab으로 이동하고 Enter나 Space로 선택합니다. 모두 배치한 뒤 <b>정답 확인</b>을 누르세요.</p>
+  <div class="panel" id="dndGame">
+    <div class="dnd-pool" role="group" aria-label="분류 전 활동 카드"></div>
+    <div class="dnd-access">
+      <p class="dnd-selection" id="dndSelection" role="status" aria-live="polite">먼저 분류할 카드를 선택하세요.</p>
+      <div class="dnd-place-buttons" role="group" aria-label="선택한 카드 배치">
+        <button type="button" class="btn-sub dnd-place-btn" data-target="in" disabled>📥 투입에 놓기</button>
+        <button type="button" class="btn-sub dnd-place-btn" data-target="proc" disabled>⚙️ 과정에 놓기</button>
+        <button type="button" class="btn-sub dnd-place-btn" data-target="out" disabled>📤 산출에 놓기</button>
+        <button type="button" class="btn-sub dnd-place-btn" data-target="fb" disabled>🔁 되먹임에 놓기</button>
+        <button type="button" class="btn-sub dnd-place-btn" data-target="pool" disabled>↩ 분류 전으로</button>
+      </div>
+    </div>
+    <div class="dnd-zones">
+      <div class="dnd-zone" data-cat="in"><h4 style="color:#fde68a">📥 투입</h4><div class="zone-hint">정보를 만들기 위한<br>준비 · 자료 수집·생성</div><div class="dropzone"></div></div>
+      <div class="dnd-zone" data-cat="proc"><h4 style="color:#7dd3fc">⚙️ 과정</h4><div class="zone-hint">자료를 가공·처리해<br>정보로 변환 · 전송</div><div class="dropzone"></div></div>
+      <div class="dnd-zone" data-cat="out"><h4 style="color:#86efac">📤 산출</h4><div class="zone-hint">정보를 수신하고<br>목적에 맞게 활용</div><div class="dropzone"></div></div>
+      <div class="dnd-zone" data-cat="fb"><h4 style="color:#c4b5fd">🔁 되먹임</h4><div class="zone-hint">내용·전달 방법을<br>평가하고 개선</div><div class="dropzone"></div></div>
+    </div>
+    <div class="dnd-controls"><button class="btn-main check-btn" type="button">정답 확인</button><button class="btn-sub reset-btn" type="button">다시 하기</button></div>
+    <div class="dnd-result" role="status" aria-live="polite"></div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-title"><span class="step-num">3</span> 되먹임은 왜 필요할까? — 완성도 시뮬레이터 <span class="step-time">10분 · 🎮 시뮬레이션</span></div>
+  <p class="step-desc">홍보 영상 1차 산출물이 나왔습니다. 그런데 문제가 있네요. <b>문제를 찾아 체크하고 「되먹임 보내기」</b>를 누르면 과정으로 돌아가 고쳐 옵니다. 완성도를 100%까지 올려 보세요!</p>
+  <div class="panel">
+    <div class="fbsim">
+      <div class="video"><h4 id="vTitle">🎬 산출물 — 1차 버전</h4><div class="frame" id="frame"></div></div>
+      <div>
+        <div style="font-size:.88rem;margin-bottom:8px;color:#c4b5fd;font-weight:700">🔎 평가 — 어떤 문제가 보이나요? (해당하는 것만 체크)</div>
+        <div class="fb-list" id="fbList"></div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn-main" id="fbSend">🔁 되먹임 보내기</button><button class="btn-sub" id="fbReset">↺ 처음부터</button></div>
+        <div class="gauge"><div class="row"><span>산출물 완성도</span><b id="gVal" style="color:#7dd3fc">40%</b></div><div class="bar"><i id="gBar"></i></div></div>
+        <div class="fb-log" id="fbLog">1차 버전을 평가해 보세요. 되먹임 없이 그냥 올리면 완성도 40%짜리 영상이 학교 전체에 퍼집니다.</div>
+      </div>
+    </div>
+    <div class="hook">🔑 <b>되먹임의 필요성</b> — 사용자의 요구 사항을 파악하여 새로운 아이디어를 발견할 수 있고, <b>오류를 발견</b>하고 <b>산출물의 완성도</b>를 높일 수 있습니다. (교과서 210쪽) 좋은 되먹임은 "별로야"가 아니라 "<b>무엇이, 왜</b> 문제인지"를 말해 주는 것입니다.</div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-title"><span class="step-num">4</span> 생각 키우기 — 정보 통신 기술의 과정 이해하기 <span class="step-time">10분 · 교과서 210쪽</span></div>
+  <p class="step-desc">예시 중 하나를 선택하여 <b>투입·과정·산출·되먹임</b>을 내 말로 설명해 보세요. 힌트를 참고하되 가상의 사례를 사용하고 이름·연락처 등 개인 정보는 넣지 마세요. 저장한 글은 이 브라우저에서 다시 볼 수 있습니다.</p>
+  <div class="panel">
+    <div class="ex-pick" id="exPick"></div>
+    <div class="think-grid">
+      <div class="think-box"><h5>📥 투입</h5><small id="h-in"></small><textarea id="t-in" aria-label="투입 단계 설명" aria-describedby="h-in"></textarea></div>
+      <div class="think-box"><h5>⚙️ 과정</h5><small id="h-proc"></small><textarea id="t-proc" aria-label="과정 단계 설명" aria-describedby="h-proc"></textarea></div>
+      <div class="think-box"><h5>📤 산출</h5><small id="h-out"></small><textarea id="t-out" aria-label="산출 단계 설명" aria-describedby="h-out"></textarea></div>
+      <div class="think-box fb"><h5>🔁 되먹임</h5><small id="h-fb"></small><textarea id="t-fb" aria-label="되먹임 단계 설명" aria-describedby="h-fb"></textarea></div>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="btn-sub" id="thinkSave">💾 이 브라우저에 저장</button><button class="btn-sub" onclick="window.print()">🖨️ 인쇄</button><span class="iq-saved" id="thinkSaved" role="status" aria-live="polite"></span></div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step-title"><span class="step-num">5</span> 적용 퀴즈 <span class="step-time">4분</span></div>
+  <div class="panel" id="mq">
+    <div class="mq-item" data-answer="투입" data-opts="투입|과정|산출|되먹임" data-why="정보를 만들기 위해 자료를 수집·생성하는 준비 단계는 투입입니다."><div class="mq-q"><span class="qnum">Q1.</span> 축제 영상을 만들기 위해 행사 장면을 촬영하고 사진을 모았다. 어느 단계인가?</div><div class="mq-opts"></div><div class="mq-fb"></div></div>
+    <div class="mq-item" data-answer="과정" data-opts="투입|과정|산출|되먹임" data-why="모은 자료를 편집해 정보(영상)로 바꾸고 업로드(전송)하는 것은 과정 단계입니다."><div class="mq-q"><span class="qnum">Q2.</span> 촬영한 영상을 편집하고 자막을 넣어 학교 누리집에 업로드했다.</div><div class="mq-opts"></div><div class="mq-fb"></div></div>
+    <div class="mq-item" data-answer="되먹임" data-opts="투입|과정|산출|되먹임" data-why="산출물에 대한 평가 의견을 받아 개선하는 것은 되먹임입니다."><div class="mq-q"><span class="qnum">Q3.</span> 영상을 본 친구들이 "소리가 작아요"라고 댓글을 달아, 소리를 키워 다시 올렸다.</div><div class="mq-opts"></div><div class="mq-fb"></div></div>
+    <div class="mq-item" data-answer="오류를 발견하고 산출물의 완성도를 높이기 위해" data-opts="자료를 더 많이 모으기 위해|오류를 발견하고 산출물의 완성도를 높이기 위해|정보를 더 빨리 전송하기 위해|비용을 줄이기 위해" data-why="되먹임은 사용자의 요구를 파악하고 오류를 발견해 산출물의 완성도를 높이는 데 필요합니다."><div class="mq-q"><span class="qnum">Q4.</span> 정보 통신 기술의 과정에 되먹임이 꼭 필요한 이유로 가장 알맞은 것은?</div><div class="mq-opts"></div><div class="mq-fb"></div></div>
+    <div style="text-align:center;margin-top:6px;font-size:.9rem" id="mqScore"></div>
+  </div>
+
+  <div class="step-title"><span class="step-num">✓</span> 스스로 확인하기 <span class="step-time">2분 · 🧠 메타인지</span></div>
+  <div class="self-check"><h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>투입·과정·산출·되먹임 <b>4단계</b>를 순서대로 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>어떤 활동이 <b>어느 단계</b>인지 판단할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>되먹임</b>이 완성도를 높이는 이유를 시뮬레이터 결과로 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>내가 고른 예시를 4단계로 <b>직접 설명</b>할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress">체크: 0 / 4</div></div>
+  <div class="next-link"><a href="sim_features.html">다음 → 3차시: 특징과 안전한 사용</a></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+/* ===== STEP 1 ===== */
+const PROCESS = [
+  { k:'in', e:'📥', n:'투입', s:'준비·자료 수집', body:'정보를 만들기 위한 <b>준비 과정</b>으로, 필요한 <b>자료를 수집하거나 생성</b>하는 단계입니다.', items:['사진·영상 촬영, 설문 조사, 센서 측정','기존 자료 검색·내려받기','목적과 대상 정하기'], ex:'축제 영상: 행사 장면 촬영, 친구 인터뷰 녹음, 일정표 받기' },
+  { k:'proc', e:'⚙️', n:'과정', s:'가공·처리·전송', body:'입력된 자료를 <b>가공·처리</b>하여 사용자에게 필요한 <b>정보로 변환</b>한 뒤, <b>전송 매체</b>를 통해 전달하는 단계입니다.', items:['편집·계산·분석·디자인','파일로 만들기(인코딩)','인터넷·SNS·방송으로 전송'], ex:'축제 영상: 영상 편집, 자막·음악 넣기, 학교 누리집에 업로드' },
+  { k:'out', e:'📤', n:'산출', s:'수신·활용', body:'생성된 <b>정보를 수신</b>하고 <b>목적에 맞게 활용</b>하는 단계입니다.', items:['시청·열람·공유','정보를 바탕으로 판단·행동','결과물 완성'], ex:'축제 영상: 학생·학부모가 영상을 보고 축제에 참여' },
+  { k:'fb', e:'🔁', n:'되먹임', s:'평가·개선', body:'정보의 <b>내용 및 효과적 전달 방법</b>에 대해 <b>평가하고 개선</b>하는 단계입니다. 앞 단계로 되돌아갑니다.', items:['사용자 요구 사항 파악 → 새 아이디어','오류 발견','산출물의 완성도 높이기'], ex:'축제 영상: "자막이 작아요" 댓글 → 자막 키워 다시 업로드' },
+];
+PROCESS.forEach((p,i)=>{ const d=document.createElement('button'); d.type='button'; d.className='proc-node'+(p.k==='fb'?' fb':'')+(i===0?' on':''); d.setAttribute('aria-pressed',String(i===0)); d.innerHTML='<span class="pn">'+p.e+'</span><b>'+(i+1)+'. '+p.n+'</b><span>'+p.s+'</span>'; d.onclick=()=>{ document.querySelectorAll('.proc-node').forEach(x=>{x.classList.remove('on');x.setAttribute('aria-pressed','false');}); d.classList.add('on'); d.setAttribute('aria-pressed','true'); showProc(i); }; $('procFlow').appendChild(d); if(i<2){ const a=document.createElement('div'); a.className='proc-arrow'; a.textContent='▶'; $('procFlow').appendChild(a); } if(i===2){ const a=document.createElement('div'); a.className='proc-arrow'; a.textContent='↩'; a.style.color='#a78bfa'; $('procFlow').appendChild(a); } });
+function showProc(i){ const p=PROCESS[i]; $('procDetail').innerHTML='<h4>'+p.e+' '+(i+1)+'단계 · '+p.n+'</h4><div>'+p.body+'</div><ul>'+p.items.map(x=>'<li>'+x+'</li>').join('')+'</ul><div class="ex">🎬 '+p.ex+'</div>'; }
+showProc(0);
+
+/* ===== STEP 2 DnD ===== */
+(function(){
+  const items=[
+    {name:'행사 장면 촬영하기', emoji:'📷', cat:'in'}, {name:'친구 인터뷰 녹음', emoji:'🎙️', cat:'in'}, {name:'축제 일정표 자료 받기', emoji:'📄', cat:'in'},
+    {name:'영상 편집·자막 넣기', emoji:'✂️', cat:'proc'}, {name:'배경 음악 입히기', emoji:'🎵', cat:'proc'}, {name:'학교 누리집에 업로드', emoji:'📤', cat:'proc'},
+    {name:'학생들이 영상 시청', emoji:'👀', cat:'out'}, {name:'영상 보고 축제 참여 결정', emoji:'🎉', cat:'out'}, {name:'학부모가 SNS로 공유', emoji:'🔗', cat:'out'},
+    {name:'"소리가 작아요" 댓글 확인', emoji:'💬', cat:'fb'}, {name:'오타 발견해 자막 수정', emoji:'🔧', cat:'fb'}, {name:'조회 수 분석해 다음 영상 계획', emoji:'📊', cat:'fb'},
+  ];
+  const game=$('dndGame'), pool=game.querySelector('.dnd-pool'), result=game.querySelector('.dnd-result');
+  const placeButtons=[...game.querySelectorAll('.dnd-place-btn')], selection=$('dndSelection');
+  const names={in:'투입',proc:'과정',out:'산출',fb:'되먹임',pool:'분류 전 카드 모음'};
+  let dragEl=null, selected=null;
+  function clearSelection(){
+    if(selected){ selected.classList.remove('selected'); selected.setAttribute('aria-pressed','false'); }
+    selected=null; placeButtons.forEach(b=>b.disabled=true);
+  }
+  function selectCard(card){
+    const same=selected===card; clearSelection();
+    if(same){ selection.textContent='선택을 해제했습니다. 분류할 카드를 선택하세요.'; return; }
+    selected=card; card.classList.add('selected'); card.setAttribute('aria-pressed','true');
+    placeButtons.forEach(b=>b.disabled=false);
+    selection.textContent='선택한 카드: '+card.textContent+' — 아래에서 놓을 단계를 선택하세요.';
+  }
+  function placeCard(card, target){
+    const destination=target==='pool'?pool:game.querySelector('.dnd-zone[data-cat="'+target+'"] .dropzone');
+    if(!card||!destination) return;
+    card.classList.remove('ok','bad'); card.removeAttribute('aria-label'); destination.appendChild(card);
+    clearSelection(); result.textContent='';
+    selection.textContent='「'+card.textContent+'」 카드를 '+names[target]+'에 놓았습니다.';
+    card.focus({preventScroll:true});
+  }
+  function chip(it){
+    const c=document.createElement('button'); c.type='button'; c.className='dnd-chip'; c.draggable=true;
+    c.dataset.cat=it.cat; c.setAttribute('aria-pressed','false'); c.textContent=it.emoji+' '+it.name;
+    c.addEventListener('click',()=>selectCard(c));
+    c.addEventListener('dragstart',e=>{dragEl=c;c.classList.add('dragging');if(e.dataTransfer){e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',it.name);}});
+    c.addEventListener('dragend',()=>{c.classList.remove('dragging');dragEl=null;});
+    return c;
+  }
+  function init(){
+    clearSelection(); dragEl=null; pool.innerHTML=''; game.querySelectorAll('.dropzone').forEach(z=>z.innerHTML='');
+    result.textContent=''; selection.textContent='먼저 분류할 카드를 선택하세요.';
+    [...items].sort(()=>Math.random()-.5).forEach(it=>pool.appendChild(chip(it)));
+  }
+  placeButtons.forEach(b=>b.addEventListener('click',()=>placeCard(selected,b.dataset.target)));
+  [...game.querySelectorAll('.dnd-zone'),pool].forEach(zone=>{
+    zone.addEventListener('dragover',e=>{if(!dragEl)return;e.preventDefault();zone.classList.add('dragover');});
+    zone.addEventListener('dragleave',()=>zone.classList.remove('dragover'));
+    zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('dragover');if(!dragEl)return;const card=dragEl;dragEl=null;card.classList.remove('dragging');placeCard(card,zone===pool?'pool':zone.dataset.cat);});
+  });
+  function check(){ const rem=pool.querySelectorAll('.dnd-chip').length; if(rem){ result.innerHTML='<span style="color:#fbbf24">⚠️ 아직 '+rem+'개 카드가 남았어요. 모두 배치하세요!</span>'; return; }
+    let ok=0; game.querySelectorAll('.dnd-zone').forEach(z=>z.querySelectorAll('.dnd-chip').forEach(c=>{ if(c.dataset.cat===z.dataset.cat){c.classList.add('ok');c.classList.remove('bad');c.setAttribute('aria-label',c.textContent+' — 정답');ok++;} else {c.classList.add('bad');c.classList.remove('ok');c.setAttribute('aria-label',c.textContent+' — 다른 단계를 골라 보세요');} }));
+    result.innerHTML= ok===items.length ? '<span style="color:#4ade80">🎉 '+ok+'/'+items.length+' 전부 정답! 4단계를 정확히 이해했어요.</span>' : '<span style="color:#f87171">🔍 '+ok+'/'+items.length+' 정답. 빨간 카드를 다시 옮겨 보세요. 힌트: 되먹임은 "평가·개선", 산출은 "받아서 활용"!</span>'; }
+  game.querySelector('.check-btn').onclick=check; game.querySelector('.reset-btn').onclick=init; init();
+  game.addEventListener('keydown',e=>{ if(e.key==='Escape'){ clearSelection(); selection.textContent='선택을 해제했습니다. 분류할 카드를 선택하세요.'; } });
+})();
+
+/* ===== STEP 3 되먹임 시뮬레이터 ===== */
+const ISSUES = [
+  { k:'typo', t:'자막에 오타가 있다 ("축재" → "축제")', fix:'자막 오타를 고쳤다' },
+  { k:'vol', t:'소리가 너무 작다', fix:'음량을 키웠다' },
+  { k:'len', t:'영상이 너무 길다 (8분 → 2분이 적당)', fix:'핵심만 남겨 2분으로 줄였다' },
+  { k:'date', t:'축제 날짜가 빠져 있다', fix:'날짜·장소 자막을 넣었다' },
+  { k:'bg', t:'배경 음악이 너무 커서 말이 안 들린다', fix:'배경 음악을 줄였다' },
+];
+const DECOY = [ { k:'d1', t:'출연자 머리 모양이 마음에 안 든다' }, { k:'d2', t:'영상 색이 내 취향이 아니다' } ];
+let fixed=new Set(), version=1, picked=new Set();
+function renderFrame(){
+  const has=k=>!fixed.has(k);
+  $('vTitle').textContent='🎬 산출물 — '+version+'차 버전';
+  $('frame').innerHTML='<div class="title">🎪 우리 학교 '+(has('typo')?'<span class="issue">축재</span>':'축제')+' 홍보 영상</div>'+
+    '<div class="cap">'+(has('bg')?'🎵🎵🎵 (음악이 말을 덮음)':'"여러분, 이번 축제에 꼭 오세요!"')+'</div><br>'+
+    (has('date')?'<span class="issue">📅 날짜·장소: (없음)</span>':'📅 10월 25일(토) 오후 1시 · 체육관')+
+    '<span class="vol">'+(has('vol')?'🔈<span class="issue">소리 작음</span>':'🔊')+'</span>'+
+    '<span class="len">재생 시간 '+(has('len')?'<span class="issue">8:12</span>':'2:00')+'</span>';
+  const pct=40+fixed.size*12; $('gVal').textContent=pct+'%'; $('gBar').style.width=pct+'%';
+}
+function renderList(){
+  const list=$('fbList'); list.innerHTML='';
+  const pool=[...ISSUES.filter(i=>!fixed.has(i.k)),...DECOY].sort(()=>Math.random()-.5);
+  pool.forEach(i=>{ const d=document.createElement('button'); d.type='button'; d.className='fb-item'; d.dataset.k=i.k; d.setAttribute('aria-pressed','false'); d.innerHTML='<span class="chk" aria-hidden="true"></span><span>'+i.t+'</span>'; d.onclick=()=>{ d.classList.toggle('on'); const checked=d.classList.contains('on'); d.setAttribute('aria-pressed',String(checked)); d.querySelector('.chk').textContent=checked?'✔':''; }; list.appendChild(d); });
+}
+$('fbSend').onclick=()=>{
+  const on=[...document.querySelectorAll('.fb-item.on')].map(d=>d.dataset.k);
+  if(!on.length){ $('fbLog').innerHTML='⚠️ 문제를 하나 이상 체크해야 되먹임을 보낼 수 있어요.'; return; }
+  const real=on.filter(k=>ISSUES.find(i=>i.k===k)), decoy=on.filter(k=>DECOY.find(i=>i.k===k));
+  real.forEach(k=>fixed.add(k)); if(real.length) version++;
+  let msg=real.length?'<b>되먹임 → 과정으로 되돌아감</b><br>'+real.map(k=>'✅ '+ISSUES.find(i=>i.k===k).fix).join('<br>'):'이번 선택으로 수정할 문제를 찾지 못했습니다. 산출물을 다시 살펴보세요.';
+  if(decoy.length) msg+='<br><span style="color:#fbbf24">⚠️ "'+DECOY.find(i=>i.k===decoy[0]).t+'"는 <b>목적(홍보)과 관계없는 취향</b>이라 되먹임으로 적절하지 않아요. 좋은 되먹임은 목적에 비추어 무엇이 문제인지 말합니다.</span>';
+  renderFrame(); renderList();
+  if(fixed.size===ISSUES.length){ msg+='<br>🎉 <b>완성도 100%!</b> 되먹임을 '+(version-1)+'번 거쳐 완성했습니다. 처음 40%짜리를 그냥 올렸다면 어땠을까요?'; $('fbSend').disabled=true; }
+  $('fbLog').innerHTML=msg;
+};
+$('fbReset').onclick=()=>{ fixed.clear(); version=1; $('fbSend').disabled=false; renderFrame(); renderList(); $('fbLog').textContent='1차 버전을 평가해 보세요.'; };
+renderFrame(); renderList();
+
+/* ===== STEP 4 생각 키우기 ===== */
+const EX = [
+  { n:'📱 예시 1 · 영상을 찍어 SNS에 업로드', in:'힌트) 무엇을 찍을지 정하기, 스마트폰으로 촬영, 사진·음악 자료 모으기', proc:'힌트) 편집 앱으로 자르기·자막·필터, 파일 저장, SNS 앱으로 업로드(전송)', out:'힌트) 친구들이 영상을 보고 좋아요·댓글, 정보 공유', fb:'힌트) 댓글·조회 수를 보고 다음 영상 개선 (길이, 소리, 내용)' },
+  { n:'💻 예시 2 · 앱 만들기', in:'힌트) 어떤 문제를 해결할지 정하기, 사용자 요구 조사, 필요한 자료(지도·시간표 등) 수집', proc:'힌트) 화면 설계, 코딩, 테스트, 앱 마켓에 올리기(전송)', out:'힌트) 사용자가 앱을 내려받아 문제 해결에 활용', fb:'힌트) 별점·리뷰·오류 보고 → 업데이트' },
+  { n:'🖨️ 예시 3 · 3D 프린터로 출력', in:'힌트) 만들 물건 정하기, 치수 재기, 참고 사진 수집', proc:'힌트) 3D 모델링 프로그램으로 설계, 파일 변환(슬라이싱), 프린터로 전송·출력', out:'힌트) 완성된 물건을 받아 실제로 사용', fb:'힌트) 크기가 안 맞거나 깨진 곳 발견 → 설계 수정 후 재출력' },
+];
+let exIdx=0;
+const thinkKeys=['in','proc','out','fb'], drafts=Object.create(null), saveNotices=Object.create(null);
+function keepDraft(){ drafts[exIdx]=Object.fromEntries(thinkKeys.map(k=>[k,$('t-'+k).value])); }
+EX.forEach((e,i)=>{ const b=document.createElement('button'); b.type='button'; b.textContent=e.n; b.className=i===0?'on':''; b.onclick=()=>{ keepDraft(); exIdx=i; document.querySelectorAll('#exPick button').forEach((x,j)=>x.classList.toggle('on',j===i)); loadEx(); }; $('exPick').appendChild(b); });
+function loadEx(){
+  const e=EX[exIdx];
+  if(!drafts[exIdx]){
+    drafts[exIdx]=Object.fromEntries(thinkKeys.map(k=>[k,'']));
+    try{ thinkKeys.forEach(k=>{drafts[exIdx][k]=localStorage.getItem('ict-think-'+exIdx+'-'+k)||'';}); }
+    catch(err){ saveNotices[exIdx]='저장한 글을 불러오지 못했습니다. 작성은 계속할 수 있습니다.'; }
+  }
+  thinkKeys.forEach(k=>{ $('h-'+k).textContent=e[k]; $('t-'+k).value=drafts[exIdx][k]; });
+  $('thinkSaved').textContent=saveNotices[exIdx]||'';
+}
+$('thinkSave').onclick=()=>{
+  keepDraft();
+  try{
+    thinkKeys.forEach(k=>localStorage.setItem('ict-think-'+exIdx+'-'+k,drafts[exIdx][k]));
+    saveNotices[exIdx]='✔ 이 브라우저에 저장됨 '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){ saveNotices[exIdx]='저장하지 못한 내용이 있습니다. 작성한 글을 따로 복사해 보관해 주세요.'; }
+  $('thinkSaved').textContent=saveNotices[exIdx];
+};
+loadEx();
+
+/* ===== STEP 5 퀴즈 ===== */
+const items=document.querySelectorAll('#mq .mq-item'); let done=0, ok=0;
+items.forEach(it=>{ const ans=it.dataset.answer, why=it.dataset.why, opts=it.querySelector('.mq-opts'), fb=it.querySelector('.mq-fb');
+  it.dataset.opts.split('|').forEach(o=>{ const b=document.createElement('button'); b.className='mq-btn'; b.textContent=o; b.onclick=()=>{ if(it.dataset.done) return; it.dataset.done='1'; done++; opts.querySelectorAll('.mq-btn').forEach(x=>x.disabled=true);
+    if(o===ans){ b.classList.add('correct'); ok++; fb.innerHTML='⭕ 정답! '+why; fb.className='mq-fb ok'; } else { b.classList.add('wrong'); opts.querySelectorAll('.mq-btn').forEach(x=>{ if(x.textContent===ans) x.classList.add('correct'); }); fb.innerHTML='❌ 정답은 「<b>'+ans+'</b>」. '+why; fb.className='mq-fb no'; }
+    if(done===items.length) $('mqScore').innerHTML='🎯 적용 퀴즈 결과: <b style="color:#7dd3fc">'+ok+' / '+items.length+'</b>'+(ok>=items.length-1?' — 훌륭해요!':' — 1단계를 다시 보고 복습해 보세요.'); }; opts.appendChild(b); }); });
+
+const SC=document.querySelectorAll('.sc').length;
+document.querySelectorAll('.sc').forEach(c=>c.addEventListener('change',()=>{ const n=document.querySelectorAll('.sc:checked').length; const p=$('scProgress'); p.textContent='체크: '+n+' / '+SC; if(n===SC) p.textContent+=' — 🌟 완벽! 3차시로 출발!'; }));
+</script>
+<a href="index.html" title="처음 화면으로" style="position:fixed;right:18px;bottom:18px;z-index:9999;display:inline-flex;align-items:center;gap:6px;background:#38bdf8;color:#0f172a;font-weight:800;font-size:.9rem;text-decoration:none;border-radius:999px;padding:10px 16px;box-shadow:0 6px 18px rgba(0,0,0,.35);font-family:'Segoe UI','Malgun Gothic',sans-serif">🏠 홈</a>
+
+</body>
+</html>

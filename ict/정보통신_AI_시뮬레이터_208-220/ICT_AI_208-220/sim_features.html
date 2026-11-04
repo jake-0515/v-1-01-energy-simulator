@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3차시 — 정보 통신 기술의 특징과 안전한 사용</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Segoe UI','Malgun Gothic',sans-serif; background:linear-gradient(160deg,#0f172a,#1e293b); color:#e2e8f0; min-height:100vh; }
+.container { max-width:1050px; margin:0 auto; padding:20px 18px 80px; }
+.top-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:8px; }
+.top-nav a { color:#7dd3fc; text-decoration:none; font-size:.9rem; }
+h1 { color:#7dd3fc; font-size:1.6rem; margin-bottom:6px; }
+.lesson-tag { display:inline-block; background:#38bdf8; color:#1e293b; font-weight:800; border-radius:8px; padding:3px 12px; font-size:.8rem; margin-bottom:10px; }
+.unit-tag { display:inline-block; background:#334155; color:#94a3b8; border-radius:8px; padding:3px 10px; font-size:.75rem; margin-left:6px; }
+.goal-box { background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0; padding:14px 18px; margin:14px 0 18px; font-size:.92rem; line-height:1.7; }
+.goal-box b { color:#7dd3fc; }
+.flow-bar { display:flex; gap:6px; flex-wrap:wrap; background:rgba(15,23,42,.6); border:1px solid #334155; border-radius:12px; padding:12px 14px; margin-bottom:30px; font-size:.76rem; color:#94a3b8; }
+.flow-bar span { background:#1e293b; border:1px solid #475569; border-radius:999px; padding:4px 11px; white-space:nowrap; }
+.flow-bar span b { color:#7dd3fc; }
+.step-title { font-size:1.25rem; color:#7dd3fc; margin:44px 0 6px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.step-num { background:#0ea5e9; color:#0f172a; width:30px; height:30px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:.95rem; flex-shrink:0; }
+.step-time { font-size:.7rem; background:#334155; color:#94a3b8; border-radius:999px; padding:3px 10px; font-weight:600; }
+.step-desc { color:#94a3b8; font-size:.9rem; margin-bottom:16px; line-height:1.6; }
+.panel { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:16px; padding:22px; }
+.hook { margin-top:16px; background:rgba(56,189,248,.08); border-left:4px solid #38bdf8; border-radius:0 12px 12px 0; padding:14px 16px; font-size:.9rem; line-height:1.75; }
+.hook b { color:#7dd3fc; }
+.btn-main { background:linear-gradient(135deg,#38bdf8,#0284c7); color:#0f172a; font-weight:800; border:none; border-radius:10px; padding:11px 26px; font-size:.95rem; cursor:pointer; font-family:inherit; transition:.2s; }
+.btn-main:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 16px rgba(56,189,248,.35); }
+.btn-sub { background:#334155; color:#cbd5e1; border:1px solid #64748b; border-radius:10px; padding:10px 18px; font-size:.88rem; cursor:pointer; font-family:inherit; }
+.kwl { background:rgba(167,139,250,.08); border:1px solid rgba(167,139,250,.35); border-radius:14px; padding:20px; }
+.kwl h3 { color:#c4b5fd; font-size:1rem; margin-bottom:10px; }
+.kwl-row { display:flex; flex-direction:column; gap:10px; }
+.kwl-item { display:flex; align-items:center; gap:10px; font-size:.9rem; flex-wrap:wrap; }
+.kwl-item span { flex:1; min-width:220px; }
+.kwl-item select { background:#1e293b; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:5px 10px; font-size:.85rem; cursor:pointer; }
+.kwl-note { font-size:.78rem; color:#a78bfa; margin-top:10px; }
+/* 플립카드 */
+.flip-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; }
+.flip { perspective:800px; height:190px; cursor:pointer; }
+.flip:focus-visible { outline:3px solid #fbbf24; outline-offset:4px; border-radius:14px; }
+.flip-inner { position:relative; width:100%; height:100%; transition:transform .6s; transform-style:preserve-3d; }
+.flip.on .flip-inner { transform:rotateY(180deg); }
+.flip-face { position:absolute; inset:0; backface-visibility:hidden; border-radius:14px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:14px; text-align:center; }
+.flip-front { background:linear-gradient(135deg,#334155,#1e293b); border:2px solid #64748b; }
+.flip-front .fi { font-size:2.2rem; margin-bottom:8px; }
+.flip-front b { font-size:.98rem; color:#7dd3fc; line-height:1.4; }
+.flip-front span { font-size:.72rem; color:#64748b; margin-top:8px; }
+.flip-back { background:linear-gradient(135deg,#0c4a6e,#075985); border:2px solid #38bdf8; transform:rotateY(180deg); font-size:.8rem; line-height:1.55; color:#e0f2fe; overflow:auto; }
+.flip-back b { color:#bae6fd; display:block; margin-bottom:6px; }
+/* 퀴즈 */
+.mq-item { margin-bottom:18px; } .mq-q { font-size:.95rem; margin-bottom:10px; line-height:1.6; } .mq-q .qnum { color:#7dd3fc; font-weight:700; }
+.mq-opts { display:flex; gap:8px; flex-wrap:wrap; }
+.mq-btn { background:#334155; color:#e2e8f0; border:1px solid #64748b; border-radius:999px; padding:7px 16px; font-size:.85rem; cursor:pointer; transition:.2s; font-family:inherit; }
+.mq-btn:hover:not(:disabled) { border-color:#38bdf8; color:#7dd3fc; } .mq-btn.correct { background:#14532d; border-color:#4ade80; color:#bbf7d0; } .mq-btn.wrong { background:#7f1d1d; border-color:#f87171; color:#fecaca; } .mq-btn:disabled { cursor:default; opacity:.85; }
+.mq-fb { font-size:.82rem; margin-top:8px; min-height:1.2em; line-height:1.6; } .mq-fb.ok { color:#4ade80; } .mq-fb.no { color:#f87171; }
+/* 안전 게임 */
+.sit { background:linear-gradient(135deg,#1e293b,#0f172a); border:2px solid #64748b; border-radius:14px; padding:22px 18px; text-align:center; margin-bottom:16px; }
+.sit .se { font-size:2.6rem; display:block; margin-bottom:8px; }
+.sit .st { font-size:1.08rem; font-weight:700; color:#e2e8f0; line-height:1.6; }
+.sort-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.sort-btn { border-radius:12px; padding:13px 30px; font-size:1rem; font-weight:800; cursor:pointer; font-family:inherit; border:2px solid; transition:.18s; }
+.sort-btn.safe { background:rgba(74,222,128,.12); border-color:#4ade80; color:#86efac; }
+.sort-btn.risk { background:rgba(248,113,113,.12); border-color:#f87171; color:#fca5a5; }
+.sort-btn:hover:not(:disabled) { transform:translateY(-3px); } .sort-btn:disabled { opacity:.5; cursor:default; }
+.sort-fb { text-align:center; margin-top:14px; font-size:.9rem; min-height:2.6em; line-height:1.6; } .sort-fb.ok { color:#4ade80; } .sort-fb.no { color:#f87171; }
+.sort-prog { text-align:center; font-size:.82rem; color:#94a3b8; margin-top:10px; }
+.game-nav { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:10px; margin-top:14px; }
+.game-nav [hidden] { display:none !important; }
+.rules { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin-top:16px; }
+.rule { background:rgba(15,23,42,.6); border:1px solid #475569; border-radius:12px; padding:12px; font-size:.82rem; line-height:1.5; text-align:center; transition:.3s; }
+.rule.lit { border-color:#4ade80; background:rgba(74,222,128,.12); }
+.rule .re { font-size:1.5rem; display:block; margin-bottom:4px; }
+.rule b { color:#86efac; display:block; }
+/* AR */
+.cmp2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:720px){ .cmp2{grid-template-columns:1fr} }
+.cmp-card { border-radius:14px; padding:16px; border:2px solid; background:rgba(15,23,42,.5); }
+.cmp-card.mv { border-color:#a78bfa; } .cmp-card.ar { border-color:#38bdf8; }
+.cmp-card h4 { font-size:1.02rem; margin-bottom:8px; } .cmp-card.mv h4 { color:#c4b5fd; } .cmp-card.ar h4 { color:#7dd3fc; }
+.cmp-card svg { width:100%; height:auto; background:#0f172a; border-radius:10px; margin-bottom:10px; }
+.cmp-card p { font-size:.86rem; line-height:1.65; color:#cbd5e1; }
+.cmp-card .k { margin-top:8px; font-size:.8rem; background:rgba(15,23,42,.6); border-radius:8px; padding:8px 10px; color:#e2e8f0; }
+.tb-check { background:rgba(251,191,36,.07); border:1px dashed rgba(251,191,36,.45); border-radius:14px; padding:18px 20px; }
+.tb-check h3 { color:#fde68a; font-size:1rem; margin-bottom:10px; }
+.tb-check .q { font-size:.92rem; line-height:1.8; margin-bottom:10px; }
+.tb-check input[type=text] { background:#0f172a; color:#fde68a; border:1px solid #64748b; border-radius:6px; padding:4px 8px; width:90px; font-family:inherit; font-size:.9rem; text-align:center; }
+.tb-check .ox button { background:#334155; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:6px 16px; margin-right:6px; cursor:pointer; font-family:inherit; font-weight:800; }
+.tb-check .ox button.on { background:#0284c7; border-color:#38bdf8; }
+.tb-check .fb { font-size:.84rem; margin-top:8px; min-height:1.2em; } .tb-check .fb.ok { color:#4ade80; } .tb-check .fb.no { color:#f87171; }
+.inquiry { margin-top:16px; background:rgba(167,139,250,.08); border:1px dashed rgba(167,139,250,.5); border-radius:12px; padding:14px 16px; }
+.inquiry h4 { color:#c4b5fd; font-size:.95rem; margin-bottom:8px; } .inquiry p { font-size:.85rem; color:#cbd5e1; line-height:1.6; margin-bottom:8px; }
+.inquiry textarea { width:100%; min-height:64px; background:#0f172a; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:9px 11px; font-family:inherit; font-size:.86rem; resize:vertical; }
+.inquiry .iq-row { display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; } .iq-saved { font-size:.78rem; color:#a78bfa; }
+.self-check { background:rgba(74,222,128,.07); border:1px solid rgba(74,222,128,.35); border-radius:14px; padding:20px; }
+.self-check h3 { color:#86efac; font-size:1rem; margin-bottom:12px; }
+.sc-item { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:.9rem; line-height:1.55; }
+.sc-item input { margin-top:3px; width:16px; height:16px; accent-color:#4ade80; cursor:pointer; flex-shrink:0; }
+.sc-progress { margin-top:12px; font-size:.85rem; color:#86efac; }
+.next-link { display:block; text-align:center; margin-top:34px; }
+.next-link a { display:inline-block; background:linear-gradient(135deg,#a78bfa,#7c3aed); color:#f8fafc; font-weight:800; text-decoration:none; border-radius:12px; padding:14px 34px; font-size:1rem; transition:.2s; }
+.next-link a:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(167,139,250,.35); }
+</style>
+<link rel="stylesheet" href="assets/app.css">
+<script src="assets/app.js"></script>
+</head>
+<body class="legacy" data-lesson="3">
+<div class="container">
+  <div class="top-nav"><a href="sim_process.html">← 2차시: 과정</a><a href="index.html">🏠 홈</a><a href="activity_quiz.html?unit=1">01 소단원 형성평가 →</a></div>
+  <span class="lesson-tag">3차시</span><span class="unit-tag">01 정보 통신 기술의 이해 · 교과서 211쪽</span>
+  <h1>🔐 정보 통신 기술의 특징과 안전한 사용</h1>
+  <div class="goal-box"><b>학습 목표</b><br>
+    ① 정보 통신 기술의 <b>4가지 특징</b>을 사례에 적용하여 설명할 수 있다.<br>
+    ② <b>디지털 기기를 안전하게 사용하는 수칙</b>을 알고 위험한 상황을 판단할 수 있다.<br>
+    ③ <b>메타버스</b>와 <b>증강 현실(AR)</b>의 차이를 설명할 수 있다.</div>
+  <div class="flow-bar"><span><b>0</b> 자기점검 2분</span><span><b>1</b> 4가지 특징 7분</span><span><b>2</b> 특징 적용 5분</span><span><b>3</b> 안전 판단 게임 12분</span><span><b>4</b> 메타버스·AR 7분</span><span><b>5</b> 적용 퀴즈 4분</span><span><b>6</b> 정리 4분</span></div>
+
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">2분 · 🧠 메타인지</span></div>
+  <div class="kwl"><h3>📋 나는 지금 얼마나 알고 있을까?</h3><div class="kwl-row">
+    <div class="kwl-item"><span>정보 통신 기술의 특징을 2가지 이상 말할 수 있다</span><select><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+    <div class="kwl-item"><span>의심스러운 문자·메일을 받았을 때 어떻게 해야 하는지 안다</span><select><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+    <div class="kwl-item"><span>메타버스와 AR(증강 현실)의 차이를 안다</span><select><option value="">선택</option><option>전혀 모름</option><option>들어봤음</option><option>설명 가능</option></select></div>
+  </div><div class="kwl-note">💡 "모른다"고 체크해도 괜찮아요. 자신의 상태를 아는 것이 메타인지의 시작입니다!</div></div>
+
+  <!-- STEP 1 -->
+  <div class="step-title"><span class="step-num">1</span> 정보 통신 기술의 4가지 특징 <span class="step-time">7분 · 개념</span></div>
+  <p class="step-desc">기술적 발전, 사용 환경, 이용 매체에 따라 차이는 있지만, 정보 통신 기술은 일반적으로 다음 공통 특징을 가집니다. (교과서 그림 Ⅳ-20) 카드를 <b>클릭</b>해 뒤집어 보세요.</p>
+  <div class="flip-grid">
+    <div class="flip"><div class="flip-inner"><div class="flip-face flip-front"><div class="fi">🌍</div><b>시간과 공간의<br>제약 극복</b><span>클릭해서 확인</span></div><div class="flip-face flip-back"><b>시간과 공간의 제약 극복</b>멀리 떨어진 사람과 언제든 만날 수 있다. 예) 메타버스에서 만남·행사, 해외 친구와 화상 수업, 밤에도 열려 있는 온라인 도서관</div></div></div>
+    <div class="flip"><div class="flip-inner"><div class="flip-face flip-front"><div class="fi">📱</div><b>다양한 매체·기기로<br>실시간 소통</b><span>클릭해서 확인</span></div><div class="flip-face flip-back"><b>다양한 매체와 기기</b>스마트폰·태블릿·PC·워치 등으로 실시간으로 정보를 주고받는다. 예) 집 밖에서 스마트폰으로 가전 제어, 실시간 번역</div></div></div>
+    <div class="flip"><div class="flip-inner"><div class="flip-face flip-front"><div class="fi">☁️</div><b>정보의 무한한<br>저장과 공유</b><span>클릭해서 확인</span></div><div class="flip-face flip-back"><b>많은 정보의 저장과 공유</b>디지털 기술로 많은 정보를 저장·공유할 수 있다. 실제 저장량은 용량·요금제의 제한을 받고, 공유 범위는 접근 권한에 따라 달라진다. 예) 학급 자료 함께 편집</div></div></div>
+    <div class="flip"><div class="flip-inner"><div class="flip-face flip-front"><div class="fi">🔐</div><b>정보 보안이<br>매우 중요</b><span>클릭해서 확인</span></div><div class="flip-face flip-back"><b>정보 보안의 중요성</b>정보가 여러 방법으로 공개되므로 개인 정보와 자료를 지키는 보안이 매우 중요하다. 예) 비밀번호 관리, 백신, 출처 불명 메일 열지 않기</div></div></div>
+  </div>
+  <div class="hook">🔑 앞의 세 가지는 정보 통신 기술의 <b>편리함</b>이고, 넷째는 그 편리함 때문에 생기는 <b>책임</b>입니다. 교과서의 "무한한 저장과 공유"는 저장·공유 능력의 큰 확장을 나타냅니다. 실제 서비스에는 <b>용량과 접근 권한의 제한</b>이 있으므로 공유 대상을 확인해야 합니다.</div>
+
+  <!-- STEP 2 -->
+  <div class="step-title"><span class="step-num">2</span> 어떤 특징일까? <span class="step-time">5분 · 적용</span></div>
+  <div class="panel" id="mq1">
+    <div class="mq-item" data-answer="시간과 공간의 제약 극복" data-opts="시간과 공간의 제약 극복|다양한 매체와 기기|무한한 저장과 공유|정보 보안의 중요성" data-why="멀리 있는 사람들이 가상 공간에서 함께 모이는 것은 시간·공간의 제약을 극복한 사례입니다."><div class="mq-q"><span class="qnum">Q1.</span> 전학 간 친구와 메타버스 교실에서 만나 함께 과제를 했다.</div><div class="mq-opts"></div><div class="mq-fb"></div></div>
+    <div class="mq-item" data-answer="무한한 저장과 공유" data-opts="시간과 공간의 제약 극복|다양한 매체와 기기|무한한 저장과 공유|정보 보안의 중요성" data-why="대량의 정보를 저장하고 함께 쓰는 특징의 사례입니다. 실제 서비스의 용량과 공유 권한에는 제한이 있습니다."><div class="mq-q"><span class="qnum">Q2.</span> 수학여행 사진 3,000장을 클라우드에 올려 반 전체가 내려받았다.</div><div class="mq-opts"></div><div class="mq-fb"></div></div>
+    <div class="mq-item" data-answer="정보 보안의 중요성" data-opts="시간과 공간의 제약 극복|다양한 매체와 기기|무한한 저장과 공유|정보 보안의 중요성" data-why="개인 정보 유출 사고는 정보가 여러 방법으로 공개될 수 있기에 보안이 중요함을 보여 줍니다."><div class="mq-q"><span class="qnum">Q3.</span> 어느 쇼핑몰에서 회원 100만 명의 전화번호가 유출되어 뉴스에 나왔다.</div><div class="mq-opts"></div><div class="mq-fb"></div></div>
+    <div style="text-align:center;margin-top:6px;font-size:.9rem" id="mq1Score"></div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-title"><span class="step-num">3</span> 디지털 기기 안전하게 사용하기 — 상황 판단 게임 <span class="step-time">12분 · 🎮 게임</span></div>
+  <p class="step-desc">각 상황의 행동이 <b>안전한지 위험한지</b> 판단하세요. 해설을 읽고 <b>다음 문제</b>를 누르면 이어집니다. 맞힐 때마다 아래 <b>6가지 수칙</b>에 불이 켜집니다. 총 12문제. (교과서 211쪽)</p>
+  <div class="panel">
+    <div class="sit"><span class="se" id="sitE">📱</span><div class="st" id="sitT"></div></div>
+    <div class="sort-btns"><button class="sort-btn safe" id="btnSafe">✅ 안전해요</button><button class="sort-btn risk" id="btnRisk">⚠️ 위험해요</button></div>
+    <div class="sort-fb" id="sitFb" role="status" aria-live="polite"></div><div class="sort-prog" id="sitProg"></div>
+    <div class="game-nav"><button class="btn-main" id="sitNext" type="button" hidden>다음 문제 →</button><button class="btn-sub" id="sitReset" type="button">↺ 다시 하기</button></div>
+    <div class="rules" id="rules"></div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-title"><span class="step-num">4</span> 알고 보면 쓸모 있는 가·가 — 메타버스와 AR 글래스 <span class="step-time">7분 · 심화</span></div>
+  <p class="step-desc">최근 정보 통신 기술 중에서 <b>메타버스</b>와 <b>AR 글래스</b>가 주목받고 있습니다. 둘은 무엇이 다를까요?</p>
+  <div class="panel">
+    <div class="cmp2">
+      <div class="cmp-card mv"><h4>🌐 메타버스 (Metaverse)</h4>
+        <svg viewBox="0 0 300 150"><rect width="300" height="150" fill="#1e1b4b"/><g fill="none" stroke="#6d5bd0" stroke-width="1"><line x1="0" y1="110" x2="300" y2="110"/><line x1="0" y1="130" x2="300" y2="130"/><line x1="40" y1="90" x2="0" y2="150"/><line x1="150" y1="90" x2="150" y2="150"/><line x1="260" y1="90" x2="300" y2="150"/></g><rect x="60" y="40" width="50" height="60" fill="#4c1d95" stroke="#a78bfa"/><rect x="190" y="30" width="50" height="70" fill="#4c1d95" stroke="#a78bfa"/><circle cx="150" cy="80" r="9" fill="#fbbf24"/><rect x="143" y="89" width="14" height="22" rx="4" fill="#fbbf24"/><circle cx="110" cy="92" r="7" fill="#f472b6"/><rect x="105" y="99" width="10" height="16" rx="3" fill="#f472b6"/><text x="150" y="22" font-size="11" fill="#c4b5fd" text-anchor="middle">가상 세계 속 아바타로 생활</text></svg>
+        <p><b>가상과 현실이 융합된 디지털 기반의 공간</b>. 현실 세계의 인물이 디지털 가상 아바타로 변해 업무·사회 생활·문화 경험 등을 하나의 연결된 공간에서 합니다. 전 세계 아바타가 함께 콘서트에 참여할 수 있습니다.</p>
+        <div class="k">🔑 <b>현실을 대신하는</b> 가상 공간 — "들어가서" 활동</div></div>
+      <div class="cmp-card ar"><h4>👓 AR 글래스 (증강 현실)</h4>
+        <svg viewBox="0 0 300 150"><rect width="300" height="150" fill="#0f172a"/><rect x="0" y="100" width="300" height="50" fill="#334155"/><rect x="40" y="55" width="70" height="45" fill="#475569"/><rect x="190" y="45" width="60" height="55" fill="#475569"/><rect x="118" y="40" width="64" height="60" rx="6" fill="none" stroke="#38bdf8" stroke-width="2.5"/><text x="150" y="60" font-size="9" fill="#7dd3fc" text-anchor="middle">📍 체육관 120 m</text><text x="150" y="76" font-size="9" fill="#7dd3fc" text-anchor="middle">→ 직진 후 좌회전</text><text x="150" y="92" font-size="9" fill="#4ade80" text-anchor="middle">🌡 23℃ 맑음</text><text x="150" y="22" font-size="11" fill="#7dd3fc" text-anchor="middle">실제 풍경 위에 정보가 겹쳐 보임</text></svg>
+        <p><b>현실 세계에 3차원 가상 물체를 겹쳐 보여 주는</b> 증강 현실 기기. 일반 안경처럼 착용한 상태에서 대형 스크린 수준의 화면을 띄우고, 사용자 중심으로 360° 공간을 활용합니다.</p>
+        <div class="k">🔑 <b>현실 위에 덧붙이는</b> 정보 — "쓰고 보며" 활동</div></div>
+    </div>
+    <div class="panel" id="mq2" style="margin-top:14px;background:rgba(15,23,42,.5)">
+      <div class="mq-item" data-answer="AR 글래스(증강 현실)" data-opts="메타버스|AR 글래스(증강 현실)" data-why="실제로 보이는 거리 위에 길 안내가 겹쳐 보이는 것은 현실에 가상 정보를 덧붙이는 증강 현실입니다."><div class="mq-q"><span class="qnum">판별.</span> 안경을 쓰고 걸으니 실제 길 위에 화살표와 "150 m 앞 편의점"이 떠 보였다.</div><div class="mq-opts"></div><div class="mq-fb"></div></div>
+      <div class="mq-item" data-answer="메타버스" data-opts="메타버스|AR 글래스(증강 현실)" data-why="아바타로 가상 공간에 들어가 활동하는 것은 메타버스입니다."><div class="mq-q"><span class="qnum">판별.</span> 내 아바타가 가상 강당에서 다른 학교 아바타들과 함께 졸업식에 참석했다.</div><div class="mq-opts"></div><div class="mq-fb"></div></div>
+    </div>
+    <div class="inquiry"><h4>💭 생각 나누기</h4><p>메타버스나 AR 글래스가 <b>학교 생활</b>에서 어떻게 쓰이면 좋을지, 그리고 어떤 <b>주의할 점</b>이 있을지 한 가지씩 적어 보세요. 가상의 사례로 작성하고 이름·연락처 등 개인 정보는 넣지 마세요.</p><textarea id="iqAr" aria-label="메타버스 또는 AR 활용 아이디어와 주의할 점" placeholder="예) AR 글래스로 과학실 기구 이름이 바로 보이면 좋겠다 / 주의: 수업 중 다른 화면을 띄우면 집중이 흐트러질 수 있다"></textarea><div class="iq-row"><button class="btn-sub" onclick="saveIq('iqAr')">💾 이 브라우저에 저장</button><span class="iq-saved" id="iqAr-saved" role="status" aria-live="polite"></span></div></div>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="step-title"><span class="step-num">5</span> 적용 퀴즈 <span class="step-time">4분</span></div>
+  <div class="panel" id="mq3">
+    <div class="mq-item" data-answer="출처 불분명한 메일 열지 않기" data-opts="공식 앱만 내려받기|비밀번호 주기적 변경|출처 불분명한 메일 열지 않기|백신 사용" data-why="모르는 사람이 보낸 첨부 파일은 악성 코드일 수 있으므로 열지 않는 것이 수칙입니다."><div class="mq-q"><span class="qnum">Q1.</span> "택배 배송 실패 — 첨부 파일을 확인하세요"라는 모르는 주소의 메일이 왔다. 이때 지켜야 할 수칙은?</div><div class="mq-opts"></div><div class="mq-fb"></div></div>
+    <div class="mq-item" data-answer="공식 앱 마켓에서만 내려받는다" data-opts="친구가 보낸 설치 파일을 받는다|공식 앱 마켓에서만 내려받는다|광고 링크로 받으면 무료라서 좋다|아무 사이트나 괜찮다" data-why="공식 앱만 내려받기 — 비공식 설치 파일에는 악성 코드가 숨어 있을 수 있습니다."><div class="mq-q"><span class="qnum">Q2.</span> 새 게임 앱을 설치하려 한다. 안전한 방법은?</div><div class="mq-opts"></div><div class="mq-fb"></div></div>
+    <div style="text-align:center;margin-top:6px;font-size:.9rem" id="mq3Score"></div>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="step-title"><span class="step-num">6</span> 스스로 확인하기 <span class="step-time">4분 · 교과서 211쪽 + 🧠 메타인지</span></div>
+  <div class="tb-check"><h3>📘 교과서 「스스로 확인하기」(1차시 복습)</h3>
+    <div class="q">① 측정을 통해 얻은 단순한 값을 ( <input type="text" id="tb1a" placeholder="?"> ), 이를 목적과 의도에 맞게 가공한 것을 ( <input type="text" id="tb1b" placeholder="?"> )라고 한다.</div>
+    <div class="q">② 언어와 문자 사용을 통해 정보 전달 속도와 소통의 범위가 줄어들었다. <span class="ox"><button data-v="O">O</button><button data-v="X">X</button></span></div>
+    <button class="btn-main" id="tbCheck" style="margin-top:6px">정답 확인</button><div class="fb" id="tbFb"></div></div>
+  <div class="self-check" style="margin-top:16px"><h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>정보 통신 기술의 <b>4가지 특징</b>을 사례와 함께 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>디지털 기기 안전 수칙 <b>6가지</b> 중 4가지 이상을 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>의심스러운 메시지·메일을 받았을 때 <b>어떻게 할지</b> 안다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>메타버스</b>(가상 공간에 들어감)와 <b>AR</b>(현실 위에 덧붙임)의 차이를 설명할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress">체크: 0 / 4</div></div>
+  <div class="next-link"><a href="activity_quiz.html?unit=1">01 소단원 형성평가 →</a></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+function saveIq(id){
+  const status=$(id+'-saved');
+  try{
+    localStorage.setItem('ict-'+id, $(id).value);
+    if(status) status.textContent='✔ 이 브라우저에 저장됨 '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'});
+  }catch(e){
+    if(status) status.textContent='저장하지 못했습니다. 작성한 글을 따로 복사해 보관해 주세요.';
+  }
+}
+['iqAr'].forEach(id=>{ try{ const v=localStorage.getItem('ict-'+id); if(v!==null) $(id).value=v; }catch(e){ $(id+'-saved').textContent='저장한 글을 불러오지 못했습니다. 작성은 계속할 수 있습니다.'; } });
+document.querySelectorAll('.flip').forEach(f=>{
+  f.tabIndex=0; f.setAttribute('role','button'); f.setAttribute('aria-expanded','false');
+  const front=f.querySelector('.flip-front'), back=f.querySelector('.flip-back'); back.setAttribute('aria-hidden','true');
+  const toggle=()=>{ const open=f.classList.toggle('on'); f.setAttribute('aria-expanded',String(open)); front.setAttribute('aria-hidden',String(open)); back.setAttribute('aria-hidden',String(!open)); };
+  f.addEventListener('click',toggle);
+  f.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();} });
+});
+
+function setupMq(panelId, scoreId, msgOk, msgNo){
+  const items=document.querySelectorAll('#'+panelId+' .mq-item'); let done=0, ok=0;
+  items.forEach(it=>{ const ans=it.dataset.answer, why=it.dataset.why, opts=it.querySelector('.mq-opts'), fb=it.querySelector('.mq-fb');
+    it.dataset.opts.split('|').forEach(o=>{ const b=document.createElement('button'); b.className='mq-btn'; b.textContent=o; b.onclick=()=>{ if(it.dataset.done) return; it.dataset.done='1'; done++; opts.querySelectorAll('.mq-btn').forEach(x=>x.disabled=true);
+      if(o===ans){ b.classList.add('correct'); ok++; fb.innerHTML='⭕ 정답! '+why; fb.className='mq-fb ok'; } else { b.classList.add('wrong'); opts.querySelectorAll('.mq-btn').forEach(x=>{ if(x.textContent===ans) x.classList.add('correct'); }); fb.innerHTML='❌ 정답은 「<b>'+ans+'</b>」. '+why; fb.className='mq-fb no'; }
+      if(done===items.length && scoreId) $(scoreId).innerHTML='🎯 결과: <b style="color:#7dd3fc">'+ok+' / '+items.length+'</b>'+(ok===items.length?' — '+msgOk:' — '+msgNo); }; opts.appendChild(b); }); });
+}
+setupMq('mq1','mq1Score','훌륭해요!','플립카드를 다시 보고 복습해 보세요.');
+setupMq('mq2',null); setupMq('mq3','mq3Score','안전 수칙을 잘 알고 있어요!','3단계 수칙을 다시 확인해 보세요.');
+
+/* ===== STEP 3 안전 게임 ===== */
+const RULES=[ {k:'pw',e:'🔑',t:'비밀번호 설정 및 주기적 변경'}, {k:'app',e:'📲',t:'공식 앱만 내려받기'}, {k:'msg',e:'🗑️',t:'의심스러운 메시지 바로 삭제'}, {k:'vac',e:'🛡️',t:'PC와 스마트폰 백신 사용'}, {k:'site',e:'🚫',t:'신뢰할 수 없는 사이트 방문 금지'}, {k:'mail',e:'📧',t:'출처 불분명한 메일 열지 않기'} ];
+const SITS=[
+  { e:'🔑', t:'모든 사이트의 비밀번호를 "1234"로 똑같이 쓰고 3년째 바꾸지 않았다.', safe:false, r:'pw', why:'하나가 뚫리면 전부 뚫립니다. 사이트마다 다르게, 주기적으로 바꾸세요.' },
+  { e:'🔐', t:'비밀번호를 영문+숫자+기호 조합으로 만들고 6개월마다 바꾼다.', safe:true, r:'pw', why:'좋은 습관! 길고 복잡하게, 주기적으로.' },
+  { e:'📲', t:'인기 게임을 "무료 다운로드" 광고 링크에서 받아 설치했다.', safe:false, r:'app', why:'비공식 파일에는 악성 코드가 숨어 있을 수 있어요. 공식 앱 마켓만 이용하세요.' },
+  { e:'🏪', t:'앱은 꼭 공식 앱 마켓(앱스토어·플레이스토어)에서만 내려받는다.', safe:true, r:'app', why:'공식 마켓은 검수를 거치므로 훨씬 안전합니다.' },
+  { e:'💬', t:'"[Web발신] 고객님 택배 주소 불일치, 링크 확인" 문자가 와서 링크를 눌렀다.', safe:false, r:'msg', why:'전형적인 스미싱! 의심스러운 메시지는 누르지 말고 바로 삭제하세요.' },
+  { e:'🗑️', t:'모르는 번호로 온 "당첨 축하, 링크 클릭" 문자를 열지 않고 삭제했다.', safe:true, r:'msg', why:'잘했어요. 의심스러운 메시지는 바로 삭제가 정답.' },
+  { e:'🛡️', t:'백신 프로그램이 느리다고 PC에서 지워 버렸다.', safe:false, r:'vac', why:'백신은 악성 코드를 막는 최소한의 방패입니다. PC와 스마트폰 모두 사용하세요.' },
+  { e:'🔄', t:'스마트폰 백신 앱을 설치하고 매주 검사한다.', safe:true, r:'vac', why:'스마트폰도 컴퓨터예요. 백신과 정기 검사가 필요합니다.' },
+  { e:'🌐', t:'주소가 이상한 사이트에서 "회원가입하면 기프티콘"이라길래 이름·전화번호를 입력했다.', safe:false, r:'site', why:'신뢰할 수 없는 사이트에 개인 정보를 주면 유출·사기로 이어집니다.' },
+  { e:'🔒', t:'주소창에 자물쇠(https)가 없고 광고가 가득한 사이트는 바로 나온다.', safe:true, r:'site', why:'신뢰할 수 없는 사이트는 방문하지 않는 것이 수칙입니다.' },
+  { e:'📧', t:'모르는 사람이 보낸 "청구서.zip" 첨부 파일을 궁금해서 열어 봤다.', safe:false, r:'mail', why:'출처 불분명한 메일의 첨부 파일은 열지 마세요. 랜섬웨어의 단골 수법입니다.' },
+  { e:'📨', t:'보낸 사람을 모르는 메일은 열지 않고 스팸으로 신고했다.', safe:true, r:'mail', why:'출처가 불분명한 메일은 열지 않기 — 정확한 대응입니다.' },
+];
+let sOrder=[], sIdx=0, sOk=0, sAnswered=false; const lit=new Set();
+RULES.forEach(r=>{ const d=document.createElement('div'); d.className='rule'; d.id='rule-'+r.k; d.innerHTML='<span class="re">'+r.e+'</span><b>'+r.t+'</b>'; $('rules').appendChild(d); });
+function sitRender(){
+  sAnswered=false; $('sitNext').hidden=true;
+  if(sIdx>=sOrder.length){ $('sitE').textContent='🎉'; $('sitT').textContent='완료!'; $('btnSafe').disabled=true; $('btnRisk').disabled=true; $('sitFb').innerHTML='<span style="color:#7dd3fc">최종 '+sOk+' / '+sOrder.length+' — '+(sOk===sOrder.length?'디지털 안전 전문가!':sOk>=9?'잘했어요! 틀린 상황을 떠올리며 수칙을 복습해 보세요.':'6가지 수칙을 다시 읽고 도전!')+'</span>'; $('sitFb').className='sort-fb'; $('sitProg').textContent='풀이 완료 '+sOrder.length+' / '+sOrder.length+' · 정답 '+sOk+'개'; return; }
+  const s=sOrder[sIdx]; $('sitE').textContent=s.e; $('sitT').textContent=s.t; $('btnSafe').disabled=false; $('btnRisk').disabled=false;
+  $('sitFb').textContent=''; $('sitFb').className='sort-fb';
+  $('sitProg').textContent='풀이 '+sIdx+' / '+sOrder.length+' · 정답 '+sOk+'개';
+}
+function sitAnswer(pickSafe){ if(sAnswered||sIdx>=sOrder.length) return; sAnswered=true; $('btnSafe').disabled=true; $('btnRisk').disabled=true; const s=sOrder[sIdx]; const fb=$('sitFb'); const rule=RULES.find(r=>r.k===s.r);
+  if(pickSafe===s.safe){ sOk++; lit.add(s.r); $('rule-'+s.r).classList.add('lit'); fb.innerHTML='⭕ 정답! '+s.why+'<br><span style="color:#86efac">💡 수칙: '+rule.t+'</span>'; fb.className='sort-fb ok'; }
+  else { fb.innerHTML='❌ 이 행동은 <b>'+(s.safe?'안전':'위험')+'</b>합니다. '+s.why+'<br><span style="color:#fca5a5">💡 수칙: '+rule.t+'</span>'; fb.className='sort-fb no'; }
+  $('sitProg').textContent='풀이 '+(sIdx+1)+' / '+sOrder.length+' · 정답 '+sOk+'개';
+  $('sitNext').textContent=sIdx===sOrder.length-1?'결과 보기':'다음 문제 →'; $('sitNext').hidden=false;
+  $('sitNext').focus({preventScroll:true});
+}
+function sitInit(){ sOrder=[...SITS].sort(()=>Math.random()-.5); sIdx=0; sOk=0; lit.clear(); document.querySelectorAll('.rule').forEach(r=>r.classList.remove('lit')); sitRender(); }
+$('sitNext').onclick=()=>{ if(!sAnswered) return; sIdx++; sitRender(); (sIdx<sOrder.length?$('btnSafe'):$('sitReset')).focus({preventScroll:true}); };
+$('btnSafe').onclick=()=>sitAnswer(true); $('btnRisk').onclick=()=>sitAnswer(false); $('sitReset').onclick=sitInit; sitInit();
+
+/* ===== 교과서 확인 ===== */
+let oxPick=null; document.querySelectorAll('.tb-check .ox button').forEach(b=>b.onclick=()=>{ oxPick=b.dataset.v; document.querySelectorAll('.tb-check .ox button').forEach(x=>x.classList.toggle('on',x===b)); });
+$('tbCheck').onclick=()=>{ const a=$('tb1a').value.trim(), b=$('tb1b').value.trim(); const ok1=a==='자료'&&b==='정보'; const ok2=oxPick==='X'; const fb=$('tbFb');
+  fb.innerHTML=(ok1?'① ⭕ 자료 → 정보. ':'① ❌ 정답은 ( 자료 ), ( 정보 ). ')+'<br>'+(ok2?'② ⭕ X — 전달 속도는 빨라지고 범위는 <b>넓어졌습니다</b>.':'② ❌ 정답은 X. 언어·문자는 속도를 높이고 범위를 <b>넓혔습니다</b>.'); fb.className='fb '+(ok1&&ok2?'ok':'no'); };
+const SC=document.querySelectorAll('.sc').length;
+document.querySelectorAll('.sc').forEach(c=>c.addEventListener('change',()=>{ const n=document.querySelectorAll('.sc:checked').length; const p=$('scProgress'); p.textContent='체크: '+n+' / '+SC; if(n===SC) p.textContent+=' — 🌟 01 소단원 형성평가에 도전해 보세요!'; }));
+</script>
+<a href="index.html" title="처음 화면으로" style="position:fixed;right:18px;bottom:18px;z-index:9999;display:inline-flex;align-items:center;gap:6px;background:#38bdf8;color:#0f172a;font-weight:800;font-size:.9rem;text-decoration:none;border-radius:999px;padding:10px 16px;box-shadow:0 6px 18px rgba(0,0,0,.35);font-family:'Segoe UI','Malgun Gothic',sans-serif">🏠 홈</a>
+
+</body>
+</html>

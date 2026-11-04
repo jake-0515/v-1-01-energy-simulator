@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>8차시 · 인공지능 툴 제작 작업대</title>
+  <link rel="stylesheet" href="assets/app.css">
+  <style>
+    .studio-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}.tool-stage{border:1px solid #408b87;border-radius:20px;background:linear-gradient(160deg,#153e44,#17263c);padding:25px;position:sticky;top:134px}.tool-stage .stage-label{font-size:.76rem;letter-spacing:.12em;color:#87e9d5;margin:0 0 14px}.tool-stage h3{font-size:1.5rem;margin:0 0 10px;word-break:break-word}.tool-stage p{line-height:1.7}.sim-label{display:inline-block;background:#e6b65d22;color:#ffda92;border:1px solid #b28f4d66;border-radius:7px;padding:6px 9px;font-size:.76rem}.tool-response{background:#0d192a;border:1px solid #40576b;border-radius:12px;min-height:170px;padding:18px;margin-top:14px;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.8}.builder-toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0}.version-row{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.version-row .field{flex:1;min-width:150px}.test-card{border:1px solid #364c63;border-radius:12px;padding:16px;margin-top:10px;background:#111e31}.test-card header{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.test-card h4{margin:0;font-size:.93rem}.test-card .test-input{font-size:.9rem;color:#c4d5e8;white-space:pre-wrap}.test-card summary{cursor:pointer;color:#87dcd0;padding:10px 0}.test-card pre{font:inherit;font-size:.85rem;white-space:pre-wrap;line-height:1.8}.version-compare{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.version-card{padding:18px;border:1px solid #3c5269;background:#102033;border-radius:12px}.version-card h3{margin-top:0;font-size:1rem}.version-card pre{font:inherit;font-size:.86rem;white-space:pre-wrap;line-height:1.8;overflow-wrap:anywhere}.version-card details{font-size:.84rem}.version-card summary{cursor:pointer;color:#8edde1}.builder-save{min-height:22px;color:#a8d2cb;font-size:.84rem}.export-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.export-card{border:1px solid #3d536b;border-radius:14px;padding:20px;background:#132239}.export-card h3{margin:0 0 8px;font-size:1.05rem}.export-card p{font-size:.86rem;line-height:1.7;color:#b0c4d8}.builder-small{font-size:.84rem;color:#a6b9cc;line-height:1.7}.stage-metadata{margin-bottom:18px;color:#b9cedc}.clear-file{width:100%;font:inherit}.external-prompt{white-space:pre-wrap;overflow-wrap:anywhere;max-height:250px;overflow:auto;font-size:.86rem;line-height:1.75}.empty-state{padding:24px;border:1px dashed #425970;border-radius:12px;color:#9fb6c9;line-height:1.75}@media(max-width:900px){.studio-layout{grid-template-columns:1fr}.tool-stage{position:static}.export-cards{grid-template-columns:1fr}}@media(max-width:620px){.version-compare{grid-template-columns:1fr}}@media print{.builder-toolbar,.version-row,.export-cards,.button{display:none}.tool-stage{position:static}.studio-layout{grid-template-columns:1fr}.tool-response{background:#fff;color:#111}}
+  </style>
+  <script defer src="assets/app.js"></script><script defer src="assets/builder.js"></script>
+</head>
+<body class="lab" data-lesson="8">
+<main class="page">
+  <header class="lesson-hero">
+    <p class="eyebrow">03 인공지능 툴 제작하기 · 교과서 219~220쪽</p>
+    <h1>내 아이디어를<br>작동하는 도구로 만들어요</h1>
+    <p>제목과 입력창을 만들고, 같은 질문으로 버전을 비교하세요. 테스트에서 발견한 문제를 수정한 뒤 내 도구를 파일로 가져갑니다.</p>
+  </header>
+  <div class="callout">이 작업대는 <b>규칙 기반 학습 모형</b>입니다. 실제 생성형 AI와 연결되어 있지 않습니다. 세 가지 예시 주제는 입력 키워드와 출력 설정으로 답안 예시를 만들며, 자유주제는 프롬프트를 조립합니다.</div>
+  <section class="panel" aria-labelledby="builderTitle">
+    <div class="panel-head"><span class="step-badge">01</span><h2 id="builderTitle">도구를 만들고 바로 시험해요</h2></div>
+    <div class="studio-layout">
+      <div>
+        <div class="grid2">
+          <div class="field"><label for="toolTitle">도구 제목</label><input id="toolTitle" maxlength="100" placeholder="예: 우리 반 에너지 도우미"></div>
+          <div class="field"><label for="toolTopic">학습용 예시 주제</label><select id="toolTopic"><option value="energy">에너지 절약</option><option value="recycle">학교 분리배출</option><option value="study">학습 계획</option><option value="custom">나만의 자유주제</option></select></div>
+        </div>
+        <div class="field"><label for="toolDescription">설명 · 누구를 위해 무엇을 하나요?</label><textarea id="toolDescription" rows="2" maxlength="1200" placeholder="사용할 사람이 도구의 목적을 알 수 있게 적으세요."></textarea></div>
+        <div class="field"><label for="toolInputLabel">사용자에게 물어볼 내용</label><input id="toolInputLabel" maxlength="300" placeholder="예: 어디에서 어떤 전기가 낭비되고 있나요?"></div>
+        <div class="field"><label for="toolPrompt">도구의 프롬프트</label><textarea id="toolPrompt" rows="11" maxlength="18000" placeholder="7차시에서 설계한 프롬프트를 불러오거나 직접 작성하세요."></textarea></div>
+        <div class="builder-toolbar"><button type="button" class="button secondary" id="loadDesignedPrompt">7차시 설계로 조합</button><button type="button" class="button ghost" id="copyToolPrompt">프롬프트 복사</button><button type="button" class="button ghost" id="fillBuilderExample">선택 주제 예시 넣기</button></div>
+        <p class="builder-small">‘설계로 조합’은 현재 프롬프트를 7차시의 입력 요소로 바꿉니다. 자유로운 문장 지시의 효과는 실제 AI에서 따로 확인해야 합니다.</p>
+        <div class="grid2">
+          <div class="field"><label for="toolFormat">미리보기의 결과 형식</label><select id="toolFormat"><option value="steps">순서 있는 목록</option><option value="table">행동 · 이유 · 확인 표</option><option value="checklist">확인 체크리스트</option></select></div>
+          <div class="field"><label for="toolCount">미리보기의 제안 수</label><select id="toolCount"><option value="2">2개</option><option value="3">3개</option><option value="4">4개</option><option value="5">5개</option></select></div>
+        </div>
+        <p class="builder-small">미리보기는 위 두 설정과 사용자 입력 키워드에 반응합니다. 설정 변경만으로 프롬프트 본문이 바뀌지는 않으므로, 본문에도 같은 요구를 적어 주세요.</p>
+        <div class="builder-toolbar"><button class="button" type="button" id="saveTool">작업 저장</button><span id="builderSaveStatus" class="builder-save" role="status"></span></div>
+      </div>
+      <div class="tool-stage">
+        <p class="stage-label">MY TOOL · 실행 화면 미리보기</p>
+        <h3 id="previewTitle">나만의 문제 해결 도구</h3><p id="previewDescription" class="stage-metadata">제목·설명·프롬프트를 작성해 보세요.</p>
+        <span class="sim-label">규칙 기반 학습용 예시 · 실제 AI 응답 아님</span>
+        <div class="field" style="margin-top:16px"><label for="testInput" id="previewInputLabel">해결할 상황을 입력하세요.</label><textarea id="testInput" rows="4" maxlength="2000" placeholder="실명·전화번호 등 개인정보는 쓰지 마세요."></textarea></div>
+        <div class="builder-toolbar"><button class="button" type="button" id="runTool">시험 실행</button><button class="button secondary" type="button" id="sampleTestInput">테스트 예시 넣기</button></div>
+        <div id="toolResponse" class="tool-response" role="status" aria-live="polite">입력한 상황을 바꿔가며 시험해 보세요.
+
+확인할 것: 사용자가 바로 실천할 수 있나요? 확인되지 않은 내용은 없나요?</div>
+        <details style="margin-top:14px"><summary>실제 AI에서 확인하려면</summary><p class="builder-small">아래 버튼으로 완성 프롬프트와 테스트 입력을 복사한 뒤, 선생님이 허용한 AI 도구에 붙여넣어 실행하세요. 이 페이지에서는 자동으로 전송하지 않습니다.</p><button class="button secondary" type="button" id="copyRunPrompt">입력까지 포함해 복사</button></details>
+      </div>
+    </div>
+  </section>
+  <section class="panel" aria-labelledby="versionTitle">
+    <div class="panel-head"><span class="step-badge">02</span><h2 id="versionTitle">수정 전후를 같은 질문으로 비교해요</h2></div>
+    <p class="muted">첫 설계를 ‘버전 1’로 남기고 수정하세요. 비교할 때는 위의 <b>동일한 테스트 입력</b>을 사용합니다.</p>
+    <div class="version-row">
+      <div class="field"><label for="versionName">저장할 버전 이름</label><input id="versionName" maxlength="80" placeholder="예: 버전 1 · 첫 설계"></div>
+      <button class="button secondary" type="button" id="snapshotTool">현재 버전 기록</button>
+      <div class="field"><label for="compareVersion">비교할 이전 버전</label><select id="compareVersion"><option value="">먼저 버전을 기록하세요.</option></select></div>
+      <button class="button" type="button" id="compareTools">현재 수정안과 비교</button>
+    </div>
+    <div id="versionComparison" style="margin-top:18px"><div class="empty-state">버전을 기록하면 이전 프롬프트와 설정을 보관합니다. 단순히 글자를 더 썼는지보다, 문제 해결에 도움이 되는지 근거를 찾아보세요.</div></div>
+    <div class="field" style="margin-top:18px"><label for="revisionReason">무엇을 왜 수정했나요?</label><textarea id="revisionReason" rows="3" maxlength="2400" placeholder="예: 제안이 모호해서 행동과 확인 방법을 표로 보여 주도록 바꾸었다."></textarea></div>
+  </section>
+  <section class="panel" aria-labelledby="testTitle">
+    <div class="panel-head"><span class="step-badge">03</span><h2 id="testTitle">테스트 기록에서 개선점을 찾아요</h2></div>
+    <p class="muted">시험 실행 결과를 최근 20개까지 기록합니다. 실제 AI에서 확인했다면 이곳의 학습용 결과와 구분해 기록하세요.</p>
+    <div class="grid2">
+      <div class="field"><label for="externalEvidence">실제 AI에서 확인한 내용 · 선택</label><textarea id="externalEvidence" rows="3" maxlength="4000" placeholder="사용한 도구, 실행한 날짜, 실제 결과와 확인한 근거를 적으세요. 개인정보는 제외합니다."></textarea></div>
+      <div class="field"><label for="testConclusion">어떤 입력에서 잘되었고, 무엇이 부족했나요?</label><textarea id="testConclusion" rows="3" maxlength="2400" placeholder="일반적인 상황뿐 아니라 애매하거나 주제와 다른 입력도 시험해 보세요."></textarea></div>
+    </div>
+    <div id="testHistory"></div>
+  </section>
+  <section class="panel" aria-labelledby="exportTitle">
+    <div class="panel-head"><span class="step-badge">04</span><h2 id="exportTitle">내 결과물을 가져가요</h2></div>
+    <div class="export-cards">
+      <article class="export-card"><h3>작동하는 도구 파일</h3><p>입력창·학습용 응답·프롬프트 복사 기능을 담은 HTML 파일입니다. 내려받은 파일을 브라우저로 열어 실행합니다.</p><button class="button" type="button" id="exportStudentTool">내 도구 HTML 내려받기</button></article>
+      <article class="export-card"><h3>프로젝트 백업</h3><p>설계, 버전, 테스트, 평가 기록을 JSON으로 저장합니다. 다른 기기에서는 이 파일을 가져와 이어서 작업할 수 있습니다.</p><button class="button secondary" type="button" id="exportProject">프로젝트 JSON 내려받기</button></article>
+      <article class="export-card"><h3>백업 이어받기</h3><p>이 시뮬레이터에서 받은 JSON을 선택하세요. 파일을 확인한 뒤 현재 프로젝트를 바꿀지 결정합니다.</p><input class="clear-file" type="file" id="importProject" accept=".json,application/json" aria-label="프로젝트 JSON 선택"><div id="importPreview" aria-live="polite"></div></article>
+    </div>
+    <div class="builder-toolbar" style="margin-top:22px"><button type="button" class="button" id="goProjectReview">저장하고 9차시 평가로</button><span class="builder-small">친구에게 파일을 보여 주고, 평가 근거와 수정할 점을 기록해요.</span></div>
+  </section>
+</main>
+</body>
+</html>
