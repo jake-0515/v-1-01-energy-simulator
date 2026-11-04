@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>9차시 · 공유·평가·성찰</title>
+  <link rel="stylesheet" href="assets/app.css">
+  <style>
+    .project-summary{display:grid;grid-template-columns:2fr 1fr;gap:20px}.project-title{margin:0 0 8px;font-size:1.45rem}.summary-counts{display:flex;gap:12px;flex-wrap:wrap}.summary-count{padding:16px;border:1px solid #3b526a;background:#12233a;border-radius:12px;min-width:90px;text-align:center}.summary-count strong{display:block;font-size:1.6rem;color:#83e9d0}.summary-count span{font-size:.8rem;color:#adc2d7}.rubric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.rubric-card{border:1px solid #3b526a;border-radius:14px;padding:20px;background:#142237}.rubric-card h3{margin:0 0 7px;font-size:1.05rem}.rubric-card p{color:#a8bcd0;font-size:.88rem;line-height:1.7}.rating-buttons{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}.rating-buttons button{border:1px solid #4b6078;background:#20314a;color:#dce8f4;border-radius:8px;padding:9px 12px;font:inherit;font-size:.85rem;cursor:pointer}.rating-buttons button[aria-pressed="true"]{background:#11544e;border-color:#60d9c3;color:#cbfff0}.review-tabs{display:flex;gap:10px;margin:14px 0 22px}.review-tabs button[aria-pressed="true"]{background:#155e59;border-color:#70e0c8;color:#caffef}.review-progress{font-size:.9rem;color:#a7c6cf;margin:14px 0;line-height:1.7}.review-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.evidence-list{line-height:1.8;color:#c3d2e4;overflow-wrap:anywhere}.evidence-list pre{font:inherit;font-size:.85rem;white-space:pre-wrap;padding:16px;background:#0d1929;border:1px solid #34495f;border-radius:10px}.review-draft{padding:14px;border-left:3px solid #eab960;background:#46351944;border-radius:5px;color:#e3cc9b;font-size:.87rem;line-height:1.7}.review-print{display:none}.print-rubric{width:100%;border-collapse:collapse}.print-rubric th,.print-rubric td{border:1px solid #888;padding:8px;vertical-align:top;text-align:left;white-space:pre-wrap}.review-status{min-height:24px;font-size:.85rem;color:#9fd8ca}.empty-project{border:1px dashed #526c85;padding:22px;border-radius:12px;color:#adc2d3}.peer-note{font-size:.86rem;color:#b8c9da;line-height:1.8}@media(max-width:750px){.project-summary,.rubric-grid{grid-template-columns:1fr}}@media print{.panel{display:none!important}.review-interactive,.review-actions,.review-tabs,.rating-buttons,.review-status{display:none!important}.review-print{display:block;color:#111}.print-rubric{font-size:10pt}.panel{break-inside:auto}.rubric-card{break-inside:avoid}.project-summary{grid-template-columns:1fr}.summary-count{border-color:#999;background:#fff}.summary-count strong,.summary-count span{color:#111}.review-print h2{margin-top:24px}.review-print p{white-space:pre-wrap}}
+  </style>
+  <script defer src="assets/app.js"></script><script defer src="assets/builder.js"></script><script defer src="assets/review.js"></script>
+</head>
+<body class="lab" data-lesson="9">
+<main class="page">
+  <header class="lesson-hero">
+    <p class="eyebrow">03 인공지능 툴 제작하기 · 교과서 220쪽</p>
+    <h1>좋은 점을 찾고,<br>더 나은 도구로 고쳐요</h1>
+    <p>내 도구를 친구에게 보여 주고 실제 입력을 부탁하세요. ‘좋다’라는 말에 테스트 결과와 이유를 더해 평가합니다.</p>
+  </header>
+  <section class="panel" aria-labelledby="projectReviewTitle">
+    <div class="panel-head"><span class="step-badge">01</span><h2 id="projectReviewTitle">내가 만든 결과물을 확인해요</h2></div>
+    <div id="projectSummary"></div>
+    <details style="margin-top:18px"><summary>설계·수정·테스트 근거 펼쳐 보기</summary><div id="projectEvidence" class="evidence-list"></div></details>
+    <div class="review-actions"><a class="button secondary" href="sim_builder.html">8차시 작업대로 돌아가기</a><button class="button ghost" type="button" id="downloadReviewProject">프로젝트 JSON 내려받기</button></div>
+  </section>
+  <section class="panel" aria-labelledby="rubricTitle">
+    <div class="panel-head"><span class="step-badge">02</span><h2 id="rubricTitle">여섯 가지 기준으로 평가해요</h2></div>
+    <p class="muted">교과서의 문제 해결 활동 평가 기준입니다. 각 판단에 테스트 결과나 관찰한 사실을 적으세요. 확인하지 못한 항목은 비워 두어도 됩니다.</p>
+    <div class="review-tabs review-interactive" aria-label="평가자 선택"><button class="button secondary" id="selfReviewTab" type="button" aria-pressed="true">내가 평가하기</button><button class="button secondary" id="peerReviewTab" type="button" aria-pressed="false">친구가 평가하기</button></div>
+    <p class="peer-note review-interactive" id="reviewerHint">먼저 내가 만든 도구의 사용 결과를 근거로 평가하세요.</p>
+    <div id="rubricCards" class="rubric-grid review-interactive"></div>
+    <div id="rubricProgress" class="review-progress review-interactive" role="status"></div>
+    <div class="review-draft review-interactive">실제 AI에서 실행하지 않았다면 ‘결과의 정확성’과 ‘실제 해결 가능성’은 학습용 예시에서 확인한 범위만 적으세요. 실제 성능이 검증되었다고 판단하지 않습니다.</div>
+  </section>
+  <section class="panel review-interactive" aria-labelledby="reflectionTitle">
+    <div class="panel-head"><span class="step-badge">03</span><h2 id="reflectionTitle">의견을 듣고 다음 수정을 계획해요</h2></div>
+    <div class="grid2">
+      <div class="field"><label for="reviewStrength">근거를 들어 말할 수 있는 좋은 점</label><textarea id="reviewStrength" rows="3" maxlength="2400" placeholder="예: 친구가 같은 상황을 입력했을 때 행동과 확인 방법을 바로 찾았다."></textarea></div>
+      <div class="field"><label for="reviewPeerFeedback">친구가 발견한 점 · 실명 없이 기록</label><textarea id="reviewPeerFeedback" rows="3" maxlength="2400" placeholder="예: 주제와 다른 내용을 입력하면 어떤 결과인지 알기 어려웠다고 말했다."></textarea></div>
+      <div class="field"><label for="reviewRevisionPlan">다음에 바꿀 점과 다시 시험할 방법</label><textarea id="reviewRevisionPlan" rows="4" maxlength="3000" placeholder="무엇을 어떻게 고치고, 어떤 입력으로 확인할지 적으세요."></textarea></div>
+      <div class="field"><label for="reviewReflection">배운 점 · 구체적인 프롬프트가 필요한 이유</label><textarea id="reviewReflection" rows="4" maxlength="3000" placeholder="도구를 만들며 알게 된 점과 AI를 사용할 때 확인해야 할 점을 적으세요."></textarea></div>
+    </div>
+    <div class="field"><label for="reviewAuthorship">제작 과정과 자료 사용 기록</label><textarea id="reviewAuthorship" rows="3" maxlength="2400" placeholder="내가 직접 바꾼 부분, 참고한 자료, AI를 사용했다면 도구와 사용 목적을 적으세요."></textarea></div>
+    <div class="review-actions"><button class="button" type="button" id="saveReview">평가·성찰 저장</button><button class="button secondary" type="button" id="exportReviewText">활동 기록 TXT 내려받기</button><button class="button secondary" type="button" id="printReview">평가지 인쇄 / PDF</button></div>
+    <p id="reviewSaveStatus" class="review-status" role="status"></p>
+  </section>
+  <section id="printableReview" class="review-print" aria-label="인쇄용 평가 기록"></section>
+</main>
+</body>
+</html>
