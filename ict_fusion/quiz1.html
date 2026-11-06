@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4차시 · 형성평가 ① 정보 통신 기술의 이해</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>h1 { color:#c4b5fd; font-size:1.5rem; }</style>
+</head>
+<body data-page="quiz1">
+<div class="container narrow">
+  <div class="top-nav"><a href="sim_features.html">← 3차시: 특징과 안전한 사용</a><a href="index.html">🏠 홈</a></div>
+  <span class="lesson-tag quiz">4차시</span><span class="unit-tag">형성평가 · 01 정보 통신 기술의 이해 (1~3차시)</span>
+  <h1>❓ 형성평가 ① — 정보 통신 기술의 이해</h1>
+  <div id="quizRoot"></div>
+  <div class="next-link"><a href="sim_history.html">다음 → 5차시: 정보 통신 기술의 발달</a></div>
+</div>
+<script src="assets/questions.js"></script>
+<script>
+const SET = 'q1', DOMS = [1,2,3];
+window.QUIZ_CFG = {
+  page:'quiz1', key:'ictf-quiz1',
+  questions: window.ICTF_Q.filter(q => q.set.split(' ').includes(SET)),
+  domains: Object.fromEntries(DOMS.map(d => [d, window.ICTF_DOMAINS[d]])),
+  intro:'1~3차시에서 배운 <b style="color:#c4b5fd">자료와 정보, 정보 통신 과정, 특징과 안전</b>을 확인합니다.',
+  ranges:[[0,4,'4개 이하'],[5,8,'5~8개'],[9,10,'9~10개'],[11,12,'11~12개']],
+  msgs:['🏆 만점! 정보 통신 기술의 이해 완벽 마스터!','🌟 훌륭해요! 거의 완벽히 이해했어요.','💪 좋아요! 약한 영역만 복습하면 완성.','📚 아직 기초가 필요해요. 1차시부터 차근차근 다시!'],
+  reflectTitle:'마치며 — 나의 한 문장',
+  reflectPrompt:'1~3차시에서 가장 기억에 남는 개념과, 그것을 <b>내 생활</b>에서 어떻게 쓸 수 있을지 적어 보세요.',
+  reflectPlaceholder:'예) 자료와 정보의 차이 — 친구에게 숫자만 보내지 말고 무엇을 해야 하는지까지 알려 줘야 정보가 된다.'
+};
+</script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

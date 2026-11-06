@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1차시 · 자료와 정보, 정보 통신 기술</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.scen-tabs { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+.factory { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:14px; }
+.fac-step { background:#1e293b; border:2px solid #475569; border-radius:12px; padding:12px 6px; text-align:center; font-size:.85rem; cursor:pointer; font-family:inherit; color:#e2e8f0; transition:.2s; }
+.fac-step .fe { font-size:1.6rem; display:block; margin-bottom:4px; }
+.fac-step small { display:block; font-size:.7rem; color:#94a3b8; margin-top:3px; }
+.fac-step.next { border-color:#22d3ee; box-shadow:0 0 0 3px rgba(34,211,238,.18); animation:pulse 1.6s infinite; }
+.fac-step.done { border-color:#4ade80; background:rgba(74,222,128,.08); }
+.fac-step:disabled { cursor:default; }
+@keyframes pulse { 50% { box-shadow:0 0 0 7px rgba(34,211,238,.05); } }
+.fac-band { display:grid; grid-template-columns:2fr 2fr 1fr; gap:8px; margin-bottom:14px; font-size:.78rem; text-align:center; font-weight:800; }
+.fac-band div { border-radius:999px; padding:5px; }
+.band-data { background:rgba(148,163,184,.15); color:#cbd5e1; border:1px solid #64748b; }
+.band-info { background:rgba(251,191,36,.12); color:#fde68a; border:1px solid rgba(251,191,36,.5); }
+.band-ict { background:rgba(34,211,238,.12); color:#67e8f9; border:1px solid rgba(34,211,238,.5); }
+.screen { background:#020617; border:1px solid #334155; border-radius:12px; padding:16px; min-height:190px; font-size:.9rem; line-height:1.7; }
+.screen .lbl { display:inline-block; font-size:.72rem; font-weight:800; border-radius:6px; padding:1px 8px; margin-bottom:8px; }
+.lbl.d { background:#334155; color:#cbd5e1; } .lbl.i { background:#78350f; color:#fde68a; } .lbl.t { background:#164e63; color:#a5f3fc; }
+.readings { display:flex; flex-wrap:wrap; gap:6px; }
+.reading { font-family:Consolas,monospace; background:#0f172a; border:1px solid #334155; border-radius:8px; padding:4px 9px; font-size:.85rem; color:#e2e8f0; animation:pop .35s; }
+@keyframes pop { from { transform:scale(.6); opacity:0; } to { transform:none; opacity:1; } }
+table.mini { border-collapse:collapse; font-size:.8rem; font-family:Consolas,monospace; }
+table.mini td, table.mini th { border:1px solid #334155; padding:3px 8px; text-align:center; }
+table.mini th { color:#94a3b8; }
+.msg-big { font-size:1.15rem; font-weight:800; color:#fde68a; background:rgba(251,191,36,.08); border:1px solid rgba(251,191,36,.4); border-radius:12px; padding:12px 14px; margin:6px 0; }
+.devices { display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+.device { flex:1; min-width:150px; background:#0f172a; border:1px solid #22d3ee; border-radius:12px; padding:10px; font-size:.8rem; animation:pop .4s; }
+.device b { color:#67e8f9; display:block; margin-bottom:4px; }
+.bar { height:10px; border-radius:999px; background:#1e293b; overflow:hidden; margin-top:3px; }
+.bar i { display:block; height:100%; }
+@media(max-width:700px){ .factory{grid-template-columns:repeat(3,1fr)} .fac-band{display:none} }
+</style>
+</head>
+<body data-page="sim_meaning">
+<div class="container">
+  <div class="top-nav"><a href="index.html">← 홈으로</a><a href="sim_process.html">2차시: 정보 통신 기술의 과정 →</a></div>
+  <span class="lesson-tag">1차시</span><span class="unit-tag">01 정보 통신 기술의 이해 · 교과서 208~209쪽</span>
+  <h1>🔢➜💡 자료와 정보, 정보 통신 기술</h1>
+  <div class="goal-box">
+    <b>학습 목표</b><br>
+    ① <b>자료</b>와 <b>정보</b>의 차이를 예를 들어 설명할 수 있다.<br>
+    ② 자료가 <b>수집 → 저장 → 분석 → 가공·처리 → 전달</b>을 거쳐 정보가 되는 과정을 말할 수 있다.<br>
+    ③ <b>정보 통신 기술</b>의 의미와 생활 속 사례(사물 인터넷 등)를 설명할 수 있다.
+  </div>
+  <div class="flow-bar">
+    <span><b>0</b> 자기점검 3분</span><span><b>1</b> 도입 4분</span><span><b>2</b> 개념 5분</span><span><b>3</b> 정보 공장 12분</span>
+    <span><b>4</b> 판별 게임 8분</span><span><b>5</b> 생활 속 정보 통신 6분</span><span><b>✓</b> 스스로 확인 5분</span>
+  </div>
+
+  <!-- 0 -->
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">3분 · 🧠 메타인지</span></div>
+  <p class="step-desc">시작하기 전, 지금 나의 상태를 솔직하게 체크해 보세요. 마지막에 다시 비교합니다.</p>
+  <div class="kwl">
+    <h3>📋 나는 지금 얼마나 알고 있을까?</h3>
+    <div class="kwl-row">
+      <div class="kwl-item"><span>'자료'와 '정보'가 어떻게 다른지 설명할 수 있다</span><select class="pre-check"></select></div>
+      <div class="kwl-item"><span>날씨 예보가 만들어지는 과정을 순서대로 말할 수 있다</span><select class="pre-check"></select></div>
+      <div class="kwl-item"><span>'정보 통신 기술'이 무엇인지 한 문장으로 말할 수 있다</span><select class="pre-check"></select></div>
+      <div class="kwl-item"><span>'사물 인터넷'의 예를 하나 들 수 있다</span><select class="pre-check"></select></div>
+    </div>
+    <div class="kwl-note">💡 "모른다"고 체크해도 괜찮아요. 자신의 상태를 아는 것이 메타인지의 시작입니다!</div>
+  </div>
+
+  <!-- 1 -->
+  <div class="step-title"><span class="step-num">1</span> 교실에 먼지가 많은 것 같아! <span class="step-time">4분 · 도입</span></div>
+  <p class="step-desc">교과서 단원 열기 만화 속 친구들은 <b>공기질 센서</b>와 <b>피지컬 보드</b>로 교실 공기를 측정했어요.</p>
+  <div class="panel">
+    <div class="around-grid">
+      <div class="around-item"><span class="ai">😷</span><b>문제 발견</b><span class="t">"오늘따라 먼지가<br>많은 것 같지 않아?"</span></div>
+      <div class="around-item"><span class="ai">📟</span><b>측정</b><span class="t">센서가 숫자를<br>계속 보내 줌</span></div>
+      <div class="around-item"><span class="ai">📈</span><b>분석</b><span class="t">실시간 측정 결과로<br>평균 공기질 분석</span></div>
+      <div class="around-item"><span class="ai">🚦</span><b>해결</b><span class="t">신호등이 켜지면<br>환기·공기청정기 가동</span></div>
+    </div>
+    <div class="hook">🤔 <b>생각해 봅시다.</b> 센서가 보낸 <b>"58"</b>이라는 숫자만 보고 우리는 무엇을 해야 할지 알 수 있을까요?<br>
+      숫자가 <b>의미 있는 안내</b>("지금 창문을 여세요")로 바뀌려면 어떤 일이 일어나야 할까요? 오늘 그 과정을 직접 돌려 봅니다.</div>
+  </div>
+
+  <!-- 2 -->
+  <div class="step-title"><span class="step-num">2</span> 자료, 정보, 정보 통신 기술 <span class="step-time">5분 · 개념</span></div>
+  <p class="step-desc">세 낱말의 뜻을 정확히 구분해요. <b>노란 글씨</b>가 핵심 정의입니다.</p>
+  <div class="panel">
+    <div class="concept-def">
+      우리는 숫자, 글자, 이미지, 동영상 등 하루에도 수많은 <b>자료</b>를 접합니다. 이러한 자료를 수집하고 분석하여 우리에게 <b>의미 있게 제공되는 자료</b>를 <b>정보</b>라 하고,
+      이를 <b>효과적으로 주고받을 수 있는 기술</b>을 <b>정보 통신 기술</b>이라 합니다.
+    </div>
+    <div class="three-col">
+      <div class="card"><h3>🔢 자료</h3><p>현실 세계에서 <b>측정</b>을 통해 얻은 <b>단순한 값</b>. 그 자체로는 의미나 목적을 포함하지 않아요.</p><div class="ex">예) 58, 1,500, 14.2℃, 82%</div></div>
+      <div class="card c2"><h3>💡 정보</h3><p>어떤 <b>목적이나 의도</b>에 맞게 자료를 <b>가공·처리</b>한 것. 보는 사람이 판단하고 행동할 수 있어요.</p><div class="ex">예) "이산화 탄소가 높아요. 지금 환기하세요!"</div></div>
+      <div class="card c1"><h3>📡 정보 통신 기술</h3><p>정보를 <b>효과적으로 주고받을 수 있게</b> 해 주는 기술. 시공간의 제약을 넘어 정보와 문화를 나누게 해 줘요.</p><div class="ex">예) 모바일, 사물 인터넷, 무선 네트워크</div></div>
+    </div>
+    <div class="hook">🔑 <b>구분 요령</b> — "이것만 보고 <u>무엇을 해야 할지</u> 알 수 있나?" → 알 수 있으면 <b>정보</b>, 숫자·기록만 있으면 <b>자료</b>.</div>
+  </div>
+
+  <!-- 3 -->
+  <div class="step-title"><span class="step-num">3</span> 정보 공장 — 자료가 정보가 되기까지 <span class="step-time">12분 · 🎮 시뮬레이터</span></div>
+  <p class="step-desc">상황을 고른 뒤 <b>빛나는 단계</b>를 순서대로 눌러 공장을 돌려 보세요. 화면 위의 띠가 지금 다루는 것이 <b>자료</b>인지 <b>정보</b>인지 알려 줘요.</p>
+  <div id="pred1"></div>
+  <div class="lock-note" id="factoryPanel-lock">🔒 위의 예측을 먼저 고르면 공장이 열려요.</div>
+  <div class="panel locked" id="factoryPanel">
+    <div class="scen-tabs">
+      <button class="chip on" data-scen="air">🏫 우리 교실 공기질</button>
+      <button class="chip" data-scen="weather">🌦️ 내일 날씨 예보</button>
+    </div>
+    <div class="fac-band"><div class="band-data">자료 단계</div><div class="band-info">자료 → 정보</div><div class="band-ict">정보 통신 기술</div></div>
+    <div class="factory" id="factory"></div>
+    <div class="screen" id="screen"><b>① 수집</b>부터 눌러 보세요.</div>
+    <div class="btn-row"><button class="btn-sub" id="facReset">↺ 처음부터 다시</button><span class="note" id="facNote"></span></div>
+  </div>
+  <div class="inquiry">
+    <h4>🔎 생각 정리 — 어느 단계에서 '자료'가 '정보'로 바뀌었나요?</h4>
+    <p>공장을 돌려 본 뒤, 숫자들이 의미 있는 안내로 바뀐 순간이 어느 단계였는지와 그 이유를 적어 보세요.</p>
+    <textarea id="iqFactory" placeholder="예) 가공·처리 단계 — 기준(1,000ppm)과 비교해서 '환기하세요'라는 행동 안내로 바꿨기 때문"></textarea>
+    <div class="iq-row"><button class="btn-sub" data-save="iqFactory">💾 저장</button><span class="iq-saved" id="iqFactory-saved"></span></div>
+  </div>
+
+  <!-- 4 -->
+  <div class="step-title"><span class="step-num">4</span> 자료일까, 정보일까? — 판별 훈련 <span class="step-time">8분 · 활동</span></div>
+  <p class="step-desc">카드가 하나씩 나옵니다. <b>구분 요령</b>을 떠올리며 골라 보세요. 첫 시도에 맞힌 개수가 기록돼요.</p>
+  <div class="panel"><div id="sortDI"></div></div>
+
+  <!-- 5 -->
+  <div class="step-title"><span class="step-num">5</span> 생활 속 정보 통신 기술 <span class="step-time">6분 · 적용</span></div>
+  <p class="step-desc">정보 통신 기술 덕분에 우리는 <b>시공간의 제약 없이</b> 누구와도 대화하고, 누구든지 정보를 만들고 소비합니다. 카드를 눌러 확인한 뒤 문제를 풀어 보세요.</p>
+  <div class="flip-grid">
+    <div class="flip"><div class="flip-inner"><div class="flip-face flip-front"><div class="fi">🚏</div><b>버스 정류장 디지털 정보판</b><span>클릭해서 확인</span></div>
+      <div class="flip-face flip-back"><b>무엇을 알 수 있나?</b>버스의 현재 위치, 도착 예정 시간, 날씨 정보 등을 알 수 있어요. 버스의 위치 <u>자료</u>가 "8분 후 도착"이라는 <u>정보</u>로 바뀌어 전달돼요.</div></div></div>
+    <div class="flip"><div class="flip-inner"><div class="flip-face flip-front"><div class="fi">⌚</div><b>스마트 워치</b><span>클릭해서 확인</span></div>
+      <div class="flip-face flip-back"><b>무엇을 할 수 있나?</b>전화기 대신 통화할 수 있고, 심박수·걸음 수 등을 <u>실시간으로 수집</u>할 수 있어요.</div></div></div>
+    <div class="flip"><div class="flip-inner"><div class="flip-face flip-front"><div class="fi">💡</div><b>사물 인터넷(IoT)</b><span>클릭해서 확인</span></div>
+      <div class="flip-face flip-back"><b>사물 인터넷이란?</b>각종 사물에 <u>센서와 통신 기능</u>을 내장하여 인터넷에 연결하는 기술. 스마트폰으로 집 안의 조명과 실내 온도를 조절할 수 있어요.</div></div></div>
+  </div>
+  <div class="panel" style="margin-top:14px"><div id="mcqLife"></div></div>
+
+  <!-- 정리 -->
+  <div class="step-title"><span class="step-num">✓</span> 스스로 확인하기 <span class="step-time">5분 · 🧠 메타인지</span></div>
+  <p class="step-desc">교과서 211쪽 '스스로 확인하기' 1번과 연결돼요. 설명할 수 <b>없다면</b> 해당 단계로 돌아가 다시 확인!</p>
+  <div class="panel" style="margin-bottom:14px"><div id="mcqCheck"></div></div>
+  <div class="wrap-q">
+    <h3>❓ 정리 질문 — 짝과 이야기해 봅시다</h3>
+    <p>공기질 측정 장치에서 나온 결과는 <b>어떻게 표현하면</b> 친구들이 바로 행동할 수 있을까요? (교과서 208쪽 질문)</p>
+    <textarea class="iq" id="iqWrap" placeholder="예) 숫자 대신 초록·노랑·빨강 신호등과 '지금 환기하세요' 문장으로 보여 준다."></textarea>
+    <div class="iq-row"><button class="btn-sub" data-save="iqWrap">💾 저장</button><span class="iq-saved" id="iqWrap-saved"></span></div>
+  </div>
+  <div class="self-check">
+    <h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>자료</b>와 <b>정보</b>의 차이를 예를 들어 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>수집 → 저장 → 분석 → 가공·처리 → 전달 순서를 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>정보 통신 기술</b>의 뜻을 한 문장으로 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>사물 인터넷</b>의 뜻과 예를 말할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress"></div>
+    <div class="meta-report" id="kwlCompare"></div>
+    <button class="btn-sub done-btn" id="doneBtn">☑️ 1차시 완료 표시하기</button>
+  </div>
+  <div class="next-link"><a href="sim_process.html">다음 → 2차시: 정보 통신 기술의 과정</a></div>
+</div>
+
+<script src="assets/common.js"></script>
+<script>
+const { $, Predict, SortGame, MCQ } = ICT;
+
+Predict('pred1', {
+  q:'교실 센서가 <b>"58"</b>이라는 숫자를 보냈어요. 이 숫자는 무엇일까요?',
+  opts:['자료', '정보', '정보 통신 기술'], a:0,
+  exp:'"58"은 측정으로 얻은 <b>단순한 값</b>이라 이것만으로는 무엇을 해야 할지 알 수 없어요. 그래서 <b>자료</b>입니다. 이제 공장을 돌려 이 숫자가 어떻게 정보가 되는지 확인해 봐요.',
+  unlock:'factoryPanel'
+});
+
+/* ===== 정보 공장 ===== */
+const STEPS = [
+  { k:'collect', e:'📡', t:'① 수집', s:'자료 모으기', band:'d' },
+  { k:'store', e:'🗄️', t:'② 저장', s:'차곡차곡 보관', band:'d' },
+  { k:'analyze', e:'🧮', t:'③ 분석', s:'규칙·평균 찾기', band:'i' },
+  { k:'process', e:'✍️', t:'④ 가공·처리', s:'목적에 맞게', band:'i' },
+  { k:'send', e:'📲', t:'⑤ 전달', s:'필요한 사람에게', band:'t' },
+];
+const SCEN = {
+  air: {
+    name:'우리 교실 공기질',
+    readings:[['09:00', 18, 620], ['09:50', 27, 880], ['10:40', 41, 1150], ['11:30', 58, 1480], ['12:20', 63, 1620]],
+    collect:r => `초미세먼지 ${r[1]}㎍/㎥ · CO₂ ${r[2]}ppm`,
+    tableHead:['시각', '초미세먼지(㎍/㎥)', 'CO₂(ppm)'],
+    analyze(rs) {
+      const pm = rs.map(r => r[1]), co = rs.map(r => r[2]);
+      const avg = a => Math.round(a.reduce((x, y) => x + y, 0) / a.length);
+      return `평균 초미세먼지 <b>${avg(pm)}</b>㎍/㎥ · 평균 CO₂ <b>${avg(co)}</b>ppm<br>` +
+        `추세: 시간이 갈수록 <b>계속 증가</b> (09:00 → 12:20, CO₂ 약 ${(co[co.length - 1] / co[0]).toFixed(1)}배)<br>` +
+        `기준과 비교: 초미세먼지 36 이상 = <span style="color:#fb923c">나쁨</span>, CO₂ 1,000ppm 초과 = <span style="color:#fb923c">환기 필요</span><br>` +
+        `<div style="margin-top:6px">CO₂ <div class="bar"><i style="width:${Math.min(100, co[co.length - 1] / 20)}%;background:linear-gradient(90deg,#4ade80,#fbbf24,#f87171)"></i></div></div>`;
+    },
+    message:'🚦 지금 우리 교실 공기 <b style="color:#f87171">나쁨</b> — 창문을 열어 10분 환기하고 공기청정기를 켜세요!',
+    devices:[['🚦 교실 공기 신호등', '빨간불이 켜지고 "환기하세요" 표시'], ['📱 학급 알림', '담임 선생님과 환경 도우미에게 알림'], ['🖥️ 전자칠판', '시간대별 공기질 그래프 표시']],
+  },
+  weather: {
+    name:'내일 날씨 예보',
+    readings:[['서울', 14.2, 82, 1003], ['대전', 15.8, 85, 1002], ['광주', 17.1, 88, 1001], ['대구', 16.4, 79, 1004], ['부산', 17.9, 86, 1002]],
+    collect:r => `${r[0]} ${r[1]}℃ · 습도 ${r[2]}% · ${r[3]}hPa`,
+    tableHead:['지역', '기온(℃)', '습도(%)', '기압(hPa)'],
+    analyze(rs) {
+      const avg = (i) => (rs.reduce((x, r) => x + r[i], 0) / rs.length);
+      return `평균 기온 <b>${avg(1).toFixed(1)}</b>℃ · 평균 습도 <b>${Math.round(avg(2))}</b>% · 평균 기압 <b>${Math.round(avg(3))}</b>hPa<br>` +
+        `규칙 찾기: 전국 습도가 높고(80% 이상) 기압이 낮아요 → <b>비구름이 생기기 쉬운 조건</b><br>` +
+        `<span class="note">※ 실제 예보는 위성·레이더·슈퍼컴퓨터의 인공지능 분석까지 더해 훨씬 많은 자료를 씁니다.</span>`;
+    },
+    message:'☔ 내일 전국 비 소식, 낮 기온 16℃ 안팎 — 우산을 챙기세요!',
+    devices:[['📺 TV 일기 예보', '기상 캐스터가 지도로 설명'], ['📱 날씨 앱 알림', '"내일 비 예보" 푸시 알림'], ['🚏 버스 정류장 정보판', '날씨 아이콘과 기온 표시']],
+  }
+};
+let scen = 'air', at = 0;
+function buildFactory() {
+  const f = $('factory'); f.innerHTML = '';
+  STEPS.forEach((s, i) => {
+    const b = document.createElement('button');
+    b.className = 'fac-step' + (i === at ? ' next' : i < at ? ' done' : '');
+    b.innerHTML = `<span class="fe">${s.e}</span>${s.t}<small>${s.s}</small>`;
+    b.disabled = i !== at;
+    b.onclick = () => runStep(i);
+    f.appendChild(b);
+  });
+}
+function lbl(b) { return b === 'd' ? '<span class="lbl d">자료</span>' : b === 'i' ? '<span class="lbl i">자료 → 정보</span>' : '<span class="lbl t">정보 통신 기술</span>'; }
+function runStep(i) {
+  const S = SCEN[scen], sc = $('screen'), st = STEPS[i];
+  if (st.k === 'collect') {
+    sc.innerHTML = lbl('d') + '<br>📡 센서와 관측 장비가 측정값을 보내고 있어요…<div class="readings" id="rd"></div>';
+    S.readings.forEach((r, n) => setTimeout(() => { const d = document.createElement('span'); d.className = 'reading'; d.textContent = S.collect(r); $('rd') && $('rd').appendChild(d); }, n * 280));
+    $('facNote').textContent = '이 숫자들만 보고 무엇을 해야 할지 알 수 있나요? 아직은 "자료"예요.';
+  } else if (st.k === 'store') {
+    sc.innerHTML = lbl('d') + `<br>🗄️ 모은 자료를 표로 정리해 저장했어요. (${S.readings.length}개 기록)<br><table class="mini"><tr>${S.tableHead.map(h => `<th>${h}</th>`).join('')}</tr>${S.readings.map(r => `<tr>${r.map(v => `<td>${v}</td>`).join('')}</tr>`).join('')}</table>`;
+    $('facNote').textContent = '저장해 두어야 나중에 비교하고 분석할 수 있어요. 하지만 여전히 숫자의 모음 = 자료.';
+  } else if (st.k === 'analyze') {
+    sc.innerHTML = lbl('i') + '<br>🧮 컴퓨터가 평균을 내고 규칙을 찾아요.<br>' + S.analyze(S.readings);
+    $('facNote').textContent = '숫자 사이의 관계가 보이기 시작했어요. 자료가 정보로 바뀌는 중!';
+  } else if (st.k === 'process') {
+    sc.innerHTML = lbl('i') + '<br>✍️ <b>목적</b>(사람들이 바로 행동하도록)에 맞게 짧고 분명한 안내로 가공했어요.<div class="msg-big">' + S.message + '</div>';
+    $('facNote').textContent = '이제 이것만 보고 무엇을 해야 할지 알 수 있어요 → 정보!';
+  } else {
+    sc.innerHTML = lbl('t') + '<br>📲 정보를 필요한 사람에게, 필요한 때에, 알맞은 매체로 보냈어요.<div class="devices">' + S.devices.map(d => `<div class="device"><b>${d[0]}</b>${d[1]}</div>`).join('') + '</div>' +
+      '<div class="hook" style="margin-top:12px">🎉 완성! <b>수집·저장</b>까지는 자료, <b>분석·가공·처리</b>로 정보가 되고, <b>전달</b>하는 기술이 정보 통신 기술이에요. 다른 상황도 돌려 보세요.</div>';
+    $('facNote').textContent = '';
+  }
+  at = i + 1; buildFactory();
+}
+document.querySelectorAll('[data-scen]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-scen]').forEach(x => x.classList.toggle('on', x === b));
+  scen = b.dataset.scen; at = 0; buildFactory(); $('screen').innerHTML = `「${SCEN[scen].name}」 공장을 준비했어요. <b>① 수집</b>부터 눌러 보세요.`; $('facNote').textContent = '';
+});
+$('facReset').onclick = () => { at = 0; buildFactory(); $('screen').innerHTML = '<b>① 수집</b>부터 다시 눌러 보세요.'; $('facNote').textContent = ''; };
+buildFactory();
+
+/* ===== 판별 게임 ===== */
+SortGame('sortDI', {
+  cats:[{ k:'d', label:'🔢 자료', color:'#cbd5e1' }, { k:'i', label:'💡 정보', color:'#fbbf24' }],
+  items:[
+    { e:'🌡️', t:'36.5', a:'d', exp:'측정한 값만 있어요.', wrong:'이것만 보고 무엇을 해야 할지 알 수 있나요?' },
+    { e:'🌡️', t:'"체온 36.5℃ — 정상이에요. 등교해도 됩니다."', a:'i', exp:'기준과 비교해 판단과 행동을 알려 줘요.', wrong:'목적(등교 판단)에 맞게 가공되어 있어요.' },
+    { e:'👟', t:'8,204', a:'d', exp:'걸음 수 숫자만 있어요.', wrong:'숫자 하나뿐이에요.' },
+    { e:'👟', t:'"오늘 8,204걸음 — 목표 8,000보 달성! 🎉"', a:'i', exp:'목표와 비교해 의미를 알려 줘요.', wrong:'목표와 비교한 결과가 담겨 있어요.' },
+    { e:'📍', t:'버스 GPS 좌표 (37.48, 126.95)', a:'d', exp:'위치를 측정한 값이에요.', wrong:'승객이 이 좌표만 보고 알 수 있는 게 있을까요?' },
+    { e:'🚌', t:'"701번 버스 8분 후 도착"', a:'i', exp:'승객이 기다릴지 판단할 수 있게 가공됐어요.', wrong:'승객이 바로 행동할 수 있는 안내예요.' },
+    { e:'📝', t:'우리 반 30명의 수학 점수 목록', a:'d', exp:'가공 전의 기록 모음이에요.', wrong:'아직 정리·분석되지 않은 값의 모음이에요.' },
+    { e:'📊', t:'"우리 반 평균 78점, 지난 시험보다 5점 올랐어요"', a:'i', exp:'평균과 비교라는 가공을 거쳤어요.', wrong:'평균을 내고 비교한 결과예요.' },
+    { e:'☁️', t:'"내일 오후 비 확률 80% — 우산을 챙기세요"', a:'i', exp:'행동을 안내하는 예보예요.', wrong:'무엇을 해야 할지 알려 주고 있어요.' },
+    { e:'🌬️', t:'풍속 기록: 3.1, 4.7, 5.2, 8.9 (m/s)', a:'d', exp:'측정값의 나열이에요.', wrong:'숫자만 나열되어 있어요.' },
+  ],
+  after:'💬 같은 "36.5"라도 목적에 맞게 가공하면 정보가 돼요. 자료와 정보는 <b>목적과 가공</b>의 차이!'
+});
+
+/* ===== 생활 속 정보 통신 ===== */
+MCQ('mcqLife', [
+  { q:'학교에 있는 동안 스마트폰 앱으로 집 거실 조명을 껐다. 여기에 쓰인 기술은?', opts:['사물 인터넷', '금속활자 인쇄술', '모스 부호', '상형 문자'], a:0, exp:'조명에 센서와 통신 기능이 있어 인터넷으로 연결된 사물 인터넷이에요.' },
+  { q:'스마트 워치가 심박수와 걸음 수를 측정해 기록하는 것은 정보 통신 기술의 흐름 중 무엇에 가까울까?', opts:['수집', '전달', '되먹임', '가공·처리'], a:0, exp:'몸의 상태를 실시간으로 측정해 모으는 수집이에요.' },
+  { q:'다음 중 정보 통신 기술의 발전으로 생긴 변화로 알맞은 것은?', opts:['시공간의 제약 없이 전 세계 누구와도 쉽게 대화할 수 있다', '정보는 정해진 사람만 만들 수 있게 되었다', '먼 곳의 소식을 알려면 몇 달을 기다려야 한다', '정보보다 물건이 중심이 되는 사회가 되었다'], a:0, exp:'누구든지 정보를 생산·소비하며, 정보가 중심이 되는 사회가 되었어요.' },
+]);
+MCQ('mcqCheck', [
+  { q:'측정을 통해 얻은 단순한 값을 ( ㉠ ), 이를 목적과 의도에 맞게 가공한 것을 ( ㉡ )라고 한다.', opts:['㉠ 자료 · ㉡ 정보', '㉠ 정보 · ㉡ 자료', '㉠ 자료 · ㉡ 기술', '㉠ 기술 · ㉡ 정보'], a:0, keep:true, exp:'자료 → (가공·처리) → 정보' },
+  { q:'정보 공장에서 숫자들이 처음으로 "무엇을 해야 하는지" 알려 주는 안내로 바뀐 단계는?', opts:['수집', '저장', '가공·처리', '전달'], a:2, exp:'목적에 맞게 가공·처리하면서 행동 안내(정보)가 되었어요.' },
+]);
+</script>
+</body>
+</html>

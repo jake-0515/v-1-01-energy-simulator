@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7차시 · 인공지능 윤리</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.bias { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:820px){ .bias{grid-template-columns:1fr} }
+.mix { display:flex; height:30px; border-radius:999px; overflow:hidden; border:1px solid #475569; font-size:.78rem; font-weight:800; }
+.mix div { display:flex; align-items:center; justify-content:center; transition:width .3s; white-space:nowrap; overflow:hidden; }
+.res-row { margin:10px 0; }
+.res-row .lbl { font-size:.86rem; margin-bottom:4px; }
+.res-bar { height:20px; background:#1e293b; border-radius:999px; overflow:hidden; border:1px solid #475569; }
+.res-bar i { display:block; height:100%; transition:width .4s; }
+.photos { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
+.photo { width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.2rem; position:relative; }
+.photo.a { background:#fde68a; } .photo.b { background:#334155; }
+.photo::after { position:absolute; right:-3px; bottom:-4px; font-size:.7rem; }
+.photo.ok::after { content:'✅'; } .photo.no::after { content:'❌'; }
+.dilemma { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:10px; }
+@media(max-width:620px){ .dilemma{grid-template-columns:1fr} }
+.dl-btn { background:#1e293b; border:2px solid #64748b; border-radius:14px; padding:16px; font-size:.92rem; line-height:1.6; cursor:pointer; color:#e2e8f0; font-family:inherit; text-align:left; }
+.dl-btn:hover:not(:disabled) { border-color:#fbbf24; }
+.dl-btn.good { border-color:#4ade80; background:#14532d; } .dl-btn.bad { border-color:#f87171; background:#7f1d1d; }
+.ff-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; font-size:.86rem; }
+.ff-grid > div { background:#0f172a; border:1px solid #334155; border-radius:10px; padding:8px; }
+.ff-grid .hd { background:#1e293b; text-align:center; font-weight:800; color:#fde68a; }
+.ff-grid textarea { width:100%; min-height:54px; background:#020617; color:#e2e8f0; border:1px solid #475569; border-radius:6px; padding:6px; font-family:inherit; font-size:.82rem; resize:vertical; }
+.ff-grid .tech { text-align:center; display:flex; flex-direction:column; justify-content:center; gap:4px; }
+@media(max-width:620px){ .ff-grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body data-page="sim_ethics">
+<div class="container">
+  <div class="top-nav"><a href="sim_ai.html">← 6차시: 인공지능과 활용</a><a href="quiz2.html">8차시: 형성평가 ② →</a></div>
+  <span class="lesson-tag">7차시</span><span class="unit-tag">02 정보 통신 기술과 인공지능의 활용 · 교과서 216~217쪽</span>
+  <h1>⚖️ 인공지능 윤리</h1>
+  <div class="goal-box"><b>학습 목표</b><br>
+    ① 인공지능을 개발하고 사용하는 과정에서 생기는 <b>윤리적 문제</b>의 사례를 말할 수 있다.<br>
+    ② <b>편향된 데이터</b>로 학습한 인공지능이 차별과 피해를 만들 수 있음을 실험으로 설명할 수 있다.<br>
+    ③ 인공지능의 <b>순기능과 역기능</b>을 비교하고, 올바른 행동을 판단할 수 있다.</div>
+  <div class="flow-bar"><span><b>0</b> 자기점검 3분</span><span><b>1</b> 비윤리적 사례 5분</span><span><b>2</b> 편향 실험실 12분</span><span><b>3</b> 딥페이크 대처 5분</span><span><b>4</b> 순기능·역기능 7분</span><span><b>5</b> 생각 키우기 8분</span><span><b>✓</b> 스스로 확인 5분</span></div>
+
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">3분 · 🧠 메타인지</span></div>
+  <div class="kwl"><h3>📋 나는 지금 얼마나 알고 있을까?</h3><div class="kwl-row">
+    <div class="kwl-item"><span>'딥페이크'가 무엇인지 설명할 수 있다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>인공지능도 차별을 할 수 있는 이유를 안다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>인공지능 기술의 순기능과 역기능을 하나씩 말할 수 있다</span><select class="pre-check"></select></div>
+  </div></div>
+
+  <div class="step-title"><span class="step-num">1</span> 인공지능의 비윤리적 사례 <span class="step-time">5분 · 개념</span></div>
+  <p class="step-desc">인공지능은 사람을 돕기 위해 개발되었지만, 개발하고 사용하는 과정에서 <b>윤리적인 문제</b>가 발생하기도 해요. 카드를 눌러 보세요.</p>
+  <div class="flip-grid">
+    <div class="flip"><div class="flip-inner"><div class="flip-face flip-front"><div class="fi">🎭</div><b>딥페이크로<br>조작 미디어 생성</b><span>클릭</span></div><div class="flip-face flip-back"><b>딥페이크(Deepfake)</b>딥러닝과 페이크의 합성어. 사람의 얼굴이나 음성을 다른 영상·사진에 합성하는 기술로, 악용하면 교묘한 거짓 영상을 만들어 퍼뜨릴 수 있어요.</div></div></div>
+    <div class="flip"><div class="flip-inner"><div class="flip-face flip-front"><div class="fi">🪪</div><b>인공지능 학습을 위한<br>개인 정보 도용</b><span>클릭</span></div><div class="flip-face flip-back"><b>개인 정보 도용</b>인공지능을 학습시키려고 동의 없이 사람들의 사진, 글, 개인 정보를 모아 쓰는 문제예요.</div></div></div>
+    <div class="flip"><div class="flip-inner"><div class="flip-face flip-front"><div class="fi">🖌️</div><b>유명 작가<br>화풍 모방</b><span>클릭</span></div><div class="flip-face flip-back"><b>화풍 모방</b>특정 작가의 작품을 학습해 그 화풍을 그대로 흉내 낸 그림을 만들어 작가의 권리를 침해할 수 있어요.</div></div></div>
+  </div>
+  <div class="hook">🤔 <b>인공지능은 늘 공정할까?</b> 인공지능은 인간에 대한 편견이나 개인적인 감정이 없어 공정하고 진실만 말할 거라는 믿음이 있어요. 하지만 <b>특정 인종, 문화, 편견 등 편향적인 데이터</b>를 바탕으로 학습하면 차별과 피해가 생길 수밖에 없어요. 직접 실험해 봐요.</div>
+
+  <div class="step-title"><span class="step-num">2</span> 편향 실험실 — 학습 데이터가 치우치면? <span class="step-time">12분 · 🎮 시뮬레이터</span></div>
+  <p class="step-desc">'고양이 사진 인식 인공지능'을 학습시켜요. 학습 사진 100장 중 <b>밝은 털 고양이</b>와 <b>어두운 털 고양이</b>의 비율을 바꾸며, 두 무리를 얼마나 잘 알아보는지 비교해 보세요.</p>
+  <div id="predB"></div>
+  <div class="lock-note" id="biasLab-lock">🔒 예측을 먼저 고르면 실험실이 열려요.</div>
+  <div class="panel locked" id="biasLab">
+    <div class="bias">
+      <div>
+        <h4 style="color:#fde68a;margin-bottom:8px">① 학습 데이터 구성 (사진 100장)</h4>
+        <div class="slider-row"><label>어두운 털 고양이</label><input type="range" id="share" min="0" max="50" step="5" value="5"><output id="shareOut">5장</output></div>
+        <div class="mix"><div id="mixA" style="background:#fde68a;color:#78350f"></div><div id="mixB" style="background:#334155;color:#e2e8f0"></div></div>
+        <div class="btn-row"><button class="chip" data-s="5">현실에서 흔한 치우친 수집 (5장)</button><button class="chip" data-s="25">조금 보완 (25장)</button><button class="chip" data-s="50">골고루 (50장)</button></div>
+      </div>
+      <div>
+        <h4 style="color:#fde68a;margin-bottom:8px">② 처음 보는 사진 20장으로 테스트</h4>
+        <div class="res-row"><div class="lbl">🐱 밝은 털 고양이 인식률 <b id="accA"></b></div><div class="res-bar"><i id="barA" style="background:#fbbf24"></i></div><div class="photos" id="phA"></div></div>
+        <div class="res-row"><div class="lbl">🐈‍⬛ 어두운 털 고양이 인식률 <b id="accB"></b></div><div class="res-bar"><i id="barB" style="background:#a78bfa"></i></div><div class="photos" id="phB"></div></div>
+        <div class="sort-fb" id="biasMsg"></div>
+      </div>
+    </div>
+    <div class="note">※ 인식률은 학습 데이터의 비율에 따른 경향을 보여 주는 수업용 모형이에요. 실제 인공지능에서도 얼굴 인식처럼 특정 집단의 데이터가 부족하면 그 집단의 정확도가 낮아지는 문제가 보고되어 왔어요.</div>
+  </div>
+  <div class="inquiry"><h4>🔎 고양이가 아니라 사람이라면?</h4><p>같은 일이 <b>사람의 얼굴</b>을 알아보는 출입문이나 채용 프로그램에서 일어난다면 어떤 피해가 생길까요? 개발자는 무엇을 해야 할까요?</p>
+    <textarea id="iqBias" placeholder="예) 특정 피부색의 사람만 출입문이 잘 안 열릴 수 있다. 개발자는 다양한 사람의 데이터를 골고루 모으고, 집단별 정확도를 따로 검사해야 한다."></textarea>
+    <div class="iq-row"><button class="btn-sub" data-save="iqBias">💾 저장</button><span class="iq-saved" id="iqBias-saved"></span></div></div>
+
+  <div class="step-title"><span class="step-num">3</span> 더 알아보기 — 딥페이크, 이럴 땐 어떻게? <span class="step-time">5분 · 판단</span></div>
+  <div class="panel">
+    <p style="font-size:.95rem;line-height:1.7"><b style="color:#fde68a">문제</b> 인터넷을 하던 중 친구의 사진이 합성된 불법 영상을 발견하였다. 이때 내가 취해야 할 올바른 행동은 무엇일까?</p>
+    <div class="dilemma">
+      <button class="dl-btn" data-d="A"><b>A</b> 친구에게 사실을 알린 후 경찰에 신고하도록 한다.</button>
+      <button class="dl-btn" data-d="B"><b>B</b> 장난이라 생각하고 친구들에게 공유한다.</button>
+    </div>
+    <div class="sort-fb" id="dlFb" style="text-align:left"></div>
+  </div>
+
+  <div class="step-title"><span class="step-num">4</span> 순기능일까, 역기능일까? <span class="step-time">7분 · 활동</span></div>
+  <p class="step-desc">모든 기술이 그러하듯 인공지능도 사람을 돕기 위해 개발되지만, <b>의도하지 않은 역기능</b>도 발생해요. 각 문장을 분류해 보세요.</p>
+  <div class="panel"><div id="sortFF"></div></div>
+
+  <div class="step-title"><span class="step-num">5</span> 생각 키우기 — 인공지능의 순기능과 역기능 이해하기 <span class="step-time">8분 · 교과서 217쪽</span></div>
+  <div class="panel">
+    <p style="font-size:.9rem;line-height:1.7;margin-bottom:10px"><b style="color:#fde68a">1</b> 인공지능 기술이 갖는 긍정적인 기능과 부정적인 기능을 적어 보자.</p>
+    <div class="ff-grid">
+      <div class="hd">긍정적인 기능</div><div class="hd">인공지능 기술</div><div class="hd">부정적인 기능</div>
+      <div style="font-size:.8rem;color:#94a3b8">예) 위험으로부터 사람을 지킬 수 있다. 범인을 쉽게 추적할 수 있다.</div><div class="tech">📹<b>CCTV</b></div><div style="font-size:.8rem;color:#94a3b8">예) 누가, 언제, 어디서, 무엇을 했는지 알려져 사생활 침해 우려가 있다.</div>
+      <div><textarea id="ffP1"></textarea></div><div class="tech"><select class="field" id="ffT1"><option>얼굴 인식 출입문</option><option>추천 알고리즘</option><option>생성형 인공지능 챗봇</option><option>자율 주행 자동차</option><option>인공지능 번역</option></select></div><div><textarea id="ffN1"></textarea></div>
+      <div><textarea id="ffP2"></textarea></div><div class="tech"><select class="field" id="ffT2"><option>추천 알고리즘</option><option>얼굴 인식 출입문</option><option>생성형 인공지능 챗봇</option><option>자율 주행 자동차</option><option>인공지능 번역</option></select></div><div><textarea id="ffN2"></textarea></div>
+    </div>
+    <div class="iq-row"><button class="btn-sub" id="ffSave">💾 표 저장</button><span class="iq-saved" id="ffSaved"></span></div>
+    <p style="font-size:.9rem;line-height:1.7;margin:16px 0 8px"><b style="color:#fde68a">2</b> 인공지능을 개발하고 활용하는 과정에서 의도하지는 않았으나 사람들에게 해를 끼치게 될 가능성이 있다면 계속 사용해야 할까? 자신의 생각을 적고 친구와 나누어 보자.</p>
+    <div class="two-col"><div><div class="note" style="margin:0 0 4px">나의 생각</div><textarea class="iq" id="iqMine"></textarea></div><div><div class="note" style="margin:0 0 4px">친구의 생각</div><textarea class="iq" id="iqFriend"></textarea></div></div>
+    <div class="iq-row"><button class="btn-sub" data-save="iqMine">💾 나의 생각 저장</button><span class="iq-saved" id="iqMine-saved"></span><button class="btn-sub" data-save="iqFriend">💾 친구 생각 저장</button><span class="iq-saved" id="iqFriend-saved"></span></div>
+    <p style="font-size:.9rem;line-height:1.7;margin:16px 0 8px"><b style="color:#fde68a">3</b> 인공지능 기술을 개발할 때 반드시 생각해 볼 문제에 대해 적어 보자.</p>
+    <textarea class="iq" id="iqDev" placeholder="예) 학습 데이터가 골고루 모였는지, 개인 정보를 동의받고 썼는지, 피해가 생기면 누가 책임지는지"></textarea>
+    <div class="iq-row"><button class="btn-sub" data-save="iqDev">💾 저장</button><span class="iq-saved" id="iqDev-saved"></span></div>
+  </div>
+
+  <div class="step-title"><span class="step-num">✓</span> 스스로 확인하기 <span class="step-time">5분 · 🧠 메타인지</span></div>
+  <div class="panel" style="margin-bottom:14px"><div id="mcqCheck"></div></div>
+  <div class="self-check"><h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>인공지능의 비윤리적 사례 3가지를 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>편향된 데이터가 차별을 만드는 과정을 실험 결과로 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>딥페이크 피해를 발견했을 때 올바른 행동을 알고 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>인공지능 기술 하나의 순기능과 역기능을 비교할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress"></div>
+    <div class="meta-report" id="kwlCompare"></div>
+    <button class="btn-sub done-btn" id="doneBtn">☑️ 7차시 완료 표시하기</button>
+  </div>
+  <div class="next-link"><a href="quiz2.html">다음 → 8차시: 형성평가 ②</a></div>
+</div>
+
+<script src="assets/common.js"></script>
+<script>
+const { $, Predict, SortGame, MCQ, store } = ICT;
+Predict('predB', { q:'학습 사진 100장 중 어두운 털 고양이가 <b>5장</b>뿐이라면, 이 인공지능은 어두운 털 고양이를 얼마나 잘 알아볼까요?', opts:['밝은 털 고양이와 비슷하게 잘 알아본다', '밝은 털 고양이보다 훨씬 못 알아본다', '어두운 털 고양이를 더 잘 알아본다'], a:1,
+  exp:'인공지능은 <b>본 만큼 배워요</b>. 적게 본 무리는 잘 알아보지 못해요. 슬라이더를 움직여 확인해 보세요.', unlock:'biasLab' });
+
+function accFor(n) { return Math.round(40 + 56 * Math.min(1, Math.pow(n / 50, .6))); }
+function photos(el, acc, cls, emo) {
+  const k = Math.round(acc / 10); el.innerHTML = '';
+  const res = ICT.shuffle([...Array(10)].map((_, i) => i < k));
+  res.forEach(ok => { const d = document.createElement('div'); d.className = `photo ${cls} ${ok ? 'ok' : 'no'}`; d.textContent = emo; el.appendChild(d); });
+}
+function upd() {
+  const b = +$('share').value, a = 100 - b;
+  $('shareOut').textContent = b + '장';
+  $('mixA').style.width = a + '%'; $('mixA').textContent = `밝은 털 ${a}장`;
+  $('mixB').style.width = b + '%'; $('mixB').textContent = b >= 15 ? `어두운 털 ${b}장` : '';
+  const A = accFor(Math.min(a, 50) + (a > 50 ? 4 : 0)), B = accFor(b);
+  $('accA').textContent = A + '%'; $('accB').textContent = B + '%';
+  $('barA').style.width = A + '%'; $('barB').style.width = B + '%';
+  photos($('phA'), A, 'a', '🐱'); photos($('phB'), B, 'b', '🐈‍⬛');
+  const gap = A - B;
+  $('biasMsg').className = 'sort-fb ' + (gap > 15 ? 'no' : 'ok');
+  $('biasMsg').innerHTML = gap > 15 ? `⚠️ 두 무리의 인식률 차이 <b>${gap}%p</b> — 어두운 털 고양이를 차별하는 인공지능이 되었어요.` : gap > 5 ? `🙂 차이가 ${gap}%p로 줄었어요. 조금 더 골고루 모아 볼까요?` : '✅ 두 무리를 비슷하게 잘 알아봐요. 데이터를 골고루 모으는 것이 공정함의 첫걸음!';
+}
+$('share').addEventListener('input', upd);
+document.querySelectorAll('[data-s]').forEach(b => b.onclick = () => { $('share').value = b.dataset.s; upd(); });
+upd();
+
+document.querySelectorAll('[data-d]').forEach(b => b.onclick = () => {
+  const good = b.dataset.d === 'A';
+  document.querySelectorAll('[data-d]').forEach(x => { x.disabled = true; x.classList.add(x.dataset.d === 'A' ? 'good' : 'bad'); });
+  $('dlFb').className = 'sort-fb ' + (good ? 'ok' : 'no');
+  $('dlFb').innerHTML = (good ? '⭕ 맞아요! 답은 A예요. ' : '❌ 답은 A예요. 공유하는 순간 나도 피해를 키우는 사람이 돼요. ') +
+    '<br><span style="color:#cbd5e1">교과서에 따르면 딥페이크와 같은 허위 영상물을 제작하거나 유포한 경우, 「성폭력범죄의 처벌 등에 관한 특례법」에 따라 처벌받게 돼요. 피해 친구의 마음을 먼저 생각하고, 증거를 남긴 뒤 보호자·선생님과 함께 신고하세요.</span>';
+});
+
+SortGame('sortFF', { cats:[{ k:'p', label:'👍 순기능', color:'#4ade80' }, { k:'n', label:'⚠️ 역기능', color:'#f87171' }], items:[
+  { e:'📹', t:'거리의 CCTV가 범인을 빠르게 잡는 데 도움을 준다', a:'p' },
+  { e:'📹', t:'CCTV로 사람들의 이동이 모두 기록되어 사생활이 침해될 수 있다', a:'n' },
+  { e:'🎬', t:'추천 알고리즘이 내 취향에 맞는 영상을 찾아 준다', a:'p' },
+  { e:'🎬', t:'비슷한 영상만 계속 보여 줘 생각이 한쪽으로 치우칠 수 있다', a:'n' },
+  { e:'🌐', t:'인공지능 번역으로 외국어로 된 자료를 쉽게 읽는다', a:'p' },
+  { e:'🎭', t:'유명인의 목소리를 흉내 낸 가짜 음성으로 사기를 친다', a:'n' },
+  { e:'🩺', t:'의료 영상을 분석해 의사가 놓칠 수 있는 질병을 찾아낸다', a:'p' },
+  { e:'📝', t:'인공지능이 쓴 글을 자기가 쓴 것처럼 숙제로 제출한다', a:'n' },
+], after:'같은 기술에도 순기능과 역기능이 함께 있어요. 중요한 것은 <b>사용하는 사람의 윤리 의식</b>이에요.' });
+
+const ffIds = ['ffP1', 'ffN1', 'ffP2', 'ffN2', 'ffT1', 'ffT2'];
+const ffSaved = store.get('ff', {}); ffIds.forEach(id => { if (ffSaved[id]) $(id).value = ffSaved[id]; });
+$('ffSave').onclick = () => { const o = {}; ffIds.forEach(id => o[id] = $(id).value); store.set('ff', o); $('ffSaved').textContent = '✔ 저장됨'; };
+
+MCQ('mcqCheck', [
+  { q:'딥러닝과 페이크의 합성어로, 사람의 얼굴이나 음성을 다른 영상이나 사진에 합성하는 기술은?', opts:['딥페이크', '디지털 트윈', '자연어 처리', '클라우드'], a:0, exp:'딥페이크는 악용하면 교묘한 거짓 영상을 만들어 배포할 수 있어요.' },
+  { q:'인공지능이 특정 집단을 차별하는 결과를 내는 주된 까닭은?', opts:['편향적인 데이터를 바탕으로 학습했기 때문', '인공지능에게 감정이 있기 때문', '컴퓨터의 전력이 부족하기 때문', '인터넷 속도가 느리기 때문'], a:0, exp:'인공지능 자체엔 감정이 없지만, 치우친 데이터를 배우면 치우친 결과를 내요.' },
+  { q:'인공지능을 개발하고 사용하는 사람에게 꼭 필요한 것으로 교과서가 강조한 것은?', opts:['인공지능에 대한 윤리 의식', '빠른 타자 실력', '최신 스마트폰', '많은 팔로워'], a:0, exp:'인공지능을 개발하고 사용하는 모든 이들에게는 윤리 의식이 필요해요.' },
+]);
+</script>
+</body>
+</html>

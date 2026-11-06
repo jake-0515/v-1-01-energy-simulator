@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5차시 · 정보 통신 기술의 발달</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.era { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+@media(max-width:820px){ .era{grid-template-columns:1fr 1fr} }
+.era .card { padding:12px 14px; }
+.era .card .yr { font-size:.72rem; color:#94a3b8; font-weight:700; }
+.tele { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:820px){ .tele{grid-template-columns:1fr} }
+.lamp { width:70px; height:70px; border-radius:50%; background:#1e293b; border:3px solid #475569; margin:6px auto; transition:background .05s, box-shadow .05s; }
+.lamp.on { background:#fde047; box-shadow:0 0 30px #fde047; border-color:#fde047; }
+.morse-out { font-family:Consolas,monospace; font-size:1.3rem; letter-spacing:3px; color:#fde68a; background:#020617; border:1px solid #334155; border-radius:10px; padding:10px 12px; min-height:52px; word-break:break-all; line-height:1.7; }
+.key { display:block; width:100%; padding:22px; font-size:1.1rem; font-weight:800; border-radius:16px; border:3px solid #64748b; background:linear-gradient(#475569,#334155); color:#f8fafc; cursor:pointer; user-select:none; -webkit-user-select:none; touch-action:none; font-family:inherit; }
+.key.down { background:linear-gradient(#334155,#1e293b); transform:translateY(3px); border-color:#fde047; }
+.decoded { font-family:Consolas,monospace; font-size:1.4rem; color:#86efac; min-height:40px; background:#020617; border:1px solid #334155; border-radius:10px; padding:6px 12px; margin-top:8px; letter-spacing:2px; }
+.mtable { display:grid; grid-template-columns:repeat(auto-fill,minmax(78px,1fr)); gap:4px; font-family:Consolas,monospace; font-size:.8rem; margin-top:10px; }
+.mtable div { background:#0f172a; border:1px solid #334155; border-radius:6px; padding:3px 6px; }
+.mtable b { color:#fde68a; margin-right:4px; }
+.chal { font-family:Consolas,monospace; font-size:1.25rem; color:#fde68a; letter-spacing:3px; margin:8px 0; }
+</style>
+</head>
+<body data-page="sim_history">
+<div class="container">
+  <div class="top-nav"><a href="quiz1.html">← 4차시: 형성평가 ①</a><a href="sim_ai.html">6차시: 인공지능과 활용 →</a></div>
+  <span class="lesson-tag">5차시</span><span class="unit-tag">02 정보 통신 기술과 인공지능의 활용 · 교과서 212~213쪽</span>
+  <h1>📜📠💻 정보 통신 기술의 발달</h1>
+  <div class="goal-box"><b>학습 목표</b><br>
+    ① 원시 시대부터 인공지능까지 <b>정보 통신 기술의 발달 과정</b>을 순서대로 말할 수 있다.<br>
+    ② 각 시대의 기술이 <b>정보 전달 방식</b>을 어떻게 바꾸었는지 설명할 수 있다.<br>
+    ③ <b>모스 부호</b>로 전기 통신의 원리를 체험하고 설명할 수 있다.</div>
+  <div class="flow-bar"><span><b>0</b> 자기점검 3분</span><span><b>1</b> 발달 이야기 8분</span><span><b>2</b> 타임라인 게임 7분</span><span><b>3</b> 모스 부호 전신기 14분</span><span><b>4</b> 매체 비교 6분</span><span><b>✓</b> 스스로 확인 4분</span></div>
+
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">3분 · 🧠 메타인지</span></div>
+  <div class="kwl"><h3>📋 나는 지금 얼마나 알고 있을까?</h3><div class="kwl-row">
+    <div class="kwl-item"><span>문자가 발명되면서 무엇이 달라졌는지 말할 수 있다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>전신기와 모스 부호가 무엇인지 안다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>최초의 전자식 디지털 컴퓨터 이름을 안다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>인터넷이 어디에서 시작되었는지 안다</span><select class="pre-check"></select></div>
+  </div></div>
+
+  <div class="step-title"><span class="step-num">1</span> 소식은 어떻게 더 멀리, 더 빨리 가게 되었을까? <span class="step-time">8분 · 개념</span></div>
+  <p class="step-desc">교과서 212~213쪽의 흐름을 네 시기로 정리했어요. <b>무엇이 더 좋아졌는지</b>에 주목하세요.</p>
+  <div class="era">
+    <div class="card c2"><span class="yr">원시~고대</span><h3>🗣️ 몸짓·소리·문자</h3><p>표정·몸짓·동물 소리 흉내, 바위 그림으로 의사소통 → <b>언어</b>로 정확성·효율성↑ → <b>문자(상형 문자)</b>로 지식을 보존·전달.</p></div>
+    <div class="card c5"><span class="yr">인쇄의 시대</span><h3>📖 인쇄술</h3><p><b>금속활자 인쇄술</b> 등 인쇄 기술로 문서를 대량 제작 → 더 많은 사람이 지식을 나눔. 정보를 축적하고 빠르게 보급.</p></div>
+    <div class="card c1"><span class="yr">19세기 초 ~ 20세기 초</span><h3>📠 전기 통신·방송</h3><p><b>전신기·전화기</b>로 멀리 떨어진 곳에 빠르게 전달. <b>라디오·텔레비전</b>으로 많은 사람에게 실시간으로 소식 전달.</p></div>
+    <div class="card c4"><span class="yr">20세기 중반 ~ 현재</span><h3>💻 컴퓨터·인터넷·AI</h3><p><b>에니악(1946)</b> → <b>ARPANET(1969)</b>에서 시작된 인터넷 → <b>광통신</b>·인공위성 → 빅데이터와 <b>인공지능</b>.</p></div>
+  </div>
+  <div class="hook">📌 <b>핵심 용어</b> — <span class="term">광통신</span> 빛을 이용해 정보를 전달하는 방법. 전기 통신보다 전송 속도가 빠르고 먼 거리까지 안정적으로 전달할 수 있어요.<br>
+    <span class="term">에니악</span> 1946년 미국에서 완성된 최초의 전자식 디지털 컴퓨터. 대규모 진공관 회로를 사용해 전력 소비량이 많았어요.</div>
+
+  <div class="step-title"><span class="step-num">2</span> 타임라인 게임 — 순서대로 놓아 보기 <span class="step-time">7분 · 활동</span></div>
+  <p class="step-desc">정보 통신 기술의 발달을 <b>오래된 것부터</b> 순서대로 놓아 보세요.</p>
+  <div class="panel"><div id="timeline"></div></div>
+
+  <div class="step-title"><span class="step-num">3</span> 모스 부호 전신기 <span class="step-time">14분 · 🎮 시뮬레이터</span></div>
+  <p class="step-desc"><b>모스 부호</b>는 전기 신호의 <b>길이</b>를 이용해 글자와 숫자를 나타내는 전기 통신 방법이에요. 짧은 신호(·)와 긴 신호(−)의 조합으로 글자를 만들어요.</p>
+  <div id="predM"></div>
+  <div class="lock-note" id="tele-lock">🔒 예측을 먼저 고르면 전신기가 열려요.</div>
+  <div class="panel locked" id="tele">
+    <div class="tele">
+      <div>
+        <h4 style="color:#fde68a;margin-bottom:8px">① 글자 → 모스 부호 보내기</h4>
+        <input type="text" class="field" id="txIn" maxlength="20" placeholder="영어·숫자 입력 (예: SOS, HELLO)" autocomplete="off">
+        <div class="btn-row"><button class="btn" id="txBtn">📡 전송</button><button class="btn-sub" id="txStop">■ 멈춤</button>
+          <label class="note"><input type="checkbox" id="snd" checked> 소리</label></div>
+        <div class="lamp" id="lamp"></div>
+        <div class="morse-out" id="txOut"></div>
+      </div>
+      <div>
+        <h4 style="color:#fde68a;margin-bottom:8px">② 전신기 키를 직접 두드리기</h4>
+        <p class="note" style="margin:0 0 8px">버튼을 <b>짧게</b> 누르면 ·, <b>길게</b>(0.25초 이상) 누르면 −. 잠시 멈추면 글자가 완성돼요. (키보드 스페이스바도 가능)</p>
+        <button class="key" id="key">▼ 전신기 키</button>
+        <div class="morse-out" id="rxCode" style="margin-top:8px"></div>
+        <div class="decoded" id="rxText"></div>
+        <div class="btn-row"><button class="btn-sub" id="rxClear">지우기</button></div>
+      </div>
+    </div>
+    <h4 style="color:#c4b5fd;margin-top:18px">③ 해독 도전 — 이 신호는 무슨 낱말일까?</h4>
+    <div class="chal" id="chalCode"></div>
+    <div class="btn-row"><input type="text" class="field" id="chalIn" style="max-width:220px" placeholder="정답 입력" autocomplete="off"><button class="btn" id="chalBtn">확인</button><button class="btn-sub" id="chalPlay">🔊 들어 보기</button><button class="btn-sub" id="chalNext">다음 문제</button></div>
+    <div class="sort-fb" id="chalFb"></div>
+    <details style="margin-top:10px"><summary style="cursor:pointer;color:#7dd3fc;font-size:.88rem">📖 모스 부호표 보기 (교과서 그림 Ⅳ-25)</summary><div class="mtable" id="mtable"></div></details>
+  </div>
+  <div class="inquiry"><h4>🔎 생각해 보기</h4><p>모스 부호는 빛이나 소리로도 보낼 수 있어요. 손전등으로 보낸다면 <b>어떤 장점과 한계</b>가 있을까요? 오늘날 스마트폰 메시지와 비교해 보세요.</p>
+    <textarea id="iqMorse" placeholder="예) 전기가 없어도 보낼 수 있지만, 한 글자 보내는 데 시간이 오래 걸리고 보이는 거리에서만 가능하다."></textarea>
+    <div class="iq-row"><button class="btn-sub" data-save="iqMorse">💾 저장</button><span class="iq-saved" id="iqMorse-saved"></span></div></div>
+
+  <div class="step-title"><span class="step-num">4</span> 매체 비교 — 무엇이 달라졌을까? <span class="step-time">6분 · 비교</span></div>
+  <div id="predMedia"></div>
+  <div class="panel">
+    <table class="tbl">
+      <tr><th>매체</th><th>전달 속도</th><th>한 번에 전달하는 대상</th><th>정보의 형태</th><th>달라진 점</th></tr>
+      <tr><td>✍️ 문자·편지</td><td>사람이 직접 운반 (며칠~몇 달)</td><td>한 사람 또는 소수</td><td>글</td><td>지식을 <b>기록·보존</b></td></tr>
+      <tr><td>📖 인쇄물</td><td>운반 필요</td><td>많은 사람</td><td>글·그림</td><td>문서를 <b>대량</b>으로 제작</td></tr>
+      <tr><td>📠 전신기·전화기</td><td>거의 즉시</td><td>한 사람(1:1)</td><td>신호·목소리</td><td>먼 곳에 <b>빠르게</b> 전달</td></tr>
+      <tr><td>📻 라디오·TV</td><td>실시간</td><td>매우 많은 사람(1:다수)</td><td>소리·영상</td><td>많은 사람에게 <b>실시간</b> 전달</td></tr>
+      <tr><td>🌐 인터넷·스마트폰</td><td>실시간</td><td>누구나 서로(다수:다수)</td><td>글·소리·영상·자료</td><td>누구나 정보를 <b>생산하고 소비</b></td></tr>
+    </table>
+    <p class="note">※ 비교를 위해 단순하게 정리한 표예요.</p>
+  </div>
+
+  <div class="step-title"><span class="step-num">✓</span> 스스로 확인하기 <span class="step-time">4분 · 🧠 메타인지</span></div>
+  <div class="panel" style="margin-bottom:14px"><div id="mcqCheck"></div></div>
+  <div class="wrap-q"><h3>❓ 정리 질문</h3><p>정보 통신 기술은 계속 <b>더 빠르게, 더 멀리, 더 많은 사람에게</b> 발전해 왔어요. 앞으로는 어떤 방향으로 발전할까요?</p>
+    <textarea class="iq" id="iqWrap" placeholder="예) 생각만으로 메시지를 보내거나, 인공지능이 통역해 주어 언어 장벽이 사라질 것 같다."></textarea>
+    <div class="iq-row"><button class="btn-sub" data-save="iqWrap">💾 저장</button><span class="iq-saved" id="iqWrap-saved"></span></div></div>
+  <div class="self-check"><h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>문자 → 인쇄 → 전기 통신·방송 → 컴퓨터·인터넷 → 인공지능 순서를 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>모스 부호의 원리(신호의 길이)를 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>에니악</b>, <b>ARPANET</b>, <b>광통신</b>이 무엇인지 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>매체가 발달하며 무엇이 달라졌는지 한 가지 이상 말할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress"></div>
+    <div class="meta-report" id="kwlCompare"></div>
+    <button class="btn-sub done-btn" id="doneBtn">☑️ 5차시 완료 표시하기</button>
+  </div>
+  <div class="next-link"><a href="sim_ai.html">다음 → 6차시: 인공지능과 생활 속 활용</a></div>
+</div>
+
+<script src="assets/common.js"></script>
+<script>
+const { $, Predict, OrderGame, MCQ } = ICT;
+OrderGame('timeline', { items:[
+  { e:'🙌', t:'표정·몸짓·동물 소리', sub:'원시 시대' },
+  { e:'🪨', t:'상형 문자', sub:'문자의 발명' },
+  { e:'📖', t:'금속활자 인쇄술', sub:'대량 인쇄' },
+  { e:'📠', t:'전신기', sub:'19세기 초 전기 신호' },
+  { e:'📻', t:'라디오·텔레비전', sub:'20세기 초' },
+  { e:'🖥️', t:'에니악', sub:'1946년 컴퓨터' },
+  { e:'🌐', t:'ARPANET', sub:'1969년 인터넷의 시작' },
+  { e:'🤖', t:'딥러닝 인공지능', sub:'빅데이터 학습' },
+], exp:'정보 전달은 <b>정확하게 → 많이 → 빠르게 → 실시간으로 → 스스로 학습하며</b> 발전해 왔어요.' });
+
+/* ===== 모스 부호 ===== */
+const M = { A:'.-', B:'-...', C:'-.-.', D:'-..', E:'.', F:'..-.', G:'--.', H:'....', I:'..', J:'.---', K:'-.-', L:'.-..', M:'--', N:'-.', O:'---', P:'.--.', Q:'--.-', R:'.-.', S:'...', T:'-', U:'..-', V:'...-', W:'.--', X:'-..-', Y:'-.--', Z:'--..',
+  '0':'-----', '1':'.----', '2':'..---', '3':'...--', '4':'....-', '5':'.....', '6':'-....', '7':'--...', '8':'---..', '9':'----.' };
+const R = Object.fromEntries(Object.entries(M).map(([k, v]) => [v, k]));
+const pretty = c => c.replace(/\./g, '·').replace(/-/g, '−');
+$('mtable').innerHTML = Object.entries(M).map(([k, v]) => `<div><b>${k}</b>${pretty(v)}</div>`).join('');
+
+Predict('predM', { q:'모스 부호에서 가장 자주 쓰이는 영어 글자 <b>E</b>는 어떤 신호일까요?', opts:['· (짧은 신호 1개)', '−−−− (긴 신호 4개)', '·−·−· (5개 섞어서)'], a:0,
+  exp:'E는 <b>·</b> 하나, T는 <b>−</b> 하나예요. 자주 쓰는 글자일수록 짧게 만들어 <b>전송 시간을 줄였어요</b>. 오늘날의 데이터 압축과 같은 아이디어랍니다!', unlock:'tele' });
+
+let actx = null, osc = null, gain = null;
+function tone(on) {
+  if (!$('snd').checked) { if (osc) gain.gain.value = 0; return; }
+  try {
+    if (!actx) { actx = new (window.AudioContext || window.webkitAudioContext)(); osc = actx.createOscillator(); gain = actx.createGain(); osc.frequency.value = 650; gain.gain.value = 0; osc.connect(gain); gain.connect(actx.destination); osc.start(); }
+    if (actx.state === 'suspended') actx.resume();
+    gain.gain.setTargetAtTime(on ? .18 : 0, actx.currentTime, .005);
+  } catch (e) {}
+}
+function lamp(on) { $('lamp').classList.toggle('on', on); tone(on); }
+
+const U = 110; let playTimer = [];
+function stopPlay() { playTimer.forEach(clearTimeout); playTimer = []; lamp(false); }
+function playMorse(text, out) {
+  stopPlay();
+  let t = 0; const add = (fn, d) => { playTimer.push(setTimeout(fn, t)); t += d; };
+  if (out) out.innerHTML = '';
+  [...text.toUpperCase()].forEach((ch, ci) => {
+    if (ch === ' ') { add(() => out && (out.innerHTML += ' / '), U * 4); return; }
+    const code = M[ch]; if (!code) return;
+    add(() => out && (out.innerHTML += `<span style="color:#94a3b8">${ch}</span>`), 0);
+    [...code].forEach(s => { add(() => { lamp(true); out && (out.innerHTML += pretty(s)); }, s === '.' ? U : U * 3); add(() => lamp(false), U); });
+    add(() => out && (out.innerHTML += ' '), U * 2);
+  });
+  add(() => lamp(false), 0);
+}
+$('txBtn').onclick = () => { const v = $('txIn').value.replace(/[^A-Za-z0-9 ]/g, ''); if (!v) { ICT.toast('영어나 숫자를 입력하세요'); return; } $('txIn').value = v.toUpperCase(); playMorse(v, $('txOut')); };
+$('txStop').onclick = stopPlay;
+
+/* 전신기 키 */
+let downAt = 0, cur = '', gapT = null, isDown = false;
+function keyDown(e) { if (e) e.preventDefault(); if (isDown) return; isDown = true; downAt = performance.now(); clearTimeout(gapT); $('key').classList.add('down'); lamp(true); }
+function keyUp(e) {
+  if (e) e.preventDefault(); if (!isDown) return; isDown = false; $('key').classList.remove('down'); lamp(false);
+  const d = performance.now() - downAt; cur += d < 250 ? '.' : '-';
+  $('rxCode').textContent = $('rxCode').textContent + pretty(d < 250 ? '.' : '-');
+  clearTimeout(gapT);
+  gapT = setTimeout(() => { const ch = R[cur] || '?'; $('rxText').textContent += ch; $('rxCode').textContent += '  '; cur = ''; }, 700);
+}
+const key = $('key');
+key.addEventListener('pointerdown', keyDown); key.addEventListener('pointerup', keyUp); key.addEventListener('pointerleave', keyUp); key.addEventListener('pointercancel', keyUp);
+document.addEventListener('keydown', e => { if (e.code === 'Space' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName) && !$('tele').classList.contains('locked')) keyDown(e); });
+document.addEventListener('keyup', e => { if (e.code === 'Space' && isDown) keyUp(e); });
+$('rxClear').onclick = () => { $('rxCode').textContent = ''; $('rxText').textContent = ''; cur = ''; };
+
+/* 해독 도전 */
+const WORDS = ['SOS', 'HI', 'TECH', 'DATA', 'AI', 'NET', 'CODE', 'WIFI', 'INFO', 'SEOUL'];
+let ci = 0, order = ICT.shuffle(WORDS);
+function showChal() { const w = order[ci % order.length]; $('chalCode').textContent = [...w].map(c => pretty(M[c])).join('   '); $('chalIn').value = ''; $('chalFb').textContent = ''; $('chalFb').className = 'sort-fb'; }
+$('chalBtn').onclick = () => { const w = order[ci % order.length]; const ok = $('chalIn').value.trim().toUpperCase() === w; $('chalFb').className = 'sort-fb ' + (ok ? 'ok' : 'no'); $('chalFb').textContent = ok ? `⭕ 정답! ${w}` : '❌ 부호표를 보며 한 글자씩 풀어 보세요. 글자 사이는 넓게 띄어 있어요.'; if (ok) { ICT.meta.firstTotal++; ICT.meta.firstOk++; ICT.metaUpdate(); } };
+$('chalPlay').onclick = () => playMorse(order[ci % order.length], null);
+$('chalNext').onclick = () => { ci++; showChal(); };
+showChal();
+
+Predict('predMedia', { q:'20세기 초, 전 국민에게 <b>같은 소식을 동시에</b> 전하기에 가장 알맞았던 매체는?', opts:['편지', '전화기', '라디오·텔레비전'], a:2,
+  exp:'라디오와 TV는 <b>한 곳에서 많은 사람에게 실시간으로</b> 전달할 수 있어 생활 속 중요한 매체가 되었어요. 아래 표에서 매체별 차이를 확인해 보세요.' });
+
+MCQ('mcqCheck', [
+  { q:'문자의 발명으로 가능해진 것으로 가장 알맞은 것은?', opts:['정보의 기록과 저장', '실시간 영상 통화', '빛을 이용한 통신', '인공지능 학습'], a:0, exp:'문자가 발명되어 정보의 기록과 저장이 가능해졌어요.' },
+  { q:'1946년 미국에서 완성된 최초의 전자식 디지털 컴퓨터는?', opts:['에니악', 'ARPANET', '전신기', '인공위성'], a:0, exp:'에니악은 대규모 진공관 회로를 사용해 전력 소비량이 많았어요.' },
+  { q:'인터넷은 1969년 미국 국방성의 ( )을/를 시작으로 발전하였다.', opts:['ARPANET', '에니악', '광통신', '모스 부호'], a:0, exp:'세계 각국 컴퓨터가 연결되어 정보를 공유하는 네트워크로 발전했어요.' },
+  { q:'빛을 이용하여 정보를 전달하며, 전기 통신보다 빠르고 먼 거리까지 안정적인 방법은?', opts:['광통신', '전신', '라디오', '인쇄술'], a:0, exp:'광통신 덕분에 빠른 속도로 많은 양의 정보를 주고받게 되었어요.' },
+]);
+</script>
+</body>
+</html>

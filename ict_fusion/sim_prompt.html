@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9차시 · 인공지능 툴 제작하기 (프롬프트 엔지니어링)</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.pe { display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; }
+.pe .card { min-width:180px; text-align:center; }
+.pe .op { font-size:1.8rem; color:#fbbf24; font-weight:800; }
+.cmp { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media(max-width:760px){ .cmp{grid-template-columns:1fr} }
+.chat { background:#0f172a; border:1px solid #334155; border-radius:12px; padding:12px; font-size:.85rem; line-height:1.65; }
+.chat .me { background:#1e3a5f; border-radius:10px; padding:8px 10px; margin-bottom:8px; }
+.chat .ai { background:#1e293b; border-radius:10px; padding:8px 10px; }
+.chat .tag { font-size:.7rem; color:#94a3b8; display:block; margin-bottom:3px; }
+.topics { display:flex; gap:8px; flex-wrap:wrap; }
+.builder > * { min-width:0; }
+.builder { display:grid; grid-template-columns:1fr 1fr; gap:16px; align-items:start; }
+@media(max-width:860px){ .builder{grid-template-columns:1fr} }
+.fld { margin-bottom:12px; }
+.fld label { display:block; font-size:.84rem; color:#fde68a; font-weight:700; margin-bottom:4px; }
+.fld label small { color:#94a3b8; font-weight:400; }
+.fld textarea { width:100%; min-height:56px; background:#0f172a; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:8px 10px; font-family:inherit; font-size:.85rem; resize:vertical; line-height:1.55; }
+.preview { background:#020617; border:1px solid #22d3ee; border-radius:12px; padding:14px; font-size:.88rem; line-height:1.75; white-space:pre-wrap; min-height:180px; }
+.preview .ph { color:#fbbf24; font-weight:800; }
+.meter { display:grid; gap:6px; margin-top:10px; font-size:.84rem; }
+.meter div::before { content:'⬜ '; } .meter div.ok::before { content:'✅ '; }
+.qbar { height:12px; background:#1e293b; border-radius:999px; overflow:hidden; margin-top:8px; border:1px solid #475569; }
+.qbar i { display:block; height:100%; background:linear-gradient(90deg,#f97316,#facc15,#22c55e); transition:width .3s; }
+.getgpt { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media(max-width:760px){ .getgpt{grid-template-columns:1fr} }
+.gf { background:#0f172a; border:1px solid #334155; border-radius:10px; padding:10px 12px; }
+.gf .gh { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:.82rem; color:#93c5fd; font-weight:700; margin-bottom:6px; }
+.gf .gv { font-size:.85rem; line-height:1.6; white-space:pre-wrap; color:#e2e8f0; max-height:160px; overflow:auto; }
+.mini-copy { background:#334155; color:#e2e8f0; border:1px solid #64748b; border-radius:6px; padding:3px 9px; font-size:.75rem; cursor:pointer; font-family:inherit; }
+table.eval td.r { text-align:center; width:64px; }
+table.eval input { width:18px; height:18px; accent-color:#22d3ee; cursor:pointer; }
+</style>
+</head>
+<body data-page="sim_prompt">
+<div class="container">
+  <div class="top-nav"><a href="quiz2.html">← 8차시: 형성평가 ②</a><a href="final.html">10차시: 단원 종합 평가 →</a></div>
+  <span class="lesson-tag">9차시</span><span class="unit-tag">03 인공지능 툴 제작하기 · 교과서 218~220쪽</span>
+  <h1>💬🛠️ 인공지능 툴 제작하기 — 프롬프트 엔지니어링</h1>
+  <div class="goal-box"><b>학습 목표</b><br>
+    ① <b>프롬프트 엔지니어링</b>의 의미를 설명할 수 있다.<br>
+    ② 일상생활의 문제를 정의하고 <b>역할 부여하기·예시 답안 보여주기</b>로 프롬프트를 만들 수 있다.<br>
+    ③ 프롬프트를 실행·수정하고 <b>평가표</b>로 인공지능 툴을 평가할 수 있다.</div>
+  <div class="flow-bar"><span><b>0</b> 자기점검 2분</span><span><b>1</b> 프롬프트 엔지니어링 4분</span><span><b>2</b> 좋은 프롬프트 비교 5분</span><span><b>3</b> 문제 정의 3분</span><span><b>4</b> 프롬프트 조립기 12분</span><span><b>5</b> 실행하기 10분</span><span><b>6</b> 평가·성찰 7분</span></div>
+
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">2분 · 🧠 메타인지</span></div>
+  <div class="kwl"><h3>📋 나는 지금 얼마나 알고 있을까?</h3><div class="kwl-row">
+    <div class="kwl-item"><span>'프롬프트'가 무엇인지 안다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>인공지능에게 좋은 답을 받는 질문 방법을 2가지 이상 안다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>인공지능 툴을 직접 만들어 본 적이 있다</span><select class="pre-check"></select></div>
+  </div></div>
+
+  <div class="step-title"><span class="step-num">1</span> 프롬프트 엔지니어링이란? <span class="step-time">4분 · 개념</span></div>
+  <p class="step-desc">인공지능을 직접 제작해 보면 인공지능이 어떻게 작동하는지 더 깊게 이해하고, 더 명확한 지시를 내려 더 좋은 결과물을 얻을 수 있어요.</p>
+  <div class="panel">
+    <div class="pe">
+      <div class="card c1"><h3>💬 프롬프트</h3><p>인공지능에게 지시하는 문장</p></div><div class="op">＋</div>
+      <div class="card c2"><h3>⚙️ 엔지니어링</h3><p>기술의 원리를 이해하고 실제 문제 해결에 적용하는 과정</p></div><div class="op">➜</div>
+      <div class="card c4"><h3>🛠️ 프롬프트 설계</h3><p>인공지능을 활용하여 일상생활의 문제를 해결하기 위한 프롬프트 설계</p></div>
+    </div>
+    <div class="hook">📌 <b>프롬프트 엔지니어링(Prompt Engineering)</b> — 인공지능에게 명령을 내려 <b>더 좋은 결과를 얻게 하는 과정</b>이에요.</div>
+  </div>
+
+  <div class="step-title"><span class="step-num">2</span> 어느 쪽 답이 더 쓸모 있을까? <span class="step-time">5분 · 비교</span></div>
+  <div id="predP"></div>
+  <div class="cmp">
+    <div class="chat"><span class="tag">프롬프트 A</span><div class="me">에너지 절약 방법 알려 줘.</div>
+      <span class="tag">예시 답변 (설명을 위해 만든 예)</span><div class="ai">에너지를 절약하려면 전기를 아끼고, 물을 아끼고, 대중교통을 이용하는 것이 좋습니다. 또한 재활용을 하고 친환경 제품을 사용하면 도움이 됩니다.</div></div>
+    <div class="chat"><span class="tag">프롬프트 B</span><div class="me">지금부터 학교 에너지 관리자처럼 행동해 주세요. 중학생이 <b>기술실</b>에서 바로 실천할 수 있는 에너지 절약 방법을 <b>3가지</b>, 번호를 붙여 한 줄씩 제안해 주세요. 예: 기술실에서 에너지를 줄일 수 있는 행동으로 에너지 절약형 조명 사용과 냉난방기 온도 조절, 대기 전력 차단이 있습니다.</div>
+      <span class="tag">예시 답변 (설명을 위해 만든 예)</span><div class="ai">1. 수업이 끝나면 3D 프린터·납땜기의 플러그를 뽑아 대기 전력을 차단해요.<br>2. 창가 쪽 조명은 햇빛이 충분할 때 끄고 필요한 줄만 켜요.<br>3. 냉방은 26℃로 맞추고 문을 닫아 찬 공기가 새지 않게 해요.</div></div>
+  </div>
+
+  <div class="step-title"><span class="step-num">3</span> 문제 정의하기 <span class="step-time">3분 · 활동</span></div>
+  <p class="step-desc">일상생활에서 느끼는 문제 상황을 확인하고, 이를 해결할 인공지능 툴의 주제를 골라요. (자유 주제도 가능)</p>
+  <div class="panel">
+    <div class="topics" id="topics">
+      <button class="chip on" data-t="energy">⚡ 가정과 학교에서 에너지 절약 방법 (교과서 예시)</button>
+      <button class="chip" data-t="recycle">♻️ 헷갈리는 분리배출 도우미</button>
+      <button class="chip" data-t="study">📅 시험 공부 계획 도우미</button>
+      <button class="chip" data-t="free">✏️ 자유 주제</button>
+    </div>
+    <div class="fld" style="margin-top:12px"><label>해결하고 싶은 문제 <small>(누가, 언제, 어떤 어려움을 겪나요?)</small></label><textarea id="pProblem"></textarea></div>
+  </div>
+
+  <div class="step-title"><span class="step-num">4</span> 프롬프트 조립기 <span class="step-time">12분 · 🎮 시뮬레이터</span></div>
+  <p class="step-desc">교과서의 두 가지 방법(<b>역할 부여하기 · 예시 답안 보여주기</b>)과 세 가지 조건(<b>역할·목적·배경 / 분량과 형식 / 잘된 사례</b>)을 채우면 오른쪽에 프롬프트가 완성돼요. <span class="ph" style="color:#fbbf24">{노란 글자}</span>는 사용자가 입력할 빈칸이에요.</p>
+  <div class="panel">
+    <div class="builder">
+      <div>
+        <div class="fld"><label>🎭 역할 부여하기 <small>새로운 역할과 배경 설명</small></label><textarea id="pRole"></textarea></div>
+        <div class="fld"><label>🎯 목적·배경 <small>무엇을 위해, 누구를 위해</small></label><textarea id="pGoal"></textarea></div>
+        <div class="fld"><label>⌨️ 사용자 입력 값 <small>사용자가 빈칸에 넣을 내용의 이름</small></label><input type="text" class="field" id="pInput"></div>
+        <div class="fld"><label>📏 결과물의 분량과 형식</label>
+          <select class="field" id="pFormat">
+            <option value="">(정하지 않음)</option>
+            <option>번호를 붙여 3가지, 한 줄씩</option>
+            <option>표로 정리 (항목 | 방법 | 이유)</option>
+            <option>200자 이내의 짧은 문단</option>
+            <option>단계별 체크리스트 5개</option>
+          </select></div>
+        <div class="fld"><label>📝 예시 답안 보여주기 <small>내가 제시하는 예를 참고해 대답하게</small></label><textarea id="pExample"></textarea></div>
+        <div class="fld"><label>🛡️ 지킬 점 <small>(선택) 안전·윤리 조건</small></label><textarea id="pRule" placeholder="예) 중학생이 이해할 수 있는 쉬운 말로, 확실하지 않은 내용은 모른다고 말해 주세요."></textarea></div>
+      </div>
+      <div>
+        <div class="code-card" style="margin-top:0"><div class="code-head"><span class="lbl"><b>완성된 프롬프트</b> · 미리보기</span><button class="copy-btn" id="copyPrompt">📋 복사</button></div>
+          <div class="preview" id="preview"></div></div>
+        <div class="meter" id="meter">
+          <div data-m="role">역할 부여하기</div><div data-m="ex">예시 답안 보여주기</div>
+          <div data-m="c1">조건 ① 역할·목적·배경 보충 설명</div><div data-m="c2">조건 ② 결과물의 분량과 형식</div><div data-m="c3">조건 ③ 잘된 사례 제시</div><div data-m="in">사용자 입력 빈칸</div>
+        </div>
+        <div class="qbar"><i id="qbar"></i></div>
+        <div class="note" id="qmsg"></div>
+      </div>
+    </div>
+    <div class="note">※ 체크가 많다고 항상 좋은 답이 나오는 것은 아니에요. 실제로 실행해 보고 결과를 확인하며 고치는 것이 진짜 프롬프트 엔지니어링이에요.</div>
+  </div>
+
+  <div class="step-title"><span class="step-num">5</span> 프롬프트 실행하기 — 겟GPT로 나만의 툴 만들기 <span class="step-time">10분 · 실습</span></div>
+  <p class="step-desc">교과서 219쪽처럼 <b>겟GPT(getgpt.app/creator/projects)</b> 또는 <b>선생님이 허락한 인공지능 도구</b>에 입력해요. 아래 칸은 조립기에서 자동으로 채워지니 하나씩 복사해 붙여넣으세요.</p>
+  <div class="panel">
+    <div class="getgpt">
+      <div class="gf"><div class="gh">Stage 1 · 제목 <button class="mini-copy" data-c="gTitle">복사</button></div><div class="gv" id="gTitle"></div><div class="note">해결하고 싶은 주제를 간결하고 명확하게</div></div>
+      <div class="gf"><div class="gh">Stage 1 · 설명 <button class="mini-copy" data-c="gDesc">복사</button></div><div class="gv" id="gDesc"></div><div class="note">인공지능 모델이 어떤 역할을 하는지</div></div>
+      <div class="gf"><div class="gh">Stage 2 · 사용자 입력 값 <button class="mini-copy" data-c="gInput">복사</button></div><div class="gv" id="gInput"></div><div class="note">사용자가 해결책을 얻기 위해 입력해야 할 내용</div></div>
+      <div class="gf"><div class="gh">Stage 2 · 프롬프트 <button class="mini-copy" data-c="gPrompt">복사</button></div><div class="gv" id="gPrompt"></div><div class="note">'사용자 입력 값'에 이어 인공지능에게 내릴 명령문</div></div>
+    </div>
+    <div class="hook">▶️ <b>다음</b> 버튼을 누른 뒤 <b>'내보내기'</b>로 모델을 완성하고, 빈칸에 답변을 넣어 <b>'생성하기'</b>로 결과를 확인해요. 서로 다른 입력으로 <b>3번 이상</b> 테스트해 보세요.<br>
+      <span style="color:#94a3b8">⚠️ 이름·전화번호·주소 같은 개인 정보는 입력하지 마세요.</span></div>
+    <div class="inquiry"><h4>🔁 결과를 확인하고 수정하기 — 테스트 기록</h4>
+      <p>입력한 값, 마음에 들지 않았던 점, 프롬프트에서 고친 부분을 적어요.</p>
+      <textarea id="iqTest" placeholder="테스트 1: 입력 '교실' → 답이 너무 길었다 → 분량을 '3가지, 한 줄씩'으로 고침&#10;테스트 2: ..."></textarea>
+      <div class="iq-row"><button class="btn-sub" data-save="iqTest">💾 저장</button><span class="iq-saved" id="iqTest-saved"></span></div></div>
+  </div>
+
+  <div class="step-title"><span class="step-num">6</span> 평가하기 · 수업 성찰하기 <span class="step-time">7분 · 🧠 메타인지</span></div>
+  <p class="step-desc">작성된 인공지능 툴을 친구들과 공유해 보고 좋은 점과 개선해야 할 점을 제시해요. (교과서 220쪽 문제 해결 활동 평가표)</p>
+  <div class="panel">
+    <table class="tbl eval" id="evalTbl">
+      <tr><th>항목</th><th>평가 내용</th><th>잘함</th><th>보통</th><th>미흡</th></tr>
+    </table>
+    <div class="fld" style="margin-top:12px"><label>활동 후 느낀 점</label><textarea id="iqFeel"></textarea></div>
+    <div class="iq-row"><button class="btn-sub" id="evalSave">💾 평가표 저장</button><span class="iq-saved" id="evalSaved"></span><button class="btn-sub" onclick="window.print()">🖨️ 인쇄 / PDF</button></div>
+  </div>
+  <div class="wrap-q" style="margin-top:14px"><h3>❓ 수업 성찰하기</h3>
+    <p>1. 인공지능 툴을 직접 만들어서 활용해 보아야 하는 이유는 무엇일까?</p><textarea class="iq" id="iqWhy"></textarea>
+    <p style="margin-top:10px">2. 프롬프트를 구체적이고 정확하게 제시했을 때의 장점은 무엇일까?</p><textarea class="iq" id="iqMerit"></textarea>
+    <div class="iq-row"><button class="btn-sub" data-save="iqWhy">💾 1번 저장</button><span class="iq-saved" id="iqWhy-saved"></span><button class="btn-sub" data-save="iqMerit">💾 2번 저장</button><span class="iq-saved" id="iqMerit-saved"></span></div></div>
+  <div class="self-check"><h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>프롬프트 엔지니어링의 뜻을 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>역할 부여하기와 예시 답안 보여주기로 프롬프트를 만들 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>프롬프트를 좋게 만드는 3가지 조건을 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>테스트 결과를 보고 프롬프트를 고쳐 본 경험을 말할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress"></div>
+    <div class="meta-report" id="kwlCompare"></div>
+    <button class="btn-sub done-btn" id="doneBtn">☑️ 9차시 완료 표시하기</button>
+  </div>
+  <div class="next-link"><a href="colab_basic.html" style="background:linear-gradient(135deg,#4ade80,#16a34a)">심화 → 코랩과 파이썬 기초</a> &nbsp; <a href="final.html">10차시: 단원 종합 평가 →</a></div>
+</div>
+
+<script src="assets/common.js"></script>
+<script>
+const { $, Predict, store, esc, copyText, toast } = ICT;
+Predict('predP', { q:'두 프롬프트로 얻은 답 중 <b>바로 실천하기 좋은</b> 답은 어느 쪽일까요? (아래 대화를 읽기 전에 예측!)', opts:['A — 짧고 간단한 질문', 'B — 역할·장소·개수·예시를 준 질문'], a:1,
+  exp:'구체적인 요구 사항을 적어 줄수록 인공지능의 답변이 좋아져요. B는 <b>역할 부여</b>, <b>목적(기술실)</b>, <b>분량·형식(3가지, 번호)</b>, <b>예시</b>를 담았어요.' });
+
+const TOPICS = {
+  energy:{ title:'가정과 학교에서 에너지 절약 방법', problem:'우리 학교와 집에서 전기가 낭비되는 것 같은데, 무엇부터 실천해야 할지 모르겠다.', role:'지금부터 학교 에너지 관리자처럼 행동해 주세요. 당신은 에너지 사용량을 줄이기 위한 방법을 제안하는 역할을 수행할 것입니다.', goal:'중학생이 친구들과 바로 실천할 수 있는 에너지 절약 방법을 알고 싶습니다.', input:'에너지를 절약하고 싶은 구체적인 장소', format:'번호를 붙여 3가지, 한 줄씩', example:'기술실에서 에너지를 줄일 수 있는 행동으로 에너지 절약형 조명 사용과 냉난방기 온도 조절, 대기 전력 차단이 있습니다. 그리고 에너지 절약 교육과 캠페인을 진행하고, 에너지 절약 우수 사례를 발굴합니다.' },
+  recycle:{ title:'헷갈리는 분리배출 도우미', problem:'급식 후 우유갑, 컵라면 용기 등을 어디에 버려야 할지 헷갈려 잘못 버리는 친구가 많다.', role:'지금부터 우리 동네 자원순환 선생님처럼 행동해 주세요.', goal:'중학생이 쓰레기를 올바르게 분리배출할 수 있도록 돕고 싶습니다.', input:'버리려는 물건', format:'단계별 체크리스트 5개', example:'우유갑: 1) 내용물을 비운다 2) 물로 헹군다 3) 펼쳐서 말린다 4) 일반 종이와 따로 종이팩 수거함에 넣는다.' },
+  study:{ title:'시험 공부 계획 도우미', problem:'시험 기간에 어떤 과목을 언제 공부해야 할지 계획 세우기가 어렵다.', role:'지금부터 친절한 중학교 학습 코치처럼 행동해 주세요.', goal:'남은 기간 동안 과목별로 무리하지 않는 공부 계획을 세우고 싶습니다.', input:'시험까지 남은 날짜와 과목', format:'표로 정리 (항목 | 방법 | 이유)', example:'월요일 | 수학 문제집 2쪽 풀기 | 계산 실수를 줄이려면 매일 조금씩 푸는 것이 좋기 때문' },
+  free:{ title:'', problem:'', role:'', goal:'', input:'', format:'', example:'' }
+};
+const F = ['pProblem', 'pRole', 'pGoal', 'pInput', 'pFormat', 'pExample', 'pRule'];
+let topic = store.get('topic', 'energy');
+function load(t, force) {
+  topic = t; store.set('topic', t);
+  document.querySelectorAll('[data-t]').forEach(x => x.classList.toggle('on', x.dataset.t === t));
+  const saved = store.get('fields:' + t, null), T = TOPICS[t];
+  const val = { pProblem:T.problem, pRole:T.role, pGoal:T.goal, pInput:T.input, pFormat:T.format, pExample:T.example, pRule:'' };
+  F.forEach(id => $(id).value = (!force && saved && saved[id] !== undefined) ? saved[id] : val[id]);
+  render();
+}
+function build() {
+  const v = id => $(id).value.trim();
+  const parts = [];
+  if (v('pRole')) parts.push(v('pRole'));
+  if (v('pGoal')) parts.push(v('pGoal'));
+  const ASK = { energy:'에서 에너지를 절약할 수 있는 구체적인 실천 방안을 작성해 주세요.', recycle:'을(를) 올바르게 분리배출하는 방법을 알려 주세요.', study:'에 맞는 공부 계획을 세워 주세요.', free:'에 대해 도움이 되는 답을 해 주세요.' };
+  if (v('pInput')) parts.push(`{${v('pInput')}}${ASK[topic]}`);
+  if (v('pFormat')) parts.push(`답은 ${v('pFormat')}(으)로 작성해 주세요.`);
+  if (v('pExample')) parts.push(`다음 예시를 참고해서 대답해 주세요.\n예시: ${v('pExample')}`);
+  if (v('pRule')) parts.push(v('pRule'));
+  return parts.join('\n');
+}
+function render() {
+  const p = build();
+  $('preview').innerHTML = p ? esc(p).replace(/\{([^}]+)\}/g, '<span class="ph">{$1}</span>') : '<span style="color:#64748b">왼쪽 칸을 채우면 여기에 프롬프트가 만들어져요.</span>';
+  const v = id => $(id).value.trim();
+  const chk = { role:v('pRole').length >= 8, ex:v('pExample').length >= 10, c1:v('pRole').length >= 8 && v('pGoal').length >= 8, c2:!!v('pFormat'), c3:v('pExample').length >= 10, in:!!v('pInput') };
+  let n = 0; document.querySelectorAll('#meter div').forEach(d => { const ok = chk[d.dataset.m]; d.classList.toggle('ok', ok); if (ok) n++; });
+  $('qbar').style.width = (n / 6 * 100) + '%';
+  $('qmsg').textContent = n === 6 ? '👍 모든 요소를 갖췄어요. 이제 실제로 실행해 보며 결과를 확인하세요!' : n >= 4 ? '좋아요! 비어 있는 요소를 채우면 답이 더 구체적일 거예요.' : '역할, 목적, 형식, 예시를 차례로 채워 보세요.';
+  const title = TOPICS[topic].title || v('pProblem').slice(0, 30) || '나만의 인공지능 툴';
+  $('gTitle').textContent = title;
+  $('gDesc').textContent = title + '을(를) ' + (v('pGoal') ? '돕는 인공지능입니다. ' + v('pGoal') : '소개합니다.');
+  $('gInput').textContent = v('pInput') || '(사용자 입력 값을 정해 주세요)';
+  $('gPrompt').textContent = p || '(프롬프트를 먼저 조립하세요)';
+  const o = {}; F.forEach(id => o[id] = $(id).value); store.set('fields:' + topic, o);
+}
+F.forEach(id => $(id).addEventListener('input', render));
+document.querySelectorAll('[data-t]').forEach(b => b.onclick = () => load(b.dataset.t));
+$('copyPrompt').onclick = async () => { const ok = await copyText(build()); toast(ok ? '프롬프트를 복사했어요!' : '복사가 막혀 있어요. 직접 선택해 복사하세요'); };
+document.querySelectorAll('.mini-copy').forEach(b => b.onclick = async () => { const ok = await copyText($(b.dataset.c).textContent); toast(ok ? '복사했어요! 겟GPT 칸에 붙여넣으세요' : '복사가 막혀 있어요'); });
+load(topic);
+
+/* 평가표 */
+const EV = [['과정', '일상생활에서 실제 발생할 수 있는 문제이며, 해결할 가치가 있는가?'], ['과정', '작성된 프롬프트가 구체적이고 명확한가?'], ['과정', '개발된 인공지능 툴의 성능을 올바르게 평가하여 수정하였는가?'],
+  ['결과', '제공하는 결과의 정확성이 높은가?'], ['결과', '실제 문제를 해결할 수 있는가?'], ['결과', '윤리적인 방식으로 사용 가능한가?']];
+const ev = store.get('eval', {});
+EV.forEach(([g, t], i) => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td class="c">${g}</td><td>${t}</td>` + ['잘함', '보통', '미흡'].map(l => `<td class="r"><input type="radio" name="ev${i}" value="${l}" ${ev[i] === l ? 'checked' : ''} aria-label="${l}"></td>`).join('');
+  $('evalTbl').appendChild(tr);
+});
+$('evalSave').onclick = () => { const o = {}; EV.forEach((_, i) => { const c = document.querySelector(`input[name=ev${i}]:checked`); if (c) o[i] = c.value; }); store.set('eval', o); ICT.saveIq('iqFeel'); $('evalSaved').textContent = '✔ 저장됨'; };
+</script>
+</body>
+</html>

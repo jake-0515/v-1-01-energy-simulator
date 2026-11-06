@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2차시 · 정보 통신 기술의 과정</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.loop { display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:10px; align-items:center; }
+.loop .card { text-align:center; }
+.loop .arr { color:#22d3ee; font-size:1.6rem; }
+.loop-back { margin-top:10px; border:2px dashed #a78bfa; border-radius:14px; padding:10px 14px; text-align:center; color:#c4b5fd; font-size:.88rem; line-height:1.6; }
+@media(max-width:720px){ .loop{grid-template-columns:1fr} .loop .arr{transform:rotate(90deg);text-align:center} }
+.studio { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media(max-width:820px){ .studio{grid-template-columns:1fr} }
+.st-box { background:#0f172a; border:2px solid #334155; border-radius:14px; padding:14px; }
+.st-box.on { border-color:#22d3ee; }
+.st-box h4 { font-size:.95rem; margin-bottom:8px; color:#fde68a; }
+.st-box .sub { font-size:.78rem; color:#94a3b8; margin-bottom:8px; }
+.opt-row { display:flex; gap:6px; flex-wrap:wrap; margin:4px 0 10px; }
+.opt-row .chip { font-size:.8rem; }
+.opt-lbl { font-size:.8rem; color:#cbd5e1; margin-top:4px; }
+.screen-v { background:#000; border-radius:12px; aspect-ratio:16/9; position:relative; overflow:hidden; display:flex; align-items:center; justify-content:center; font-size:3rem; }
+.screen-v .cap { position:absolute; bottom:8%; left:0; right:0; text-align:center; color:#fff; text-shadow:0 0 4px #000; font-weight:800; }
+.screen-v .note-m { position:absolute; top:6px; right:10px; font-size:.8rem; color:#94a3b8; }
+.stars { font-size:1.4rem; color:#fbbf24; letter-spacing:2px; }
+.comments { display:flex; flex-direction:column; gap:6px; margin-top:8px; }
+.cmt { background:#1e293b; border-left:3px solid #a78bfa; border-radius:0 8px 8px 0; padding:6px 10px; font-size:.82rem; }
+.cmt.good { border-color:#4ade80; }
+.versions { display:flex; gap:8px; align-items:flex-end; height:110px; margin-top:8px; padding:8px; background:#0f172a; border-radius:10px; }
+.vbar { flex:1; max-width:60px; background:linear-gradient(0deg,#0284c7,#22d3ee); border-radius:6px 6px 0 0; position:relative; transition:height .6s; }
+.vbar span { position:absolute; top:-18px; left:0; right:0; text-align:center; font-size:.72rem; color:#fde68a; font-weight:800; }
+.vbar em { position:absolute; bottom:-18px; left:0; right:0; text-align:center; font-size:.7rem; color:#94a3b8; font-style:normal; }
+.ex-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px; }
+</style>
+</head>
+<body data-page="sim_process">
+<div class="container">
+  <div class="top-nav"><a href="sim_meaning.html">← 1차시: 자료와 정보</a><a href="sim_features.html">3차시: 특징과 안전한 사용 →</a></div>
+  <span class="lesson-tag">2차시</span><span class="unit-tag">01 정보 통신 기술의 이해 · 교과서 210쪽</span>
+  <h1>📥⚙️📤🔁 정보 통신 기술의 과정</h1>
+  <div class="goal-box">
+    <b>학습 목표</b><br>
+    ① 정보 통신 기술의 <b>투입 · 과정 · 산출 · 되먹임</b> 4단계를 설명할 수 있다.<br>
+    ② 생활 속 사례를 4단계로 나누어 설명할 수 있다.<br>
+    ③ <b>되먹임(피드백)</b>이 왜 필요한지 결과물의 변화로 설명할 수 있다.
+  </div>
+  <div class="flow-bar">
+    <span><b>0</b> 자기점검 3분</span><span><b>1</b> 개념 7분</span><span><b>2</b> 영상 스튜디오 13분</span><span><b>3</b> 4단계 분류 7분</span><span><b>4</b> 생각 키우기 8분</span><span><b>✓</b> 스스로 확인 5분</span>
+  </div>
+
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">3분 · 🧠 메타인지</span></div>
+  <p class="step-desc">시작하기 전, 지금 나의 상태를 솔직하게 체크해 보세요.</p>
+  <div class="kwl"><h3>📋 나는 지금 얼마나 알고 있을까?</h3><div class="kwl-row">
+    <div class="kwl-item"><span>정보 통신 기술의 4단계 이름을 말할 수 있다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>'투입'과 '산출'의 차이를 설명할 수 있다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>'되먹임(피드백)'이 무엇인지 예를 들어 말할 수 있다</span><select class="pre-check"></select></div>
+  </div><div class="kwl-note">💡 지금 모르는 것을 아는 것도 실력이에요!</div></div>
+
+  <div class="step-title"><span class="step-num">1</span> 정보 통신 기술의 4단계 <span class="step-time">7분 · 개념</span></div>
+  <p class="step-desc">교과서 그림 Ⅳ-19처럼 <b>학교 홍보 영상</b>을 만드는 과정으로 4단계를 살펴봐요.</p>
+  <div class="panel">
+    <div class="loop">
+      <div class="card c1"><h3>📥 투입</h3><p>정보를 만들기 위한 <b>준비 과정</b>. 필요한 자료를 <b>수집하거나 생성</b>해요.</p><div class="ex">🎥 인터뷰·교정 장면 촬영</div></div>
+      <div class="arr">➜</div>
+      <div class="card c2"><h3>⚙️ 과정</h3><p>입력된 자료를 <b>가공·처리</b>해 필요한 정보로 바꾼 뒤 <b>전송 매체</b>로 전달해요.</p><div class="ex">💻 편집·자막 넣기 → 업로드</div></div>
+      <div class="arr">➜</div>
+      <div class="card c4"><h3>📤 산출</h3><p>생성된 정보를 <b>수신하고</b> 목적에 맞게 <b>활용</b>해요.</p><div class="ex">📺 발표 시간에 상영, 시청</div></div>
+    </div>
+    <div class="loop-back">🔁 <b>되먹임(피드백)</b> — 정보의 <b>내용</b>과 <b>효율적 전달 방법</b>을 평가하고 개선해요.<br>
+      <span style="color:#94a3b8">되먹임의 필요성: 사용자의 요구 사항을 파악해 새 아이디어를 얻고, 오류를 발견해 산출물의 완성도를 높일 수 있어요.</span></div>
+  </div>
+
+  <div class="step-title"><span class="step-num">2</span> 홍보 영상 스튜디오 — 되먹임의 힘 <span class="step-time">13분 · 🎮 시뮬레이터</span></div>
+  <p class="step-desc">학교 소개 영상을 만들어 상영하고, 관객의 반응(되먹임)을 반영해 <b>버전 2, 버전 3</b>을 만들어 보세요. 버전마다 점수가 아래 그래프에 쌓여요.</p>
+  <div id="predV"></div>
+  <div class="lock-note" id="studio-lock">🔒 예측을 먼저 고르면 스튜디오가 열려요.</div>
+  <div class="panel locked" id="studio">
+    <div class="studio">
+      <div>
+        <div class="st-box on" id="boxIn"><h4>📥 투입 — 어떤 장면을 촬영할까? (2~4개)</h4><div class="sub">홍보 영상에 담을 자료를 모아요.</div>
+          <div class="opt-row" id="scenes"></div></div>
+        <div class="st-box" id="boxProc" style="margin-top:10px"><h4>⚙️ 과정 — 어떻게 편집할까?</h4>
+          <div class="opt-lbl">자막 크기</div><div class="opt-row" data-g="cap"></div>
+          <div class="opt-lbl">배경 음악</div><div class="opt-row" data-g="music"></div>
+          <div class="opt-lbl">영상 길이</div><div class="opt-row" data-g="len"></div>
+          <button class="btn" id="btnShow">📤 상영하기 (산출)</button>
+        </div>
+      </div>
+      <div>
+        <div class="st-box" id="boxOut"><h4>📤 산출 — 발표 시간 상영</h4>
+          <div class="screen-v" id="screenV"><span>🎬</span></div>
+          <div style="margin-top:8px">관객 평가: <span class="stars" id="stars">☆☆☆☆☆</span> <b id="scoreV" style="color:#fde68a"></b></div></div>
+        <div class="st-box" id="boxFb" style="margin-top:10px"><h4>🔁 되먹임 — 관객의 말</h4><div class="sub">댓글을 읽고 왼쪽 설정을 고쳐 다시 상영해 보세요.</div>
+          <div class="comments" id="comments"><div class="cmt">아직 상영 전이에요.</div></div></div>
+      </div>
+    </div>
+    <h4 style="margin-top:16px;color:#c4b5fd;font-size:.92rem">📈 버전별 관객 점수</h4>
+    <div class="versions" id="versions"></div>
+    <div class="note" style="margin-top:22px">※ 점수 계산은 수업용 모형이에요. 실제 영상의 좋고 나쁨은 목적과 관객에 따라 달라져요.</div>
+  </div>
+  <div class="inquiry"><h4>🔎 버전 1과 마지막 버전을 비교해 보세요</h4>
+    <p>무엇을 바꿨고, 그것을 바꾸게 된 <b>되먹임</b>은 무엇이었나요?</p>
+    <textarea id="iqStudio" placeholder="예) 자막이 안 보인다는 댓글을 보고 자막을 크게 바꿨더니 별점이 2개에서 4개가 되었다."></textarea>
+    <div class="iq-row"><button class="btn-sub" data-save="iqStudio">💾 저장</button><span class="iq-saved" id="iqStudio-saved"></span></div></div>
+
+  <div class="step-title"><span class="step-num">3</span> 어느 단계일까? — 4단계 분류 <span class="step-time">7분 · 활동</span></div>
+  <p class="step-desc">여러 상황 속 활동이 섞여 나옵니다. 투입·과정·산출·되먹임 중 어디에 해당할까요?</p>
+  <div class="panel"><div id="sort4"></div></div>
+
+  <div class="step-title"><span class="step-num">4</span> 생각 키우기 — 정보 통신 기술의 과정 이해하기 <span class="step-time">8분 · 교과서 210쪽</span></div>
+  <p class="step-desc">교과서 예시 중 하나를 골라 4단계를 완성해 보세요. 카드를 알맞은 단계로 보내면 돼요.</p>
+  <div class="panel">
+    <div class="ex-tabs">
+      <button class="chip on" data-ex="sns">📸 게시물을 작성하여 SNS에 업로드하기</button>
+      <button class="chip" data-ex="app">📱 앱 개발하기</button>
+      <button class="chip" data-ex="print">🖨️ 3D 프린터로 제품 출력하기</button>
+    </div>
+    <div id="sortEx"></div>
+    <div class="inquiry"><h4>✍️ 나만의 예시 만들기</h4><p>다른 예(예: 학급 신문 만들기, 유튜브 요리 영상)를 정해 4단계를 직접 적어 보세요.</p>
+      <textarea id="iqMyEx" placeholder="예시: 학급 신문 — 투입: 반 친구 인터뷰 / 과정: 기사 편집·디자인 후 게시판에 게시 / 산출: 친구들이 읽음 / 되먹임: 설문으로 재미있던 기사 조사"></textarea>
+      <div class="iq-row"><button class="btn-sub" data-save="iqMyEx">💾 저장</button><span class="iq-saved" id="iqMyEx-saved"></span></div></div>
+  </div>
+
+  <div class="step-title"><span class="step-num">✓</span> 스스로 확인하기 <span class="step-time">5분 · 🧠 메타인지</span></div>
+  <div class="panel" style="margin-bottom:14px"><div id="mcqCheck"></div></div>
+  <div class="wrap-q"><h3>❓ 정리 질문</h3><p>정보 통신 과정을 <b>체계적으로 이해하면</b> 무엇이 좋을까요? 스튜디오 활동 경험을 넣어 말해 보세요.</p>
+    <textarea class="iq" id="iqWrap" placeholder="예) 어느 단계에서 문제가 생겼는지 찾을 수 있어서 더 효율적으로 고칠 수 있다."></textarea>
+    <div class="iq-row"><button class="btn-sub" data-save="iqWrap">💾 저장</button><span class="iq-saved" id="iqWrap-saved"></span></div></div>
+  <div class="self-check"><h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>4단계를 <b>순서대로</b> 말하고 각각의 뜻을 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>생활 속 사례를 4단계로 나눌 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span><b>되먹임</b>이 필요한 이유 두 가지를 말할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress"></div>
+    <div class="meta-report" id="kwlCompare"></div>
+    <button class="btn-sub done-btn" id="doneBtn">☑️ 2차시 완료 표시하기</button>
+  </div>
+  <div class="next-link"><a href="sim_features.html">다음 → 3차시: 정보 통신 기술의 특징과 안전한 사용</a></div>
+</div>
+
+<script src="assets/common.js"></script>
+<script>
+const { $, Predict, SortGame, MCQ, el } = ICT;
+Predict('predV', {
+  q:'처음 만든 영상의 관객 점수가 낮게 나왔어요. 다음 버전의 점수를 가장 확실하게 올리는 방법은?',
+  opts:['처음부터 완전히 새로 찍는다', '관객의 의견(되먹임)을 보고 문제를 고친다', '같은 영상을 한 번 더 상영한다'], a:1,
+  exp:'되먹임은 <b>어디가 문제인지</b> 알려 줘요. 문제를 정확히 고치면 적은 노력으로 완성도가 올라가요. 직접 확인해 보세요!', unlock:'studio'
+});
+
+/* ===== 스튜디오 ===== */
+const SCENES = [['🎤', '학생 인터뷰'], ['🏫', '학교 전경'], ['🧪', '과학 수업'], ['⚽', '동아리 활동'], ['🍱', '급식 시간'], ['🎨', '축제 공연']];
+const OPTS = {
+  cap:[['small', '작게'], ['mid', '보통'], ['big', '크고 굵게']],
+  music:[['none', '없음'], ['loud', '크게 신나게'], ['soft', '작게 잔잔하게']],
+  len:[['1', '1분'], ['3', '3분'], ['10', '10분']]
+};
+const st = { scenes:new Set(['🎤']), cap:'small', music:'loud', len:'10' };
+let versions = [];
+function renderStudio() {
+  const sc = $('scenes'); sc.innerHTML = '';
+  SCENES.forEach(([e, n]) => { const b = el('button', 'chip' + (st.scenes.has(e) ? ' on' : ''), e + ' ' + n); b.onclick = () => { st.scenes.has(e) ? st.scenes.delete(e) : st.scenes.add(e); renderStudio(); }; sc.appendChild(b); });
+  document.querySelectorAll('[data-g]').forEach(row => {
+    const g = row.dataset.g; row.innerHTML = '';
+    OPTS[g].forEach(([v, n]) => { const b = el('button', 'chip' + (st[g] === v ? ' on' : ''), n); b.onclick = () => { st[g] = v; renderStudio(); }; row.appendChild(b); });
+  });
+}
+function evaluate() {
+  const n = st.scenes.size; const f = {};
+  f.scenes = n >= 3 && n <= 4 ? 25 : n === 2 ? 17 : n > 4 ? 15 : 6;
+  f.cap = { small:6, mid:17, big:25 }[st.cap];
+  f.music = { none:14, loud:8, soft:25 }[st.music];
+  f.len = { '1':18, '3':25, '10':6 }[st.len];
+  return f;
+}
+const COMMENT = {
+  scenes:{ bad:() => st.scenes.size < 2 ? '"장면이 너무 적어서 학교가 어떤 곳인지 잘 모르겠어요."' : st.scenes.size > 4 ? '"장면이 너무 많아서 정신없어요. 핵심만 골라 주세요."' : '"장면이 조금만 더 다양했으면 좋겠어요."', good:'"학교의 여러 모습을 골고루 볼 수 있었어요!"' },
+  cap:{ bad:() => '"뒤에 앉으니 자막이 하나도 안 보여요!"', good:'"자막이 잘 보여서 내용이 쏙쏙 들어와요."' },
+  music:{ bad:() => st.music === 'loud' ? '"음악 소리가 커서 인터뷰 목소리가 묻혀요."' : '"조용해서 좀 지루했어요. 잔잔한 음악이 있으면 좋겠어요."', good:'"잔잔한 음악이 분위기를 살려 줬어요."' },
+  len:{ bad:() => st.len === '10' ? '"너무 길어서 중간에 졸았어요…"' : '"너무 짧아서 아쉬워요. 조금만 더 보여 주세요."', good:'"길이가 딱 적당했어요."' },
+};
+$('btnShow').onclick = () => {
+  if (st.scenes.size === 0) { ICT.toast('장면을 하나 이상 골라 주세요'); return; }
+  const f = evaluate(); const score = f.scenes + f.cap + f.music + f.len;
+  versions.push(score);
+  const scr = $('screenV'); const emo = [...st.scenes];
+  let k = 0; scr.innerHTML = `<span id="sEmo">${emo[0]}</span><div class="cap" style="font-size:${{ small:'.6rem', mid:'.95rem', big:'1.35rem' }[st.cap]}">우리 학교를 소개합니다</div><div class="note-m">${st.music === 'none' ? '🔇' : st.music === 'loud' ? '🔊🎵' : '🔉🎵'} · ${st.len}분</div>`;
+  const iv = setInterval(() => { k++; if (k >= emo.length * 2) { clearInterval(iv); return; } const s = $('sEmo'); if (s) s.textContent = emo[k % emo.length]; }, 450);
+  const stars = Math.max(1, Math.round(score / 20));
+  $('stars').textContent = '★'.repeat(stars) + '☆'.repeat(5 - stars);
+  $('scoreV').textContent = `${score}점 (버전 ${versions.length})`;
+  const cm = $('comments'); cm.innerHTML = '';
+  const keys = Object.keys(f).sort((a, b) => f[a] - f[b]);
+  keys.forEach(key => { const good = f[key] >= 25; const d = el('div', 'cmt' + (good ? ' good' : ''), (good ? '👍 ' : '💬 ') + (good ? COMMENT[key].good : COMMENT[key].bad())); cm.appendChild(d); });
+  if (score >= 100) cm.appendChild(el('div', 'cmt good', '🏆 <b>완성!</b> 되먹임을 반영해 모든 관객이 만족했어요. 몇 번의 되먹임이 필요했나요?'));
+  else cm.appendChild(el('div', 'cmt', '🔁 위 의견을 반영해 왼쪽 설정을 바꾸고 다시 상영해 보세요.'));
+  ['boxOut', 'boxFb'].forEach(i => $(i).classList.add('on'));
+  drawVersions();
+};
+function drawVersions() {
+  const v = $('versions'); v.innerHTML = '';
+  versions.slice(-8).forEach((s, i, arr) => { const b = el('div', 'vbar', `<span>${s}</span><em>v${versions.length - arr.length + i + 1}</em>`); b.style.height = '0%'; v.appendChild(b); setTimeout(() => b.style.height = (s * .8) + 'px', 40); });
+  if (!versions.length) v.innerHTML = '<span class="note">상영하면 점수 막대가 생겨요.</span>';
+}
+renderStudio(); drawVersions();
+
+/* ===== 4단계 분류 ===== */
+const CATS = [{ k:'in', label:'📥 투입', color:'#67e8f9' }, { k:'proc', label:'⚙️ 과정', color:'#fde68a' }, { k:'out', label:'📤 산출', color:'#86efac' }, { k:'fb', label:'🔁 되먹임', color:'#c4b5fd' }];
+SortGame('sort4', { cats:CATS, items:[
+  { e:'🌡️', t:'기상 관측소에서 기온과 습도를 측정한다', a:'in', exp:'정보를 만들 자료를 수집해요.' },
+  { e:'🖥️', t:'측정값을 분석해 예보 문장을 만들고 방송으로 내보낸다', a:'proc', exp:'가공·처리 후 전송 매체로 전달해요.' },
+  { e:'☂️', t:'예보를 본 시민이 우산을 챙겨 나간다', a:'out', exp:'받은 정보를 목적에 맞게 활용해요.' },
+  { e:'📋', t:'예보가 얼마나 맞았는지 평가해 다음 예보 방법을 고친다', a:'fb', exp:'내용과 방법을 평가하고 개선해요.' },
+  { e:'🎤', t:'급식 만족도 설문 응답을 모은다', a:'in', exp:'자료 수집 단계예요.' },
+  { e:'📊', t:'설문 결과를 그래프로 정리해 학교 누리집에 올린다', a:'proc', exp:'가공·처리하고 전달해요.' },
+  { e:'🍱', t:'영양 선생님이 결과를 보고 다음 달 식단을 정한다', a:'out', exp:'정보를 받아 목적에 맞게 활용해요.' },
+  { e:'💬', t:'"그래프가 작아 보기 힘들어요"라는 의견을 받아 다음엔 크게 만든다', a:'fb', exp:'전달 방법을 평가해 개선해요.' },
+  { e:'📷', t:'중고 거래 앱에 올릴 물건 사진을 찍는다', a:'in', exp:'정보를 만들 자료를 생성해요.' },
+  { e:'⬆️', t:'사진과 설명을 정리해 앱에 등록한다', a:'proc', exp:'가공해 전송 매체로 보내요.' },
+], after:'헷갈렸다면 <b>"누가, 무엇을 하는가"</b>를 보세요. 만드는 쪽의 준비 = 투입, 만들고 보내기 = 과정, 받는 쪽의 활용 = 산출, 평가·개선 = 되먹임.' });
+
+/* ===== 생각 키우기 ===== */
+const EX = {
+  sns:[
+    { e:'📸', t:'올릴 사진을 찍고 쓸 글을 메모한다', a:'in' }, { e:'✂️', t:'사진을 보정하고 글을 다듬어 SNS에 업로드한다', a:'proc' },
+    { e:'👀', t:'친구들이 게시물을 보고 소식을 안다', a:'out' }, { e:'❤️', t:'댓글·반응을 보고 다음 게시물의 사진 구도를 바꾼다', a:'fb' }],
+  app:[
+    { e:'🗒️', t:'사용자가 원하는 기능을 조사한다', a:'in' }, { e:'⌨️', t:'코딩하고 테스트한 뒤 앱 마켓에 올린다', a:'proc' },
+    { e:'📲', t:'사용자가 앱을 내려받아 사용한다', a:'out' }, { e:'⭐', t:'리뷰의 오류 신고를 보고 업데이트한다', a:'fb' }],
+  print:[
+    { e:'📐', t:'만들 제품의 크기를 재고 아이디어를 스케치한다', a:'in' }, { e:'🧊', t:'3D 모델링 후 출력용 파일로 바꿔 프린터로 보낸다', a:'proc' },
+    { e:'🖨️', t:'출력된 제품을 받아 사용한다', a:'out' }, { e:'🔧', t:'써 보니 손잡이가 약해 두께를 늘려 다시 설계한다', a:'fb' }]
+};
+function loadEx(k) { SortGame('sortEx', { cats:CATS, items:EX[k], shuffle:true, after:'다른 예시도 골라 도전해 보세요!' }); }
+document.querySelectorAll('[data-ex]').forEach(b => b.onclick = () => { document.querySelectorAll('[data-ex]').forEach(x => x.classList.toggle('on', x === b)); loadEx(b.dataset.ex); });
+loadEx('sns');
+
+MCQ('mcqCheck', [
+  { q:'정보 통신 기술의 4단계를 순서대로 바르게 나열한 것은?', opts:['투입 → 과정 → 산출 → 되먹임', '과정 → 투입 → 산출 → 되먹임', '투입 → 산출 → 과정 → 되먹임', '되먹임 → 투입 → 산출 → 과정'], a:0, exp:'되먹임은 다시 투입·과정으로 돌아가 결과를 개선해요.' },
+  { q:'다음 중 되먹임의 필요성으로 알맞지 <u>않은</u> 것은?', opts:['사용자의 요구 사항을 파악할 수 있다', '오류를 발견하고 완성도를 높일 수 있다', '새로운 아이디어를 얻을 수 있다', '자료를 수집하지 않아도 정보를 만들 수 있다'], a:3, exp:'정보를 만들려면 투입 단계의 자료가 꼭 필요해요.' },
+  { q:'"편집한 영상을 학교 누리집에 올린다"는 어느 단계일까?', opts:['투입', '과정', '산출', '되먹임'], a:1, exp:'가공·처리한 정보를 전송 매체로 전달하는 것까지가 과정 단계예요.' },
+]);
+</script>
+</body>
+</html>

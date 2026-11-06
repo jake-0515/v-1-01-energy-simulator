@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8차시 · 형성평가 ② 정보 통신 기술과 인공지능의 활용</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>h1 { color:#c4b5fd; font-size:1.5rem; }</style>
+</head>
+<body data-page="quiz2">
+<div class="container narrow">
+  <div class="top-nav"><a href="sim_ethics.html">← 7차시: 인공지능 윤리</a><a href="index.html">🏠 홈</a></div>
+  <span class="lesson-tag quiz">8차시</span><span class="unit-tag">형성평가 · 02 정보 통신 기술과 인공지능의 활용 (5~7차시)</span>
+  <h1>❓ 형성평가 ② — 인공지능의 활용</h1>
+  <div id="quizRoot"></div>
+  <div class="next-link"><a href="sim_prompt.html">다음 → 9차시: 인공지능 툴 제작하기</a></div>
+</div>
+<script src="assets/questions.js"></script>
+<script>
+const SET = 'q2', DOMS = [4,5,6];
+window.QUIZ_CFG = {
+  page:'quiz2', key:'ictf-quiz2',
+  questions: window.ICTF_Q.filter(q => q.set.split(' ').includes(SET)),
+  domains: Object.fromEntries(DOMS.map(d => [d, window.ICTF_DOMAINS[d]])),
+  intro:'5~7차시에서 배운 <b style="color:#c4b5fd">정보 통신의 발달, 인공지능과 활용, 인공지능 윤리</b>를 확인합니다.',
+  ranges:[[0,5,'5개 이하'],[6,9,'6~9개'],[10,12,'10~12개'],[13,14,'13~14개']],
+  msgs:['🏆 만점! 인공지능 활용 단원 완벽 마스터!','🌟 훌륭해요! 거의 완벽히 이해했어요.','💪 좋아요! 약한 영역만 복습하면 완성.','📚 아직 기초가 필요해요. 5차시부터 차근차근 다시!'],
+  reflectTitle:'마치며 — 나의 한 문장',
+  reflectPrompt:'인공지능을 <b>잘 쓰는 사람</b>이 되려면 무엇을 알아야 하고, 무엇을 조심해야 할까요?',
+  reflectPlaceholder:'예) 인공지능은 배운 데이터만큼 판단하니, 결과를 그대로 믿지 말고 치우친 점은 없는지 확인해야 한다.'
+};
+</script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

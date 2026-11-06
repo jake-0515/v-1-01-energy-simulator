@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10차시 · 단원 종합 평가 — 정보 통신 기술과 융합</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>h1 { color:#c4b5fd; font-size:1.5rem; }</style>
+</head>
+<body data-page="final">
+<div class="container narrow">
+  <div class="top-nav"><a href="sim_prompt.html">← 9차시: 인공지능 툴 제작</a><a href="index.html">🏠 홈</a></div>
+  <span class="lesson-tag quiz">10차시</span><span class="unit-tag">단원 종합 · 정보 통신 기술과 융합 전체</span>
+  <h1>🏁 단원 종합 평가 — 정보 통신 기술과 융합</h1>
+  <div id="quizRoot"></div>
+  <div class="hook" style="margin-top:20px">🐍 아직 심화 실습을 하지 않았다면 <a href="colab_basic.html">코랩과 파이썬 기초</a>부터 도전해 보세요!</div>
+</div>
+<script src="assets/questions.js"></script>
+<script>
+const SET = 'f', DOMS = [1,2,3,4,5,6,7];
+window.QUIZ_CFG = {
+  page:'final', key:'ictf-final',
+  questions: window.ICTF_Q.filter(q => q.set.split(' ').includes(SET)),
+  domains: Object.fromEntries(DOMS.map(d => [d, window.ICTF_DOMAINS[d]])),
+  intro:'1차시부터 9차시까지 <b style="color:#c4b5fd">단원 전체</b>를 확인합니다. 오답마다 복습할 차시로 바로 이동할 수 있어요.',
+  ranges:[[0,7,'7개 이하'],[8,12,'8~12개'],[13,16,'13~16개'],[17,20,'17~20개']],
+  msgs:['🏆 만점! 정보 통신 기술과 융합 단원 마스터!','🌟 훌륭해요! 단원을 거의 완벽히 이해했어요.','💪 좋아요! 약한 영역만 복습하면 완성.','📚 아직 기초가 필요해요. 1차시부터 차근차근 다시!'],
+  reflectTitle:'단원을 마치며 — 나의 한 문장',
+  reflectPrompt:'이 단원에서 가장 기억에 남는 개념 하나와, 그것이 <b>내 생활이나 미래</b>와 어떻게 연결되는지 적어 보세요.',
+  reflectPlaceholder:'예) 프롬프트를 구체적으로 쓰면 인공지능이 더 좋은 답을 준다. 앞으로 공부 계획을 세울 때 역할과 형식을 정해서 물어볼 것이다.'
+};
+</script>
+<script src="assets/quiz.js"></script>
+</body>
+</html>

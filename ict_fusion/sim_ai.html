@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6차시 · 인공지능과 생활 속 활용</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.chain { display:flex; align-items:stretch; gap:8px; flex-wrap:wrap; justify-content:center; }
+.chain .node { flex:1; min-width:140px; max-width:200px; background:#0f172a; border:2px solid #475569; border-radius:12px; padding:12px; text-align:center; font-size:.8rem; line-height:1.5; cursor:pointer; transition:.25s; font-family:inherit; color:#cbd5e1; }
+.chain .node .ne { font-size:1.8rem; display:block; }
+.chain .node b { display:block; color:#fde68a; font-size:.92rem; margin:4px 0; }
+.chain .node.lit { border-color:#22d3ee; background:#083344; box-shadow:0 0 18px rgba(34,211,238,.25); }
+.chain .ar { align-self:center; color:#22d3ee; font-size:1.3rem; }
+.chain-msg { margin-top:10px; text-align:center; font-size:.88rem; color:#a5f3fc; min-height:1.5em; }
+.ml { display:grid; grid-template-columns:auto 1fr; gap:16px; }
+@media(max-width:860px){ .ml{grid-template-columns:1fr} }
+#mlCv { background:#0b1220; border:1px solid #334155; border-radius:12px; cursor:crosshair; max-width:100%; touch-action:manipulation; }
+.ml-side h4 { color:#fde68a; font-size:.92rem; margin:10px 0 6px; }
+.ml-side h4:first-child { margin-top:0; }
+.acc { font-size:1.6rem; font-weight:800; color:#22d3ee; }
+.test-list { font-size:.82rem; line-height:1.8; }
+.test-list .ok { color:#4ade80; } .test-list .no { color:#f87171; }
+.aip { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+@media(max-width:720px){ .aip{grid-template-columns:1fr} }
+.aip a { text-decoration:none; color:inherit; }
+</style>
+</head>
+<body data-page="sim_ai">
+<div class="container">
+  <div class="top-nav"><a href="sim_history.html">← 5차시: 정보 통신 기술의 발달</a><a href="sim_ethics.html">7차시: 인공지능 윤리 →</a></div>
+  <span class="lesson-tag">6차시</span><span class="unit-tag">02 정보 통신 기술과 인공지능의 활용 · 교과서 213~215쪽</span>
+  <h1>🤖📊 인공지능과 생활 속 활용</h1>
+  <div class="goal-box"><b>학습 목표</b><br>
+    ① <b>인공지능·기계 학습·빅데이터·딥러닝·자연어 처리</b>의 뜻을 구분할 수 있다.<br>
+    ② 인공지능이 <b>데이터로 학습</b>한다는 것의 의미를 실험으로 설명할 수 있다.<br>
+    ③ 사물 인터넷·빅데이터·클라우드와 인공지능이 연결되는 방식과 <b>분야별 활용 사례</b>를 말할 수 있다.</div>
+  <div class="flow-bar"><span><b>0</b> 자기점검 3분</span><span><b>1</b> 용어 짝 맞추기 7분</span><span><b>2</b> AI 학습 실험실 13분</span><span><b>3</b> 융합의 연결 고리 5분</span><span><b>4</b> 활용 분야 7분</span><span><b>5</b> 체험·조사 5분</span><span><b>✓</b> 스스로 확인 5분</span></div>
+
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">3분 · 🧠 메타인지</span></div>
+  <div class="kwl"><h3>📋 나는 지금 얼마나 알고 있을까?</h3><div class="kwl-row">
+    <div class="kwl-item"><span>'인공지능'을 한 문장으로 설명할 수 있다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>'기계 학습'과 '딥러닝'의 관계를 안다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>인공지능이 데이터로 어떻게 배우는지 설명할 수 있다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>의료·교육 분야의 인공지능 활용 예를 말할 수 있다</span><select class="pre-check"></select></div>
+  </div></div>
+
+  <div class="step-title"><span class="step-num">1</span> 핵심 용어 짝 맞추기 <span class="step-time">7분 · 개념</span></div>
+  <p class="step-desc">20세기 후반 인터넷의 발전으로 방대한 데이터를 모을 수 있게 되면서 인공지능은 더욱 빠르게 발전했어요. 왼쪽 용어를 고른 뒤 오른쪽 뜻을 눌러 짝을 지어 보세요.</p>
+  <div class="panel"><div id="match"></div></div>
+  <div class="hook">🔑 <b>관계로 기억하기</b> — 인공지능 ⊃ 기계 학습 ⊃ 딥러닝. 기계 학습은 데이터로 스스로 배우는 인공지능이고, 딥러닝은 그중 <b>인간의 뇌를 모방한 인공 신경망</b>을 쓰는 방법이에요. 자연어 처리는 빅데이터와 딥러닝을 기반으로 발전했어요.</div>
+
+  <div class="step-title"><span class="step-num">2</span> AI 학습 실험실 — 과일 분류 인공지능 <span class="step-time">13분 · 🎮 시뮬레이터</span></div>
+  <p class="step-desc">기계 학습은 <b>사람이 입력한 데이터</b>로 스스로 학습하고 분류·예측 같은 문제를 해결해요. 학습 데이터를 바꾸면 인공지능의 판단이 어떻게 달라지는지 실험해 보세요.</p>
+  <div id="predML"></div>
+  <div class="lock-note" id="mlLab-lock">🔒 예측을 먼저 고르면 실험실이 열려요.</div>
+  <div class="panel locked" id="mlLab">
+    <div class="ml">
+      <div><canvas id="mlCv" width="420" height="360"></canvas>
+        <div class="note">가로: 껍질 색 (빨강 ← → 노랑) · 세로: 길이 (짧다 ↓ ↑ 길다) · 배경색 = 인공지능이 판단하는 영역</div></div>
+      <div class="ml-side">
+        <h4>① 학습 데이터 준비</h4>
+        <div class="opt-row" style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="chip" data-set="few">🍎🍌 2개만</button>
+          <button class="chip" data-set="many">⚖️ 골고루 많이</button>
+          <button class="chip" data-set="bias">🍎🍎🍎 사과만 잔뜩</button>
+          <button class="chip" data-set="clear">🧹 비우기</button>
+        </div>
+        <h4>② 직접 데이터 추가 (그래프를 클릭)</h4>
+        <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="chip on" data-lab="0">🍎 사과로 표시</button><button class="chip" data-lab="1">🍌 바나나로 표시</button></div>
+        <div class="note" id="cnt"></div>
+        <h4>③ 처음 보는 과일로 테스트</h4>
+        <button class="btn" id="testBtn">🧪 테스트하기</button>
+        <div style="margin-top:8px">정확도 <span class="acc" id="acc">—</span></div>
+        <div class="test-list" id="testList"></div>
+      </div>
+    </div>
+    <div class="note">※ 가까운 학습 데이터 3개를 보고 다수결로 정하는 방식(3-최근접 이웃)으로 실제 계산해요. 학습용 단순 모형입니다.</div>
+  </div>
+  <div class="inquiry"><h4>🔎 실험 결과 기록</h4><p>'2개만', '골고루 많이', '사과만 잔뜩' 세 가지로 학습시켰을 때 정확도는 각각 얼마였나요? 결과가 다른 이유는 무엇일까요?</p>
+    <textarea id="iqML" placeholder="2개만: __% / 골고루 많이: __% / 사과만 잔뜩: __% → 이유: "></textarea>
+    <div class="iq-row"><button class="btn-sub" data-save="iqML">💾 저장</button><span class="iq-saved" id="iqML-saved"></span></div></div>
+
+  <div class="step-title"><span class="step-num">3</span> 융합의 연결 고리 <span class="step-time">5분 · 개념</span></div>
+  <p class="step-desc">정보 통신 기술과 인공지능의 융합은 <b>빅데이터, 사물 인터넷, 클라우드 컴퓨팅 시스템</b>의 연결을 통해 가능해져요. 왼쪽부터 차례로 눌러 정보의 흐름을 따라가 보세요.</p>
+  <div class="panel">
+    <div class="chain" id="chain">
+      <button class="node" data-i="0"><span class="ne">🌡️📷</span><b>사물 인터넷</b>다양한 환경에서 사물을 통해 정보 수집</button><span class="ar">➜</span>
+      <button class="node" data-i="1"><span class="ne">📊</span><b>빅데이터</b>실시간으로 수집된 크고 복잡한 데이터</button><span class="ar">➜</span>
+      <button class="node" data-i="2"><span class="ne">☁️</span><b>클라우드 컴퓨팅</b>인터넷 기반 서버에 저장, 대규모 계산 도움</button><span class="ar">➜</span>
+      <button class="node" data-i="3"><span class="ne">🤖</span><b>인공지능</b>데이터를 학습해 패턴 발견</button><span class="ar">➜</span>
+      <button class="node" data-i="4"><span class="ne">🏥🚗</span><b>문제 해결</b>질병 진단, 번역, 교통사고 예방, 기후 변화 대처</button>
+    </div>
+    <div class="chain-msg" id="chainMsg">🌡️부터 눌러 보세요.</div>
+  </div>
+
+  <div class="step-title"><span class="step-num">4</span> 어느 분야일까? — 생활 속 활용 사례 <span class="step-time">7분 · 활동</span></div>
+  <p class="step-desc">교과서 그림 Ⅳ-29의 네 분야에 사례를 나누어 보세요.</p>
+  <div class="panel"><div id="sortField"></div></div>
+  <div class="job-grid" style="margin-top:14px">
+    <div class="job-card"><span class="je">🛠️</span><b>데이터 엔지니어</b>데이터를 수집·저장·관리해요.</div>
+    <div class="job-card"><span class="je">🔍</span><b>데이터 분석가</b>생성된 데이터를 분석해요.</div>
+    <div class="job-card"><span class="je">🔮</span><b>데이터 과학자</b>데이터를 통해 미래를 예측해요.</div>
+  </div>
+
+  <div class="step-title"><span class="step-num">5</span> 더 알아보기 · 생각 키우기 <span class="step-time">5분 · 체험·조사</span></div>
+  <p class="step-desc">인공지능 프로그램은 코딩으로 직접 만들거나 인공지능 플랫폼을 활용해 만들 수 있어요. <b>선생님이 허락한 시간에</b> 체험해 보세요.</p>
+  <div class="aip">
+    <a href="https://www.autodraw.com/" target="_blank" rel="noopener"><div class="card c2"><h3>✏️ 오토드로우</h3><p>대충 그린 그림을 인공지능이 알아보고 깔끔한 그림을 추천해 줘요.</p><div class="ex">autodraw.com ↗</div></div></a>
+    <a href="https://teachablemachine.withgoogle.com/" target="_blank" rel="noopener"><div class="card c1"><h3>🧠 티처블 머신</h3><p>이미지·소리·자세를 직접 학습시켜 나만의 분류 모델을 만들어요. 오늘 실험실의 확장판!</p><div class="ex">teachablemachine.withgoogle.com ↗</div></div></a>
+    <a href="https://artsandculture.google.com/experiment/paint-with-music/YAGuJyDB-XbbWg" target="_blank" rel="noopener"><div class="card c3"><h3>🎵 페인트 위드 뮤직</h3><p>붓질을 하면 인공지능이 그림을 음악으로 바꿔 줘요.</p><div class="ex">Google Arts & Culture ↗</div></div></a>
+  </div>
+  <div class="inquiry"><h4>💡 생각 키우기 — 사회 문제에 인공지능을 활용하는 사례 조사하기 (교과서 214쪽)</h4>
+    <p>기후 변화, 전염병 및 질병 확산, 환경 오염, 자원 부족 등 우리가 직면한 사회 문제 하나를 골라, 인공지능을 어떻게 활용하고 있는지 모둠별로 조사해 적어 보세요.</p>
+    <textarea id="iqSociety" placeholder="문제: 산불 / 활용: 위성 사진과 기상 데이터를 인공지능이 분석해 산불 위험 지역을 미리 알려 준다. / 출처: "></textarea>
+    <div class="iq-row"><button class="btn-sub" data-save="iqSociety">💾 저장</button><span class="iq-saved" id="iqSociety-saved"></span></div></div>
+
+  <div class="step-title"><span class="step-num">✓</span> 스스로 확인하기 <span class="step-time">5분 · 🧠 메타인지</span></div>
+  <div class="panel" style="margin-bottom:14px"><div id="mcqCheck"></div></div>
+  <div class="wrap-q"><h3>❓ 정리 질문</h3><p>오늘 실험에서 인공지능을 <b>더 똑똑하게</b> 만든 것은 무엇이었나요? '데이터'라는 낱말을 넣어 설명해 보세요.</p>
+    <textarea class="iq" id="iqWrap" placeholder="예) 여러 종류의 과일 데이터를 골고루 많이 학습시킬수록 처음 보는 과일도 잘 분류했다."></textarea>
+    <div class="iq-row"><button class="btn-sub" data-save="iqWrap">💾 저장</button><span class="iq-saved" id="iqWrap-saved"></span></div></div>
+  <div class="self-check"><h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>인공지능·기계 학습·딥러닝·빅데이터·자연어 처리의 뜻을 구분할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>학습 데이터의 양과 구성이 인공지능의 판단에 영향을 준다는 것을 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>사물 인터넷 → 빅데이터 → 클라우드 → 인공지능의 연결을 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>의료·교육·산업·문화 분야의 활용 예를 하나씩 말할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress"></div>
+    <div class="meta-report" id="kwlCompare"></div>
+    <button class="btn-sub done-btn" id="doneBtn">☑️ 6차시 완료 표시하기</button>
+  </div>
+  <div class="next-link"><a href="sim_ethics.html">다음 → 7차시: 인공지능 윤리</a></div>
+</div>
+
+<script src="assets/common.js"></script>
+<script>
+const { $, Predict, SortGame, MCQ, MatchGame } = ICT;
+MatchGame('match', { pairs:[
+  { l:'인공지능', r:'인간의 지능적인 행동을 컴퓨터가 모방하여 생각, 학습 등을 하는 것' },
+  { l:'기계 학습(머신 러닝)', r:'컴퓨터가 사람이 입력한 데이터를 통해 스스로 학습하고, 분류나 예측 같은 문제를 해결하는 인공지능' },
+  { l:'빅데이터', r:'용량이 크고, 형태가 복잡하며, 실시간으로 생성되는 대량의 데이터' },
+  { l:'딥러닝', r:'인공지능의 한 분야로, 인간의 뇌를 모방하여 데이터를 학습하여 처리하는 방법' },
+  { l:'자연어 처리', r:'인간이 사용하는 언어를 컴퓨터가 처리하는 기술' },
+  { l:'클라우드 컴퓨팅 시스템', r:'구름처럼 언제 어디서나 필요한 정보나 서비스를 제공하는 인터넷 기반의 컴퓨터 서비스' },
+  { l:'디지털 트윈', r:'현실 세계의 물리적 물체나 시스템을 디지털로 표현한 것' },
+] });
+
+/* ===== AI 학습 실험실 (3-NN) ===== */
+const cv = $('mlCv'), ctx = cv.getContext('2d');
+const W = cv.width, H = cv.height;
+let train = [], label = 0;
+const SETS = {
+  few:[[3, 9, 0], [9, 19, 1]],
+  many:[[1, 7, 0], [2, 8, 0], [3, 6.5, 0], [1.5, 9, 0], [4, 8, 0], [2.5, 10, 0], [5, 8.5, 0], [7, 15, 1], [8, 17, 1], [9, 19, 1], [8.5, 14, 1], [6.5, 18, 1], [9.5, 16, 1], [4.5, 16.5, 1]],
+  bias:[[1, 7, 0], [2, 8, 0], [3, 6.5, 0], [1.5, 9, 0], [4, 8, 0], [2.5, 10, 0], [6, 9, 0], [7.5, 11, 0], [8.5, 9, 0], [9, 19, 1]],
+};
+const TEST = [
+  { n:'빨간 사과', c:1.5, l:8, a:0 }, { n:'노란 바나나', c:8.5, l:18, a:1 }, { n:'풋사과(초록빛)', c:5.5, l:8.5, a:0 },
+  { n:'덜 익은 바나나', c:4.5, l:15, a:1 }, { n:'작은 바나나', c:8, l:13, a:1 },
+];
+const X = c => 30 + c / 10 * (W - 50), Y = l => H - 30 - (l - 4) / 18 * (H - 50);
+const iX = x => (x - 30) / (W - 50) * 10, iY = y => 4 + (H - 30 - y) / (H - 50) * 18;
+function knn(c, l) {
+  if (!train.length) return null;
+  const d = train.map(p => [((p[0] - c) / 10) ** 2 + ((p[1] - l) / 18) ** 2, p[2]]).sort((a, b) => a[0] - b[0]).slice(0, 3);
+  const v = d.reduce((s, x) => s + x[1], 0);
+  if (v * 2 === d.length) return d[0][1];
+  return v * 2 > d.length ? 1 : 0;
+}
+function draw(tested) {
+  ctx.clearRect(0, 0, W, H);
+  if (train.length) for (let x = 30; x < W - 20; x += 8) for (let y = 20; y < H - 30; y += 8) {
+    const k = knn(iX(x + 4), iY(y + 4)); ctx.fillStyle = k ? 'rgba(250,204,21,.13)' : 'rgba(239,68,68,.13)'; ctx.fillRect(x, y, 8, 8);
+  }
+  ctx.strokeStyle = '#475569'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(30, 20); ctx.lineTo(30, H - 30); ctx.lineTo(W - 20, H - 30); ctx.stroke();
+  ctx.fillStyle = '#94a3b8'; ctx.font = '12px sans-serif'; ctx.fillText('빨강', 32, H - 12); ctx.fillText('노랑', W - 52, H - 12); ctx.save(); ctx.translate(14, H / 2 + 20); ctx.rotate(-Math.PI / 2); ctx.fillText('길이 →', 0, 0); ctx.restore();
+  ctx.font = '20px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  train.forEach(p => ctx.fillText(p[2] ? '🍌' : '🍎', X(p[0]), Y(p[1])));
+  if (tested) TEST.forEach(t => {
+    const k = knn(t.c, t.l); ctx.beginPath(); ctx.arc(X(t.c), Y(t.l), 15, 0, Math.PI * 2); ctx.strokeStyle = k === t.a ? '#4ade80' : '#f87171'; ctx.lineWidth = 3; ctx.stroke();
+    ctx.fillStyle = '#f8fafc'; ctx.font = 'bold 16px sans-serif'; ctx.fillText('?', X(t.c), Y(t.l)); ctx.font = '20px sans-serif';
+  });
+  ctx.textAlign = 'start'; ctx.textBaseline = 'alphabetic';
+  $('cnt').textContent = `학습 데이터: 🍎 ${train.filter(p => !p[2]).length}개 · 🍌 ${train.filter(p => p[2]).length}개`;
+}
+cv.addEventListener('click', e => {
+  const r = cv.getBoundingClientRect(); const x = (e.clientX - r.left) * W / r.width, y = (e.clientY - r.top) * H / r.height;
+  const c = iX(x), l = iY(y); if (c < 0 || c > 10 || l < 4 || l > 22) return;
+  train.push([c, l, label]); draw(false); $('acc').textContent = '—'; $('testList').innerHTML = '데이터가 바뀌었어요. 다시 테스트해 보세요.';
+});
+document.querySelectorAll('[data-set]').forEach(b => b.onclick = () => { train = b.dataset.set === 'clear' ? [] : SETS[b.dataset.set].map(p => p.slice()); document.querySelectorAll('[data-set]').forEach(x => x.classList.toggle('on', x === b)); draw(false); $('acc').textContent = '—'; $('testList').innerHTML = ''; });
+document.querySelectorAll('[data-lab]').forEach(b => b.onclick = () => { label = +b.dataset.lab; document.querySelectorAll('[data-lab]').forEach(x => x.classList.toggle('on', x === b)); });
+$('testBtn').onclick = () => {
+  if (train.length < 1) { ICT.toast('먼저 학습 데이터를 준비하세요'); return; }
+  let ok = 0; const lines = TEST.map(t => { const k = knn(t.c, t.l); const good = k === t.a; if (good) ok++; return `<div class="${good ? 'ok' : 'no'}">${good ? '⭕' : '❌'} ${t.n} → AI 판단: ${k ? '🍌 바나나' : '🍎 사과'}</div>`; });
+  $('acc').textContent = Math.round(ok / TEST.length * 100) + '%'; $('testList').innerHTML = lines.join(''); draw(true);
+};
+train = SETS.few.map(p => p.slice()); document.querySelector('[data-set="few"]').classList.add('on'); draw(false);
+Predict('predML', { q:'사과 1개, 바나나 1개 — 단 <b>2개의 데이터</b>로만 학습한 인공지능이 처음 보는 과일 5개를 분류하면?', opts:['5개 모두 맞힌다', '몇 개는 틀린다', '아예 분류하지 못한다'], a:1,
+  exp:'학습 데이터가 적으면 풋사과나 덜 익은 바나나처럼 <b>애매한 과일</b>을 잘못 판단하기 쉬워요. 실험실에서 데이터를 바꿔 가며 확인해 보세요.', unlock:'mlLab' });
+
+/* ===== 연결 고리 ===== */
+const MSG = ['교실 센서·CCTV·스마트 워치 같은 사물이 정보를 수집해요.', '이렇게 모인 크고 복잡한 데이터가 실시간으로 쌓여 빅데이터가 돼요.', '빅데이터는 클라우드에 저장되어 언제 어디서나 쓰고, 대규모 계산을 도와요.', '인공지능이 데이터를 학습해 패턴을 발견해요.', '발견한 패턴으로 질병을 진단하고, 번역하고, 교통사고를 예방하고, 산불·홍수·대기 오염에 대처해요. 🎉'];
+let ci = 0;
+document.querySelectorAll('#chain .node').forEach(n => n.onclick = () => { const i = +n.dataset.i; if (i !== ci) { $('chainMsg').textContent = '순서대로 눌러 보세요! 지금은 ' + (ci + 1) + '번째 차례예요.'; return; } n.classList.add('lit'); $('chainMsg').textContent = MSG[i]; ci = Math.min(ci + 1, 4); if (i === 4) ci = 99; });
+
+SortGame('sortField', { cats:[{ k:'med', label:'🏥 의료', color:'#f9a8d4' }, { k:'edu', label:'🏫 교육', color:'#67e8f9' }, { k:'ind', label:'🏭 산업', color:'#fde68a' }, { k:'art', label:'🎨 문화·예술', color:'#c4b5fd' }], items:[
+  { e:'🫁', t:'초해상도 알고리즘으로 폐 영상에서 작은 폐결절을 찾아 암을 예방한다', a:'med' },
+  { e:'💻', t:'집에서 화상으로 의사에게 진료를 받는다 (원격 진료)', a:'med' },
+  { e:'📈', t:'개인별 학습 상태를 분석한 빅데이터로 맞춤형 학습을 제공한다', a:'edu' },
+  { e:'🖼️', t:'메타버스 플랫폼에 동아리 발표회 갤러리를 만든다', a:'edu' },
+  { e:'🏗️', t:'디지털 트윈으로 건설 현장을 가상으로 미리 돌려 보고 불량률을 줄인다', a:'ind' },
+  { e:'🤖', t:'현실과 가상 세계를 연결해 공장의 생산성과 효율을 높인다', a:'ind' },
+  { e:'🎼', t:'기존 음악을 학습한 인공지능이 새롭게 작사·작곡한다', a:'art' },
+  { e:'🏯', t:'5G와 증강 현실로 고궁 담장에 미디어 아트를 펼친다', a:'art' },
+] });
+
+MCQ('mcqCheck', [
+  { q:'"인공지능은 기계를 통해 인간의 지능을 모방하는 기술로, 언어 번역 분야에만 적용된다." (교과서 217쪽)', opts:['O', 'X'], a:1, keep:true, exp:'X — 의료, 교육, 산업, 문화·예술 등 다양한 분야에 활용돼요.' },
+  { q:'컴퓨터가 사람이 입력한 데이터를 통해 스스로 학습하고, 분류나 예측 같은 문제 해결을 수행하는 인공지능은?', opts:['기계 학습', '광통신', '클라우드', '사물 인터넷'], a:0, exp:'기계 학습(머신 러닝)이에요.' },
+  { q:'실험실에서 "사과만 잔뜩" 학습시켰을 때 정확도가 낮아진 까닭은?', opts:['학습 데이터가 한쪽으로 치우쳤기 때문', '데이터가 너무 많아서 컴퓨터가 느려졌기 때문', '사과가 바나나보다 무겁기 때문', '테스트를 너무 빨리 했기 때문'], a:0, exp:'치우친 데이터는 치우친 판단을 만들어요. 7차시 인공지능 윤리로 이어지는 핵심이에요!' },
+]);
+</script>
+</body>
+</html>

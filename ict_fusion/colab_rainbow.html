@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>심화 2 · 파이썬으로 그리는 나만의 무지개</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.try .pbox { background:rgba(167,139,250,.08); border:1px dashed rgba(167,139,250,.55); border-radius:10px; padding:10px 12px; margin:8px 0; font-size:.88rem; }
+.try .pbox b { color:#c4b5fd; }
+.try .pbox textarea { width:100%; min-height:48px; margin-top:6px; background:#0f172a; color:#e2e8f0; border:1px solid #64748b; border-radius:8px; padding:6px 9px; font-family:Consolas,monospace; font-size:.85rem; }
+.try .after { display:none; } .try .after.show { display:block; }
+.same-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; font-size:.84rem; margin-top:8px; }
+.cmd-tbl td.v { font-family:Consolas,monospace; font-weight:800; color:#fde68a; text-align:center; }
+.cmd-tbl td.code { font-family:Consolas,monospace; color:#7dd3fc; }
+.cmd-tbl tr.hl td { background:rgba(34,211,238,.08); }
+.swatch { display:inline-block; width:14px; height:14px; border-radius:4px; vertical-align:-2px; margin-right:4px; border:1px solid #475569; }
+.three { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+@media(max-width:720px){ .three{grid-template-columns:1fr} }
+.three .lbl { text-align:center; font-weight:800; color:#fde68a; margin-bottom:6px; font-family:Consolas,monospace; }
+.trace input { width:100%; background:#0f172a; color:#e2e8f0; border:1px solid #64748b; border-radius:6px; padding:5px 6px; font-family:Consolas,monospace; text-align:center; }
+.trace input.ok { border-color:#4ade80; background:#052e16; } .trace input.no { border-color:#f87171; background:#450a0a; }
+.calc { display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-family:Consolas,monospace; font-size:1rem; }
+.calc input { width:90px; }
+.calc .eq { background:#020617; border:1px solid #334155; border-radius:8px; padding:6px 12px; }
+.color-pick { display:flex; flex-wrap:wrap; gap:6px; }
+.color-pick .chip { display:inline-flex; align-items:center; gap:5px; }
+.err-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+.err-tabs .chip { font-family:Consolas,monospace; }
+.err-box { background:#0f172a; border:1px solid #334155; border-radius:12px; padding:14px; font-size:.9rem; line-height:1.7; }
+.err-box b { color:#fca5a5; }
+.save-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media(max-width:720px){ .save-grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body data-page="colab_rainbow">
+<div class="container">
+  <div class="top-nav"><a href="colab_basic.html">← 심화 1: 코랩과 파이썬 기초</a><a href="final.html">10차시: 단원 종합 평가 →</a></div>
+  <span class="lesson-tag deep">심화 2</span><span class="unit-tag">파이썬으로 그리는 나만의 무지개 · PPT 10~20쪽</span>
+  <h1>🌈 나만의 무지개 만들기</h1>
+  <div class="goal-box"><b>학습 목표</b><br>
+    ① 무지개 코드를 실행하고 <b>색(i % 6) · 굵기(int) · 길이(forward) · 회전(left)</b>이 그림에 미치는 영향을 설명할 수 있다.<br>
+    ② 특정 i 값을 넣어 코드가 무엇을 하는지 <b>직접 따라가</b> 볼 수 있다.<br>
+    ③ 조건을 <b>한 가지씩</b> 바꾸어 나만의 작품을 만들고, 오류 메시지에서 단서를 찾아 고칠 수 있다.</div>
+  <div class="flow-bar"><span><b>1</b> 전체 코드 실행</span><span><b>2</b> 네 명령 해부</span><span><b>3</b> 길어지는 선</span><span><b>4</b> int() 굵기</span><span><b>5</b> 값 따라가기</span><span><b>6</b> 59·60·61°</span><span><b>7</b> 작품 실험실</span><span><b>8</b> 오류 도우미</span><span><b>9</b> 저장·마무리</span></div>
+  <div class="hook" style="margin-top:0">⚠️ <b>먼저 확인!</b> 코랩을 새로 열었다면 <b>설치 셀</b>부터 실행해야 해요. <code class="inline">!pip install ColabTurtle==2.2.0</code> — <a href="colab_basic.html">심화 1의 4단계</a>를 참고하세요.</div>
+
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">🧠 메타인지</span></div>
+  <div class="kwl"><h3>📋 나는 지금 얼마나 알고 있을까?</h3><div class="kwl-row">
+    <div class="kwl-item"><span>i % 6이 0~5를 반복한다는 것을 설명할 수 있다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>int()가 소수 부분을 버린다는 것을 안다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>회전각을 바꾸면 무늬가 어떻게 달라질지 예측할 수 있다</span><select class="pre-check"></select></div>
+  </div></div>
+
+  <div class="step-title"><span class="step-num">1</span> 복사해서 실행하는 무지개 전체 코드 <span class="step-time">PPT 10쪽</span></div>
+  <p class="step-desc">화면만 800×800으로 넓힌 코드예요. 처음 관찰할 때는 <b>range(120)</b>, 완성 그림은 <b>range(360)</b>으로 실행해도 돼요.</p>
+  <div class="lab">
+    <div>
+      <div class="btn-row" style="margin-top:0"><button class="chip" data-r="120">range(120) 첫 관찰</button><button class="chip on" data-r="360">range(360) 완성</button></div>
+      <div class="code-card"><div class="code-head"><span class="lbl"><b>실행 코드</b> · 상자 안의 코드만 복사</span><button class="copy-btn">📋 복사</button></div><pre class="py" id="codeMain"></pre></div>
+      <div id="predMain"></div>
+    </div>
+    <div><div class="turtle-box"><canvas id="cvMain"></canvas></div><div class="btn-row"><button class="btn-sub" id="runMain">▶ 미리보기 다시 그리기</button><span class="note">코랩에서는 그리는 데 시간이 조금 걸려요.</span></div></div>
+  </div>
+
+  <div class="step-title"><span class="step-num">2</span> 한 번 반복할 때 실행하는 네 명령 <span class="step-time">PPT 11쪽</span></div>
+  <p class="step-desc">색과 굵기를 정하고, 전진한 뒤 회전해요. 다음 회차에는 i가 1 늘어나요. <b>슬라이더로 i를 바꾸며</b> 네 명령의 값과 그림을 함께 확인해 보세요.</p>
+  <div class="lab">
+    <div class="panel">
+      <div class="slider-row"><label>i 값</label><input type="range" id="iS" min="0" max="359" value="7"><output id="iO">7</output></div>
+      <table class="tbl cmd-tbl" style="margin-top:8px">
+        <tr><th>순서</th><th>명령</th><th>하는 일</th><th>이번 값</th></tr>
+        <tr><td class="c">1</td><td class="code">t.pencolor(colors[i % 6])</td><td>이번 선의 색 선택</td><td class="v" id="vC"></td></tr>
+        <tr><td class="c">2</td><td class="code">t.width(int(i / 100 + 1))</td><td>이번 선의 굵기 선택</td><td class="v" id="vW"></td></tr>
+        <tr><td class="c">3</td><td class="code">t.forward(i)</td><td>현재 방향으로 전진</td><td class="v" id="vF"></td></tr>
+        <tr><td class="c">4</td><td class="code">t.left(59)</td><td>왼쪽으로 회전</td><td class="v">59°</td></tr>
+      </table>
+      <div class="note" id="iCalc"></div>
+    </div>
+    <div><div class="turtle-box"><canvas id="cvStep"></canvas></div><div class="note">0번째부터 i번째 선까지 그린 모습 (i가 작을 땐 확대해서 보여 줘요) · 흰 삼각형이 지금 거북이 위치</div></div>
+  </div>
+
+  <div class="step-title"><span class="step-num">3</span> 360번 반복하며 점점 길어지는 선 <span class="step-time">PPT 12쪽</span></div>
+  <p class="step-desc">range(360)의 i는 0~359예요. <code class="inline">forward(i)</code>가 그 값을 이동 거리로 써요. 처음 6개의 값을 글자로 확인해 봐요.</p>
+  <div id="try1" class="try"></div>
+  <table class="tbl" style="margin-top:8px"><tr><th>원본의 i</th><th>forward(i)</th><th>관찰</th></tr>
+    <tr><td class="c">0</td><td class="c">0픽셀</td><td>이동하지 않고 회전만 해요. (다음 명령인 왼쪽 59° 회전은 실행)</td></tr>
+    <tr><td class="c">1~358</td><td class="c">1~358픽셀</td><td>반복할 때마다 길이가 1씩 늘어나요.</td></tr>
+    <tr><td class="c">359</td><td class="c">359픽셀</td><td>360번째이자 마지막 반복이에요.</td></tr></table>
+
+  <div class="step-title"><span class="step-num">4</span> int()로 계산하는 선 굵기 <span class="step-time">PPT 13쪽</span></div>
+  <p class="step-desc"><code class="inline">i / 100 + 1</code>을 계산한 뒤 <code class="inline">int()</code>로 <b>소수 부분을 버려요</b>. 반올림과 구별하세요!</p>
+  <div class="panel">
+    <div class="calc">i = <input type="number" class="field" id="calcI" min="0" max="359" value="199">
+      <span class="eq" id="calcEq"></span></div>
+    <div class="note">0~99 → 1 · 100~199 → 2 · 200~299 → 3 · 300~359 → 4</div>
+  </div>
+  <div id="try2" class="try"></div>
+
+  <div class="step-title"><span class="step-num">5</span> 값을 넣어 원본 코드 따라가기 <span class="step-time">PPT 14쪽</span></div>
+  <p class="step-desc">몇 가지 i 값을 골라 확인한 표예요. 마지막 줄 <b>i = 200</b>은 짝과 함께 직접 계산해 채워 보세요.</p>
+  <div class="panel">
+    <table class="tbl trace">
+      <tr><th>i</th><th>i%6</th><th>색</th><th>굵기</th><th>전진 거리</th><th>왼쪽 회전</th></tr>
+      <tr><td class="c">0</td><td class="c">0</td><td class="c">red</td><td class="c">1</td><td class="c">0</td><td class="c">59°</td></tr>
+      <tr><td class="c">1</td><td class="c">1</td><td class="c">purple</td><td class="c">1</td><td class="c">1</td><td class="c">59°</td></tr>
+      <tr><td class="c">5</td><td class="c">5</td><td class="c">yellow</td><td class="c">1</td><td class="c">5</td><td class="c">59°</td></tr>
+      <tr><td class="c">6</td><td class="c">0</td><td class="c">red</td><td class="c">1</td><td class="c">6</td><td class="c">59°</td></tr>
+      <tr><td class="c">100</td><td class="c">4</td><td class="c">orange</td><td class="c">2</td><td class="c">100</td><td class="c">59°</td></tr>
+      <tr><td class="c">359</td><td class="c">5</td><td class="c">yellow</td><td class="c">4</td><td class="c">359</td><td class="c">59°</td></tr>
+      <tr style="background:rgba(167,139,250,.08)"><td class="c"><b>200</b></td><td><input id="t1" placeholder="?"></td><td><input id="t2" placeholder="?"></td><td><input id="t3" placeholder="?"></td><td><input id="t4" placeholder="?"></td><td><input id="t5" placeholder="?"></td></tr>
+    </table>
+    <div class="btn-row"><button class="btn" id="traceBtn">확인하기</button><span class="sort-fb" id="traceFb" style="margin:0;min-height:0"></span></div>
+  </div>
+
+  <div class="step-title"><span class="step-num">6</span> 59 · 60 · 61도 회전 결과 비교 <span class="step-time">PPT 15쪽</span></div>
+  <p class="step-desc">같은 120회에서 <b>회전각만</b> 바꿨어요. 1도 차이가 무늬를 어떻게 바꿀까요?</p>
+  <div id="predAng"></div>
+  <div class="lock-note" id="angBox-lock">🔒 예측을 먼저 고르면 결과가 보여요.</div>
+  <div class="three locked" id="angBox">
+    <div><div class="lbl">left(59)</div><div class="turtle-box"><canvas id="cv59"></canvas></div></div>
+    <div><div class="lbl">left(60)</div><div class="turtle-box"><canvas id="cv60"></canvas></div></div>
+    <div><div class="lbl">left(61)</div><div class="turtle-box"><canvas id="cv61"></canvas></div></div>
+  </div>
+  <div class="note">실험: 1단계 코드를 range(120)으로 실행한 뒤 left(59)의 각도만 60, 61로 바꾸어 코랩에서도 비교해 보세요.</div>
+
+  <div class="step-title"><span class="step-num">7</span> 나만의 작품 실험실 <span class="step-time">PPT 16~17쪽</span></div>
+  <p class="step-desc"><b>steps</b>는 횟수, <b>angle</b>은 회전각이에요. 기본값으로 먼저 실행한 뒤, <b>한 번에 한 조건씩만</b> 바꾸어 비교해요. 코드가 자동으로 바뀌니 복사해서 코랩에서 실행하세요.</p>
+  <div class="lab">
+    <div class="panel">
+      <div class="slider-row"><label>반복 횟수 steps</label><input type="range" id="mS" min="20" max="360" step="10" value="180"><output id="mSo">180</output></div>
+      <div class="slider-row"><label>회전각 angle</label><input type="range" id="mA" min="30" max="179" step="1" value="91"><output id="mAo">91</output></div>
+      <div class="slider-row"><label>선 굵기 width</label><input type="range" id="mW" min="1" max="8" step="1" value="2"><output id="mWo">2</output></div>
+      <div style="font-size:.86rem;color:#cbd5e1;margin:8px 0 4px">색 목록 colors <span class="note">(누른 순서대로 들어가요 · 최대 6개)</span></div>
+      <div class="color-pick" id="mC"></div>
+      <div class="btn-row"><button class="btn-sub" id="mReset">↺ 기본값</button></div>
+      <div class="code-card"><div class="code-head"><span class="lbl"><b>나의 작품 코드</b></span><button class="copy-btn">📋 복사</button></div><pre class="py" id="codeMy"></pre></div>
+    </div>
+    <div><div class="turtle-box"><canvas id="cvMy"></canvas></div><div class="note" id="myInfo"></div></div>
+  </div>
+  <div class="panel" style="margin-top:12px">
+    <table class="tbl"><tr><th>바꾸는 것</th><th>예시</th><th>살펴볼 점</th></tr>
+      <tr><td>반복 횟수</td><td>180과 120</td><td>선의 수와 그림의 범위</td></tr>
+      <tr><td>회전각</td><td>91°와 89°</td><td>선이 놓이는 방향과 무늬</td></tr>
+      <tr><td>색 목록</td><td>세 색의 이름 또는 개수</td><td>반복되는 색의 순서</td></tr>
+      <tr><td>선 굵기</td><td>고정값 2와 4</td><td>같은 그림에서 달라지는 선 굵기</td></tr></table>
+    <div class="inquiry"><h4>🖼️ 작품 기록</h4>
+      <p>작품 제목과 함께 <b>"___을 바꾸니 ___이 달라졌다. 코드에서 그 이유는 ___이다."</b>를 기록해요.</p>
+      <input type="text" class="field" id="artTitle" placeholder="작품 제목" style="margin-bottom:8px">
+      <textarea id="iqArt" placeholder="예) 회전각을 91에서 89로 바꾸니 무늬가 반대 방향으로 돌았다. 코드에서 그 이유는 left(angle)의 각도가 90보다 작아져 매번 덜 꺾이기 때문이다."></textarea>
+      <div class="iq-row"><button class="btn-sub" data-save="iqArt">💾 저장</button><span class="iq-saved" id="iqArt-saved"></span></div></div>
+  </div>
+
+  <div class="step-title"><span class="step-num">8</span> 오류 메시지에서 단서 찾기 <span class="step-time">PPT 18쪽</span></div>
+  <p class="step-desc">코랩이 빨간 오류를 보여 주면 <b>마지막 줄의 오류 이름</b>과 <b>표시된 줄</b>을 보고, 한 곳씩 고쳐요. 내가 본 오류 이름을 눌러 보세요.</p>
+  <div class="panel">
+    <div class="err-tabs" id="errTabs"></div>
+    <div class="err-box" id="errBox"></div>
+    <div class="note">그리기를 중단하려면 실행 셀의 <b>정지 버튼(■)</b>을 누르고, 반복 횟수를 줄여 다시 시작해요.</div>
+  </div>
+  <h4 style="color:#c4b5fd;margin:16px 0 8px">🐞 버그 찾기 — 무엇을 고쳐야 할까?</h4>
+  <div class="panel"><div id="mcqBug"></div></div>
+
+  <div class="step-title"><span class="step-num">9</span> 작품 저장과 다시 실행하기 <span class="step-time">PPT 19쪽</span></div>
+  <p class="step-desc">저장한 <b>코드</b>와 실행하는 <b>컴퓨터의 상태</b>는 따로 생각해요.</p>
+  <div class="save-grid">
+    <div class="card c4"><h3>📒 노트북 파일</h3><p>코드와 설명을 <b>Google Drive</b>에 저장해요. 파일 메뉴에서 <b>.ipynb</b>로 내려받을 수도 있어요.</p></div>
+    <div class="card c3"><h3>🖥️ 런타임</h3><p>코드를 <b>실행하는 컴퓨터</b>예요. 연결이 새로 만들어지면 <b>변수와 설치가 초기화</b>될 수 있어요.</p></div>
+  </div>
+  <div class="hook">📅 <b>다음 수업에서는</b> — ① 설치 셀을 먼저 실행 → ② 필요한 코드 셀을 <b>위에서 아래로</b> 다시 실행.</div>
+
+  <div class="step-title"><span class="step-num">✓</span> 마무리 확인 문제 <span class="step-time">PPT 20쪽 · 🧠 메타인지</span></div>
+  <p class="step-desc">답과 함께 코드의 <b>어느 부분</b>에서 알 수 있는지 떠올려 보세요.</p>
+  <div class="panel" style="margin-bottom:14px"><div id="mcqFinal"></div></div>
+  <div class="self-check"><h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>무지개 코드를 코랩에서 실행해 그림을 완성했다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>i % 6, int(i / 100 + 1), forward(i), left(59)가 각각 무엇을 하는지 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>i 값을 넣어 색·굵기·거리를 직접 계산할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>조건을 하나씩 바꿔 나만의 작품을 만들고 그 이유를 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>오류 이름을 보고 어디를 고칠지 찾을 수 있다</span></label>
+    <div class="sc-progress" id="scProgress"></div>
+    <div class="meta-report" id="kwlCompare"></div>
+    <button class="btn-sub done-btn" id="doneBtn">☑️ 심화 2 완료 표시하기</button>
+  </div>
+  <div class="next-link"><a href="final.html">다음 → 10차시: 단원 종합 평가</a></div>
+</div>
+
+<script src="assets/common.js"></script>
+<script src="assets/turtle.js"></script>
+<script>
+const { $, el, MCQ, Predict, setCode, makeTry, store } = ICT;
+const T = window.Turtle;
+const COL = ['red', 'purple', 'blue', 'green', 'orange', 'yellow'];
+function rainbow(n, ang, size) { const r = new T.Recorder(size || 800, size || 800); for (let i = 0; i < n; i++) { r.pencolor(COL[i % 6]); r.width(Math.floor(i / 100 + 1)); r.forward(i); r.left(ang); } return r; }
+
+/* 1. 전체 코드 */
+let N = 360; const vMain = new T.TurtleView($('cvMain'));
+function mainCode() { setCode($('codeMain'), `import ColabTurtle.Turtle as t\nt.initializeTurtle(initial_window_size=(800, 800))\nt.speed(10)\ncolors = ['red', 'purple', 'blue',\n          'green', 'orange', 'yellow']\nfor i in range(${N}):\n    t.pencolor(colors[i % 6])\n    t.width(int(i / 100 + 1))\n    t.forward(i)\n    t.left(59)`); vMain.draw(rainbow(N, 59), { frames:120 }); }
+document.querySelectorAll('[data-r]').forEach(b => b.onclick = () => { N = +b.dataset.r; document.querySelectorAll('[data-r]').forEach(x => x.classList.toggle('on', x === b)); mainCode(); });
+$('runMain').onclick = mainCode; mainCode();
+Predict('predMain', { q:'선이 360번 그려지면 어떤 모양이 될까요?', opts:['같은 크기의 육각형이 겹친 모양', '가운데에서 바깥으로 점점 커지며 도는 소용돌이 모양', '일직선'], a:1,
+  exp:'forward(i)로 <b>선이 점점 길어지고</b>, left(59)로 <b>60°보다 조금 덜</b> 꺾여서 조금씩 비틀리며 퍼지는 소용돌이가 돼요. 미리보기와 코랩 결과를 비교해 보세요.' });
+
+/* 2. 네 명령 */
+const vStep = new T.TurtleView($('cvStep'));
+function stepUpd() {
+  const i = +$('iS').value; $('iO').textContent = i;
+  const c = COL[i % 6], w = Math.floor(i / 100 + 1);
+  $('vC').innerHTML = `<span class="swatch" style="background:${T.COLORS[c]}"></span>${c}`; $('vW').textContent = w; $('vF').textContent = i + '픽셀';
+  $('iCalc').innerHTML = `i % 6 = ${i} % 6 = <b>${i % 6}</b> → colors[${i % 6}] = ${c} · i / 100 + 1 = ${(i / 100 + 1).toFixed(2).replace(/\.?0+$/, '')} → int → <b>${w}</b>`;
+  const sz = Math.round(Math.max(160, Math.min(800, i * 2.3 + 80))); const r = rainbow(i + 1, 59, sz); vStep.draw(r, { animate:false });
+}
+$('iS').addEventListener('input', stepUpd); stepUpd();
+
+/* 3, 4 */
+makeTry('try1', { code:'for i in range(6):\n    print("i =", i,\n          "이동 거리 =", i)', q:'여섯 줄의 출력을 예측해 보세요.', out:'i = 0 이동 거리 = 0\ni = 1 이동 거리 = 1\ni = 2 이동 거리 = 2\ni = 3 이동 거리 = 3\ni = 4 이동 거리 = 4\ni = 5 이동 거리 = 5', note:'괄호 안에서는 줄을 바꿔 써도 하나의 명령이에요.' });
+function calcUpd() { let i = Math.max(0, Math.min(359, parseInt($('calcI').value) || 0)); const v = i / 100 + 1; $('calcEq').innerHTML = `i / 100 + 1 = <b>${+v.toFixed(2)}</b> → int( ) → 굵기 <b style="color:#4ade80">${Math.floor(v)}</b>` + (Math.round(v) !== Math.floor(v) ? ` <span class="note">(반올림이었다면 ${Math.round(v)})</span>` : ''); }
+$('calcI').addEventListener('input', calcUpd); calcUpd();
+makeTry('try2', { code:'for i in [0, 99, 100, 199,\n          200, 299, 300, 359]:\n    print(i, i / 100 + 1,\n          int(i / 100 + 1))', q:'i = 199일 때 마지막 숫자(굵기)는 무엇일까요?', out:'0 1.0 1\n99 1.99 1\n100 2.0 2\n199 2.99 2\n200 3.0 3\n299 3.99 3\n300 4.0 4\n359 4.59 4', note:'출력 순서: i, 계산값, int()로 얻은 정수 굵기. i=199이면 2.99에서 소수 부분을 버려 굵기 2가 돼요.' });
+
+/* 5. 따라가기 */
+$('traceBtn').onclick = () => {
+  const ans = { t1:['2'], t2:['blue'], t3:['3'], t4:['200'], t5:['59', '59°', '59도'] };
+  let ok = 0; Object.entries(ans).forEach(([id, a]) => { const v = $(id).value.trim().toLowerCase().replace(/'|"/g, ''); const good = a.includes(v); $(id).classList.toggle('ok', good); $(id).classList.toggle('no', !good); if (good) ok++; });
+  if (!$('traceBtn').dataset.t) { $('traceBtn').dataset.t = 1; ICT.meta.firstTotal++; if (ok === 5) ICT.meta.firstOk++; ICT.metaUpdate(); }
+  $('traceFb').className = 'sort-fb ' + (ok === 5 ? 'ok' : 'no');
+  $('traceFb').innerHTML = ok === 5 ? '🎉 완벽해요! 200 % 6 = 2 → blue, int(3.0) = 3' : `${ok}/5칸 정답. 빨간 칸을 다시 계산해 보세요. (힌트: 200 = 6 × 33 + ?)`;
+};
+
+/* 6. 각도 비교 */
+const views = { 59:new T.TurtleView($('cv59')), 60:new T.TurtleView($('cv60')), 61:new T.TurtleView($('cv61')) };
+Predict('predAng', { q:'left(60)으로 바꾸면 무늬는 어떻게 될까요?', opts:['59°와 거의 같다', '비틀림 없이 반듯한 육각형이 겹겹이 커진다', '선이 하나도 안 그려진다'], a:1,
+  exp:'60° × 6번 = 360°라서 여섯 번마다 <b>처음 방향으로 정확히 돌아와</b> 반듯한 육각형 나선이 돼요. 59°는 한 바퀴에 조금 <b>덜</b>, 61°는 조금 <b>더</b> 돌아서 서로 <b>반대 방향</b>으로 비틀려요.', unlock:'angBox',
+  onPick:() => [59, 60, 61].forEach(a => views[a].draw(rainbow(120, a, 300), { frames:60 })) });
+[59, 60, 61].forEach(a => { const r = new T.Recorder(300, 300); views[a].draw(r, { showTurtle:false }); });
+
+/* 7. 작품 실험실 */
+const PALETTE = ['cyan', 'magenta', 'yellow', 'red', 'orange', 'green', 'blue', 'purple', 'white', 'pink', 'lime', 'gold', 'skyblue', 'violet'];
+const DEF = { s:180, a:91, w:2, c:['cyan', 'magenta', 'yellow'] };
+let my = store.get('art', null) || JSON.parse(JSON.stringify(DEF));
+const vMy = new T.TurtleView($('cvMy'));
+function chips() {
+  const box = $('mC'); box.innerHTML = '';
+  PALETTE.forEach(c => { const n = my.c.indexOf(c); const b = el('button', 'chip' + (n >= 0 ? ' on' : ''), `<span class="swatch" style="background:${T.COLORS[c]}"></span>${c}${n >= 0 ? ' <b>' + n + '</b>' : ''}`);
+    b.onclick = () => { const k = my.c.indexOf(c); if (k >= 0) { if (my.c.length > 1) my.c.splice(k, 1); } else if (my.c.length < 6) my.c.push(c); else ICT.toast('색은 6개까지 고를 수 있어요'); myUpd(); }; box.appendChild(b); });
+}
+function myUpd() {
+  $('mS').value = my.s; $('mA').value = my.a; $('mW').value = my.w;
+  $('mSo').textContent = my.s; $('mAo').textContent = my.a; $('mWo').textContent = my.w;
+  const list = my.c.map(c => `'${c}'`).join(', ');
+  setCode($('codeMy'), `import ColabTurtle.Turtle as t\nt.initializeTurtle(initial_window_size=(800, 800))\nt.speed(10)\nsteps = ${my.s}\nangle = ${my.a}\ncolors = [${list}]\nfor i in range(steps):\n    t.pencolor(colors[i % len(colors)])\n    t.width(${my.w})\n    t.forward(i)\n    t.left(angle)`);
+  const r = new T.Recorder(800, 800); for (let i = 0; i < my.s; i++) { r.pencolor(my.c[i % my.c.length]); r.width(my.w); r.forward(i); r.left(my.a); }
+  vMy.draw(r, { frames:70 });
+  $('myInfo').textContent = `${my.s}회 · ${my.a}° · 색 ${my.c.length}개 · 굵기 ${my.w}`;
+  store.set('art', my); chips();
+}
+$('mS').oninput = e => { my.s = +e.target.value; myUpd(); };
+$('mA').oninput = e => { my.a = +e.target.value; myUpd(); };
+$('mW').oninput = e => { my.w = +e.target.value; myUpd(); };
+$('mReset').onclick = () => { my = JSON.parse(JSON.stringify(DEF)); myUpd(); };
+$('artTitle').value = store.get('artTitle', ''); $('artTitle').oninput = e => store.set('artTitle', e.target.value);
+myUpd();
+
+/* 8. 오류 도우미 */
+const ERR = [
+  ['SyntaxError', '괄호·따옴표·콜론', '괄호와 따옴표의 <b>짝이 맞는지</b>, for 줄 끝에 <b>콜론(:)</b>이 있는지 확인해요.', 'for i in range(6)     ← 콜론 빠짐\nfor i in range(6):    ← 고침'],
+  ['IndentationError', '줄 앞의 공백', '반복할 줄을 <b>공백 4칸</b>으로 맞춰요. 들여쓰기가 없거나 칸 수가 섞이면 생겨요.', 'for i in range(4):\nt.forward(100)        ← 들여쓰기 없음\n    t.forward(100)    ← 고침'],
+  ['NameError', '이름과 실행 순서', '<b>철자</b>를 맞추고(colors ↔ color), 변수를 <b>정의한 셀부터</b> 실행해요.', "t.pencolor(color[i % 6])   ← colors 철자\nt.pencolor(colors[i % 6])  ← 고침"],
+  ['ModuleNotFoundError', '설치 여부', '<b>설치 셀</b>(!pip install ColabTurtle==2.2.0)을 먼저 실행해요. 런타임이 새로 연결되면 다시 설치해야 해요.', '!pip install ColabTurtle==2.2.0'],
+  ['ValueError / IndexError', '값의 범위·리스트 번호', 'speed는 <b>1~13</b>, width는 <b>양의 정수</b>, 색 번호는 <b>0~(개수−1)</b>인지 확인해요.', 'colors[6]   ← 색이 6개면 번호는 0~5\ncolors[i % 6]  ← 고침'],
+];
+ERR.forEach(([n, k, fix, ex], i) => { const b = el('button', 'chip', n); b.onclick = () => { document.querySelectorAll('#errTabs .chip').forEach(x => x.classList.toggle('on', x === b)); $('errBox').innerHTML = `<b>${n}</b> — 무엇을 확인할까요? <b style="color:#fde68a">${k}</b><br>🔧 ${fix}<pre class="out" style="margin-top:8px;border-radius:8px">${ex}</pre>`; }; $('errTabs').appendChild(b); });
+document.querySelector('#errTabs .chip').click();
+MCQ('mcqBug', [
+  { q:'<pre class="out" style="border-radius:8px">for i in range(360)\n    t.forward(i)</pre>SyntaxError가 났어요. 무엇을 고칠까요?', opts:['range(360) 뒤에 콜론(:)을 붙인다', 'forward를 backward로 바꾼다', '360을 36으로 바꾼다'], a:0, exp:'for 줄 끝에는 콜론(:)이 꼭 필요해요.' },
+  { q:'<pre class="out" style="border-radius:8px">import ColabTurtle.Turtle as t\nModuleNotFoundError: No module named \'ColabTurtle\'</pre>어떻게 해야 할까요?', opts:['설치 셀을 먼저 실행한다', 'import를 지운다', '코랩을 끄고 포기한다'], a:0, exp:'ColabTurtle이 설치되지 않았다는 뜻이에요. !pip install 셀을 먼저!' },
+  { q:'<pre class="out" style="border-radius:8px">colors = [\'red\', \'blue\', \'green\']\nt.pencolor(colors[i % 6])</pre>IndexError가 났어요. 가장 좋은 고침은?', opts:['i % 6 을 i % len(colors) 로 바꾼다', 'colors를 지운다', 'i를 0으로 고정한다'], a:0, exp:'색이 3개면 번호는 0~2. len(colors)를 쓰면 색 개수가 바뀌어도 안전해요.' },
+]);
+
+MCQ('mcqFinal', [
+  { q:'range(360)의 마지막 i는 무엇인가요?', opts:['359', '360', '361', '0'], a:0, exp:'range는 0부터 시작해 360 바로 앞까지 → 359 (3단계 표)' },
+  { q:'원본 코드의 i = 8에서 colors[i % 6]은 어떤 색인가요?', opts:['blue', 'purple', 'red', 'green'], a:0, exp:'8 % 6 = 2 → colors[2] = blue (5단계 표, 심화 1의 리스트)' },
+  { q:'i가 199이면 int(i / 100 + 1)은 얼마인가요?', opts:['2', '3', '1', '2.99'], a:0, exp:'2.99에서 소수 부분을 버려 2 (4단계)' },
+  { q:'speed(10)과 forward(10)은 무엇이 다른가요?', opts:['speed는 그리는 표시 속도, forward는 10픽셀 이동', '둘 다 10픽셀 이동', 'speed는 선 굵기, forward는 색', '둘 다 회전 각도'], a:0, exp:'speed(1~13)는 화면에 그려지는 속도, forward(10)은 바라보는 쪽으로 10픽셀 이동이에요.' },
+  { q:'세 색만 쓸 때 % 6 대신 무엇을 쓰면 좋을까요?', opts:['% 3 또는 % len(colors)', '% 6 그대로', '% 0', '% 360'], a:0, exp:'색 개수로 나눈 나머지를 써야 번호가 0~2로 반복돼요. len(colors)를 쓰면 더 안전해요 (7단계 코드).' },
+]);
+</script>
+</body>
+</html>

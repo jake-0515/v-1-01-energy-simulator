@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📡 정보 통신 기술과 융합</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.container { max-width:1100px; padding:24px 20px 80px; }
+.hero { text-align:center; padding:48px 20px 36px; background:linear-gradient(135deg,rgba(34,211,238,.13),rgba(167,139,250,.10)); border-radius:24px; border:1px solid rgba(34,211,238,.3); margin-bottom:32px; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 80% 20%,rgba(34,211,238,.16),transparent 55%); pointer-events:none; }
+.hero h1 { font-size:2.2rem; margin-bottom:12px; color:#fbbf24; }
+.hero p.sub { font-size:1.05rem; color:#cbd5e1; max-width:680px; margin:0 auto; line-height:1.7; }
+.badge-row { margin-top:18px; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+.badge { background:rgba(34,211,238,.13); color:#67e8f9; padding:6px 14px; border-radius:999px; font-size:.85rem; border:1px solid rgba(34,211,238,.3); }
+.sec-title { font-size:1.4rem; color:#fbbf24; margin:36px 0 6px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.sec-desc { color:#94a3b8; margin-bottom:18px; font-size:.95rem; line-height:1.6; }
+.concept-box { background:rgba(30,41,59,.7); border:1px solid #475569; border-radius:18px; padding:26px; }
+.concept-flow { display:flex; align-items:stretch; justify-content:center; gap:14px; flex-wrap:wrap; }
+.cnode { background:linear-gradient(135deg,#1e3a5f,#164e63); border:2px solid #38bdf8; border-radius:14px; padding:16px 18px; text-align:center; min-width:150px; flex:1; max-width:230px; }
+.cnode.root { border-color:#fbbf24; background:linear-gradient(135deg,#452c03,#78350f); }
+.cnode h3 { font-size:1.02rem; margin-bottom:6px; color:#f8fafc; }
+.cnode p { font-size:.8rem; color:#cbd5e1; line-height:1.5; }
+.carrow { display:flex; align-items:center; font-size:1.5rem; color:#fbbf24; }
+.feat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin-top:18px; }
+.feat { background:rgba(51,65,85,.6); border-radius:10px; padding:12px; text-align:center; border:1px solid #475569; transition:.25s; }
+.feat:hover { border-color:#22d3ee; transform:translateY(-3px); }
+.feat .fi { font-size:1.5rem; }
+.feat b { display:block; margin:6px 0 4px; color:#67e8f9; font-size:.9rem; }
+.feat span { font-size:.76rem; color:#94a3b8; line-height:1.45; display:block; }
+.lessons { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; }
+.lesson-card { background:rgba(30,41,59,.85); border-radius:18px; overflow:hidden; border:1px solid #475569; transition:.3s; text-decoration:none; color:inherit; display:flex; flex-direction:column; position:relative; }
+.lesson-card:hover { transform:translateY(-6px); border-color:#22d3ee; box-shadow:0 12px 32px rgba(0,0,0,.4); }
+.lesson-card.deep { border-color:rgba(74,222,128,.45); }
+.lesson-card.quiz { border-color:rgba(167,139,250,.45); }
+.lc-head { padding:18px 20px 12px; }
+.lc-num { display:inline-block; background:#22d3ee; color:#0f172a; font-weight:800; border-radius:8px; padding:3px 12px; font-size:.82rem; margin-bottom:10px; }
+.lc-num.q { background:#a78bfa; } .lc-num.d { background:#4ade80; }
+.lesson-card h3 { font-size:1.1rem; color:#f8fafc; margin-bottom:6px; }
+.lc-desc { font-size:.85rem; color:#94a3b8; line-height:1.55; }
+.lc-tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+.lc-tag { font-size:.72rem; background:rgba(56,189,248,.12); color:#7dd3fc; padding:2px 9px; border-radius:999px; }
+.lc-visual { height:96px; display:flex; align-items:center; justify-content:center; font-size:2.6rem; letter-spacing:6px; background:rgba(15,23,42,.35); }
+.lc-foot { margin-top:auto; padding:12px 20px 16px; font-size:.83rem; color:#38bdf8; font-weight:600; }
+.lc-done { position:absolute; top:12px; right:12px; background:#14532d; color:#bbf7d0; border:1px solid #4ade80; border-radius:999px; font-size:.72rem; padding:2px 9px; font-weight:700; }
+.flow-steps { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; margin:10px 0 6px; gap:4px 0; }
+.fstep { background:rgba(51,65,85,.7); border:1px solid #64748b; padding:10px 16px; border-radius:12px; text-align:center; font-size:.86rem; }
+.fstep b { color:#fbbf24; display:block; font-size:.78rem; margin-bottom:2px; }
+.fsep { color:#fbbf24; font-size:1.2rem; padding:0 8px; }
+.prog-line { text-align:center; color:#94a3b8; font-size:.88rem; margin-top:10px; }
+.prog-line b { color:#4ade80; }
+.colab-note { background:rgba(74,222,128,.07); border:1px solid rgba(74,222,128,.35); border-radius:14px; padding:16px 18px; font-size:.88rem; line-height:1.7; margin-top:14px; }
+.colab-note b { color:#86efac; }
+@media(max-width:640px){ .hero h1{font-size:1.6rem} .carrow{transform:rotate(90deg)} }
+</style>
+</head>
+<body data-page="home">
+<div class="container">
+
+  <div class="hero">
+    <h1>📡 정보 통신 기술과 융합</h1>
+    <p class="sub">자료가 정보가 되는 과정부터 인공지능의 활용과 윤리, 프롬프트로 만드는 나만의 인공지능 툴까지 —<br>
+    직접 해 보고 예측하며 배우는 <b style="color:#fbbf24">중학교 2학년 기술 시뮬레이터</b></p>
+    <div class="badge-row">
+      <span class="badge">📚 3개 소단원 · 10차시</span>
+      <span class="badge">🎮 인터랙티브 시뮬레이션</span>
+      <span class="badge">🧠 메타인지 학습</span>
+      <span class="badge">🐍 코랩 심화 실습</span>
+      <span class="badge">✅ 형성평가 포함</span>
+    </div>
+    <div class="prog-line" id="progLine"></div>
+  </div>
+
+  <h2 class="sec-title">🗺️ 한눈에 보는 정보 통신 기술</h2>
+  <p class="sec-desc">숫자·글자 같은 <b>자료</b>를 목적에 맞게 가공하면 <b>정보</b>가 되고, 정보를 효과적으로 주고받게 해 주는 기술이 <b>정보 통신 기술</b>입니다.</p>
+  <div class="concept-box">
+    <div class="concept-flow">
+      <div class="cnode"><h3>🔢 자료</h3><p>측정으로 얻은<br><b>단순한 값</b><br>(의미·목적 없음)</p></div>
+      <div class="carrow">➜</div>
+      <div class="cnode"><h3>💡 정보</h3><p>목적·의도에 맞게<br><b>가공·처리</b>한 것</p></div>
+      <div class="carrow">➜</div>
+      <div class="cnode root"><h3>📡 정보 통신 기술</h3><p>정보를 <b>효과적으로<br>주고받을 수 있는</b> 기술</p></div>
+      <div class="carrow">➜</div>
+      <div class="cnode"><h3>🤖 인공지능과 융합</h3><p>빅데이터·사물 인터넷·<br>클라우드와 연결되어<br>사회 문제 해결</p></div>
+    </div>
+    <div class="feat-grid">
+      <div class="feat"><div class="fi">🌏</div><b>시간·공간 제약 극복</b><span>메타버스 입학식처럼<br>어디서든 만남</span></div>
+      <div class="feat"><div class="fi">📱</div><b>실시간 정보 교환</b><span>다양한 매체와 기기로<br>바로 주고받음</span></div>
+      <div class="feat"><div class="fi">☁️</div><b>무한한 저장·공유</b><span>정보를 저장하고<br>여럿이 함께 나눔</span></div>
+      <div class="feat"><div class="fi">🔐</div><b>정보 보안 중요</b><span>여러 방법으로 공개되니<br>보안이 매우 중요</span></div>
+    </div>
+  </div>
+
+  <h2 class="sec-title">🧭 학습 흐름</h2>
+  <p class="sec-desc">순서대로 학습하면 <b>이해 → 활용 → 제작 → 평가</b>로 이어집니다. 심화 실습은 9차시 뒤나 방과 후에 진행해도 좋아요.</p>
+  <div class="flow-steps">
+    <div class="fstep"><b>1~3차시</b>정보 통신 기술의 이해</div><div class="fsep">→</div>
+    <div class="fstep"><b>4차시</b>형성평가 ①</div><div class="fsep">→</div>
+    <div class="fstep"><b>5~7차시</b>인공지능의 활용·윤리</div><div class="fsep">→</div>
+    <div class="fstep"><b>8차시</b>형성평가 ②</div><div class="fsep">→</div>
+    <div class="fstep"><b>9차시</b>인공지능 툴 제작</div><div class="fsep">→</div>
+    <div class="fstep" style="border-color:#4ade80"><b style="color:#86efac">심화</b>코랩 파이썬</div><div class="fsep">→</div>
+    <div class="fstep"><b>10차시</b>단원 종합 평가</div>
+  </div>
+
+  <h2 class="sec-title">01 정보 통신 기술의 이해 <span class="lc-tag">교과서 208~211쪽</span></h2>
+  <div class="lessons">
+    <a class="lesson-card" href="sim_meaning.html" data-page="sim_meaning">
+      <div class="lc-visual">🔢➜💡</div>
+      <div class="lc-head"><span class="lc-num">1차시</span><h3>자료와 정보, 정보 통신 기술</h3>
+        <div class="lc-desc">날씨·교실 공기 측정값이 수집→저장→분석→가공→전달을 거쳐 정보가 되는 과정을 직접 돌려 보고, 자료와 정보를 판별해요.</div>
+        <div class="lc-tags"><span class="lc-tag">정보 공장 시뮬레이터</span><span class="lc-tag">자료·정보 판별</span><span class="lc-tag">사물 인터넷</span></div></div>
+      <div class="lc-foot">학습 시작 →</div></a>
+    <a class="lesson-card" href="sim_process.html" data-page="sim_process">
+      <div class="lc-visual">📥⚙️📤🔁</div>
+      <div class="lc-head"><span class="lc-num">2차시</span><h3>정보 통신 기술의 과정</h3>
+        <div class="lc-desc">투입·과정·산출·되먹임 4단계로 홍보 영상을 만들고, 되먹임으로 결과물이 좋아지는 것을 확인해요.</div>
+        <div class="lc-tags"><span class="lc-tag">영상 제작 시뮬레이터</span><span class="lc-tag">4단계 분류</span><span class="lc-tag">생각 키우기</span></div></div>
+      <div class="lc-foot">학습 시작 →</div></a>
+    <a class="lesson-card" href="sim_features.html" data-page="sim_features">
+      <div class="lc-visual">🌏🔐🥽</div>
+      <div class="lc-head"><span class="lc-num">3차시</span><h3>특징과 안전한 사용</h3>
+        <div class="lc-desc">정보 통신 기술의 4가지 특징을 사례에 적용하고, 디지털 기기 안전 수칙과 비밀번호 강도를 실험해요. 메타버스·AR도 알아봐요.</div>
+        <div class="lc-tags"><span class="lc-tag">특징 카드</span><span class="lc-tag">안전 판단</span><span class="lc-tag">비밀번호 실험실</span></div></div>
+      <div class="lc-foot">학습 시작 →</div></a>
+    <a class="lesson-card quiz" href="quiz1.html" data-page="quiz1">
+      <div class="lc-visual">❓✅</div>
+      <div class="lc-head"><span class="lc-num q">4차시</span><h3>형성평가 ① — 정보 통신 기술의 이해</h3>
+        <div class="lc-desc">1~3차시 내용을 12문제로 점검해요. 문제마다 확신도를 고르면 메타인지 정확도까지 분석해 줘요.</div>
+        <div class="lc-tags"><span class="lc-tag">12문제</span><span class="lc-tag">확신도 체크</span><span class="lc-tag">영역별 분석</span></div></div>
+      <div class="lc-foot">평가 시작 →</div></a>
+  </div>
+
+  <h2 class="sec-title">02 정보 통신 기술과 인공지능의 활용 <span class="lc-tag">교과서 212~217쪽</span></h2>
+  <div class="lessons">
+    <a class="lesson-card" href="sim_history.html" data-page="sim_history">
+      <div class="lc-visual">📜📠💻</div>
+      <div class="lc-head"><span class="lc-num">5차시</span><h3>정보 통신 기술의 발달</h3>
+        <div class="lc-desc">몸짓·상형 문자부터 전신기·라디오·에니악·인터넷·인공지능까지 순서를 맞히고, 모스 부호로 직접 메시지를 보내 봐요.</div>
+        <div class="lc-tags"><span class="lc-tag">타임라인 게임</span><span class="lc-tag">모스 부호 전신기</span><span class="lc-tag">매체 비교</span></div></div>
+      <div class="lc-foot">학습 시작 →</div></a>
+    <a class="lesson-card" href="sim_ai.html" data-page="sim_ai">
+      <div class="lc-visual">🤖📊☁️</div>
+      <div class="lc-head"><span class="lc-num">6차시</span><h3>인공지능과 생활 속 활용</h3>
+        <div class="lc-desc">기계 학습·빅데이터·딥러닝 용어를 익히고, 과일 분류 인공지능을 직접 학습시켜요. 의료·교육·산업·문화 사례도 살펴봐요.</div>
+        <div class="lc-tags"><span class="lc-tag">용어 짝 맞추기</span><span class="lc-tag">AI 학습 실험</span><span class="lc-tag">활용 분야</span></div></div>
+      <div class="lc-foot">학습 시작 →</div></a>
+    <a class="lesson-card" href="sim_ethics.html" data-page="sim_ethics">
+      <div class="lc-visual">⚖️🎭</div>
+      <div class="lc-head"><span class="lc-num">7차시</span><h3>인공지능 윤리</h3>
+        <div class="lc-desc">치우친 데이터로 학습한 인공지능이 어떤 결과를 내는지 실험하고, 딥페이크 상황 판단과 순기능·역기능을 정리해요.</div>
+        <div class="lc-tags"><span class="lc-tag">편향 실험</span><span class="lc-tag">딥페이크 대처</span><span class="lc-tag">순기능·역기능</span></div></div>
+      <div class="lc-foot">학습 시작 →</div></a>
+    <a class="lesson-card quiz" href="quiz2.html" data-page="quiz2">
+      <div class="lc-visual">❓✅</div>
+      <div class="lc-head"><span class="lc-num q">8차시</span><h3>형성평가 ② — 인공지능의 활용</h3>
+        <div class="lc-desc">5~7차시 내용을 14문제로 점검하고, 확신도 분석으로 나의 메타인지 정확도를 확인해요.</div>
+        <div class="lc-tags"><span class="lc-tag">14문제</span><span class="lc-tag">확신도 체크</span><span class="lc-tag">영역별 분석</span></div></div>
+      <div class="lc-foot">평가 시작 →</div></a>
+  </div>
+
+  <h2 class="sec-title">03 인공지능 툴 제작하기 <span class="lc-tag">교과서 218~220쪽</span></h2>
+  <div class="lessons">
+    <a class="lesson-card" href="sim_prompt.html" data-page="sim_prompt">
+      <div class="lc-visual">💬🛠️</div>
+      <div class="lc-head"><span class="lc-num">9차시</span><h3>프롬프트 엔지니어링</h3>
+        <div class="lc-desc">문제를 정하고 역할 부여·예시 답안으로 프롬프트를 조립해요. 3가지 조건으로 점검한 뒤 실제 인공지능 툴로 만들고 평가표로 평가해요.</div>
+        <div class="lc-tags"><span class="lc-tag">프롬프트 조립기</span><span class="lc-tag">좋은 프롬프트 비교</span><span class="lc-tag">평가표</span></div></div>
+      <div class="lc-foot">학습 시작 →</div></a>
+    <a class="lesson-card quiz" href="final.html" data-page="final">
+      <div class="lc-visual">🏁</div>
+      <div class="lc-head"><span class="lc-num q">10차시</span><h3>단원 종합 평가</h3>
+        <div class="lc-desc">1~9차시 전체를 7개 영역 20문제로 점검해요. 오답마다 복습할 차시로 바로 이동할 수 있어요.</div>
+        <div class="lc-tags"><span class="lc-tag">20문제</span><span class="lc-tag">7개 영역</span><span class="lc-tag">오답 → 차시 복습</span></div></div>
+      <div class="lc-foot">종합 평가 시작 →</div></a>
+  </div>
+
+  <h2 class="sec-title">🐍 심화 실습 — 파이썬으로 그리는 나만의 무지개 <span class="lc-tag" style="background:rgba(74,222,128,.12);color:#86efac">Google Colab × ColabTurtle</span></h2>
+  <p class="sec-desc">정보 통신 기술은 결국 <b>컴퓨터에게 할 일을 알려 주는 것</b>에서 시작해요. 코드를 <b>복사 → 코랩에 붙여넣기 → 실행</b>하며 파이썬을 체험합니다.</p>
+  <div class="lessons">
+    <a class="lesson-card deep" href="colab_basic.html" data-page="colab_basic">
+      <div class="lc-visual">🐍🐢</div>
+      <div class="lc-head"><span class="lc-num d">심화 1</span><h3>코랩과 파이썬 기초</h3>
+        <div class="lc-desc">파이썬·코랩·ColabTurtle의 역할을 알고, print·변수·주석, 거북이 그리기, for 반복문, 리스트를 하나씩 실행해요.</div>
+        <div class="lc-tags"><span class="lc-tag">📋 복사 버튼</span><span class="lc-tag">결과 예측</span><span class="lc-tag">거북이 미리보기</span></div></div>
+      <div class="lc-foot">실습 시작 →</div></a>
+    <a class="lesson-card deep" href="colab_rainbow.html" data-page="colab_rainbow">
+      <div class="lc-visual">🌈</div>
+      <div class="lc-head"><span class="lc-num d">심화 2</span><h3>나만의 무지개 만들기</h3>
+        <div class="lc-desc">무지개 코드의 원리(%, int, 회전각)를 값을 넣어 따라가 보고, 조건을 바꿔 나만의 작품을 만들어요. 오류 해결 도우미도 있어요.</div>
+        <div class="lc-tags"><span class="lc-tag">무지개 해부</span><span class="lc-tag">작품 실험실</span><span class="lc-tag">오류 도우미</span></div></div>
+      <div class="lc-foot">실습 시작 →</div></a>
+  </div>
+  <div class="colab-note">
+    <b>🐍 심화 실습 준비물</b> — 학교 Google 계정으로 로그인한 크롬북(또는 PC), 그리고 <b>colab.research.google.com</b> 접속.
+    코랩은 학생 계정에서 사용이 허용되어 있어야 해요. 접속이 안 되면 선생님께 알려 주세요.
+  </div>
+
+  <footer>
+    중학교 기술·가정 ② · Ⅳ. 지속 가능한 기술과 융합 — 2. 정보 통신 기술과 융합 (208~220쪽)을 바탕으로 재구성한 학습 활동입니다.<br>
+    학습 기록은 이 브라우저에만 저장되며 다른 곳으로 전송되지 않습니다.
+  </footer>
+</div>
+<script>
+(function () {
+  let done = {}, best = {};
+  try { done = JSON.parse(localStorage.getItem('ictf:done') || '{}'); best = JSON.parse(localStorage.getItem('ictf:quiz') || '{}'); } catch (e) {}
+  const cards = document.querySelectorAll('.lesson-card[data-page]');
+  let n = 0;
+  cards.forEach(c => {
+    const p = c.dataset.page;
+    if (done[p]) { n++; const s = document.createElement('span'); s.className = 'lc-done'; s.textContent = best[p] !== undefined ? '✔ 최고 ' + best[p] + '점' : '✔ 완료'; c.appendChild(s); }
+  });
+  document.getElementById('progLine').innerHTML = n ? `나의 진행: <b>${n} / ${cards.length}</b> 완료` : '각 차시 마지막의 <b>완료 표시</b>를 누르면 여기에서 진행 상황을 볼 수 있어요.';
+})();
+</script>
+</body>
+</html>

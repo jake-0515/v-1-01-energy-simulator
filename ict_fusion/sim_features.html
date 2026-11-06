@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3차시 · 정보 통신 기술의 특징과 안전한 사용</title>
+<link rel="stylesheet" href="assets/common.css">
+<style>
+.pw-box { display:grid; grid-template-columns:1.2fr 1fr; gap:16px; }
+@media(max-width:760px){ .pw-box{grid-template-columns:1fr} }
+.pw-meter { height:16px; background:#1e293b; border-radius:999px; overflow:hidden; border:1px solid #475569; margin:10px 0 6px; }
+.pw-meter i { display:block; height:100%; width:0; transition:.4s; }
+.pw-checks { list-style:none; font-size:.85rem; line-height:1.9; }
+.pw-checks li::before { content:'⬜ '; }
+.pw-checks li.ok::before { content:'✅ '; }
+.pw-warn { background:rgba(248,113,113,.1); border:1px solid rgba(248,113,113,.45); border-radius:10px; padding:10px 12px; font-size:.82rem; color:#fecaca; margin-bottom:10px; }
+.pw-result { font-size:1rem; font-weight:800; }
+.compare { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+.compare .chip { font-family:Consolas,monospace; }
+.xr { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media(max-width:720px){ .xr{grid-template-columns:1fr} }
+</style>
+</head>
+<body data-page="sim_features">
+<div class="container">
+  <div class="top-nav"><a href="sim_process.html">← 2차시: 정보 통신 기술의 과정</a><a href="quiz1.html">4차시: 형성평가 ① →</a></div>
+  <span class="lesson-tag">3차시</span><span class="unit-tag">01 정보 통신 기술의 이해 · 교과서 211쪽</span>
+  <h1>🌏🔐 정보 통신 기술의 특징과 안전한 사용</h1>
+  <div class="goal-box"><b>학습 목표</b><br>
+    ① 정보 통신 기술의 <b>4가지 공통 특징</b>을 사례에 적용할 수 있다.<br>
+    ② <b>디지털 기기를 안전하게 사용하는 방법</b>을 상황에 맞게 판단할 수 있다.<br>
+    ③ <b>메타버스</b>와 <b>증강 현실(AR)</b>의 차이를 설명할 수 있다.</div>
+  <div class="flow-bar"><span><b>0</b> 자기점검 3분</span><span><b>1</b> 4가지 특징 6분</span><span><b>2</b> 특징 적용 7분</span><span><b>3</b> 안전 판단 7분</span><span><b>4</b> 비밀번호 실험실 8분</span><span><b>5</b> 메타버스·AR 6분</span><span><b>✓</b> 스스로 확인 5분</span></div>
+
+  <div class="step-title"><span class="step-num">0</span> 학습 전 자기점검 <span class="step-time">3분 · 🧠 메타인지</span></div>
+  <div class="kwl"><h3>📋 나는 지금 얼마나 알고 있을까?</h3><div class="kwl-row">
+    <div class="kwl-item"><span>정보 통신 기술의 특징을 2가지 이상 말할 수 있다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>수상한 문자를 받았을 때 어떻게 해야 하는지 안다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>안전한 비밀번호를 만드는 방법을 안다</span><select class="pre-check"></select></div>
+    <div class="kwl-item"><span>메타버스와 증강 현실(AR)의 차이를 안다</span><select class="pre-check"></select></div>
+  </div></div>
+
+  <div class="step-title"><span class="step-num">1</span> 정보 통신 기술의 4가지 특징 <span class="step-time">6분 · 개념</span></div>
+  <p class="step-desc">정보 통신 기술은 발전 정도나 사용 환경, 매체에 따라 차이가 있지만 다음과 같은 <b>공통된 특징</b>이 있어요. 카드를 눌러 확인하세요.</p>
+  <div class="flip-grid">
+    <div class="flip"><div class="flip-inner"><div class="flip-face flip-front"><div class="fi">🌏</div><b>시간과 공간의<br>제약 극복</b><span>클릭</span></div><div class="flip-face flip-back"><b>시간과 공간의 제약 극복</b>멀리 있어도, 다른 시간에도 정보를 주고받아요.<br>예) 메타버스에서의 만남, 입학식 같은 행사</div></div></div>
+    <div class="flip"><div class="flip-inner"><div class="flip-face flip-front"><div class="fi">📱</div><b>다양한 매체·기기로<br>실시간 정보 교환</b><span>클릭</span></div><div class="flip-face flip-back"><b>실시간으로 주고받음</b>스마트폰, 태블릿, 가전제품, 자동차 등 다양한 매체와 기기를 통해 실시간으로 정보를 주고받아요.</div></div></div>
+    <div class="flip"><div class="flip-inner"><div class="flip-face flip-front"><div class="fi">☁️</div><b>정보의 무한한<br>저장과 공유</b><span>클릭</span></div><div class="flip-face flip-back"><b>무한한 저장과 공유</b>정보를 디지털로 저장하고 여러 사람과 쉽게 나눌 수 있어요.<br><span style="color:#94a3b8">※ 실제로는 저장 공간·요금·권한에 제한이 있어요.</span></div></div></div>
+    <div class="flip"><div class="flip-inner"><div class="flip-face flip-front"><div class="fi">🔐</div><b>정보 보안이<br>매우 중요</b><span>클릭</span></div><div class="flip-face flip-back"><b>정보 보안</b>정보가 여러 방법으로 공개되므로, 개인 정보가 새어 나가지 않게 지키는 보안이 매우 중요해요.</div></div></div>
+  </div>
+
+  <div class="step-title"><span class="step-num">2</span> 어떤 특징일까? — 사례에 적용하기 <span class="step-time">7분 · 활동</span></div>
+  <p class="step-desc">사례가 정보 통신 기술의 어떤 특징을 가장 잘 보여 주는지 골라 보세요.</p>
+  <div class="panel"><div id="sortFeat"></div></div>
+
+  <div class="step-title"><span class="step-num">3</span> 디지털 기기 안전하게 사용하기 <span class="step-time">7분 · 판단</span></div>
+  <p class="step-desc">교과서 211쪽의 안전 수칙을 떠올리며 각 행동이 <b>안전한지 위험한지</b> 판단해 보세요.</p>
+  <div class="two-col" style="margin-bottom:14px">
+    <div class="card c4"><h3>🛡️ 디지털 기기 안전 수칙</h3><p>· 비밀번호 설정 및 주기적 변경<br>· 공식 앱만 내려받기<br>· 의심스러운 메시지는 바로 삭제<br>· PC와 스마트폰 백신 사용<br>· 신뢰할 수 없는 사이트 방문 금지<br>· 출처가 불분명한 메일 열지 않기</p></div>
+    <div class="card c5"><h3>🤔 왜 이렇게 해야 할까?</h3><p>정보 통신 기술은 정보가 <b>여러 방법으로 공개</b>되는 특징이 있어요. 한 번의 클릭으로 악성 앱이 깔리거나 개인 정보가 빠져나갈 수 있어요. 그래서 <b>보안</b>이 매우 중요해요.</p></div>
+  </div>
+  <div class="panel"><div id="sortSafe"></div></div>
+
+  <div class="step-title"><span class="step-num">4</span> 비밀번호 실험실 <span class="step-time">8분 · 🎮 시뮬레이터</span></div>
+  <p class="step-desc">'비밀번호 설정'은 보안의 첫걸음이에요. 어떤 비밀번호가 강한지 <b>예측한 뒤</b> 직접 실험해 보세요.</p>
+  <div id="predPw"></div>
+  <div class="lock-note" id="pwLab-lock">🔒 예측을 먼저 고르면 실험실이 열려요.</div>
+  <div class="panel locked" id="pwLab">
+    <div class="pw-warn">⚠️ <b>실제로 쓰는 비밀번호는 절대 입력하지 마세요!</b> 연습용으로 아무 글자나 넣어 보세요. (이 화면은 입력한 글자를 어디에도 저장하거나 보내지 않아요.)</div>
+    <div class="pw-box">
+      <div>
+        <input type="text" class="field" id="pwIn" placeholder="연습용 비밀번호를 입력해 보세요" autocomplete="off" spellcheck="false">
+        <div class="pw-meter"><i id="pwBar"></i></div>
+        <div class="pw-result" id="pwRes">입력하면 강도가 표시돼요.</div>
+        <div class="note" id="pwTime"></div>
+        <div class="compare"><span class="note">예시 넣어 보기:</span>
+          <button class="chip" data-pw="1234">1234</button><button class="chip" data-pw="qwer1234">qwer1234</button>
+          <button class="chip" data-pw="Password1">Password1</button><button class="chip" data-pw="sky-pen-lamp-42">sky-pen-lamp-42</button>
+          <button class="chip" data-pw="Tmd!7ghk#Xa9">Tmd!7ghk#Xa9</button></div>
+      </div>
+      <div><ul class="pw-checks" id="pwChecks">
+        <li data-c="len8">8자 이상</li><li data-c="len12">12자 이상 (길수록 강해요)</li><li data-c="low">영어 소문자 포함</li><li data-c="up">영어 대문자 포함</li>
+        <li data-c="num">숫자 포함</li><li data-c="sym">특수 문자 포함 (! @ # - 등)</li><li data-c="pat">흔한 패턴이 아님 (1234, qwer, password, 반복 글자)</li></ul></div>
+    </div>
+    <div class="note">※ 강도와 '알아내는 데 걸리는 시간'은 경우의 수로 어림한 수업용 모형이에요. 실제 안전성은 다른 사이트와 같은 비밀번호를 쓰지 않는 것, 2단계 인증 등도 함께 중요해요.</div>
+  </div>
+
+  <div class="step-title"><span class="step-num">5</span> 알고 보면 쓸모 있는 기·가 — 메타버스와 증강 현실 <span class="step-time">6분 · 확장</span></div>
+  <div class="xr">
+    <div class="card c3"><h3>🌐 메타버스</h3><p>가상과 현실이 융합된 <b>디지털 기반의 공간</b>. 현실 세계의 인물들이 디지털 가상 아바타로 변화해 업무, 사회 생활, 문화 경험 모두가 하나의 연결된 공간에서 이루어져요.</p><div class="ex">예) 아바타로 친구들과 수업 듣기, 가상 콘서트 참여</div></div>
+    <div class="card c1"><h3>🥽 AR 글래스 (증강 현실)</h3><p>실제 우리가 보는 눈에 <b>가상의 것을 합쳐 주는</b> 증강 현실 기기. 현실 세계에 3차원 가상 물체를 겹쳐 보여 주며, 이용 중에도 앞을 볼 수 있어요.</p><div class="ex">예) 렌즈에 길 안내 화살표가 겹쳐 보임</div></div>
+  </div>
+  <div class="panel" style="margin-top:14px"><div id="sortXR"></div></div>
+
+  <div class="step-title"><span class="step-num">✓</span> 스스로 확인하기 <span class="step-time">5분 · 🧠 메타인지</span></div>
+  <div class="panel" style="margin-bottom:14px"><div id="mcqCheck"></div></div>
+  <div class="wrap-q"><h3>❓ 정리 질문</h3><p>정보 통신 기술의 4가지 특징 중 <b>나의 생활에 가장 큰 영향</b>을 주는 것은 무엇인가요? 그 특징 때문에 조심해야 할 점도 함께 적어 보세요.</p>
+    <textarea class="iq" id="iqWrap" placeholder="예) 무한한 저장과 공유 — 사진을 쉽게 나눌 수 있지만, 친구 사진을 허락 없이 올리면 안 된다."></textarea>
+    <div class="iq-row"><button class="btn-sub" data-save="iqWrap">💾 저장</button><span class="iq-saved" id="iqWrap-saved"></span></div></div>
+  <div class="self-check"><h3>✅ 나는 이제 …</h3>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>정보 통신 기술의 4가지 특징을 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>사례를 보고 어떤 특징인지 판단할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>디지털 기기 안전 수칙을 3가지 이상 말할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>강한 비밀번호의 조건을 설명할 수 있다</span></label>
+    <label class="sc-item"><input type="checkbox" class="sc"><span>메타버스와 증강 현실의 차이를 말할 수 있다</span></label>
+    <div class="sc-progress" id="scProgress"></div>
+    <div class="meta-report" id="kwlCompare"></div>
+    <button class="btn-sub done-btn" id="doneBtn">☑️ 3차시 완료 표시하기</button>
+  </div>
+  <div class="next-link"><a href="quiz1.html">다음 → 4차시: 형성평가 ①</a></div>
+</div>
+
+<script src="assets/common.js"></script>
+<script>
+const { $, Predict, SortGame, MCQ } = ICT;
+SortGame('sortFeat', { cats:[
+  { k:'t', label:'🌏 시공간 제약 극복', color:'#67e8f9' }, { k:'r', label:'📱 실시간 정보 교환', color:'#fde68a' },
+  { k:'s', label:'☁️ 저장과 공유', color:'#86efac' }, { k:'p', label:'🔐 정보 보안 중요', color:'#f9a8d4' }],
+  items:[
+  { e:'🎓', t:'아프리카에 사는 친구가 메타버스 입학식에 아바타로 참석했다', a:'t', exp:'멀리 있어도 함께할 수 있어요.' },
+  { e:'🌙', t:'밤에 녹화된 온라인 강의를 다음 날 아침에 원하는 때 본다', a:'t', exp:'시간의 제약을 넘었어요.' },
+  { e:'🚨', t:'지진이 나자 스마트폰·TV·전광판에 동시에 재난 문자가 떴다', a:'r', exp:'다양한 매체로 실시간 전달!' },
+  { e:'🚗', t:'자동차 내비게이션이 실시간 교통 정보를 받아 길을 바꿔 준다', a:'r', exp:'기기가 실시간으로 정보를 주고받아요.' },
+  { e:'📷', t:'수학여행 사진 2,000장을 클라우드에 올려 반 친구들과 함께 본다', a:'s', exp:'저장하고 여럿이 공유해요.' },
+  { e:'📝', t:'모둠원 4명이 하나의 온라인 문서를 동시에 편집한다', a:'s', exp:'정보를 함께 저장·공유해요.' },
+  { e:'🕵️', t:'쇼핑몰 해킹으로 회원 수만 명의 개인 정보가 유출되었다', a:'p', exp:'그래서 보안이 매우 중요해요.' },
+  { e:'🔑', t:'계정에 로그인할 때 문자 인증을 한 번 더 받도록 설정했다', a:'p', exp:'보안을 강화하는 방법이에요.' },
+], after:'하나의 사례에 여러 특징이 함께 있을 수도 있어요. 그중 <b>가장 두드러진</b> 특징을 고르는 연습이었어요.' });
+
+SortGame('sortSafe', { cats:[{ k:'ok', label:'✅ 안전해요', color:'#4ade80' }, { k:'no', label:'⛔ 위험해요', color:'#f87171' }], items:[
+  { e:'📩', t:'"택배 주소가 잘못됐어요. 링크를 눌러 수정하세요" 문자의 링크를 누른다', a:'no', exp:'의심스러운 메시지는 바로 삭제!' },
+  { e:'🏪', t:'게임 앱을 공식 앱 마켓(플레이 스토어 등)에서만 내려받는다', a:'ok', exp:'공식 앱만 내려받기.' },
+  { e:'🛡️', t:'크롬북과 스마트폰의 보안 업데이트·백신을 켜 둔다', a:'ok', exp:'백신 사용!' },
+  { e:'🎁', t:'"무료 아이템 받기" 광고를 따라 처음 보는 사이트에 로그인한다', a:'no', exp:'신뢰할 수 없는 사이트 방문 금지.' },
+  { e:'📧', t:'모르는 사람이 보낸 "성적표.zip" 첨부 메일을 연다', a:'no', exp:'출처가 불분명한 메일은 열지 않기.' },
+  { e:'🔄', t:'비밀번호를 정기적으로 바꾸고 친구에게 알려 주지 않는다', a:'ok', exp:'비밀번호 설정 및 주기적 변경.' },
+  { e:'👥', t:'모든 사이트에 같은 비밀번호를 쓴다', a:'no', exp:'한 곳이 털리면 모든 계정이 위험해져요.' },
+  { e:'💻', t:'학교 컴퓨터를 다 쓴 뒤 계정에서 로그아웃한다', a:'ok', exp:'다음 사람이 내 계정을 쓰지 못해요.' },
+] });
+
+Predict('predPw', { q:'다음 중 가장 알아내기 <b>어려운</b> 비밀번호는 무엇일까요?', opts:['Password1', 'qwer1234', 'sky-pen-lamp-42'], a:2,
+  exp:'<b>길이</b>가 가장 큰 힘이에요. 서로 관계없는 낱말을 이어 길게 만든 비밀번호는 외우기 쉬우면서 강해요. "Password1"처럼 흔한 단어+숫자는 짧고 예측하기 쉬워요.', unlock:'pwLab' });
+
+function pwCheck(p) {
+  const low = /[a-z]/.test(p), up = /[A-Z]/.test(p), num = /\d/.test(p), sym = /[^A-Za-z0-9]/.test(p);
+  const common = /(1234|2345|3456|qwer|asdf|zxcv|password|pass|abcd|1111|0000|admin|love)/i.test(p) || /(.)\1\1/.test(p);
+  const c = { len8:p.length >= 8, len12:p.length >= 12, low, up, num, sym, pat:p.length > 0 && !common };
+  let pool = (low ? 26 : 0) + (up ? 26 : 0) + (num ? 10 : 0) + (sym ? 20 : 0); if (!pool) pool = 10;
+  let bits = p.length * Math.log2(pool); if (common) bits = Math.min(bits, 20);
+  return { c, bits };
+}
+function human(sec) {
+  if (sec < 1) return '1초도 안 걸려요';
+  if (sec < 60) return Math.round(sec) + '초';
+  if (sec < 3600) return Math.round(sec / 60) + '분';
+  if (sec < 86400) return Math.round(sec / 3600) + '시간';
+  const y = sec / 31536000;
+  if (y < 1) return Math.round(sec / 86400) + '일';
+  if (y < 1e4) return Math.round(y).toLocaleString() + '년';
+  if (y < 1e8) return Math.round(y / 1e4).toLocaleString() + '만 년';
+  if (y < 1e12) return Math.round(y / 1e8).toLocaleString() + '억 년';
+  return '1조 년 이상';
+}
+function pwUpdate() {
+  const p = $('pwIn').value; const { c, bits } = pwCheck(p);
+  document.querySelectorAll('#pwChecks li').forEach(li => li.classList.toggle('ok', c[li.dataset.c]));
+  const pct = Math.min(100, bits / 80 * 100);
+  const lv = !p ? ['', '#475569', '입력하면 강도가 표시돼요.'] : bits < 28 ? ['매우 약함', '#ef4444'] : bits < 40 ? ['약함', '#f97316'] : bits < 60 ? ['보통', '#eab308'] : bits < 75 ? ['강함', '#22c55e'] : ['매우 강함', '#10b981'];
+  $('pwBar').style.width = (p ? pct : 0) + '%'; $('pwBar').style.background = lv[1];
+  $('pwRes').innerHTML = p ? `강도: <span style="color:${lv[1]}">${lv[0]}</span>` : lv[2];
+  $('pwTime').textContent = p ? `컴퓨터가 1초에 100억 번 추측한다고 할 때, 모든 경우를 시도하는 데 약 ${human(Math.pow(2, bits) / 1e10)}` : '';
+}
+$('pwIn').addEventListener('input', pwUpdate);
+document.querySelectorAll('[data-pw]').forEach(b => b.onclick = () => { $('pwIn').value = b.dataset.pw; pwUpdate(); });
+
+SortGame('sortXR', { cats:[{ k:'m', label:'🌐 메타버스', color:'#c4b5fd' }, { k:'a', label:'🥽 증강 현실(AR)', color:'#67e8f9' }], items:[
+  { e:'🎤', t:'전 세계 친구들과 아바타로 가상 콘서트에 참여한다', a:'m', exp:'디지털 가상 공간에서 아바타로 만나요.' },
+  { e:'🧭', t:'안경 렌즈에 실제 길 위로 화살표가 겹쳐 보인다', a:'a', exp:'현실 위에 가상 물체를 겹쳐요.' },
+  { e:'🖼️', t:'가상 공간에 동아리 발표회 갤러리를 만들어 전시한다', a:'m', exp:'교과서 215쪽 메타버스 갤러리 사례!' },
+  { e:'🫀', t:'스마트폰 카메라로 교과서를 비추면 책 위에 3D 심장이 떠오른다', a:'a', exp:'현실(책)에 가상(심장)을 합쳐요.' },
+  { e:'📺', t:'안경을 쓰고 눈앞에 대형 스크린 크기의 화면을 띄운다', a:'a', exp:'AR 글래스의 기능이에요.' },
+  { e:'🏫', t:'물리적 공간을 옮기지 않고 가상 교실에서 아바타로 수업을 듣는다', a:'m', exp:'하나의 연결된 디지털 공간이에요.' },
+] });
+
+MCQ('mcqCheck', [
+  { q:'"언어와 문자 사용을 통해 정보 전달 속도와 소통의 범위가 줄었다." (교과서 211쪽 스스로 확인하기)', opts:['O', 'X'], a:1, keep:true, exp:'X — 언어와 문자 덕분에 의사소통이 정확하고 효율적이 되고, 지식을 보존·전달할 수 있게 되어 범위가 넓어졌어요.' },
+  { q:'정보가 여러 방법으로 공개되기 때문에 특히 중요해지는 것은?', opts:['정보 보안', '정보의 삭제', '인쇄 기술', '종이 기록'], a:0, exp:'정보 통신 기술의 4번째 특징이에요.' },
+  { q:'현실 세계에 3차원 가상 물체를 겹쳐 보여 주는 기술은?', opts:['증강 현실(AR)', '메타버스', '모스 부호', '클라우드'], a:0, exp:'AR = 현실 + 가상 겹치기. 메타버스는 가상과 현실이 융합된 디지털 공간 자체예요.' },
+]);
+</script>
+</body>
+</html>
